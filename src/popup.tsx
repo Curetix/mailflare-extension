@@ -1,28 +1,25 @@
-import { Anchor, Button, Input, Stack, Text } from "@mantine/core"
-import { useState } from "react"
+import { QueryClient } from "@tanstack/query-core";
+import { QueryClientProvider } from "@tanstack/react-query";
 
-import { ThemeProvider } from "~theme"
+import { useStorage } from "@plasmohq/storage/dist/hook";
+
+import Aliases from "~components/aliases";
+import Login from "~components/login";
+import { ThemeProvider } from "~theme";
+
+const queryClient = new QueryClient();
 
 function IndexPopup() {
-    const [data, setData] = useState("")
+  const [storedToken] = useStorage<string>("apiToken", null);
 
-    return (
-        <ThemeProvider>
-            <Stack miw={240} p="lg">
-                <Text fw="bold" size="xl">
-                    Welcome to your{" "}
-                    <Anchor href="https://www.plasmo.com" target="_blank">
-                        Cloudflare
-                    </Anchor>{" "}
-                    Extension!
-                </Text>
-                <Input onChange={(e) => setData(e.target.value)} value={data} />
-                <Button component="a" href="https://docs.plasmo.com" target="_blank">
-                    View Docs
-                </Button>
-            </Stack>
-        </ThemeProvider>
-    )
+  return (
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        {!storedToken && <Login />}
+        {storedToken && <Aliases />}
+      </QueryClientProvider>
+    </ThemeProvider>
+  );
 }
 
-export default IndexPopup
+export default IndexPopup;

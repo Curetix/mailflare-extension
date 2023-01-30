@@ -28,7 +28,7 @@ type CloudflareEmailRule = {
   }[];
   matchers: {
     field: "to";
-    type: "literal";
+    type: "literal" | "all";
     value: string;
   }[];
   enabled: boolean;
