@@ -66,3 +66,11 @@ Instead of replying directly to **alice@example.com**, you would use the address
 Since you do not have a rule matching this configured, it is processed by a catch-all Email Worker. It parses the address into sender and receiver (**john@doe.net** and **alice@example.com**),
 checks if **john@doe.net** is actually an alias, and forwards the email using an external API like Mailjet (which of course has to be configured for the domain **doe.net**).
 Finally, **alice@example.com** will receive a reply to her email from **john@doe.net** instead of your private email address **johndoe@gmail.com**.
+
+
+## Built with
+
+* [Plasmo](https://github.com/PlasmoHQ/plasmo)
+* [React](https://github.com/facebook/react)
+* [Mantine UI](https://github.com/mantinedev/mantine)
+* [react-query](https://github.com/TanStack/query)
