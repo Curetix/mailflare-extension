@@ -18,7 +18,7 @@ export function ThemeProvider({ emotionCache, children }: Props) {
   return (
     <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
       <MantineProvider
-        theme={{ colorScheme }}
+        theme={{ colorScheme, primaryColor: "orange" }}
         withGlobalStyles
         withNormalizeCSS
         emotionCache={emotionCache}>
