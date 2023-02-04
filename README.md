@@ -46,9 +46,9 @@ Your API key is stored locally in your browser and is used to directly communica
 
 ### Permissions explained
 
-**Account | Email Routing Addresses | Edit** - Listing, creating, editing and deleting of destination email addresses. If you do not want to create/edit/delete addresses from the extension, you can also choose Read.
-**Zone | Email Routing Rules | Edit** - Listing, creating, editing and deleting of email rules (aliases)
-**Zone | Zone | Read** - Listing of all the zones in your Cloudflare account (or the zone you select in the "Zone Resources" section)
+* **Account | Email Routing Addresses | Edit** - Listing, creating, editing and deleting of destination email addresses. If you do not want to create/edit/delete addresses from the extension, you can also choose Read.
+* **Zone | Email Routing Rules | Edit** - Listing, creating, editing and deleting of email rules (aliases)
+* **Zone | Zone | Read** - Listing of all the zones in your Cloudflare account (or the zone you select in the "Zone Resources" section)
 
 
 ## Sending from alias using Email Worker (Beta)
