@@ -475,11 +475,12 @@ function AliasList() {
             {rules.map((r) => (
               <Card shadow="xs" p="xs" radius="sm" withBorder key={r.tag}>
                 <Group position="apart">
-                  <Text weight={500}>
+                  <Text weight={500} truncate style={{ width: 250 }}>
                     {r.matchers[0].type === "all"
                       ? `*@${zones.find((z) => z.id === selectedZoneId).name}`
                       : r.matchers[0].value}
-                  </Text>{" "}
+                  </Text>
+
                   {r.matchers[0].type !== "all" && (
                     <Button.Group>
                       <Button
@@ -494,7 +495,7 @@ function AliasList() {
                             autoClose: 2000,
                           });
                         }}>
-                        Copy
+                        C
                       </Button>
                       <Button
                         variant="outline"
@@ -511,7 +512,7 @@ function AliasList() {
                           }));
                           setAliasEditModalOpened(true);
                         }}>
-                        Edit
+                        E
                       </Button>
                       <Button
                         variant="outline"
@@ -520,7 +521,7 @@ function AliasList() {
                         onClick={() => {
                           deleteMutation.mutate({ id: r.tag, zoneId: selectedZoneId });
                         }}>
-                        Delete
+                        D
                       </Button>
                     </Button.Group>
                   )}
