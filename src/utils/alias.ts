@@ -13,19 +13,18 @@ export function randomString(length: number) {
 }
 
 export function generateAlias(
-  type: "characters" | "words" = "characters",
-  length = 5,
-  words = 3,
-  separator = "-",
+  format: "characters" | "words" = "characters",
+  characterCount = 5,
+  wordCount = 2,
+  separator = "_",
   prefix?: string,
-  prefixSeparator = "-",
 ): string {
-  const aliasPrefix = prefix.trim() !== "" ? `${prefix}${prefixSeparator}` : "";
-  switch (type) {
+  const aliasPrefix = prefix && prefix.trim() !== "" ? `${prefix}${separator}` : "";
+  switch (format) {
     case "characters":
-      return `${aliasPrefix}${randomString(length)}`;
+      return `${aliasPrefix}${randomString(characterCount)}`;
     case "words":
-      return `${aliasPrefix}${randomWords({ exactly: words, separator })}`;
+      return `${aliasPrefix}${randomWords({ exactly: wordCount, join: separator })}`;
     default:
       throw new Error("Invalid alias type.");
   }

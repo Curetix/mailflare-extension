@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { useStorage } from "@plasmohq/storage/hook";
 
-import { CloudflareApiBaseUrl, CloudflareVerifyTokenResponse } from "~cloudflare";
+import { CloudflareApiBaseUrl, CloudflareVerifyTokenResponse } from "~utils/cloudflare";
 
 function Login() {
   const [storedToken, setStoredToken] = useStorage<string>("apiToken", "");
