@@ -15,25 +15,34 @@
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
-    "@mantine/core": "^5.10.2",
-    "@mantine/hooks": "^5.10.2",
-    "@mantine/notifications": "^5.10.2",
-    "@plasmohq/storage": "^1.0.0",
-    "@tanstack/react-query": "^4.23.0",
-    "plasmo": "0.64.0",
+    "@mantine/core": "^5.10.3",
+    "@mantine/form": "^5.10.3",
+    "@mantine/hooks": "^5.10.3",
+    "@mantine/notifications": "^5.10.3",
+    "@plasmohq/storage": "^1.0.4",
+    "@tabler/icons-react": "^2.2.0",
+    "@tanstack/react-query": "^4.24.4",
+    "@tanstack/react-query-devtools": "^4.24.4",
+    "parse-domain": "^7.0.1",
+    "plasmo": "0.64.5",
+    "random-words": "^1.2.1",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "wretch": "^2.4.1"
   },
   "devDependencies": {
     "@plasmohq/prettier-plugin-sort-imports": "3.6.1",
-    "@types/chrome": "0.0.210",
+    "@types/chrome": "0.0.212",
     "@types/node": "18.11.18",
     "@types/react": "18.0.27",
     "@types/react-dom": "18.0.10",
     "prettier": "2.8.3",
-    "typescript": "4.9.4"
+    "typescript": "4.9.5"
   },
   "manifest": {
+    "permissions": [
+      "activeTab"
+    ],
     "host_permissions": [
       "https://*/*"
     ],
