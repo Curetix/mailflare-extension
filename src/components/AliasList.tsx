@@ -24,6 +24,7 @@ import { useEffect, useState } from "react";
 
 import { useStorage } from "@plasmohq/storage/dist/hook";
 
+import { emailRuleNamePrefix, popupHeight } from "~const";
 import { generateAlias } from "~utils/alias";
 import {
   CloudflareApiBaseUrl,
@@ -37,7 +38,6 @@ import {
 } from "~utils/cloudflare";
 
 const aliasListHeight = 430;
-const ruleNamePrefix = "mailflare:";
 
 function AliasList() {
   const queryClient = useQueryClient();
@@ -136,7 +136,7 @@ function AliasList() {
         if (onlyShowExtensionRules) {
           return json.result.filter(
             (r) =>
-              r.name.toLowerCase().startsWith(ruleNamePrefix) &&
+              r.name.toLowerCase().startsWith(emailRuleNamePrefix) &&
               r.matchers[0].type === "literal" &&
               r.actions[0].type === "forward",
           );
@@ -196,7 +196,7 @@ function AliasList() {
           },
         ],
         enabled: true,
-        name: `${ruleNamePrefix}${variables.description}`,
+        name: `${emailRuleNamePrefix}${variables.description}`,
         priority: Math.round(Date.now() / 1000),
       };
 
@@ -256,7 +256,7 @@ function AliasList() {
       const original = rules.find((r) => r.tag === variables.id);
       const updated: CloudflareEmailRule = {
         ...original,
-        name: `${ruleNamePrefix}${variables.description}`,
+        name: `${emailRuleNamePrefix}${variables.description}`,
         enabled: variables.enabled,
       };
       const response = await fetch(
@@ -507,7 +507,7 @@ function AliasList() {
                             id: r.tag,
                             zoneId: selectedZoneId,
                             alias: r.matchers[0].value,
-                            description: r.name.replace(ruleNamePrefix, "").trim(),
+                            description: r.name.replace(emailRuleNamePrefix, "").trim(),
                             enabled: r.enabled,
                           }));
                           setAliasEditModalOpened(true);
@@ -531,7 +531,7 @@ function AliasList() {
                   <Text size="sm" color="dimmed" truncate style={{ width: 250 }}>
                     {r.name === "" && r.matchers[0].type === "all"
                       ? "Catch-All"
-                      : r.name.replace(ruleNamePrefix, "").trim()}
+                      : r.name.replace(emailRuleNamePrefix, "").trim()}
                   </Text>
                   <Badge color={r.enabled ? "green" : "red"} variant="light" size="xs">
                     {r.enabled ? "Enabled" : "Disabled"}

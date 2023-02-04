@@ -1,7 +1,3 @@
-import wretch from "wretch";
-
-import { Storage } from "@plasmohq/storage";
-
 const CloudflareApiBaseUrl = "https://api.cloudflare.com/client/v4";
 
 type CloudflareVerifyToken = {

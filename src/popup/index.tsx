@@ -7,20 +7,22 @@ import { useStorage } from "@plasmohq/storage/dist/hook";
 
 import AliasList from "~components/AliasList";
 import Login from "~components/Login";
+import { popupHeight, popupWidth } from "~const";
 import { ThemeProvider } from "~popup/Theme";
 
 const queryClient = new QueryClient();
 
 function Popup() {
-  const [storedToken] = useStorage<string>("apiToken", null);
+  const [token] = useStorage<string>("apiToken", null);
+  const [reactQueryDevtoolsEnabled] = useStorage<boolean>("reactQueryDevtoolsEnabled", false);
 
   return (
     <ThemeProvider>
       <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={false} />
-        <Container miw={400} maw={400} mih={600} mah={600} p={0}>
-          {!storedToken && <Login />}
-          {storedToken && <AliasList />}
+        {reactQueryDevtoolsEnabled && <ReactQueryDevtools initialIsOpen={false} />}
+        <Container w={popupWidth} h={popupHeight} p={0}>
+          {!token && <Login />}
+          {token && <AliasList />}
         </Container>
       </QueryClientProvider>
     </ThemeProvider>
