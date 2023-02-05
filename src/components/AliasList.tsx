@@ -1,4 +1,5 @@
 import {
+  ActionIcon,
   Alert,
   Badge,
   Button,
@@ -18,6 +19,7 @@ import {
 import { useForm } from "@mantine/form";
 import { useClipboard } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
+import { IconClipboard, IconEdit, IconTrash } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ParseResultType, parseDomain } from "parse-domain";
 import { useEffect, useState } from "react";
@@ -522,10 +524,9 @@ function AliasList() {
 
                   {r.matchers[0].type !== "all" && (
                     <Button.Group>
-                      <Button
-                        variant="outline"
-                        compact
-                        size="xs"
+                      <ActionIcon
+                        variant="subtle"
+                        size="sm"
                         onClick={() => {
                           clipboard.copy(r.matchers[0].value);
                           showNotification({
@@ -534,12 +535,11 @@ function AliasList() {
                             autoClose: 2000,
                           });
                         }}>
-                        C
-                      </Button>
-                      <Button
-                        variant="outline"
-                        compact
-                        size="xs"
+                        <IconClipboard size={16} />
+                      </ActionIcon>
+                      <ActionIcon
+                        variant="subtle"
+                        size="sm"
                         disabled={deleteMutation.isLoading}
                         onClick={() => {
                           console.log(r);
@@ -552,19 +552,17 @@ function AliasList() {
                           }));
                           setAliasEditModalOpened(true);
                         }}>
-                        E
-                      </Button>
-                      <Button
-                        variant="outline"
-                        compact
-                        size="xs"
+                        <IconEdit size={16} />
+                      </ActionIcon>
+                      <ActionIcon
+                        variant="subtle"
+                        size="sm"
                         loading={deleteMutation.isLoading}
-                        loaderPosition="center"
                         onClick={() => {
                           deleteMutation.mutate({ id: r.tag, zoneId: selectedZoneId });
                         }}>
-                        D
-                      </Button>
+                        <IconTrash size={16} />
+                      </ActionIcon>
                     </Button.Group>
                   )}
                 </Group>
