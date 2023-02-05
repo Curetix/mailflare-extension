@@ -253,6 +253,7 @@ function AliasList() {
         color: "red",
         title: "Error",
         message: json.errors[0].message,
+        autoClose: false,
       });
       throw new Error(json.errors[0].message);
     },
@@ -300,6 +301,7 @@ function AliasList() {
           color: "green",
           title: "Success!",
           message: "The alias was updated!",
+          autoClose: 3000,
         });
         return json.result;
       }
@@ -308,6 +310,7 @@ function AliasList() {
         color: "red",
         title: "Error",
         message: json.errors[0].message,
+        autoClose: false,
       });
       throw new Error(json.errors[0].message);
     },
@@ -336,6 +339,7 @@ function AliasList() {
           color: "green",
           title: "Success!",
           message: "The alias was deleted!",
+          autoClose: 3000,
         });
         return json.result;
       }
@@ -344,6 +348,7 @@ function AliasList() {
         color: "red",
         title: "Error",
         message: json.errors[0].message,
+        autoClose: false,
       });
       throw new Error(json.errors[0].message);
     },
@@ -373,6 +378,14 @@ function AliasList() {
       <Modal
         opened={aliasCreateModalOpened}
         onClose={() => {
+          if (createMutation.isLoading) {
+            showNotification({
+              color: "red",
+              message: "Cannot be closed right now.",
+              autoClose: 2000,
+            });
+            return;
+          }
           setAliasCreateModalOpened(false);
           aliasCreateForm.reset();
         }}
@@ -456,6 +469,14 @@ function AliasList() {
       <Modal
         opened={aliasEditModalOpened}
         onClose={() => {
+          if (editMutation.isLoading) {
+            showNotification({
+              color: "red",
+              message: "Cannot be closed right now.",
+              autoClose: 2000,
+            });
+            return;
+          }
           setAliasEditModalOpened(false);
         }}
         title="Edit Alias"
@@ -519,6 +540,7 @@ function AliasList() {
                         variant="outline"
                         compact
                         size="xs"
+                        disabled={deleteMutation.isLoading}
                         onClick={() => {
                           console.log(r);
                           aliasEditForm.setValues(() => ({
@@ -536,6 +558,8 @@ function AliasList() {
                         variant="outline"
                         compact
                         size="xs"
+                        loading={deleteMutation.isLoading}
+                        loaderPosition="center"
                         onClick={() => {
                           deleteMutation.mutate({ id: r.tag, zoneId: selectedZoneId });
                         }}>

@@ -37,7 +37,7 @@ function Login() {
   }
 
   return (
-    <Stack miw={400} p="lg">
+    <Stack p="lg">
       <Text fw="bold" size="xl">
         Login
       </Text>
