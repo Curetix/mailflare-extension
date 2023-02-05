@@ -53,11 +53,20 @@ function AliasList() {
   );
   const [zones, setZones] = useStorage<CloudflareZone[]>("zones", []);
   const [accountId, setAccountId] = useStorage<string>("accountIdentifier", null);
+
   const [selectedZoneId, setSelectedZoneId] = useStorage<string>("selectedZoneId", "");
   const [onlyShowExtensionRules, setOnlyShowExtensionRules] = useStorage<boolean>(
     "onlyShowExtensionRules",
     true,
   );
+  const [aliasSettings, setAliasSettings] = useStorage<{
+    format?: string;
+    characterCount?: number;
+    wordCount?: number;
+    separator?: string;
+    prefixWithHost?: boolean;
+    // destination?: "",
+  }>("aliasSettings", {});
 
   const [aliasCreateModalOpened, setAliasCreateModalOpened] = useState(false);
   const [aliasEditModalOpened, setAliasEditModalOpened] = useState(false);
@@ -221,6 +230,13 @@ function AliasList() {
       const json: CloudflareCreateEmailRuleResponse = await response.json();
       if (response.ok && json.success) {
         await setSelectedZoneId(variables.zoneId);
+        await setAliasSettings({
+          format: variables.format,
+          characterCount: variables.characterCount,
+          wordCount: variables.wordCount,
+          separator: variables.separator,
+          prefixWithHost: variables.prefixWithHost,
+        });
         setAliasCreateModalOpened(false);
         aliasCreateForm.reset();
         clipboard.copy(alias);
@@ -228,6 +244,7 @@ function AliasList() {
           color: "green",
           title: "Success!",
           message: "The alias was created and copied to your clipboard!",
+          autoClose: 3000,
         });
         return json.result;
       }
@@ -565,6 +582,7 @@ function AliasList() {
             zoneId: selectedZoneId,
             destination: destinations[0].email,
             description: hostname,
+            ...aliasSettings,
           });
           setAliasCreateModalOpened(true);
         }}>
