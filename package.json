@@ -8,9 +8,8 @@
   "scripts": {
     "dev": "plasmo dev",
     "dev:firefox": "plasmo dev --target=firefox-mv2",
-    "build": "plasmo build",
-    "build:firefox": "plasmo build --target=firefox-mv2",
-    "package": "plasmo package",
+    "build": "plasmo build --zip",
+    "build:firefox": "plasmo build --target=firefox-mv2 --zip",
     "prettier": "prettier -w ./src/"
   },
   "dependencies": {
