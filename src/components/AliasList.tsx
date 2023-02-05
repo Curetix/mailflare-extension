@@ -72,6 +72,8 @@ function AliasList() {
 
   const [aliasCreateModalOpened, setAliasCreateModalOpened] = useState(false);
   const [aliasEditModalOpened, setAliasEditModalOpened] = useState(false);
+  const [aliasDeleteModalOpened, setAliasDeleteModalOpened] = useState(false);
+  const [aliasToDelete, setAliasToDelete] = useState<CloudflareEmailRule>(null);
 
   useEffect(() => {
     chrome.tabs.query({ active: true }).then(([tab]) => {
@@ -498,6 +500,48 @@ function AliasList() {
         </form>
       </Modal>
 
+      <Modal
+        opened={aliasDeleteModalOpened}
+        onClose={() => {
+          if (deleteMutation.isLoading) {
+            showNotification({
+              color: "red",
+              message: "Cannot be closed right now.",
+              autoClose: 2000,
+            });
+            return;
+          }
+          setAliasDeleteModalOpened(false);
+        }}
+        title="Delete Alias"
+        fullScreen>
+        <Stack spacing="xs">
+          <Text>
+            Do you want to delete the alias {aliasToDelete?.matchers[0].value}? This cannot be
+            undone.
+          </Text>
+          <Group position="center" spacing="sm">
+            <Button
+              color="green"
+              onClick={() => {
+                setAliasDeleteModalOpened(false);
+                setAliasToDelete(null);
+              }}>
+              No
+            </Button>
+            <Button
+              color="red"
+              onClick={() => {
+                setAliasDeleteModalOpened(false);
+                setAliasToDelete(null);
+                deleteMutation.mutate({ id: aliasToDelete?.tag, zoneId: selectedZoneId });
+              }}>
+              Yes
+            </Button>
+          </Group>
+        </Stack>
+      </Modal>
+
       <ScrollArea style={{ height: aliasListHeight }}>
         {zonesStatus === "error" && (
           <Alert title="Oh no!" color="red">
@@ -559,7 +603,8 @@ function AliasList() {
                         size="sm"
                         loading={deleteMutation.isLoading}
                         onClick={() => {
-                          deleteMutation.mutate({ id: r.tag, zoneId: selectedZoneId });
+                          setAliasToDelete(r);
+                          setAliasDeleteModalOpened(true);
                         }}>
                         <IconTrash size={16} />
                       </ActionIcon>
