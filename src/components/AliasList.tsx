@@ -18,13 +18,13 @@ import {
 import { useForm } from "@mantine/form";
 import { useClipboard } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
-import { IconClipboard, IconPencil, IconPlus } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { ParseResultType, parseDomain } from "parse-domain";
 import { useEffect, useState } from "react";
 
 import { useStorage } from "@plasmohq/storage/dist/hook";
 
-import { emailRuleNamePrefix, popupHeight } from "~const";
+import { emailRuleNamePrefix } from "~const";
 import { generateAlias } from "~utils/alias";
 import {
   CloudflareApiBaseUrl,
@@ -43,7 +43,8 @@ function AliasList() {
   const queryClient = useQueryClient();
   const clipboard = useClipboard();
 
-  const [hostname, setHostname] = useState<string>("unknown");
+  const [hostname, setHostname] = useState("unknown");
+  const [hostnameDomain, setHostnameDomain] = useState("");
 
   const [token] = useStorage<string>("apiToken", null);
   const [destinations, setDestinations] = useStorage<CloudflareEmailDestination[]>(
@@ -64,7 +65,13 @@ function AliasList() {
   useEffect(() => {
     chrome.tabs.query({ active: true }).then(([tab]) => {
       if (tab && tab.url) {
-        setHostname(new URL(tab.url).hostname.replace("www.", ""));
+        const url = new URL(tab.url);
+        setHostname(url.hostname.replace("www.", ""));
+
+        const parsed = parseDomain(url.hostname);
+        if (parsed.type === ParseResultType.Listed) {
+          setHostnameDomain(parsed.domain);
+        }
       }
     });
   }, []);
@@ -168,15 +175,13 @@ function AliasList() {
       let alias: string;
       if (variables.format === "custom") {
         alias = variables.customAlias;
-      } else if (variables.format === "host") {
-        alias = hostname.toLowerCase();
       } else {
         alias = generateAlias(
           variables.format === "words" ? "words" : "characters",
           variables.characterCount,
           variables.wordCount,
           variables.separator,
-          variables.prefixWithHost ? hostname : null,
+          variables.prefixWithHost ? hostnameDomain || hostname : null,
         );
       }
       alias = `${alias}@${zones.find((z) => z.id === variables.zoneId).name}`;
@@ -376,10 +381,6 @@ function AliasList() {
                 {
                   value: "words",
                   label: "Random words",
-                },
-                {
-                  value: "host",
-                  label: "Website name",
                 },
                 {
                   value: "custom",
