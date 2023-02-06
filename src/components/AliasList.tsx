@@ -26,7 +26,7 @@ import { useEffect, useState } from "react";
 
 import { useStorage } from "@plasmohq/storage/dist/hook";
 
-import { emailRuleNamePrefix } from "~const";
+import { StorageKey, emailRuleNamePrefix } from "~const";
 import { generateAlias } from "~utils/alias";
 import {
   CloudflareApiBaseUrl,
@@ -45,20 +45,20 @@ function AliasList() {
   const queryClient = useQueryClient();
   const clipboard = useClipboard();
 
-  const [hostname, setHostname] = useState("unknown");
+  const [hostname, setHostname] = useState("");
   const [hostnameDomain, setHostnameDomain] = useState("");
 
-  const [token] = useStorage<string>("apiToken", null);
+  const [token] = useStorage<string>(StorageKey.ApiToken, null);
   const [destinations, setDestinations] = useStorage<CloudflareEmailDestination[]>(
-    "destinations",
+    StorageKey.Destinations,
     [],
   );
-  const [zones, setZones] = useStorage<CloudflareZone[]>("zones", []);
-  const [accountId, setAccountId] = useStorage<string>("accountIdentifier", null);
+  const [zones, setZones] = useStorage<CloudflareZone[]>(StorageKey.Zones, []);
+  const [accountId, setAccountId] = useStorage<string>(StorageKey.AccountIdentifier, null);
 
-  const [selectedZoneId, setSelectedZoneId] = useStorage<string>("selectedZoneId", "");
+  const [selectedZoneId, setSelectedZoneId] = useStorage<string>(StorageKey.SelectedZoneId, "");
   const [onlyShowExtensionRules, setOnlyShowExtensionRules] = useStorage<boolean>(
-    "onlyShowExtensionRules",
+    StorageKey.OnlyShowExtensionRules,
     true,
   );
   const [aliasSettings, setAliasSettings] = useStorage<{
@@ -68,7 +68,7 @@ function AliasList() {
     separator?: string;
     prefixWithHost?: boolean;
     // destination?: "",
-  }>("aliasSettings", {});
+  }>(StorageKey.AliasSettings, {});
 
   const [aliasCreateModalOpened, setAliasCreateModalOpened] = useState(false);
   const [aliasEditModalOpened, setAliasEditModalOpened] = useState(false);
@@ -543,6 +543,12 @@ function AliasList() {
       </Modal>
 
       <ScrollArea style={{ height: aliasListHeight }}>
+        {zonesStatus === "success" && zones.length === 0 && (
+          <Alert title="Oh no!" color="yellow">
+            No domains for this Cloudflare account or API token.
+          </Alert>
+        )}
+
         {zonesStatus === "error" && (
           <Alert title="Oh no!" color="red">
             {`Something went wrong while loading your domains: ${zonesError}`}

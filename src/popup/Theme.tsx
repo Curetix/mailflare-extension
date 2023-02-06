@@ -1,18 +1,19 @@
 import { ColorScheme, ColorSchemeProvider, MantineProvider } from "@mantine/core";
 import type { EmotionCache } from "@mantine/core";
-import { useColorScheme } from "@mantine/hooks";
 import { NotificationsProvider } from "@mantine/notifications";
 import type { PropsWithChildren } from "react";
-import { useState } from "react";
+
+import { useStorage } from "@plasmohq/storage/dist/hook";
+
+import { StorageKey } from "~const";
 
 interface Props extends PropsWithChildren {
   emotionCache?: EmotionCache;
 }
 
 export function ThemeProvider({ emotionCache, children }: Props) {
-  const preferredColorScheme = useColorScheme("dark");
-  const [colorScheme, setColorScheme] = useState<ColorScheme>(preferredColorScheme);
-  const toggleColorScheme = (value?: ColorScheme) =>
+  const [colorScheme, setColorScheme] = useStorage<"dark" | "light">(StorageKey.Theme);
+  const toggleColorScheme = async (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
 
   return (
