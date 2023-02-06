@@ -1,4 +1,4 @@
-import { Anchor, Button, Divider, Stack, Text, TextInput } from "@mantine/core";
+import { Anchor, Button, Divider, List, Stack, Text, TextInput } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { useState } from "react";
 
@@ -41,10 +41,6 @@ function Login() {
       <Text fw="bold" size="xl">
         Login
       </Text>
-      {/*<Divider my="sm" />*/}
-      <Anchor href="https://github.com/curetix/mailflare" target="_blank">
-        View instructions for generating the token.
-      </Anchor>
       <TextInput
         onChange={(e) => setToken(e.target.value)}
         value={token}
@@ -60,6 +56,35 @@ function Login() {
         loading={isLoading}>
         Save
       </Button>
+      <Divider />
+      <Text fw="bold" size="md">
+        Instructions
+      </Text>
+      <List size="sm" type="ordered">
+        <List.Item>
+          Open{" "}
+          <Anchor href="https://dash.cloudflare.com/profile/api-tokens/" target="_blank">
+            https://dash.cloudflare.com/profile/api-tokens
+          </Anchor>
+        </List.Item>
+        <List.Item>Click "Create Token", select "Create Custom Token"</List.Item>
+        <List.Item>Choose a name, like "Email Extension"</List.Item>
+        <List.Item>
+          Configure the following permissions:
+          <List withPadding listStyleType="disc" size="sm">
+            <List.Item>Account | Email Routing Addresses | Edit</List.Item>
+            <List.Item>Zone | Email Routing Rules | Edit</List.Item>
+            <List.Item>Zone | Zone | Read</List.Item>
+          </List>
+        </List.Item>
+        <List.Item>Set "Account Resources" to your account</List.Item>
+        <List.Item>
+          Set "Zone Resources" to "All zones" or select the zone you want to use
+        </List.Item>
+        <List.Item>Configure "Client IP Address Filtering" and "TTL" if you want to</List.Item>
+        <List.Item>Click "Continue to summary" and then "Create token"</List.Item>
+        <List.Item>Paste the generated token above</List.Item>
+      </List>
     </Stack>
   );
 }
