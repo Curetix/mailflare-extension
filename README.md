@@ -1,6 +1,7 @@
 # Cloudflare Email Extension
 
-This extension provides an easy-to-use way to turn Cloudflare's Email Routing into your own private email alias service for your domains, similar to AnonAddy and SimpleLogin.
+This extension provides an easy way to turn [Cloudflare Email Routing](https://developers.cloudflare.com/email-routing/)
+into your own private email alias service, similar to AnonAddy and SimpleLogin.
 No third-party services or tedious configuration of a self-hosted email server needed.
 
 
@@ -8,8 +9,8 @@ No third-party services or tedious configuration of a self-hosted email server n
 
 - Create / edit / delete destination addresses
 - Create / edit / delete email rules (aliases)
-- Multiple variants for address generation (random characters, random words, custom), prefixed with current website name possible
-- One-Click alias generation directly inside email input fields (see DuckDuckGo / SimpleLogin)
+- Multiple formats for alias addresses (random characters, random words, custom), optionally prefixed with current website name
+- One-Click alias generation directly inside email input fields
 
 
 ## Limitations
@@ -21,7 +22,8 @@ See [this page](https://developers.cloudflare.com/email-routing/known-limitation
 - "Subdomains cannot use Email Routing to forward emails, unless they are part of an Enterprise account."
 - "Email Routing does not support sending or replying from your Cloudflare domain."
 
-On top of that, further limits might exist but are not known publicly. One community forum post suggests that you cannot create more than 200 rules (which are used as custom addresses).
+On top of that, further limits might exist but are not known publicly.
+According to one community forum post, you cannot create more than 200 email rules (which are used as aliases).
 
 
 ## Create a Cloudflare API token
