@@ -8,7 +8,7 @@ import { useStorage } from "@plasmohq/storage/dist/hook";
 
 import AliasList from "~components/AliasList";
 import Login from "~components/Login";
-import { popupHeight, popupWidth } from "~const";
+import Settings from "~components/Settings";
 import { StorageKey, popupHeight, popupWidth } from "~const";
 import { ThemeProvider } from "~popup/Theme";
 
