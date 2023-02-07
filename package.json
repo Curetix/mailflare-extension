@@ -27,6 +27,7 @@
     "random-words": "^1.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-router-dom": "^6.8.0",
     "wretch": "^2.4.1"
   },
   "devDependencies": {
