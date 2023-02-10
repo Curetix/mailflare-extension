@@ -27,16 +27,15 @@
     "random-words": "^1.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-router-dom": "^6.8.0",
     "wretch": "^2.4.1"
   },
   "devDependencies": {
     "@plasmohq/prettier-plugin-sort-imports": "3.6.1",
     "@types/chrome": "0.0.212",
-    "@types/node": "18.11.18",
+    "@types/node": "18.13.0",
     "@types/react": "18.0.27",
     "@types/react-dom": "18.0.10",
-    "prettier": "2.8.3",
+    "prettier": "2.8.4",
     "typescript": "4.9.5"
   },
   "manifest": {

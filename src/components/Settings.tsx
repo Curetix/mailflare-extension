@@ -1,7 +1,6 @@
 import { Button, Select, Stack, Switch, Text } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router";
 
 import { Storage } from "@plasmohq/storage";
 import { useStorage } from "@plasmohq/storage/dist/hook";
@@ -9,7 +8,6 @@ import { useStorage } from "@plasmohq/storage/dist/hook";
 import { StorageKey } from "~const";
 
 function Settings() {
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const storage = new Storage();
 
@@ -46,14 +44,10 @@ function Settings() {
       message: "Goodbye",
       autoClose: 3000,
     });
-    navigate("/");
   };
 
   return (
-    <Stack p="lg" spacing="sm">
-      <Text fw="bold" size="lg">
-        Settings
-      </Text>
+    <Stack spacing="sm">
       <Select
         label="Theme"
         value={theme}

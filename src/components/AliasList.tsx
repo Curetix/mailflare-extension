@@ -26,7 +26,8 @@ import { useEffect, useState } from "react";
 
 import { useStorage } from "@plasmohq/storage/dist/hook";
 
-import { StorageKey, emailRuleNamePrefix } from "~const";
+import Settings from "~components/Settings";
+import { StorageKey, emailRuleNamePrefix, popupHeight } from "~const";
 import { generateAlias } from "~utils/alias";
 import {
   CloudflareApiBaseUrl,
@@ -39,7 +40,7 @@ import {
   CloudflareZone,
 } from "~utils/cloudflare";
 
-const aliasListHeight = 430;
+const aliasListHeight = 400;
 
 function AliasList() {
   const queryClient = useQueryClient();
@@ -365,10 +366,6 @@ function AliasList() {
 
   return (
     <Stack p="lg" spacing="xs">
-      <Text fw="bold" size="lg">
-        Aliases
-      </Text>
-
       <Select
         value={selectedZoneId}
         onChange={setSelectedZoneId}

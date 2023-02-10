@@ -1,7 +1,6 @@
 import { Anchor, Button, Divider, List, Stack, Text, TextInput } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { useState } from "react";
-import { Navigate } from "react-router";
 
 import { useStorage } from "@plasmohq/storage/hook";
 
@@ -12,10 +11,6 @@ function Login() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [token, setToken] = useState<string>("");
   const [verifyError, setVerifyError] = useState<boolean>(false);
-
-  if (storedToken !== "") {
-    return <Navigate to="/aliases" state={{ from: location }} replace />;
-  }
 
   async function verifyToken() {
     setVerifyError(false);
@@ -42,10 +37,7 @@ function Login() {
   }
 
   return (
-    <Stack p="lg">
-      <Text fw="bold" size="xl">
-        Login
-      </Text>
+    <Stack p="lg" spacing="sm">
       <TextInput
         onChange={(e) => setToken(e.target.value)}
         value={token}
