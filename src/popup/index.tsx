@@ -35,7 +35,7 @@ function Popup() {
             fullScreen>
             <Settings />
           </Modal>
-          <Group position="apart" px="lg" py="md">
+          <Group position="apart" px="md" py="sm">
             <Text fw="bold" size="md">
               MailFlare
             </Text>

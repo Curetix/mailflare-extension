@@ -40,7 +40,8 @@ import {
   CloudflareZone,
 } from "~utils/cloudflare";
 
-const aliasListHeight = 400;
+// popupHeight - header - divider - padding - inputs - gap
+const aliasListHeight = popupHeight - 52 - 1 - 16 * 2 - 36 * 2 - 10 * 2;
 
 function AliasList() {
   const queryClient = useQueryClient();
@@ -372,17 +373,7 @@ function AliasList() {
   );
 
   return (
-    <Stack p="lg" spacing="xs">
-      <Select
-        value={selectedZoneId}
-        onChange={setSelectedZoneId}
-        disabled={zones.length === 0}
-        data={zones.map((z) => ({
-          value: z.id,
-          label: z.name,
-        }))}
-      />
-
+    <Stack p="md" spacing="xs">
       <Modal
         opened={aliasCreateModalOpened}
         onClose={() => {
@@ -555,29 +546,51 @@ function AliasList() {
         </Stack>
       </Modal>
 
-      <ScrollArea style={{ height: aliasListHeight }}>
-        {zonesStatus === "success" && zones.length === 0 && (
-          <Alert title="Oh no!" color="yellow">
-            No domains for this Cloudflare account or API token.
-          </Alert>
-        )}
+      <Select
+        value={selectedZoneId}
+        onChange={setSelectedZoneId}
+        disabled={zones.length === 0}
+        data={zones.map((z) => ({
+          value: z.id,
+          label: z.name,
+        }))}
+      />
 
-        {zonesStatus === "error" && (
-          <Alert title="Oh no!" color="red">
-            {`Something went wrong while loading your domains: ${zonesError}`}
-          </Alert>
-        )}
+      <ScrollArea h={aliasListHeight}>
+        <Stack spacing="xs" mb={5}>
+          {zonesStatus === "success" && zones.length === 0 && (
+            <Alert title="Oh no!" color="red">
+              No domains for this Cloudflare account or API token.
+            </Alert>
+          )}
 
-        {rulesStatus === "loading" && (
-          <Center>
-            <Loader height={aliasListHeight} />
-          </Center>
-        )}
+          {zonesStatus === "error" && (
+            <Alert title="Oh no!" color="red">
+              {`Something went wrong while loading your domains: ${zonesError}`}
+            </Alert>
+          )}
 
-        {rulesStatus === "success" && (
-          <Stack spacing="xs" pb={5}>
-            {rules.map((r) => (
-              <Card shadow="xs" p="xs" radius="sm" withBorder key={r.tag}>
+          {rulesStatus === "loading" && (
+            <Center>
+              <Loader height={aliasListHeight - 5} />
+            </Center>
+          )}
+
+          {rulesStatus === "success" && rules.length === 0 && (
+            <Alert title="Bummer!" color="yellow">
+              There are no aliases for this domain yet.
+            </Alert>
+          )}
+
+          {rulesStatus === "error" && (
+            <Alert title="Oh no!" color="red">
+              {`Something went wrong while loading your aliases: ${rulesError}`}
+            </Alert>
+          )}
+
+          {rulesStatus === "success" &&
+            rules.map((r) => (
+              <Card p="xs" radius="sm" withBorder key={r.tag}>
                 <Group position="apart">
                   <Text weight={500} truncate style={{ width: 250 }}>
                     {r.matchers[0].type === "all"
@@ -644,20 +657,7 @@ function AliasList() {
                 </Group>
               </Card>
             ))}
-          </Stack>
-        )}
-
-        {rulesStatus === "success" && rules.length === 0 && (
-          <Alert title="Bummer!" color="yellow">
-            There are no aliases for this domain yet.
-          </Alert>
-        )}
-
-        {rulesStatus === "error" && (
-          <Alert title="Oh no!" color="red">
-            {`Something went wrong while loading your aliases: ${rulesError}`}
-          </Alert>
-        )}
+        </Stack>
       </ScrollArea>
 
       <Button

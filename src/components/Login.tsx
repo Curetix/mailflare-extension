@@ -37,7 +37,7 @@ function Login() {
   }
 
   return (
-    <Stack p="lg" spacing="sm">
+    <Stack p="md" spacing="sm">
       <TextInput
         onChange={(e) => setToken(e.target.value)}
         value={token}
