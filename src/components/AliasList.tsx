@@ -275,6 +275,7 @@ function AliasList() {
       zoneId: "",
       alias: "",
       description: "",
+      destination: "",
       enabled: true,
     },
   });
@@ -285,6 +286,12 @@ function AliasList() {
       const updated: CloudflareEmailRule = {
         ...original,
         name: `${emailRuleNamePrefix}${variables.description}`,
+        actions: [
+          {
+            type: "forward",
+            value: [variables.destination],
+          },
+        ],
         enabled: variables.enabled,
       };
       const response = await fetch(
@@ -486,6 +493,15 @@ function AliasList() {
           <Stack spacing="xs">
             <TextInput label="Alias" disabled {...aliasEditForm.getInputProps("alias")} />
             <TextInput label="Description" {...aliasEditForm.getInputProps("description")} />
+            <Select
+              label="Destination"
+              data={destinations.map((z) => ({
+                value: z.email,
+                label: z.email,
+              }))}
+              {...aliasEditForm.getInputProps("destination")}
+            />
+
             <Switch
               label="Enabled"
               {...aliasEditForm.getInputProps("enabled", { type: "checkbox" })}
@@ -595,6 +611,7 @@ function AliasList() {
                             zoneId: selectedZoneId,
                             alias: r.matchers[0].value,
                             description: r.name.replace(emailRuleNamePrefix, "").trim(),
+                            destination: r.actions[0].value[0],
                             enabled: r.enabled,
                           }));
                           setAliasEditModalOpened(true);
