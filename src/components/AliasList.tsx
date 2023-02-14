@@ -479,6 +479,13 @@ function AliasList() {
                 label: z.email,
               }))}
               {...aliasCreateForm.getInputProps("destination")}
+              error={
+                aliasCreateForm.values.destination &&
+                destinations.find((d) => d.email === aliasCreateForm.values.destination)
+                  .verified === null
+                  ? "This address is not verified. You will not receive emails."
+                  : false
+              }
             />
 
             <Button type="submit" loading={createMutation.status === "loading"}>
@@ -514,6 +521,13 @@ function AliasList() {
                 label: z.email,
               }))}
               {...aliasEditForm.getInputProps("destination")}
+              error={
+                aliasEditForm.values.destination &&
+                destinations.find((d) => d.email === aliasEditForm.values.destination).verified ===
+                  null
+                  ? "This address is not verified. You will not receive emails."
+                  : false
+              }
             />
 
             <Switch
