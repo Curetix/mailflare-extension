@@ -155,15 +155,12 @@ function AliasList() {
       );
       const json: CloudflareListEmailRulesResponse = await response.json();
       if (response.ok && json.success) {
-        if (onlyShowExtensionRules) {
-          return json.result.filter(
-            (r) =>
-              r.name.toLowerCase().startsWith(emailRuleNamePrefix) &&
-              r.matchers[0].type === "literal" &&
-              r.actions[0].type === "forward",
-          );
-        }
-        return json.result;
+        return json.result.filter(
+          (r) =>
+            (!onlyShowExtensionRules || r.name.toLowerCase().startsWith(emailRuleNamePrefix)) &&
+            r.matchers[0].type === "literal" &&
+            r.actions[0].type === "forward",
+        );
       }
       console.error(json);
       throw new Error(json.errors[0].message);
@@ -372,6 +369,31 @@ function AliasList() {
     },
   );
 
+  function getAliasBadge(rule: CloudflareEmailRule) {
+    const destination = destinations.find((d) => rule.actions[0].value[0] === d.email);
+    if (!destination || destination.verified === null) {
+      return (
+        <Badge color="red" variant="filled" size="xs">
+          Invalid
+        </Badge>
+      );
+    }
+    if (!rule.name.startsWith(emailRuleNamePrefix)) {
+      return (
+        <Badge color="blue" size="xs">
+          External
+        </Badge>
+      );
+    }
+    if (!rule.enabled) {
+      return (
+        <Badge color="red" size="xs">
+          Disabled
+        </Badge>
+      );
+    }
+  }
+
   return (
     <Stack p="md" spacing="xs">
       <Modal
@@ -537,7 +559,6 @@ function AliasList() {
               color="red"
               onClick={() => {
                 setAliasDeleteModalOpened(false);
-                setAliasToDelete(null);
                 deleteMutation.mutate({ id: aliasToDelete?.tag, zoneId: selectedZoneId });
               }}>
               Yes
@@ -593,67 +614,59 @@ function AliasList() {
               <Card p="xs" radius="sm" withBorder key={r.tag}>
                 <Group position="apart">
                   <Text weight={500} truncate style={{ width: 250 }}>
-                    {r.matchers[0].type === "all"
-                      ? `*@${zones.find((z) => z.id === selectedZoneId).name}`
-                      : r.matchers[0].value}
+                    {r.matchers[0].value}
                   </Text>
 
-                  {r.matchers[0].type !== "all" && (
-                    <Button.Group>
-                      <ActionIcon
-                        variant="subtle"
-                        size="sm"
-                        onClick={() => {
-                          clipboard.copy(r.matchers[0].value);
-                          showNotification({
-                            color: "green",
-                            message: "Email address was copied to the clipboard.",
-                            autoClose: 2000,
-                          });
-                        }}>
-                        <IconClipboard size={16} />
-                      </ActionIcon>
-                      <ActionIcon
-                        variant="subtle"
-                        size="sm"
-                        disabled={deleteMutation.isLoading}
-                        onClick={() => {
-                          console.log(r);
-                          aliasEditForm.setValues(() => ({
-                            id: r.tag,
-                            zoneId: selectedZoneId,
-                            alias: r.matchers[0].value,
-                            description: r.name.replace(emailRuleNamePrefix, "").trim(),
-                            destination: r.actions[0].value[0],
-                            enabled: r.enabled,
-                          }));
-                          setAliasEditModalOpened(true);
-                        }}>
-                        <IconEdit size={16} />
-                      </ActionIcon>
-                      <ActionIcon
-                        variant="subtle"
-                        size="sm"
-                        loading={deleteMutation.isLoading}
-                        onClick={() => {
-                          setAliasToDelete(r);
-                          setAliasDeleteModalOpened(true);
-                        }}>
-                        <IconTrash size={16} />
-                      </ActionIcon>
-                    </Button.Group>
-                  )}
+                  <Button.Group>
+                    <ActionIcon
+                      variant="subtle"
+                      size="sm"
+                      onClick={() => {
+                        clipboard.copy(r.matchers[0].value);
+                        showNotification({
+                          color: "green",
+                          message: "Email address was copied to the clipboard.",
+                          autoClose: 2000,
+                        });
+                      }}>
+                      <IconClipboard size={16} />
+                    </ActionIcon>
+                    <ActionIcon
+                      variant="subtle"
+                      size="sm"
+                      disabled={deleteMutation.isLoading && aliasToDelete === r}
+                      onClick={() => {
+                        console.log(r);
+                        aliasEditForm.setValues(() => ({
+                          id: r.tag,
+                          zoneId: selectedZoneId,
+                          alias: r.matchers[0].value,
+                          description: r.name.replace(emailRuleNamePrefix, "").trim(),
+                          destination: r.actions[0].value[0],
+                          enabled: r.enabled,
+                        }));
+                        setAliasEditModalOpened(true);
+                      }}>
+                      <IconEdit size={16} />
+                    </ActionIcon>
+                    <ActionIcon
+                      variant="subtle"
+                      size="sm"
+                      loading={deleteMutation.isLoading && aliasToDelete === r}
+                      onClick={() => {
+                        setAliasToDelete(r);
+                        setAliasDeleteModalOpened(true);
+                      }}>
+                      <IconTrash size={16} />
+                    </ActionIcon>
+                  </Button.Group>
                 </Group>
 
                 <Group position="apart">
                   <Text size="sm" color="dimmed" truncate style={{ width: 250 }}>
-                    {r.name === "" && r.matchers[0].type === "all"
-                      ? "Catch-All"
-                      : r.name.replace(emailRuleNamePrefix, "").trim()}
+                    {r.name.replace(emailRuleNamePrefix, "").trim()}
                   </Text>
-                  <Badge color={r.enabled ? "green" : "red"} variant="light" size="xs">
-                    {r.enabled ? "Enabled" : "Disabled"}
-                  </Badge>
+                  {getAliasBadge(r)}
                 </Group>
               </Card>
             ))}
