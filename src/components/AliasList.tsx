@@ -69,7 +69,7 @@ function AliasList() {
     wordCount?: number;
     separator?: string;
     prefixWithHost?: boolean;
-    // destination?: "",
+    destination?: string;
   }>(StorageKey.AliasSettings, {});
 
   const [aliasCreateModalOpened, setAliasCreateModalOpened] = useState(false);
@@ -239,6 +239,7 @@ function AliasList() {
           wordCount: variables.wordCount,
           separator: variables.separator,
           prefixWithHost: variables.prefixWithHost,
+          destination: variables.destination,
         });
         setAliasCreateModalOpened(false);
         aliasCreateForm.reset();
