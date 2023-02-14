@@ -284,7 +284,9 @@ function AliasList() {
       const original = rules.find((r) => r.tag === variables.id);
       const updated: CloudflareEmailRule = {
         ...original,
-        name: `${emailRuleNamePrefix}${variables.description}`,
+        name: original.name.startsWith(emailRuleNamePrefix)
+          ? `${emailRuleNamePrefix}${variables.description}`
+          : variables.destination,
         actions: [
           {
             type: "forward",

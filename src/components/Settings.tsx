@@ -28,8 +28,8 @@ function Settings() {
   const clearCache = async () => {
     await setZones([]);
     await setDestinations([]);
-    await queryClient.invalidateQueries({ queryKey: ["zones"] });
-    await queryClient.invalidateQueries({ queryKey: ["destinations"] });
+    await queryClient.invalidateQueries(["zones"]);
+    await queryClient.invalidateQueries(["destinations"]);
     showNotification({
       color: "green",
       message: "Deleted cached data",
@@ -49,12 +49,12 @@ function Settings() {
 
   const settingsItems = [
     {
-      title: "Dark Mode",
-      description: "Save your eyes some stress",
+      title: "Theme",
+      description: "Toggle between theme modes",
       action: (
         <Switch
-          onLabel="ON"
-          offLabel="OFF"
+          onLabel="DARK"
+          offLabel="LIGHT"
           size="lg"
           color="green"
           checked={theme === "dark"}

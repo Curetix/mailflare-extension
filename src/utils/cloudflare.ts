@@ -22,7 +22,7 @@ type CloudflareEmailDestination = {
   email: string;
   modified: string;
   tag: string;
-  verified: string;
+  verified: string | null; // null means not verified
 };
 
 type CloudflareEmailRule = {
