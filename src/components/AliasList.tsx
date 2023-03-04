@@ -19,9 +19,9 @@ import {
 import { useForm } from "@mantine/form";
 import { useClipboard } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
-import { IconClipboard, IconEdit, IconTrash } from "@tabler/icons-react";
+import { IconClipboard, IconEdit, IconRefresh, IconTrash } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ParseResultType, parseDomain } from "parse-domain";
+import { ParseResultListed, ParseResultType, parseDomain } from "parse-domain";
 import { useEffect, useState } from "react";
 
 import { useStorage } from "@plasmohq/storage/dist/hook";
@@ -48,7 +48,7 @@ function AliasList() {
   const clipboard = useClipboard();
 
   const [hostname, setHostname] = useState("");
-  const [hostnameDomain, setHostnameDomain] = useState("");
+  const [parsedHostname, setParsedHostname] = useState<ParseResultListed>(null);
 
   const [token] = useStorage<string>(StorageKey.ApiToken, null);
   const [destinations, setDestinations] = useStorage<CloudflareEmailDestination[]>(
@@ -68,7 +68,7 @@ function AliasList() {
     characterCount?: number;
     wordCount?: number;
     separator?: string;
-    prefixWithHost?: boolean;
+    prefixFormat?: string;
     destination?: string;
   }>(StorageKey.AliasSettings, {});
 
@@ -85,7 +85,7 @@ function AliasList() {
 
         const parsed = parseDomain(url.hostname);
         if (parsed.type === ParseResultType.Listed) {
-          setHostnameDomain(parsed.domain);
+          setParsedHostname(parsed);
         }
       }
     });
@@ -177,7 +177,7 @@ function AliasList() {
       separator: "_",
       customAlias: "",
       description: "",
-      prefixWithHost: false,
+      prefixFormat: "none",
       destination: "",
     },
   });
@@ -188,12 +188,22 @@ function AliasList() {
       if (variables.format === "custom") {
         alias = variables.customAlias;
       } else {
+        let prefix = "";
+        if (variables.prefixFormat === "domainWithoutExtension" && parsedHostname !== null) {
+          prefix = parsedHostname.domain;
+        } else if (variables.prefixFormat === "domainWithExtension" && parsedHostname !== null) {
+          prefix = `${parsedHostname.domain}.${parsedHostname.topLevelDomains.join(".")}`;
+        } else if (variables.prefixFormat === "fullDomain" && parsedHostname !== null) {
+          prefix = hostname;
+        }
+        console.log(prefix);
+
         alias = generateAlias(
           variables.format === "words" ? "words" : "characters",
           variables.characterCount,
           variables.wordCount,
           variables.separator,
-          variables.prefixWithHost ? hostnameDomain || hostname : null,
+          prefix,
         );
       }
       alias = `${alias}@${zones.find((z) => z.id === variables.zoneId).name}`;
@@ -238,7 +248,7 @@ function AliasList() {
           characterCount: variables.characterCount,
           wordCount: variables.wordCount,
           separator: variables.separator,
-          prefixWithHost: variables.prefixWithHost,
+          prefixFormat: variables.prefixFormat,
           destination: variables.destination,
         });
         setAliasCreateModalOpened(false);
@@ -468,9 +478,30 @@ function AliasList() {
 
             {(aliasCreateForm.values.format === "characters" ||
               aliasCreateForm.values.format === "words") && (
-              <Switch
-                label="Prefix alias with website name"
-                {...aliasCreateForm.getInputProps("prefixWithHost")}
+              <Select
+                label="Prefix"
+                data={[
+                  {
+                    value: "none",
+                    label: "None",
+                  },
+                  {
+                    value: "domainWithoutExtension",
+                    label: "Domain without extension",
+                    disabled: parsedHostname === null,
+                  },
+                  {
+                    value: "domainWithExtension",
+                    label: "Base Domain",
+                    disabled: parsedHostname === null,
+                  },
+                  {
+                    value: "fullDomain",
+                    label: "Full domain",
+                    disabled: parsedHostname === null,
+                  },
+                ]}
+                {...aliasCreateForm.getInputProps("prefixFormat")}
               />
             )}
 
