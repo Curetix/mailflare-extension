@@ -701,6 +701,7 @@ function AliasList() {
                       variant="subtle"
                       size="sm"
                       loading={deleteMutation.isLoading && aliasToDelete === r}
+                      disabled={deleteMutation.isLoading && aliasToDelete !== r}
                       onClick={() => {
                         setAliasToDelete(r);
                         setAliasDeleteModalOpened(true);
