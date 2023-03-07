@@ -2,11 +2,13 @@ import {
   ActionIcon,
   Alert,
   Badge,
+  Box,
   Button,
   Card,
   Center,
   Group,
   Loader,
+  LoadingOverlay,
   Modal,
   NumberInput,
   ScrollArea,
@@ -615,15 +617,22 @@ function AliasList() {
         </Stack>
       </Modal>
 
-      <Select
-        value={selectedZoneId}
-        onChange={setSelectedZoneId}
-        disabled={zones.length === 0}
-        data={zones.map((z) => ({
-          value: z.id,
-          label: z.name,
-        }))}
-      />
+      <Box pos="relative">
+        <LoadingOverlay
+          loaderProps={{ size: "sm" }}
+          visible={zonesStatus === "loading"}
+          overlayBlur={2}
+        />
+        <Select
+          value={selectedZoneId}
+          onChange={setSelectedZoneId}
+          disabled={zones.length === 0}
+          data={zones.map((z) => ({
+            value: z.id,
+            label: z.name,
+          }))}
+        />
+      </Box>
 
       <ScrollArea h={aliasListHeight}>
         <Stack spacing="xs" mb={5}>
