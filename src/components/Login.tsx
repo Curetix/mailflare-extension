@@ -1,4 +1,4 @@
-import { Anchor, Button, Divider, List, Stack, Text, TextInput } from "@mantine/core";
+import { Accordion, Anchor, Button, Divider, List, Stack, Text, TextInput } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { useState } from "react";
 
@@ -42,7 +42,7 @@ function Login() {
         onChange={(e) => setToken(e.target.value)}
         value={token}
         label="Cloudflare API token"
-        placeholder={storedToken.length > 0 ? "Saved token will be overridden" : undefined}
+        placeholder="Paste your Cloudflare API token here"
         disabled={isLoading}
         error={verifyError}
         autoComplete="off"
@@ -53,35 +53,40 @@ function Login() {
         loading={isLoading}>
         Save
       </Button>
-      <Divider />
-      <Text fw="bold" size="md">
-        Instructions
-      </Text>
-      <List size="sm" type="ordered">
-        <List.Item>
-          Open{" "}
-          <Anchor href="https://dash.cloudflare.com/profile/api-tokens/" target="_blank">
-            https://dash.cloudflare.com/profile/api-tokens
-          </Anchor>
-        </List.Item>
-        <List.Item>Click "Create Token", select "Create Custom Token"</List.Item>
-        <List.Item>Choose a name, like "Email Extension"</List.Item>
-        <List.Item>
-          Configure the following permissions:
-          <List withPadding listStyleType="disc" size="sm">
-            <List.Item>Account | Email Routing Addresses | Edit</List.Item>
-            <List.Item>Zone | Email Routing Rules | Edit</List.Item>
-            <List.Item>Zone | Zone | Read</List.Item>
-          </List>
-        </List.Item>
-        <List.Item>Set "Account Resources" to your account</List.Item>
-        <List.Item>
-          Set "Zone Resources" to "All zones" or select the zone you want to use
-        </List.Item>
-        <List.Item>Configure "Client IP Address Filtering" and "TTL" if you want to</List.Item>
-        <List.Item>Click "Continue to summary" and then "Create token"</List.Item>
-        <List.Item>Paste the generated token above</List.Item>
-      </List>
+      <Accordion variant="filled">
+        <Accordion.Item value="instructions">
+          <Accordion.Control>Instructions</Accordion.Control>
+          <Accordion.Panel>
+            <List size="sm" type="ordered">
+              <List.Item>
+                Open{" "}
+                <Anchor href="https://dash.cloudflare.com/profile/api-tokens/" target="_blank">
+                  https://dash.cloudflare.com/profile/api-tokens
+                </Anchor>
+              </List.Item>
+              <List.Item>Click "Create Token", select "Create Custom Token"</List.Item>
+              <List.Item>Choose a name, like "Email Extension"</List.Item>
+              <List.Item>
+                Configure the following permissions:
+                <List withPadding listStyleType="disc" size="sm">
+                  <List.Item>Account | Email Routing Addresses | Edit</List.Item>
+                  <List.Item>Zone | Email Routing Rules | Edit</List.Item>
+                  <List.Item>Zone | Zone | Read</List.Item>
+                </List>
+              </List.Item>
+              <List.Item>Set "Account Resources" to your account</List.Item>
+              <List.Item>
+                Set "Zone Resources" to "All zones" or select the zone you want to use
+              </List.Item>
+              <List.Item>
+                Configure "Client IP Address Filtering" and "TTL" if you want to
+              </List.Item>
+              <List.Item>Click "Continue to summary" and then "Create token"</List.Item>
+              <List.Item>Paste the generated token above</List.Item>
+            </List>
+          </Accordion.Panel>
+        </Accordion.Item>
+      </Accordion>
     </Stack>
   );
 }
