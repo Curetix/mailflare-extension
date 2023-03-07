@@ -105,6 +105,9 @@ function AliasList() {
           if (selectedZoneId === "") {
             await setSelectedZoneId(json.result[0].id);
           }
+        } else {
+          await setAccountId(null);
+          await setSelectedZoneId("");
         }
         return json.result;
       }
@@ -194,7 +197,6 @@ function AliasList() {
         } else if (variables.prefixFormat === "fullDomain" && parsedHostname !== null) {
           prefix = hostname;
         }
-        console.log(prefix);
 
         alias = generateAlias(
           variables.format === "words" ? "words" : "characters",
@@ -224,8 +226,6 @@ function AliasList() {
         name: `${emailRuleNamePrefix}${variables.description}`,
         priority: Math.round(Date.now() / 1000),
       };
-
-      console.log(rule);
 
       const response = await fetch(
         `${CloudflareApiBaseUrl}/zones/${variables.zoneId}/email/routing/rules`,
@@ -639,7 +639,7 @@ function AliasList() {
             </Alert>
           )}
 
-          {rulesStatus === "loading" && (
+          {selectedZoneId !== "" && rulesStatus === "loading" && (
             <Center>
               <Loader height={aliasListHeight - 5} />
             </Center>
@@ -684,7 +684,6 @@ function AliasList() {
                       size="sm"
                       disabled={deleteMutation.isLoading && aliasToDelete === r}
                       onClick={() => {
-                        console.log(r);
                         aliasEditForm.setValues(() => ({
                           id: r.tag,
                           zoneId: selectedZoneId,
