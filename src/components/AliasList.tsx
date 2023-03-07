@@ -59,10 +59,8 @@ function AliasList() {
   const [accountId, setAccountId] = useStorage<string>(StorageKey.AccountIdentifier, null);
 
   const [selectedZoneId, setSelectedZoneId] = useStorage<string>(StorageKey.SelectedZoneId, "");
-  const [onlyShowExtensionRules, setOnlyShowExtensionRules] = useStorage<boolean>(
-    StorageKey.OnlyShowExtensionRules,
-    true,
-  );
+  const [onlyShowExtensionRules] = useStorage<boolean>(StorageKey.OnlyShowExtensionRules, true);
+  const [copyAliasAfterCreation] = useStorage<boolean>(StorageKey.CopyAliasAfterCreation, true);
   const [aliasSettings, setAliasSettings] = useStorage<{
     format?: string;
     characterCount?: number;
@@ -253,7 +251,9 @@ function AliasList() {
         });
         setAliasCreateModalOpened(false);
         aliasCreateForm.reset();
-        clipboard.copy(alias);
+        if (copyAliasAfterCreation === true) {
+          clipboard.copy(alias);
+        }
         showNotification({
           color: "green",
           title: "Success!",

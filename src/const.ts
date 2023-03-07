@@ -17,5 +17,7 @@ export enum StorageKey {
   AliasSettings = "aliasSettings",
   Theme = "theme",
   OnlyShowExtensionRules = "onlyShowExtensionRules",
+  CopyAliasAfterCreation = "copyAliasAfterCreation",
+  ShowCreateButton = "showCreateButton",
   ReactQueryDevtoolsEnabled = "reactQueryDevtoolsEnabled",
 }

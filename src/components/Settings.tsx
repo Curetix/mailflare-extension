@@ -24,6 +24,14 @@ function Settings() {
     StorageKey.ReactQueryDevtoolsEnabled,
     false,
   );
+  const [copyAliasAfterCreation, setCopyAliasAfterCreation] = useStorage<boolean>(
+    StorageKey.CopyAliasAfterCreation,
+    true,
+  );
+  const [showCreateButton, setShowCreateButton] = useStorage<boolean>(
+    StorageKey.ShowCreateButton,
+    true,
+  );
 
   const clearCache = async () => {
     await setZones([]);
@@ -38,7 +46,7 @@ function Settings() {
   };
 
   const logout = async () => {
-    await storage.clear();
+    await storage.clear(true);
     await queryClient.invalidateQueries();
     showNotification({
       color: "green",
@@ -79,13 +87,31 @@ function Settings() {
     {
       title: "Copy Alias",
       description: "Copy alias to clipboard after creating it",
-      action: <Switch onLabel="ON" offLabel="OFF" color="green" size="lg" />,
+      action: (
+        <Switch
+          onLabel="ON"
+          offLabel="OFF"
+          color="green"
+          size="lg"
+          checked={copyAliasAfterCreation === true}
+          onChange={() => setCopyAliasAfterCreation(!copyAliasAfterCreation)}
+        />
+      ),
     },
     {
       title: "Show Quick-Create button",
       description:
         "Show a button inside email input fields to quickly create an alias for the current site",
-      action: <Switch onLabel="ON" offLabel="OFF" color="green" size="lg" />,
+      action: (
+        <Switch
+          onLabel="ON"
+          offLabel="OFF"
+          color="green"
+          size="lg"
+          checked={showCreateButton === true}
+          onChange={() => setShowCreateButton(!showCreateButton)}
+        />
+      ),
     },
     {
       title: "Clear Cache",
