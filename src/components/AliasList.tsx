@@ -60,7 +60,7 @@ function AliasList() {
   const [zones, setZones] = useStorage<CloudflareZone[]>(StorageKey.Zones, []);
   const [accountId, setAccountId] = useStorage<string>(StorageKey.AccountIdentifier, null);
 
-  const [selectedZoneId, setSelectedZoneId] = useStorage<string>(StorageKey.SelectedZoneId, "");
+  const [selectedZoneId, setSelectedZoneId] = useStorage<string>(StorageKey.SelectedZoneId, null);
   const [onlyShowExtensionRules] = useStorage<boolean>(StorageKey.OnlyShowExtensionRules, true);
   const [copyAliasAfterCreation] = useStorage<boolean>(StorageKey.CopyAliasAfterCreation, true);
   const [aliasSettings, setAliasSettings] = useStorage<{
@@ -104,12 +104,12 @@ function AliasList() {
         await setZones(json.result);
         if (json.result.length > 0) {
           await setAccountId(json.result[0].account.id);
-          if (selectedZoneId === "") {
+          if (!selectedZoneId) {
             await setSelectedZoneId(json.result[0].id);
           }
         } else {
           await setAccountId(null);
-          await setSelectedZoneId("");
+          await setSelectedZoneId(null);
         }
         return json.result;
       }
@@ -168,7 +168,7 @@ function AliasList() {
       console.error(json);
       throw new Error(json.errors[0].message);
     },
-    { enabled: !!zones && zones.length > 0 && selectedZoneId !== "", retry: 1 },
+    { enabled: !!zones && zones.length > 0 && !!selectedZoneId, retry: 1 },
   );
 
   const aliasCreateForm = useForm({
@@ -631,6 +631,8 @@ function AliasList() {
             value: z.id,
             label: z.name,
           }))}
+          placeholder="Domain"
+          searchable={zones.length > 5}
         />
       </Box>
 
@@ -648,7 +650,7 @@ function AliasList() {
             </Alert>
           )}
 
-          {selectedZoneId !== "" && rulesStatus === "loading" && (
+          {!!selectedZoneId && rulesStatus === "loading" && (
             <Center>
               <Loader height={aliasListHeight - 5} />
             </Center>
