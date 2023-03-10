@@ -672,7 +672,7 @@ function AliasList() {
             rules.map((r) => (
               <Card p="xs" radius="sm" withBorder key={r.tag}>
                 <Group position="apart">
-                  <Text weight={500} truncate style={{ width: 250 }}>
+                  <Text weight={500} truncate style={{ width: 260 }}>
                     {r.matchers[0].value}
                   </Text>
 
@@ -722,8 +722,8 @@ function AliasList() {
                 </Group>
 
                 <Group position="apart">
-                  <Text size="sm" color="dimmed" truncate style={{ width: 250 }}>
-                    {r.name.replace(emailRuleNamePrefix, "").trim()}
+                  <Text size="sm" color="dimmed" truncate style={{ width: 265 }}>
+                    {r.name.replace(emailRuleNamePrefix, "").trim() || "(no description)"}
                   </Text>
                   {getAliasBadge(r)}
                 </Group>
