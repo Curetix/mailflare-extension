@@ -617,24 +617,18 @@ function AliasList() {
         </Stack>
       </Modal>
 
-      <Box pos="relative">
-        <LoadingOverlay
-          loaderProps={{ size: "sm" }}
-          visible={zonesStatus === "loading"}
-          overlayBlur={2}
-        />
-        <Select
-          value={selectedZoneId}
-          onChange={setSelectedZoneId}
-          disabled={zones.length === 0}
-          data={zones.map((z) => ({
-            value: z.id,
-            label: z.name,
-          }))}
-          placeholder="Domain"
-          searchable={zones.length > 5}
-        />
-      </Box>
+      <Select
+        value={selectedZoneId}
+        onChange={setSelectedZoneId}
+        disabled={zones.length === 0 || zonesStatus === "loading"}
+        rightSection={zonesStatus === "loading" ? <Loader size="xs" /> : undefined}
+        data={zones.map((z) => ({
+          value: z.id,
+          label: z.name,
+        }))}
+        placeholder="Domain"
+        searchable={zones.length > 5}
+      />
 
       <ScrollArea h={aliasListHeight}>
         <Stack spacing="xs" mb={5}>
