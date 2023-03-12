@@ -166,7 +166,7 @@ function Settings() {
     <ScrollArea h={popupHeight - 2 * 20 - 28 - 16}>
       <Stack spacing="xs" pr={15}>
         {settingsItems.map((item, index) => (
-          <>
+          <Stack spacing="xs" key={index}>
             <Group position="apart" noWrap spacing="xl">
               <div>
                 <Text>{item.title}</Text>
@@ -177,7 +177,7 @@ function Settings() {
               {item.action}
             </Group>
             {index < settingsItems.length - 1 && <Divider />}
-          </>
+          </Stack>
         ))}
       </Stack>
     </ScrollArea>
