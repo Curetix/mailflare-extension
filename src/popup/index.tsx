@@ -13,7 +13,13 @@ import Settings from "~components/Settings";
 import { StorageKey, popupHeight, popupWidth } from "~const";
 import { ThemeProvider } from "~popup/Theme";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function Popup() {
   const [token] = useStorage<string>(StorageKey.ApiToken, null);
