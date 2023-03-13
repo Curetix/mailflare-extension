@@ -479,6 +479,8 @@ function AliasList() {
             {aliasCreateForm.values.format === "characters" && (
               <NumberInput
                 defaultValue={5}
+                min={1}
+                max={25}
                 label="Number of characters"
                 {...aliasCreateForm.getInputProps("characterCount")}
               />
@@ -487,16 +489,26 @@ function AliasList() {
             {aliasCreateForm.values.format === "words" && (
               <NumberInput
                 defaultValue={3}
+                min={1}
+                max={5}
                 label="Number of words"
                 {...aliasCreateForm.getInputProps("wordCount")}
               />
             )}
 
             {aliasCreateForm.values.format === "custom" && (
-              <TextInput label="Custom alias" {...aliasCreateForm.getInputProps("customAlias")} />
+              <TextInput
+                label="Custom alias"
+                minLength={1}
+                {...aliasCreateForm.getInputProps("customAlias")}
+              />
             )}
 
-            <TextInput label="Description" {...aliasCreateForm.getInputProps("description")} />
+            <TextInput
+              label="Description"
+              placeholder="Alias description (optional)"
+              {...aliasCreateForm.getInputProps("description")}
+            />
 
             {(aliasCreateForm.values.format === "characters" ||
               aliasCreateForm.values.format === "words") && (
@@ -568,7 +580,11 @@ function AliasList() {
         <form onSubmit={aliasEditForm.onSubmit((values) => editMutation.mutate(values))}>
           <Stack spacing="xs">
             <TextInput label="Alias" disabled {...aliasEditForm.getInputProps("alias")} />
-            <TextInput label="Description" {...aliasEditForm.getInputProps("description")} />
+            <TextInput
+              label="Description"
+              placeholder="Alias description (optional)"
+              {...aliasEditForm.getInputProps("description")}
+            />
             <Select
               label="Destination"
               data={destinations.map((z) => ({
@@ -642,6 +658,7 @@ function AliasList() {
         onChange={setSelectedZoneId}
         disabled={zones.length === 0}
         rightSection={zonesFetching ? <Loader size="xs" /> : undefined}
+        dropdownPosition="bottom"
         data={zones.map((z) => ({
           value: z.id,
           label: z.name,
