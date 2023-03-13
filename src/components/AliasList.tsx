@@ -33,6 +33,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ParseResultListed, ParseResultType, parseDomain } from "parse-domain";
 import { useEffect, useState } from "react";
+import browser from "webextension-polyfill";
 
 import { useStorage } from "@plasmohq/storage/dist/hook";
 
@@ -88,7 +89,7 @@ function AliasList() {
   const [aliasToDelete, setAliasToDelete] = useState<CloudflareEmailRule>(null);
 
   useEffect(() => {
-    chrome.tabs.query({ active: true }).then(([tab]) => {
+    browser.tabs.query({ active: true }).then(([tab]) => {
       if (tab && tab.url) {
         const url = new URL(tab.url);
         setHostname(url.hostname.replace("www.", ""));
