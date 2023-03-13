@@ -27,6 +27,7 @@
     "random-words": "^1.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "webextension-polyfill": "^0.10.0",
     "wretch": "^2.4.1"
   },
   "devDependencies": {
@@ -37,6 +38,7 @@
     "@types/node": "18.13.0",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.10",
+    "@types/webextension-polyfill": "^0.10.0",
     "prettier": "2.8.4",
     "typescript": "4.9.5",
     "vitest": "^0.28.5"
