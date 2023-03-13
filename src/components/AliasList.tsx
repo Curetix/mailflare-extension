@@ -27,6 +27,7 @@ import {
   IconEdit,
   IconListCheck,
   IconPlaylistAdd,
+  IconPlaylistX,
   IconRefresh,
   IconTrash,
 } from "@tabler/icons-react";
@@ -671,42 +672,70 @@ function AliasList() {
       <Button.Group>
         <Button
           variant="light"
-          color={aliasSelectEnabled ? "red" : undefined}
           compact
           fullWidth
-          leftIcon={<IconListCheck size={16} />}
+          leftIcon={aliasSelectEnabled ? <IconPlaylistX size={16} /> : <IconListCheck size={16} />}
+          disabled={!rules || rules.length === 0}
           onClick={() => {
             setSelectedAliases([]);
             setAliasSelectEnabled(!aliasSelectEnabled);
           }}>
-          {aliasSelectEnabled ? "Stop Selecting" : "Select"}
+          {aliasSelectEnabled ? "Stop Select" : "Select"}
         </Button>
-        <Button
-          variant="light"
-          compact
-          fullWidth
-          leftIcon={<IconPlaylistAdd size={16} />}
-          disabled={zones.length === 0 || selectedZoneId === null}
-          onClick={() => {
-            aliasCreateForm.setValues({
-              zoneId: selectedZoneId,
-              destination: destinations[0].email,
-              description: hostname,
-              ...aliasSettings,
-            });
-            setAliasCreateModalOpened(true);
-          }}>
-          Create
-        </Button>
-        <Button
-          variant="light"
-          compact
-          fullWidth
-          leftIcon={<IconRefresh size={16} />}
-          loading={rulesFetching}
-          onClick={() => queryClient.invalidateQueries(["emailRules", selectedZoneId])}>
-          Refresh
-        </Button>
+        {aliasSelectEnabled && (
+          <>
+            <Button
+              variant="light"
+              compact
+              fullWidth
+              leftIcon={<IconEdit size={16} />}
+              disabled={selectedAliases.length === 0}
+              onClick={() => {}}>
+              Edit
+            </Button>
+            <Button
+              variant="light"
+              color="red"
+              compact
+              fullWidth
+              leftIcon={<IconTrash size={16} />}
+              disabled={selectedAliases.length === 0}
+              onClick={() => {}}>
+              Delete
+            </Button>
+          </>
+        )}
+        {!aliasSelectEnabled && (
+          <>
+            <Button
+              variant="light"
+              compact
+              fullWidth
+              leftIcon={<IconPlaylistAdd size={16} />}
+              disabled={zones.length === 0 || selectedZoneId === null}
+              onClick={() => {
+                aliasCreateForm.setValues({
+                  zoneId: selectedZoneId,
+                  destination: destinations[0].email,
+                  description: hostname,
+                  ...aliasSettings,
+                });
+                setAliasCreateModalOpened(true);
+              }}>
+              Create
+            </Button>
+            <Button
+              variant="light"
+              compact
+              fullWidth
+              leftIcon={<IconRefresh size={16} />}
+              loading={rulesFetching}
+              loaderProps={{ size: 16 }}
+              onClick={() => queryClient.invalidateQueries(["emailRules", selectedZoneId])}>
+              Refresh
+            </Button>
+          </>
+        )}
       </Button.Group>
 
       <ScrollArea h={aliasListHeight}>
