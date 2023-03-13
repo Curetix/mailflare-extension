@@ -632,9 +632,9 @@ function AliasList() {
             Do you want to delete the alias {aliasToDelete?.matchers[0].value}? This cannot be
             undone.
           </Text>
-          <Group position="center" spacing="sm">
+          <Button.Group>
             <Button
-              color="green"
+              fullWidth
               onClick={() => {
                 setAliasDeleteModalOpened(false);
                 setAliasToDelete(null);
@@ -643,13 +643,14 @@ function AliasList() {
             </Button>
             <Button
               color="red"
+              fullWidth
               onClick={() => {
                 setAliasDeleteModalOpened(false);
                 deleteMutation.mutate({ id: aliasToDelete?.tag, zoneId: selectedZoneId });
               }}>
               Yes
             </Button>
-          </Group>
+          </Button.Group>
         </Stack>
       </Modal>
 
