@@ -6,6 +6,7 @@ import {
   Button,
   Card,
   Center,
+  Checkbox,
   Group,
   Loader,
   LoadingOverlay,
@@ -21,7 +22,14 @@ import {
 import { useForm } from "@mantine/form";
 import { useClipboard } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
-import { IconClipboard, IconEdit, IconRefresh, IconTrash } from "@tabler/icons-react";
+import {
+  IconClipboard,
+  IconEdit,
+  IconListCheck,
+  IconPlaylistAdd,
+  IconRefresh,
+  IconTrash,
+} from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ParseResultListed, ParseResultType, parseDomain } from "parse-domain";
 import { useEffect, useState } from "react";
@@ -42,8 +50,8 @@ import {
   CloudflareZone,
 } from "~utils/cloudflare";
 
-// popupHeight - header - divider - padding - inputs - gap
-const aliasListHeight = popupHeight - 52 - 1 - 16 * 2 - 36 * 2 - 10 * 2;
+// popupHeight - header - divider - padding - select - button group - gap
+const aliasListHeight = popupHeight - 52 - 1 - 16 * 2 - 36 - 26 - 10 * 2;
 
 function AliasList() {
   const queryClient = useQueryClient();
@@ -72,6 +80,8 @@ function AliasList() {
     destination?: string;
   }>(StorageKey.AliasSettings, {});
 
+  const [aliasSelectEnabled, setAliasSelectEnabled] = useState(false);
+  const [selectedAliases, setSelectedAliases] = useState<CloudflareEmailRule[]>([]);
   const [aliasCreateModalOpened, setAliasCreateModalOpened] = useState(false);
   const [aliasEditModalOpened, setAliasEditModalOpened] = useState(false);
   const [aliasDeleteModalOpened, setAliasDeleteModalOpened] = useState(false);
@@ -91,7 +101,11 @@ function AliasList() {
     });
   }, []);
 
-  const { status: zonesStatus, error: zonesError } = useQuery(
+  const {
+    status: zonesStatus,
+    error: zonesError,
+    isFetching: zonesFetching,
+  } = useQuery(
     ["zones"],
     async () => {
       const response = await fetch(`${CloudflareApiBaseUrl}/zones`, {
@@ -119,7 +133,11 @@ function AliasList() {
     { enabled: token !== null, retry: 1 },
   );
 
-  const { status: destinationsStatus, error: destinationsError } = useQuery(
+  const {
+    status: destinationsStatus,
+    error: destinationsError,
+    isFetching: destinationsFetching,
+  } = useQuery(
     ["destinations"],
     async () => {
       const response = await fetch(
@@ -145,6 +163,7 @@ function AliasList() {
     status: rulesStatus,
     error: rulesError,
     data: rules,
+    isFetching: rulesFetching,
   } = useQuery(
     ["emailRules", selectedZoneId],
     async ({ queryKey }) => {
@@ -620,8 +639,8 @@ function AliasList() {
       <Select
         value={selectedZoneId}
         onChange={setSelectedZoneId}
-        disabled={zones.length === 0 || zonesStatus === "loading"}
-        rightSection={zonesStatus === "loading" ? <Loader size="xs" /> : undefined}
+        disabled={zones.length === 0}
+        rightSection={zonesFetching ? <Loader size="xs" /> : undefined}
         data={zones.map((z) => ({
           value: z.id,
           label: z.name,
@@ -630,8 +649,49 @@ function AliasList() {
         searchable={zones.length > 5}
       />
 
+      <Button.Group>
+        <Button
+          variant="light"
+          color={aliasSelectEnabled ? "red" : undefined}
+          compact
+          fullWidth
+          leftIcon={<IconListCheck size={16} />}
+          onClick={() => {
+            setSelectedAliases([]);
+            setAliasSelectEnabled(!aliasSelectEnabled);
+          }}>
+          {aliasSelectEnabled ? "Stop Selecting" : "Select"}
+        </Button>
+        <Button
+          variant="light"
+          compact
+          fullWidth
+          leftIcon={<IconPlaylistAdd size={16} />}
+          disabled={zones.length === 0 || selectedZoneId === null}
+          onClick={() => {
+            aliasCreateForm.setValues({
+              zoneId: selectedZoneId,
+              destination: destinations[0].email,
+              description: hostname,
+              ...aliasSettings,
+            });
+            setAliasCreateModalOpened(true);
+          }}>
+          Create
+        </Button>
+        <Button
+          variant="light"
+          compact
+          fullWidth
+          leftIcon={<IconRefresh size={16} />}
+          loading={rulesFetching}
+          onClick={() => queryClient.invalidateQueries(["emailRules", selectedZoneId])}>
+          Refresh
+        </Button>
+      </Button.Group>
+
       <ScrollArea h={aliasListHeight}>
-        <Stack spacing="xs" mb={5}>
+        <Stack spacing="xs">
           {zonesStatus === "success" && zones.length === 0 && (
             <Alert title="Oh no!" color="red">
               No domains for this Cloudflare account or API token.
@@ -666,9 +726,25 @@ function AliasList() {
             rules.map((r) => (
               <Card p="xs" radius="sm" withBorder key={r.tag}>
                 <Group position="apart">
-                  <Text weight={500} truncate style={{ width: 260 }}>
-                    {r.matchers[0].value}
-                  </Text>
+                  <Group spacing="xs">
+                    {aliasSelectEnabled && (
+                      <Checkbox
+                        size="xs"
+                        checked={selectedAliases.includes(r)}
+                        onChange={(event) => {
+                          if (event.currentTarget.checked) {
+                            setSelectedAliases([...selectedAliases, r]);
+                          } else {
+                            setSelectedAliases(selectedAliases.filter((rr) => rr.tag !== r.tag));
+                          }
+                        }}
+                      />
+                    )}
+
+                    <Text weight={500} truncate style={{ width: aliasSelectEnabled ? 230 : 260 }}>
+                      {r.matchers[0].value}
+                    </Text>
+                  </Group>
 
                   <Button.Group>
                     <ActionIcon
@@ -715,8 +791,12 @@ function AliasList() {
                   </Button.Group>
                 </Group>
 
-                <Group position="apart">
-                  <Text size="sm" color="dimmed" truncate style={{ width: 265 }}>
+                <Group position="apart" ml={aliasSelectEnabled ? 26 : 0}>
+                  <Text
+                    size="sm"
+                    color="dimmed"
+                    truncate
+                    style={{ width: aliasSelectEnabled ? 240 : 265 }}>
                     {r.name.replace(emailRuleNamePrefix, "").trim() || "(no description)"}
                   </Text>
                   {getAliasBadge(r)}
@@ -725,22 +805,6 @@ function AliasList() {
             ))}
         </Stack>
       </ScrollArea>
-
-      <Button
-        variant="outline"
-        fullWidth
-        disabled={zones.length === 0}
-        onClick={() => {
-          aliasCreateForm.setValues({
-            zoneId: selectedZoneId,
-            destination: destinations[0].email,
-            description: hostname,
-            ...aliasSettings,
-          });
-          setAliasCreateModalOpened(true);
-        }}>
-        Create alias
-      </Button>
     </Stack>
   );
 }
