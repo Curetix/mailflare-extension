@@ -772,7 +772,20 @@ function AliasList() {
 
           {rulesStatus === "success" &&
             rules.map((r) => (
-              <Card p="xs" radius="sm" withBorder key={r.tag}>
+              <Card
+                p="xs"
+                radius="sm"
+                withBorder
+                key={r.tag}
+                onClick={() => {
+                  if (aliasSelectEnabled) {
+                    if (!selectedAliases.includes(r)) {
+                      setSelectedAliases([...selectedAliases, r]);
+                    } else {
+                      setSelectedAliases(selectedAliases.filter((rr) => rr.tag !== r.tag));
+                    }
+                  }
+                }}>
                 <Group position="apart">
                   <Group spacing="xs">
                     {aliasSelectEnabled && (
