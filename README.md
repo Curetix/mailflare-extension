@@ -2,7 +2,7 @@
 
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/curetix/mailflare-extension?label=package.json)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/curetix/mailflare-extension)
-![GitHub Workflow Status (with branch)](https://img.shields.io/github/actions/workflow/status/curetix/mailflare-extension/ci.yml?branch=main)
+![GitHub Workflow Status (with branch)](https://img.shields.io/github/actions/workflow/status/curetix/mailflare-extension/build.yml?branch=main)
 
 This extension provides an easy way to turn [Cloudflare Email Routing](https://developers.cloudflare.com/email-routing/)
 into your own private email alias service, similar to AnonAddy, SimpleLogin, and others.
