@@ -9,6 +9,12 @@ into your own private email alias service, similar to AnonAddy, SimpleLogin, and
 No third-party services or tedious configuration of a self-hosted email server needed.
 
 
+## Screenshots
+
+![Alias List](./assets/screen_aliases.png)
+![Create Alias](./assets/screen_create_alias.png)
+![Settings](./assets/screen_settings.png)
+
 ## Features
 
 - Create / edit / delete aliases, edit / delete aliases in bulk
