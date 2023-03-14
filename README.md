@@ -1,29 +1,40 @@
 # Cloudflare Email Extension
 
+![GitHub package.json version](https://img.shields.io/github/package-json/v/curetix/mailflare-extension?label=package.json)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/curetix/mailflare-extension)
+![GitHub Workflow Status (with branch)](https://img.shields.io/github/actions/workflow/status/curetix/mailflare-extension/ci.yml?branch=main)
+
 This extension provides an easy way to turn [Cloudflare Email Routing](https://developers.cloudflare.com/email-routing/)
-into your own private email alias service, similar to AnonAddy and SimpleLogin.
+into your own private email alias service, similar to AnonAddy, SimpleLogin, and others.
 No third-party services or tedious configuration of a self-hosted email server needed.
 
 
 ## Features
 
-- Create / edit / delete destination addresses
-- Create / edit / delete email rules (aliases)
+- Create / edit / delete aliases, edit / delete aliases in bulk
 - Multiple formats for alias addresses (random characters, random words, custom), optionally prefixed with current website name
+
+
+## Potential future features
+
+- Search aliases
+- Create / delete destination addresses
 - One-Click alias generation directly inside email input fields
+- Advanced login options, manually providing account ID and zone IDs to further limit the API token permissions
+- Email Reply worker (see below)
 
 
 ## Limitations
 
 See [this page](https://developers.cloudflare.com/email-routing/known-limitations):
 
-- "Email Routing does not support internationalized email addresses. Email Routing only supports Internationalized domain names."
 - "Email Routing does not forward non-delivery reports to the original sender. This means the sender will not receive a notification indicating that the email did not reach the intended destination."
 - "Subdomains cannot use Email Routing to forward emails, unless they are part of an Enterprise account."
 - "Email Routing does not support sending or replying from your Cloudflare domain."
 
-On top of that, further limits might exist but are not known publicly.
-According to one community forum post, you cannot create more than 200 email rules (which are used as aliases).
+On top of that, further limits might exist but are not stated by Cloudflare.
+For example, one community forum post claims that you cannot create more than 200 email rules
+(which the extension uses for aliases).
 
 
 ## Create a Cloudflare API token
@@ -34,7 +45,7 @@ According to one community forum post, you cannot create more than 200 email rul
 4. Select "Create Custom Token"
 5. Choose a name, like "Email Extension"
 6. Configure the following permissions (explained in the next section):
-    - Account | Email Routing Addresses | Edit (or Read if you do not want to add/edit/delete destination addresses from the extension)
+    - Account | Email Routing Addresses | Read
     - Zone | Email Routing Rules | Edit
     - Zone | Zone | Read
 7. Set "Account Resources" to your account
@@ -48,14 +59,14 @@ Your API key is stored locally in your browser and is used to directly communica
 
 ### Permissions explained
 
-* **Account | Email Routing Addresses | Edit** - Listing, creating, editing and deleting of destination email addresses. If you do not want to create/edit/delete addresses from the extension, you can also choose Read.
+* **Account | Email Routing Addresses | Read** - Listing of destination email addresses
 * **Zone | Email Routing Rules | Edit** - Listing, creating, editing and deleting of email rules (aliases)
 * **Zone | Zone | Read** - Listing of all the zones in your Cloudflare account (or the zone you select in the "Zone Resources" section)
 
 
-## Sending from alias using Email Worker (Beta)
+## Sending from alias using Email Worker
 
-**This is a concept in an experimental stage right now!**
+**This is a purely an idea at the moment, it has not been tested!**
 
 Email alias services like SimpleLogin and AnonAddy allow their users to reply to emails received from their alias addresses while keeping the users main email private.
 [Here is a nice explanation](https://anonaddy.com/help/replying-to-email-using-an-alias/) on how this works.
@@ -75,4 +86,4 @@ Finally, **alice@example.com** will receive a reply to her email from **john@doe
 * [Plasmo](https://github.com/PlasmoHQ/plasmo)
 * [React](https://github.com/facebook/react)
 * [Mantine UI](https://github.com/mantinedev/mantine)
-* [react-query](https://github.com/TanStack/query)
+* [TanStack Query](https://github.com/TanStack/query)
