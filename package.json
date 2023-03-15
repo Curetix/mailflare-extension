@@ -48,7 +48,7 @@
       "activeTab"
     ],
     "host_permissions": [
-      "https://*/*"
+      "https://api.cloudflare.com/*"
     ],
     "browser_specific_settings": {
       "gecko": {

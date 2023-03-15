@@ -76,7 +76,7 @@ function Login() {
               <List.Item>
                 Configure the following permissions:
                 <List withPadding listStyleType="disc" size="sm">
-                  <List.Item>Account | Email Routing Addresses | Edit</List.Item>
+                  <List.Item>Account | Email Routing Addresses | Read</List.Item>
                   <List.Item>Zone | Email Routing Rules | Edit</List.Item>
                   <List.Item>Zone | Zone | Read</List.Item>
                 </List>
