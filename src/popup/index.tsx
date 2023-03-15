@@ -53,7 +53,8 @@ function Popup() {
             opened={settingsModalOpened}
             onClose={() => setSettingsModalOpened(false)}
             title="Settings"
-            fullScreen>
+            fullScreen
+            scrollAreaComponent={Modal.NativeScrollArea}>
             <Settings />
           </Modal>
           <Group position="apart" px="md" py="sm">

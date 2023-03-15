@@ -1,6 +1,6 @@
 import { ColorScheme, ColorSchemeProvider, MantineProvider } from "@mantine/core";
 import type { EmotionCache } from "@mantine/core";
-import { NotificationsProvider } from "@mantine/notifications";
+import { Notifications } from "@mantine/notifications";
 import type { PropsWithChildren } from "react";
 
 import { useStorage } from "@plasmohq/storage/dist/hook";
@@ -23,7 +23,8 @@ export function ThemeProvider({ emotionCache, children }: Props) {
         withGlobalStyles
         withNormalizeCSS
         emotionCache={emotionCache}>
-        <NotificationsProvider>{children}</NotificationsProvider>
+        <Notifications />
+        {children}
       </MantineProvider>
     </ColorSchemeProvider>
   );

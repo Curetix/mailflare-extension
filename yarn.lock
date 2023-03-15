@@ -788,50 +788,51 @@
   resolved "https://registry.npmjs.org/@lmdb/lmdb-win32-x64/-/lmdb-win32-x64-2.5.2.tgz"
   integrity sha512-zrBczSbXKxEyK2ijtbRdICDygRqWSRPpZMN5dD1T8VMEW5RIhIbwFWw2phDRXuBQdVDpSjalCIUMWMV2h3JaZA==
 
-"@mantine/core@^5.10.3":
-  version "5.10.3"
-  resolved "https://registry.npmjs.org/@mantine/core/-/core-5.10.3.tgz"
-  integrity sha512-kBb8l085vg+MjAVxEDyI/koT/l2hXTBVdg6pkSJlFlMtUlhBGkp8fzqaaUiJ7C1oU//NnHAogPymHw0tjpPBgA==
+"@mantine/core@^6.0.2":
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/@mantine/core/-/core-6.0.2.tgz#205babfdbb306f4959a2ffdc928a74f7171da087"
+  integrity sha512-FP/qaMBzh2dDrZIFSAJB3vogWK3U8+nnwImKa+/ceo7EJLeauLNAssaoWn2TVnA6x5mIZnlPwkDtVqI8Q+K9Ww==
   dependencies:
     "@floating-ui/react" "^0.19.1"
-    "@mantine/styles" "5.10.3"
-    "@mantine/utils" "5.10.3"
+    "@mantine/styles" "6.0.2"
+    "@mantine/utils" "6.0.2"
     "@radix-ui/react-scroll-area" "1.0.2"
+    react-remove-scroll "^2.5.5"
     react-textarea-autosize "8.3.4"
 
-"@mantine/form@^5.10.3":
-  version "5.10.3"
-  resolved "https://registry.npmjs.org/@mantine/form/-/form-5.10.3.tgz"
-  integrity sha512-BvE0X1twmC9KfxdFH5lGCA42fCcNcTmqq8H5grzjCFSl6LP2S7FR8/zzQYhVxfK0bqQEyitp1aiq2EptNeJgig==
+"@mantine/form@^6.0.2":
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/@mantine/form/-/form-6.0.2.tgz#560b0e2b9e5775ec564e87c2c4d8bcf46e43f805"
+  integrity sha512-M18h8NBhV3P1iq+A1xS1x4dFN+xREu9k6/NmY5ftwYf4UwhVgiscKQhJ28ZC+m+oAtMZmdBhsHM5LVnFquPQJA==
   dependencies:
     fast-deep-equal "^3.1.3"
     klona "^2.0.5"
 
-"@mantine/hooks@^5.10.3":
-  version "5.10.3"
-  resolved "https://registry.npmjs.org/@mantine/hooks/-/hooks-5.10.3.tgz"
-  integrity sha512-fFDXF0A596z10QKeWAGtTZJ4QotsMxhhbjfWWRHMogY/hXHQ2S+7+GFotpF2JbzefYztpawHEJevy3eYF8cQmQ==
+"@mantine/hooks@^6.0.2":
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-6.0.2.tgz#88433aade23237c1566a083b80e6620eaa932561"
+  integrity sha512-wLSkp0NRe4XN7JujIUvkKghIBJC9YZ33CJlrFbcBFLD6LiSLX7lWyWOsiFzXrPND0Hpgn3AjckFQGblA8n34XA==
 
-"@mantine/notifications@^5.10.3":
-  version "5.10.3"
-  resolved "https://registry.npmjs.org/@mantine/notifications/-/notifications-5.10.3.tgz"
-  integrity sha512-Gi/7LVonBkaz7VW8HboFBSrvliuQOopMyocrucXwVEYTSyTpws/fderdw04hyGczrReb6IhJX5eOr6qHFaNlWA==
+"@mantine/notifications@^6.0.2":
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/@mantine/notifications/-/notifications-6.0.2.tgz#e2b802b2085321ade947fd8523eb1e3b76012708"
+  integrity sha512-EpQgTl5j925N88WY05etFe5ov71UnJRep6nGwv+CVATXmNV8E8z4b+2R6B5ofg4bW9VkS2BJKT2TgKRzaCMLeg==
   dependencies:
-    "@mantine/utils" "5.10.3"
+    "@mantine/utils" "6.0.2"
     react-transition-group "4.4.2"
 
-"@mantine/styles@5.10.3":
-  version "5.10.3"
-  resolved "https://registry.npmjs.org/@mantine/styles/-/styles-5.10.3.tgz"
-  integrity sha512-OpKY207BgkJd59wSNuNaZILAUbNh1b87iY5bZOVm9u49X5cOo/n4nrkaUMw2FCZIKi6psyobtW7XYCuoldrI4w==
+"@mantine/styles@6.0.2":
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/@mantine/styles/-/styles-6.0.2.tgz#893b9d1e43364f4c45e99e84428a615ed130a86c"
+  integrity sha512-py5yWzCPSYAv/4NwQ+dHaei0Rmk8kQ/ls5i3u28y6U+fCoutRhlCPJKjPfOWQzFpSRS0oGPdChFdg6zn4r8YIA==
   dependencies:
     clsx "1.1.1"
     csstype "3.0.9"
 
-"@mantine/utils@5.10.3":
-  version "5.10.3"
-  resolved "https://registry.npmjs.org/@mantine/utils/-/utils-5.10.3.tgz"
-  integrity sha512-ZfR1wouA/rz3xTOb2wBnrQpIiyjLcCLLvbUo7rzaG3LhFy7UoGjZ6uqIW9qDrzs7SR4tETRfMxedYagjcoCiEg==
+"@mantine/utils@6.0.2":
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-6.0.2.tgz#06da9dfb390a026e005f7e2712a3a30373a2b4c3"
+  integrity sha512-fx+cmkb8PMpkr65nUs8YgaXFJbtNY+ybSXDfBxwFAWMTLAocbNo7vjkSvPWZVS1O2szPK/s4Rqdw0W76dyG4+w==
 
 "@mischnic/json-sourcemap@0.1.0", "@mischnic/json-sourcemap@^0.1.0":
   version "0.1.0"
@@ -2923,6 +2924,11 @@ detect-libc@^2.0.0, detect-libc@^2.0.1:
   resolved "https://registry.npmjs.org/detect-libc/-/detect-libc-2.0.1.tgz"
   integrity sha512-463v3ZeIrcWtdgIg6vI6XUncguvr2TnGl4SzDXinkt9mSLpBJKXT3mW6xT3VQdDN11+WVs29pgvivTc4Lp8v+w==
 
+detect-node-es@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/detect-node-es/-/detect-node-es-1.1.0.tgz#163acdf643330caa0b4cd7c21e7ee7755d6fa493"
+  integrity sha512-ypdmJU/TbBby2Dxibuv7ZLW3Bs1QEmM7nHjEANfohJLvE0XVujisn1qPJcZxg+qDucsr+bP6fLD1rPS3AhJ7EQ==
+
 diff@^5.1.0:
   version "5.1.0"
   resolved "https://registry.npmjs.org/diff/-/diff-5.1.0.tgz"
@@ -3279,6 +3285,11 @@ get-func-name@^2.0.0:
   resolved "https://registry.npmjs.org/get-func-name/-/get-func-name-2.0.0.tgz"
   integrity sha512-Hm0ixYtaSZ/V7C8FJrtZIuBBI+iSgL+1Aq82zSu8VQNB4S3Gk8e7Qs3VwBDJAhmRZcFqkl3tQu36g/Foh5I5ig==
 
+get-nonce@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/get-nonce/-/get-nonce-1.0.1.tgz#fdf3f0278073820d2ce9426c18f07481b1e0cdf3"
+  integrity sha512-FJhYRoDaiatfEkUK8HKlicmu/3SGFD51q3itKDGoSTysQJBnfOcxU5GxnhE1E6soB76MbT0MBtnKJuXyAx+96Q==
+
 get-port@6.1.2:
   version "6.1.2"
   resolved "https://registry.npmjs.org/get-port/-/get-port-6.1.2.tgz"
@@ -3549,6 +3560,13 @@ inquirer@9.1.4:
     strip-ansi "^7.0.1"
     through "^2.3.6"
     wrap-ansi "^8.0.1"
+
+invariant@^2.2.4:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
+  integrity sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
+  dependencies:
+    loose-envify "^1.0.0"
 
 ip-regex@^5.0.0:
   version "5.0.0"
@@ -3960,9 +3978,9 @@ log-symbols@^5.1.0:
     chalk "^5.0.0"
     is-unicode-supported "^1.1.0"
 
-loose-envify@^1.1.0, loose-envify@^1.4.0:
+loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.4.0:
   version "1.4.0"
-  resolved "https://registry.npmjs.org/loose-envify/-/loose-envify-1.4.0.tgz"
+  resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.4.0.tgz#71ee51fa7be4caec1a63839f7e682d8132d30caf"
   integrity sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
@@ -4665,6 +4683,34 @@ react-refresh@^0.9.0:
   version "0.9.0"
   resolved "https://registry.npmjs.org/react-refresh/-/react-refresh-0.9.0.tgz"
   integrity sha512-Gvzk7OZpiqKSkxsQvO/mbTN1poglhmAV7gR/DdIrRrSMXraRQQlfikRJOr3Nb9GTMPC5kof948Zy6jJZIFtDvQ==
+
+react-remove-scroll-bar@^2.3.3:
+  version "2.3.4"
+  resolved "https://registry.yarnpkg.com/react-remove-scroll-bar/-/react-remove-scroll-bar-2.3.4.tgz#53e272d7a5cb8242990c7f144c44d8bd8ab5afd9"
+  integrity sha512-63C4YQBUt0m6ALadE9XV56hV8BgJWDmmTPY758iIJjfQKt2nYwoUrPk0LXRXcB/yIj82T1/Ixfdpdk68LwIB0A==
+  dependencies:
+    react-style-singleton "^2.2.1"
+    tslib "^2.0.0"
+
+react-remove-scroll@^2.5.5:
+  version "2.5.5"
+  resolved "https://registry.yarnpkg.com/react-remove-scroll/-/react-remove-scroll-2.5.5.tgz#1e31a1260df08887a8a0e46d09271b52b3a37e77"
+  integrity sha512-ImKhrzJJsyXJfBZ4bzu8Bwpka14c/fQt0k+cyFp/PBhTfyDnU5hjOtM4AG/0AMyy8oKzOTR0lDgJIM7pYXI0kw==
+  dependencies:
+    react-remove-scroll-bar "^2.3.3"
+    react-style-singleton "^2.2.1"
+    tslib "^2.1.0"
+    use-callback-ref "^1.3.0"
+    use-sidecar "^1.1.2"
+
+react-style-singleton@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/react-style-singleton/-/react-style-singleton-2.2.1.tgz#f99e420492b2d8f34d38308ff660b60d0b1205b4"
+  integrity sha512-ZWj0fHEMyWkHzKYUr2Bs/4zU6XLmq9HsgBURm7g5pAVfyn49DgUiNgY2d4lXRlYSiCif9YBGpQleewkcqddc7g==
+  dependencies:
+    get-nonce "^1.0.0"
+    invariant "^2.2.4"
+    tslib "^2.0.0"
 
 react-textarea-autosize@8.3.4:
   version "8.3.4"
@@ -5372,6 +5418,13 @@ upper-case@^2.0.2:
   dependencies:
     tslib "^2.0.3"
 
+use-callback-ref@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/use-callback-ref/-/use-callback-ref-1.3.0.tgz#772199899b9c9a50526fedc4993fc7fa1f7e32d5"
+  integrity sha512-3FT9PRuRdbB9HfXhEq35u4oZkvpJ5kuYbpqhCfmiZyReuRgpnhDlbr2ZEnnuS0RrJAPn6l23xjFg9kpDM+Ms7w==
+  dependencies:
+    tslib "^2.0.0"
+
 use-composed-ref@^1.3.0:
   version "1.3.0"
   resolved "https://registry.npmjs.org/use-composed-ref/-/use-composed-ref-1.3.0.tgz"
@@ -5388,6 +5441,14 @@ use-latest@^1.2.1:
   integrity sha512-xA+AVm/Wlg3e2P/JiItTziwS7FK92LWrDB0p+hgXloIMuVCeJJ8v6f0eeHyPZaJrM+usM1FkFfbNCrJGs8A/zw==
   dependencies:
     use-isomorphic-layout-effect "^1.1.1"
+
+use-sidecar@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/use-sidecar/-/use-sidecar-1.1.2.tgz#2f43126ba2d7d7e117aa5855e5d8f0276dfe73c2"
+  integrity sha512-epTbsLuzZ7lPClpz2TyryBfztm7m+28DlEv2ZCQ3MDr5ssiwyOwGH/e5F9CkfWjJ1t4clvI58yF822/GUkjjhw==
+  dependencies:
+    detect-node-es "^1.1.0"
+    tslib "^2.0.0"
 
 use-sync-external-store@^1.2.0:
   version "1.2.0"
