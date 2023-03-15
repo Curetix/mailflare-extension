@@ -1,11 +1,11 @@
-import { Accordion, Anchor, Button, Divider, List, Stack, Text, TextInput } from "@mantine/core";
+import { Accordion, Anchor, Button, List, Stack, TextInput } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { useState } from "react";
 
 import { useStorage } from "@plasmohq/storage/hook";
 
 import { CloudflareApiBaseUrl, CloudflareVerifyTokenResponse } from "~utils/cloudflare";
-import { StorageKey, extensionLocalStorage, extensionSecureStorage } from "~utils/storage";
+import { StorageKey, extensionLocalStorage } from "~utils/storage";
 
 function Login() {
   const [storedToken, setStoredToken] = useStorage<string>(

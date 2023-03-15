@@ -1,5 +1,5 @@
-import { ActionIcon, Button, Container, Divider, Group, Modal, Text } from "@mantine/core";
-import { IconSettings, IconTrash } from "@tabler/icons-react";
+import { ActionIcon, Container, Divider, Group, Modal, Text } from "@mantine/core";
+import { IconSettings } from "@tabler/icons-react";
 import { QueryClient } from "@tanstack/query-core";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -12,12 +12,7 @@ import Login from "~components/Login";
 import Settings from "~components/Settings";
 import { popupHeight, popupWidth } from "~const";
 import { ThemeProvider } from "~popup/Theme";
-import {
-  StorageKey,
-  extensionLocalStorage,
-  extensionSecureStorage,
-  extensionSyncStorage,
-} from "~utils/storage";
+import { StorageKey, extensionLocalStorage, extensionSyncStorage } from "~utils/storage";
 
 const queryClient = new QueryClient({
   defaultOptions: {

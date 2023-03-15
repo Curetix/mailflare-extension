@@ -48,12 +48,7 @@ import {
   CloudflareListZonesResponse,
   CloudflareZone,
 } from "~utils/cloudflare";
-import {
-  StorageKey,
-  extensionLocalStorage,
-  extensionSecureStorage,
-  extensionSyncStorage,
-} from "~utils/storage";
+import { StorageKey, extensionLocalStorage, extensionSyncStorage } from "~utils/storage";
 
 // popupHeight - header - divider - padding - select - button group - gap
 const aliasListHeight = popupHeight - 52 - 1 - 16 * 2 - 36 - 26 - 10 * 2;

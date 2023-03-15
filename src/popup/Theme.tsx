@@ -1,5 +1,5 @@
-import { ColorScheme, ColorSchemeProvider, MantineProvider } from "@mantine/core";
 import type { EmotionCache } from "@mantine/core";
+import { ColorScheme, ColorSchemeProvider, MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import type { PropsWithChildren } from "react";
 
