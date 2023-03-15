@@ -498,6 +498,7 @@ function AliasList() {
                 value: z.id,
                 label: z.name,
               }))}
+              searchable={zones.length > 5}
               {...aliasCreateForm.getInputProps("zoneId")}
             />
             <Select
