@@ -82,17 +82,6 @@ type CloudflareListEmailRulesResponse = CloudflareBaseResponse<CloudflareEmailRu
 
 type CloudflareCreateEmailRuleResponse = CloudflareBaseResponse<CloudflareEmailRule>;
 
-// const storage = new Storage();
-// const cloudflareApi = wretch(CloudflareApiBaseUrl).auth(await storage.get("apiToken"));
-//
-// function getZones(): Promise<CloudflareListZonesResponse> {
-//   return cloudflareApi.url("/zones").get().json();
-// }
-//
-// function getEmailRules(zoneId: string): Promise<CloudflareListEmailRulesResponse> {
-//   return cloudflareApi.url(`/zones/${zoneId}/email/routing/rules`).get().json();
-// }
-
 export { CloudflareApiBaseUrl };
 export type {
   CloudflareZone,
