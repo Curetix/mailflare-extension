@@ -2,14 +2,12 @@ import {
   ActionIcon,
   Alert,
   Badge,
-  Box,
   Button,
   Card,
   Center,
   Checkbox,
   Group,
   Loader,
-  LoadingOverlay,
   Modal,
   NumberInput,
   ScrollArea,
@@ -38,8 +36,7 @@ import browser from "webextension-polyfill";
 
 import { useStorage } from "@plasmohq/storage/dist/hook";
 
-import Settings from "~components/Settings";
-import { StorageKey, emailRuleNamePrefix, popupHeight } from "~const";
+import { emailRuleNamePrefix, popupHeight } from "~const";
 import { generateAlias } from "~utils/alias";
 import {
   CloudflareApiBaseUrl,
@@ -51,6 +48,12 @@ import {
   CloudflareListZonesResponse,
   CloudflareZone,
 } from "~utils/cloudflare";
+import {
+  StorageKey,
+  extensionLocalStorage,
+  extensionSecureStorage,
+  extensionSyncStorage,
+} from "~utils/storage";
 
 // popupHeight - header - divider - padding - select - button group - gap
 const aliasListHeight = popupHeight - 52 - 1 - 16 * 2 - 36 - 26 - 10 * 2;
@@ -59,20 +62,56 @@ function AliasList() {
   const queryClient = useQueryClient();
   const clipboard = useClipboard();
 
-  const [hostname, setHostname] = useState("");
-  const [parsedHostname, setParsedHostname] = useState<ParseResultListed>(null);
-
-  const [token] = useStorage<string>(StorageKey.ApiToken, null);
+  const [token] = useStorage<string>(
+    {
+      key: StorageKey.ApiToken,
+      instance: extensionLocalStorage,
+    },
+    null,
+  );
   const [destinations, setDestinations] = useStorage<CloudflareEmailDestination[]>(
-    StorageKey.Destinations,
+    {
+      key: StorageKey.Destinations,
+      instance: extensionLocalStorage,
+    },
     [],
   );
-  const [zones, setZones] = useStorage<CloudflareZone[]>(StorageKey.Zones, []);
-  const [accountId, setAccountId] = useStorage<string>(StorageKey.AccountIdentifier, null);
+  const [zones, setZones] = useStorage<CloudflareZone[]>(
+    {
+      key: StorageKey.Zones,
+      instance: extensionLocalStorage,
+    },
+    [],
+  );
+  const [accountId, setAccountId] = useStorage<string>(
+    {
+      key: StorageKey.AccountIdentifier,
+      instance: extensionLocalStorage,
+    },
+    null,
+  );
 
-  const [selectedZoneId, setSelectedZoneId] = useStorage<string>(StorageKey.SelectedZoneId, null);
-  const [onlyShowExtensionRules] = useStorage<boolean>(StorageKey.OnlyShowExtensionRules, true);
-  const [copyAliasAfterCreation] = useStorage<boolean>(StorageKey.CopyAliasAfterCreation, true);
+  const [selectedZoneId, setSelectedZoneId] = useStorage<string>(
+    {
+      key: StorageKey.SelectedZoneId,
+      instance: extensionSyncStorage,
+    },
+    null,
+  );
+  const [onlyShowExtensionRules] = useStorage<boolean>(
+    {
+      key: StorageKey.OnlyShowExtensionRules,
+      instance: extensionSyncStorage,
+    },
+    true,
+  );
+  const [copyAliasAfterCreation] = useStorage<boolean>(
+    {
+      key: StorageKey.CopyAliasAfterCreation,
+      instance: extensionSyncStorage,
+    },
+    true,
+  );
   const [aliasSettings, setAliasSettings] = useStorage<{
     format?: string;
     characterCount?: number;
@@ -80,8 +119,16 @@ function AliasList() {
     separator?: string;
     prefixFormat?: string;
     destination?: string;
-  }>(StorageKey.AliasSettings, {});
+  }>(
+    {
+      key: StorageKey.AliasSettings,
+      instance: extensionSyncStorage,
+    },
+    {},
+  );
 
+  const [hostname, setHostname] = useState("");
+  const [parsedHostname, setParsedHostname] = useState<ParseResultListed>(null);
   const [aliasSelectEnabled, setAliasSelectEnabled] = useState(false);
   const [selectedAliases, setSelectedAliases] = useState<CloudflareEmailRule[]>([]);
   const [aliasCreateModalOpened, setAliasCreateModalOpened] = useState(false);

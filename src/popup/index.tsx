@@ -10,8 +10,14 @@ import { useStorage } from "@plasmohq/storage/dist/hook";
 import AliasList from "~components/AliasList";
 import Login from "~components/Login";
 import Settings from "~components/Settings";
-import { StorageKey, popupHeight, popupWidth } from "~const";
+import { popupHeight, popupWidth } from "~const";
 import { ThemeProvider } from "~popup/Theme";
+import {
+  StorageKey,
+  extensionLocalStorage,
+  extensionSecureStorage,
+  extensionSyncStorage,
+} from "~utils/storage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,9 +28,18 @@ const queryClient = new QueryClient({
 });
 
 function Popup() {
-  const [token] = useStorage<string>(StorageKey.ApiToken, null);
+  const [token] = useStorage<string>(
+    {
+      key: StorageKey.ApiToken,
+      instance: extensionLocalStorage,
+    },
+    null,
+  );
   const [reactQueryDevtoolsEnabled] = useStorage<boolean>(
-    StorageKey.ReactQueryDevtoolsEnabled,
+    {
+      key: StorageKey.ReactQueryDevtoolsEnabled,
+      instance: extensionSyncStorage,
+    },
     false,
   );
   const [settingsModalOpened, setSettingsModalOpened] = useState(false);

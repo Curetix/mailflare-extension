@@ -5,7 +5,7 @@ import type { PropsWithChildren } from "react";
 
 import { useStorage } from "@plasmohq/storage/dist/hook";
 
-import { StorageKey } from "~const";
+import { StorageKey } from "~utils/storage";
 
 interface Props extends PropsWithChildren {
   emotionCache?: EmotionCache;

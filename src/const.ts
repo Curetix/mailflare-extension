@@ -7,17 +7,3 @@ const extensionVersion = version;
 const emailRuleNamePrefix = `${extensionName.toLowerCase()}:`;
 
 export { popupWidth, popupHeight, extensionName, emailRuleNamePrefix, extensionVersion };
-
-export enum StorageKey {
-  ApiToken = "apiToken",
-  Destinations = "destination",
-  Zones = "zones",
-  AccountIdentifier = "accountIdentifier",
-  SelectedZoneId = "selectedZoneId",
-  AliasSettings = "aliasSettings",
-  Theme = "theme",
-  OnlyShowExtensionRules = "onlyShowExtensionRules",
-  CopyAliasAfterCreation = "copyAliasAfterCreation",
-  ShowCreateButton = "showCreateButton",
-  ReactQueryDevtoolsEnabled = "reactQueryDevtoolsEnabled",
-}

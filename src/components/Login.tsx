@@ -5,9 +5,16 @@ import { useState } from "react";
 import { useStorage } from "@plasmohq/storage/hook";
 
 import { CloudflareApiBaseUrl, CloudflareVerifyTokenResponse } from "~utils/cloudflare";
+import { StorageKey, extensionLocalStorage, extensionSecureStorage } from "~utils/storage";
 
 function Login() {
-  const [storedToken, setStoredToken] = useStorage<string>("apiToken", "");
+  const [storedToken, setStoredToken] = useStorage<string>(
+    {
+      key: StorageKey.ApiToken,
+      instance: extensionLocalStorage,
+    },
+    null,
+  );
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [token, setToken] = useState<string>("");
   const [verifyError, setVerifyError] = useState<boolean>(false);

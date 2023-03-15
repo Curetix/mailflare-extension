@@ -3,33 +3,67 @@ import { showNotification } from "@mantine/notifications";
 import { IconExternalLink } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 
-import { Storage } from "@plasmohq/storage";
 import { useStorage } from "@plasmohq/storage/dist/hook";
 
-import { StorageKey, extensionName, extensionVersion, popupHeight } from "~const";
+import { extensionName, extensionVersion, popupHeight } from "~const";
+import type { CloudflareEmailDestination, CloudflareZone } from "~utils/cloudflare";
+import {
+  StorageKey,
+  extensionLocalStorage,
+  extensionSecureStorage,
+  extensionSyncStorage,
+} from "~utils/storage";
 
 function Settings() {
   const queryClient = useQueryClient();
-  const storage = new Storage();
 
-  const [destinations, setDestinations] = useStorage<object[]>(StorageKey.Destinations, []);
-  const [zones, setZones] = useStorage<object[]>(StorageKey.Zones, []);
-
-  const [theme, setTheme] = useStorage<string>(StorageKey.Theme, "dark");
+  const [destinations, setDestinations] = useStorage<CloudflareEmailDestination[]>(
+    {
+      key: StorageKey.Destinations,
+      instance: extensionLocalStorage,
+    },
+    [],
+  );
+  const [zones, setZones] = useStorage<CloudflareZone[]>(
+    {
+      key: StorageKey.Zones,
+      instance: extensionLocalStorage,
+    },
+    [],
+  );
+  const [theme, setTheme] = useStorage<string>(
+    {
+      key: StorageKey.Theme,
+      instance: extensionSyncStorage,
+    },
+    "dark",
+  );
   const [onlyShowExtensionRules, setOnlyShowExtensionRules] = useStorage<boolean>(
-    StorageKey.OnlyShowExtensionRules,
+    {
+      key: StorageKey.OnlyShowExtensionRules,
+      instance: extensionSyncStorage,
+    },
     true,
   );
   const [reactQueryDevtoolsEnabled, setReactQueryDevtoolsEnabled] = useStorage<boolean>(
-    StorageKey.ReactQueryDevtoolsEnabled,
+    {
+      key: StorageKey.ReactQueryDevtoolsEnabled,
+      instance: extensionSyncStorage,
+    },
     false,
   );
   const [copyAliasAfterCreation, setCopyAliasAfterCreation] = useStorage<boolean>(
-    StorageKey.CopyAliasAfterCreation,
+    {
+      key: StorageKey.CopyAliasAfterCreation,
+      instance: extensionSyncStorage,
+    },
     true,
   );
   const [showCreateButton, setShowCreateButton] = useStorage<boolean>(
-    StorageKey.ShowCreateButton,
+    {
+      key: StorageKey.ShowCreateButton,
+      instance: extensionSyncStorage,
+    },
     true,
   );
 
@@ -46,7 +80,8 @@ function Settings() {
   };
 
   const logout = async () => {
-    await storage.clear(true);
+    await extensionLocalStorage.clear(true);
+    await extensionSecureStorage.clear(true);
     await queryClient.invalidateQueries();
     showNotification({
       color: "green",
