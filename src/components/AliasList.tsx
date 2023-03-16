@@ -89,7 +89,7 @@ function AliasList() {
   const [selectedZoneId, setSelectedZoneId] = useStorage<string>(
     {
       key: StorageKey.SelectedZoneId,
-      instance: extensionSyncStorage,
+      instance: extensionLocalStorage,
     },
     null,
   );
