@@ -18,7 +18,7 @@
     "@mantine/form": "^6.0.2",
     "@mantine/hooks": "^6.0.2",
     "@mantine/notifications": "^6.0.2",
-    "@plasmohq/storage": "^1.2.3",
+    "@plasmohq/storage": "1.0",
     "@tabler/icons-react": "^2.10.0",
     "@tanstack/react-query": "^4.26.1",
     "@tanstack/react-query-devtools": "^4.26.1",

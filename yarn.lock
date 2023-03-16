@@ -1633,10 +1633,13 @@
     lodash.clone "4.5.0"
     lodash.isequal "4.5.0"
 
-"@plasmohq/storage@^1.2.3":
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/@plasmohq/storage/-/storage-1.2.3.tgz#b2900cd4a09ecf8700c99c7f135f4a3bd1531393"
-  integrity sha512-/fFoQBfQKJakqab+SWWkDxNERi6wsBYnjKNGSJluRQqzcPXT5ImaA0QsvnikARwb2VYnQof1JnEaZhh46q1CDw==
+"@plasmohq/storage@1.0":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@plasmohq/storage/-/storage-1.0.5.tgz#3918366f3d4156f60dd16eaba5e657cf5f7c5819"
+  integrity sha512-zxgB/53Tidr1S6cFguOGyZns439bo8p5srxRh2UPEJvDi/Ickh+ATpDAWfQUsC/TPEQEM/+1IXI0IkYlePKqfw==
+  dependencies:
+    "@types/webextension-polyfill" "0.10.0"
+    webextension-polyfill "0.10.0"
 
 "@pnpm/network.ca-file@^1.0.1":
   version "1.0.2"
@@ -1981,7 +1984,7 @@
   resolved "https://registry.npmjs.org/@types/scheduler/-/scheduler-0.16.2.tgz"
   integrity sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==
 
-"@types/webextension-polyfill@^0.10.0":
+"@types/webextension-polyfill@0.10.0", "@types/webextension-polyfill@^0.10.0":
   version "0.10.0"
   resolved "https://registry.yarnpkg.com/@types/webextension-polyfill/-/webextension-polyfill-0.10.0.tgz#e87b5e2c101599779a584cdb043887ad73b37b0e"
   integrity sha512-If4EcaHzYTqcbNMp/FdReVdRmLL/Te42ivnJII551bYjhX19bWem5m14FERCqdJA732OloGuxCRvLBvcMGsn4A==
@@ -5101,7 +5104,7 @@ web-streams-polyfill@^3.0.3:
   resolved "https://registry.npmjs.org/web-streams-polyfill/-/web-streams-polyfill-3.2.1.tgz"
   integrity sha512-e0MO3wdXWKrLbL0DgGnUV7WHVuw9OUvL4hjgnPkIeEvESk74gAITi5G606JtZPp39cd8HA9VQzCIvA49LpPN5Q==
 
-webextension-polyfill@^0.10.0:
+webextension-polyfill@0.10.0, webextension-polyfill@^0.10.0:
   version "0.10.0"
   resolved "https://registry.npmjs.org/webextension-polyfill/-/webextension-polyfill-0.10.0.tgz"
   integrity sha512-c5s35LgVa5tFaHhrZDnr3FpQpjj1BB+RXhLTYUxGqBVN460HkbM8TBtEqdXWbpTKfzwCcjAZVF7zXCYSKtcp9g==
