@@ -2,70 +2,29 @@ import { Button, Divider, Group, ScrollArea, Stack, Switch, Text } from "@mantin
 import { showNotification } from "@mantine/notifications";
 import { IconExternalLink } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
-
-import { useStorage } from "@plasmohq/storage/dist/hook";
+import { useAtom } from "jotai";
 
 import { extensionName, extensionVersion, popupHeight } from "~const";
-import type { CloudflareEmailDestination, CloudflareZone } from "~utils/cloudflare";
 import {
-  StorageKey,
-  extensionLocalStorage,
-  extensionSecureStorage,
-  extensionSyncStorage,
+  copyAliasAtom,
+  destinationsAtom,
+  devToolsAtom,
+  ruleFilterAtom,
+  showCreateButtonAtom,
+  themeAtom,
+  zonesAtom,
 } from "~utils/storage";
 
 function Settings() {
   const queryClient = useQueryClient();
 
-  const [destinations, setDestinations] = useStorage<CloudflareEmailDestination[]>(
-    {
-      key: StorageKey.Destinations,
-      instance: extensionLocalStorage,
-    },
-    [],
-  );
-  const [zones, setZones] = useStorage<CloudflareZone[]>(
-    {
-      key: StorageKey.Zones,
-      instance: extensionLocalStorage,
-    },
-    [],
-  );
-  const [theme, setTheme] = useStorage<string>(
-    {
-      key: StorageKey.Theme,
-      instance: extensionSyncStorage,
-    },
-    "dark",
-  );
-  const [onlyShowExtensionRules, setOnlyShowExtensionRules] = useStorage<boolean>(
-    {
-      key: StorageKey.OnlyShowExtensionRules,
-      instance: extensionSyncStorage,
-    },
-    true,
-  );
-  const [reactQueryDevtoolsEnabled, setReactQueryDevtoolsEnabled] = useStorage<boolean>(
-    {
-      key: StorageKey.ReactQueryDevtoolsEnabled,
-      instance: extensionSyncStorage,
-    },
-    false,
-  );
-  const [copyAliasAfterCreation, setCopyAliasAfterCreation] = useStorage<boolean>(
-    {
-      key: StorageKey.CopyAliasAfterCreation,
-      instance: extensionSyncStorage,
-    },
-    true,
-  );
-  const [showCreateButton, setShowCreateButton] = useStorage<boolean>(
-    {
-      key: StorageKey.ShowCreateButton,
-      instance: extensionSyncStorage,
-    },
-    true,
-  );
+  const [destinations, setDestinations] = useAtom(destinationsAtom);
+  const [zones, setZones] = useAtom(zonesAtom);
+  const [theme, setTheme] = useAtom(themeAtom);
+  const [ruleFilter, setRuleFilter] = useAtom(ruleFilterAtom);
+  const [devToolsEnabled, setDevToolsEnabled] = useAtom(devToolsAtom);
+  const [copyAlias, setCopyAlias] = useAtom(copyAliasAtom);
+  const [showCreateButton, setShowCreateButton] = useAtom(showCreateButtonAtom);
 
   const clearCache = async () => {
     await setZones([]);
@@ -80,8 +39,7 @@ function Settings() {
   };
 
   const logout = async () => {
-    await extensionLocalStorage.clear(true);
-    await extensionSecureStorage.clear(true);
+    // TODO: reset storage
     await queryClient.invalidateQueries();
     showNotification({
       color: "green",
@@ -114,8 +72,8 @@ function Settings() {
           offLabel="OFF"
           size="lg"
           color="green"
-          checked={onlyShowExtensionRules === true}
-          onChange={() => setOnlyShowExtensionRules(!onlyShowExtensionRules)}
+          checked={ruleFilter === true}
+          onChange={() => setRuleFilter(!ruleFilter)}
         />
       ),
     },
@@ -128,26 +86,26 @@ function Settings() {
           offLabel="OFF"
           color="green"
           size="lg"
-          checked={copyAliasAfterCreation === true}
-          onChange={() => setCopyAliasAfterCreation(!copyAliasAfterCreation)}
+          checked={copyAlias === true}
+          onChange={() => setCopyAlias(!copyAlias)}
         />
       ),
     },
-    {
-      title: "Show Quick-Create button",
-      description:
-        "Show a button inside email input fields to quickly create an alias for the current site",
-      action: (
-        <Switch
-          onLabel="ON"
-          offLabel="OFF"
-          color="green"
-          size="lg"
-          checked={showCreateButton === true}
-          onChange={() => setShowCreateButton(!showCreateButton)}
-        />
-      ),
-    },
+    // {
+    //   title: "Show Quick-Create button",
+    //   description:
+    //     "Show a button inside email input fields to quickly create an alias for the current site",
+    //   action: (
+    //     <Switch
+    //       onLabel="ON"
+    //       offLabel="OFF"
+    //       color="green"
+    //       size="lg"
+    //       checked={showCreateButton === true}
+    //       onChange={() => setShowCreateButton(!showCreateButton)}
+    //     />
+    //   ),
+    // },
     {
       title: "Clear Cache",
       description: "Clear locally cached data like Cloudflare zones and destination addresses",
@@ -190,8 +148,8 @@ function Settings() {
           onLabel="ON"
           offLabel="OFF"
           size="lg"
-          checked={reactQueryDevtoolsEnabled === true}
-          onChange={() => setReactQueryDevtoolsEnabled(!reactQueryDevtoolsEnabled)}
+          checked={devToolsEnabled === true}
+          onChange={() => setDevToolsEnabled(!devToolsEnabled)}
         />
       ),
     });

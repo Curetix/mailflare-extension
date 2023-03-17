@@ -30,25 +30,31 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useAtom } from "jotai";
 import { ParseResultListed, ParseResultType, parseDomain } from "parse-domain";
 import { useEffect, useState } from "react";
 import browser from "webextension-polyfill";
-
-import { useStorage } from "@plasmohq/storage/dist/hook";
 
 import { emailRuleNamePrefix, popupHeight } from "~const";
 import { generateAlias } from "~utils/alias";
 import {
   CloudflareApiBaseUrl,
   CloudflareCreateEmailRuleResponse,
-  CloudflareEmailDestination,
   CloudflareEmailRule,
   CloudflareListEmailDestinationsResponse,
   CloudflareListEmailRulesResponse,
   CloudflareListZonesResponse,
-  CloudflareZone,
 } from "~utils/cloudflare";
-import { StorageKey, extensionLocalStorage, extensionSyncStorage } from "~utils/storage";
+import {
+  accountIdAtom,
+  aliasSettingsAtom,
+  apiTokenAtom,
+  copyAliasAtom,
+  destinationsAtom,
+  ruleFilterAtom,
+  selectedZoneIdAtom,
+  zonesAtom,
+} from "~utils/storage";
 
 // popupHeight - header - divider - padding - select - button group - gap
 const aliasListHeight = popupHeight - 52 - 1 - 16 * 2 - 36 - 26 - 10 * 2;
@@ -57,70 +63,15 @@ function AliasList() {
   const queryClient = useQueryClient();
   const clipboard = useClipboard();
 
-  const [token] = useStorage<string>(
-    {
-      key: StorageKey.ApiToken,
-      instance: extensionLocalStorage,
-    },
-    null,
-  );
-  const [destinations, setDestinations] = useStorage<CloudflareEmailDestination[]>(
-    {
-      key: StorageKey.Destinations,
-      instance: extensionLocalStorage,
-    },
-    [],
-  );
-  const [zones, setZones] = useStorage<CloudflareZone[]>(
-    {
-      key: StorageKey.Zones,
-      instance: extensionLocalStorage,
-    },
-    [],
-  );
-  const [accountId, setAccountId] = useStorage<string>(
-    {
-      key: StorageKey.AccountIdentifier,
-      instance: extensionLocalStorage,
-    },
-    null,
-  );
+  const [destinations, setDestinations] = useAtom(destinationsAtom);
+  const [zones, setZones] = useAtom(zonesAtom);
+  const [accountId, setAccountId] = useAtom(accountIdAtom);
+  const [selectedZoneId, setSelectedZoneId] = useAtom(selectedZoneIdAtom);
 
-  const [selectedZoneId, setSelectedZoneId] = useStorage<string>(
-    {
-      key: StorageKey.SelectedZoneId,
-      instance: extensionLocalStorage,
-    },
-    null,
-  );
-  const [onlyShowExtensionRules] = useStorage<boolean>(
-    {
-      key: StorageKey.OnlyShowExtensionRules,
-      instance: extensionSyncStorage,
-    },
-    true,
-  );
-  const [copyAliasAfterCreation] = useStorage<boolean>(
-    {
-      key: StorageKey.CopyAliasAfterCreation,
-      instance: extensionSyncStorage,
-    },
-    true,
-  );
-  const [aliasSettings, setAliasSettings] = useStorage<{
-    format?: string;
-    characterCount?: number;
-    wordCount?: number;
-    separator?: string;
-    prefixFormat?: string;
-    destination?: string;
-  }>(
-    {
-      key: StorageKey.AliasSettings,
-      instance: extensionSyncStorage,
-    },
-    {},
-  );
+  const [token] = useAtom(apiTokenAtom);
+  const [ruleFilter, setRuleFilter] = useAtom(ruleFilterAtom);
+  const [copyAlias, setCopyAlias] = useAtom(copyAliasAtom);
+  const [aliasSettings, setAliasSettings] = useAtom(aliasSettingsAtom);
 
   const [hostname, setHostname] = useState("");
   const [parsedHostname, setParsedHostname] = useState<ParseResultListed>(null);
@@ -162,9 +113,6 @@ function AliasList() {
         await setZones(json.result);
         if (json.result.length > 0) {
           await setAccountId(json.result[0].account.id);
-          if (!selectedZoneId) {
-            await setSelectedZoneId(json.result[0].id);
-          }
         } else {
           await setAccountId(null);
           await setSelectedZoneId(null);
@@ -221,12 +169,15 @@ function AliasList() {
       );
       const json: CloudflareListEmailRulesResponse = await response.json();
       if (response.ok && json.success) {
-        return json.result.filter(
+        const rules = json.result.filter(
           (r) =>
-            (!onlyShowExtensionRules || r.name.toLowerCase().startsWith(emailRuleNamePrefix)) &&
+            (!ruleFilter || r.name.toLowerCase().startsWith(emailRuleNamePrefix)) &&
             r.matchers[0].type === "literal" &&
             r.actions[0].type === "forward",
         );
+        // Filter selectedAliases in case something was deleted
+        setSelectedAliases(selectedAliases.filter((s) => rules.includes(s)));
+        return rules;
       }
       console.error(json);
       throw new Error(json.errors[0].message);
@@ -316,7 +267,7 @@ function AliasList() {
         });
         setAliasCreateModalOpened(false);
         aliasCreateForm.reset();
-        if (copyAliasAfterCreation === true) {
+        if (copyAlias === true) {
           clipboard.copy(alias);
         }
         showNotification({
@@ -474,6 +425,7 @@ function AliasList() {
 
   return (
     <Stack p="md" spacing="xs">
+      {/* CREATE MODAL */}
       <Modal
         opened={aliasCreateModalOpened}
         onClose={() => {
@@ -606,6 +558,7 @@ function AliasList() {
         </form>
       </Modal>
 
+      {/* EDIT MODAL */}
       <Modal
         opened={aliasEditModalOpened}
         onClose={() => {
@@ -656,6 +609,7 @@ function AliasList() {
         </form>
       </Modal>
 
+      {/* DELETE MODAL */}
       <Modal
         opened={aliasDeleteModalOpened}
         onClose={() => {
@@ -672,13 +626,20 @@ function AliasList() {
         title="Delete Alias"
         fullScreen>
         <Stack spacing="xs">
-          <Text>
-            Do you want to delete the alias {aliasToDelete?.matchers[0].value}? This cannot be
-            undone.
-          </Text>
+          {selectedAliases.length === 0 ? (
+            <Text>
+              Do you want to delete the alias {aliasToDelete?.matchers[0].value}? This cannot be
+              undone.
+            </Text>
+          ) : (
+            <Text>
+              Do you want to delete {selectedAliases.length} aliases? This cannot be undone.
+            </Text>
+          )}
           <Button.Group>
             <Button
               fullWidth
+              disabled={deleteMutation.isLoading}
               onClick={() => {
                 setAliasDeleteModalOpened(false);
                 setAliasToDelete(null);
@@ -688,9 +649,16 @@ function AliasList() {
             <Button
               color="red"
               fullWidth
+              loading={deleteMutation.isLoading}
               onClick={() => {
-                setAliasDeleteModalOpened(false);
-                deleteMutation.mutate({ id: aliasToDelete?.tag, zoneId: selectedZoneId });
+                if (selectedAliases.length > 0) {
+                  selectedAliases.forEach((a) =>
+                    deleteMutation.mutate({ id: a.tag, zoneId: selectedZoneId }),
+                  );
+                } else {
+                  setAliasDeleteModalOpened(false);
+                  deleteMutation.mutate({ id: aliasToDelete?.tag, zoneId: selectedZoneId });
+                }
               }}>
               Yes
             </Button>
@@ -698,6 +666,7 @@ function AliasList() {
         </Stack>
       </Modal>
 
+      {/* DOMAIN SELECTOR */}
       <Select
         value={selectedZoneId}
         onChange={setSelectedZoneId}
@@ -712,13 +681,13 @@ function AliasList() {
         searchable={zones.length > 5}
       />
 
+      {/* ACTION BUTTONS */}
       <Button.Group>
         <Button
           variant="light"
           compact
           fullWidth
           leftIcon={aliasSelectEnabled ? <IconPlaylistX size={16} /> : <IconListCheck size={16} />}
-          disabled={!rules || rules.length === 0}
           onClick={() => {
             setSelectedAliases([]);
             setAliasSelectEnabled(!aliasSelectEnabled);
@@ -743,7 +712,9 @@ function AliasList() {
               fullWidth
               leftIcon={<IconTrash size={16} />}
               disabled={selectedAliases.length === 0}
-              onClick={() => {}}>
+              onClick={() => {
+                setAliasDeleteModalOpened(true);
+              }}>
               Delete
             </Button>
           </>
@@ -781,6 +752,7 @@ function AliasList() {
         )}
       </Button.Group>
 
+      {/* ALIAS LIST AREA */}
       <ScrollArea h={aliasListHeight}>
         <Stack spacing="xs">
           {zonesStatus === "success" && zones.length === 0 && (
@@ -813,6 +785,7 @@ function AliasList() {
             </Alert>
           )}
 
+          {/* ALIAS LIST */}
           {rulesStatus === "success" &&
             rules.map((r) => (
               <Card
@@ -867,7 +840,9 @@ function AliasList() {
                     <ActionIcon
                       variant="subtle"
                       size="sm"
-                      disabled={deleteMutation.isLoading && aliasToDelete === r}
+                      disabled={
+                        (deleteMutation.isLoading && aliasToDelete === r) || aliasSelectEnabled
+                      }
                       onClick={() => {
                         aliasEditForm.setValues(() => ({
                           id: r.tag,
@@ -885,7 +860,9 @@ function AliasList() {
                       variant="subtle"
                       size="sm"
                       loading={deleteMutation.isLoading && aliasToDelete === r}
-                      disabled={deleteMutation.isLoading && aliasToDelete !== r}
+                      disabled={
+                        (deleteMutation.isLoading && aliasToDelete !== r) || aliasSelectEnabled
+                      }
                       onClick={() => {
                         setAliasToDelete(r);
                         setAliasDeleteModalOpened(true);

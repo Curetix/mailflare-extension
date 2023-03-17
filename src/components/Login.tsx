@@ -1,20 +1,13 @@
 import { Accordion, Anchor, Button, List, Stack, TextInput } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
+import { useAtom } from "jotai";
 import { useState } from "react";
 
-import { useStorage } from "@plasmohq/storage/hook";
-
 import { CloudflareApiBaseUrl, CloudflareVerifyTokenResponse } from "~utils/cloudflare";
-import { StorageKey, extensionLocalStorage } from "~utils/storage";
+import { apiTokenAtom } from "~utils/storage";
 
 function Login() {
-  const [storedToken, setStoredToken] = useStorage<string>(
-    {
-      key: StorageKey.ApiToken,
-      instance: extensionLocalStorage,
-    },
-    null,
-  );
+  const [storedToken, setStoredToken] = useAtom(apiTokenAtom);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [token, setToken] = useState<string>("");
   const [verifyError, setVerifyError] = useState<boolean>(false);
