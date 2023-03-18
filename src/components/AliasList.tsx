@@ -8,16 +8,11 @@ import {
   Checkbox,
   Group,
   Loader,
-  Modal,
-  NumberInput,
   ScrollArea,
   Select,
   Stack,
-  Switch,
   Text,
-  TextInput,
 } from "@mantine/core";
-import { useForm } from "@mantine/form";
 import { useClipboard } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import {
@@ -29,17 +24,16 @@ import {
   IconRefresh,
   IconTrash,
 } from "@tabler/icons-react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
-import { ParseResultListed, ParseResultType, parseDomain } from "parse-domain";
-import { useEffect, useState } from "react";
-import browser from "webextension-polyfill";
+import { useState } from "react";
 
+import AliasCreateModal from "~components/AliasCreateModal";
+import AliasDeleteModal from "~components/AliasDeleteModal";
+import AliasEditModal from "~components/AliasEditModal";
 import { emailRuleNamePrefix, popupHeight } from "~const";
-import { generateAlias } from "~utils/alias";
 import {
   CloudflareApiBaseUrl,
-  CloudflareCreateEmailRuleResponse,
   CloudflareEmailRule,
   CloudflareListEmailDestinationsResponse,
   CloudflareListEmailRulesResponse,
@@ -47,9 +41,7 @@ import {
 } from "~utils/cloudflare";
 import {
   accountIdAtom,
-  aliasSettingsAtom,
   apiTokenAtom,
-  copyAliasAtom,
   destinationsAtom,
   ruleFilterAtom,
   selectedZoneIdAtom,
@@ -69,32 +61,14 @@ function AliasList() {
   const [selectedZoneId, setSelectedZoneId] = useAtom(selectedZoneIdAtom);
 
   const [token] = useAtom(apiTokenAtom);
-  const [ruleFilter, setRuleFilter] = useAtom(ruleFilterAtom);
-  const [copyAlias, setCopyAlias] = useAtom(copyAliasAtom);
-  const [aliasSettings, setAliasSettings] = useAtom(aliasSettingsAtom);
+  const [ruleFilter] = useAtom(ruleFilterAtom);
 
-  const [hostname, setHostname] = useState("");
-  const [parsedHostname, setParsedHostname] = useState<ParseResultListed>(null);
   const [aliasSelectEnabled, setAliasSelectEnabled] = useState(false);
   const [selectedAliases, setSelectedAliases] = useState<CloudflareEmailRule[]>([]);
   const [aliasCreateModalOpened, setAliasCreateModalOpened] = useState(false);
   const [aliasEditModalOpened, setAliasEditModalOpened] = useState(false);
   const [aliasDeleteModalOpened, setAliasDeleteModalOpened] = useState(false);
   const [aliasToDelete, setAliasToDelete] = useState<CloudflareEmailRule>(null);
-
-  useEffect(() => {
-    browser.tabs.query({ active: true }).then(([tab]) => {
-      if (tab && tab.url) {
-        const url = new URL(tab.url);
-        setHostname(url.hostname.replace("www.", ""));
-
-        const parsed = parseDomain(url.hostname);
-        if (parsed.type === ParseResultType.Listed) {
-          setParsedHostname(parsed);
-        }
-      }
-    });
-  }, []);
 
   const {
     status: zonesStatus,
@@ -185,219 +159,6 @@ function AliasList() {
     { enabled: !!zones && zones.length > 0 && !!selectedZoneId, retry: 1 },
   );
 
-  const aliasCreateForm = useForm({
-    initialValues: {
-      zoneId: selectedZoneId,
-      format: "characters",
-      characterCount: 5,
-      wordCount: 2,
-      separator: "_",
-      customAlias: "",
-      description: "",
-      prefixFormat: "none",
-      destination: "",
-    },
-  });
-
-  const createMutation = useMutation(
-    async (variables: typeof aliasCreateForm.values) => {
-      let alias: string;
-      if (variables.format === "custom") {
-        alias = variables.customAlias;
-      } else {
-        let prefix = "";
-        if (variables.prefixFormat === "domainWithoutExtension" && parsedHostname !== null) {
-          prefix = parsedHostname.domain;
-        } else if (variables.prefixFormat === "domainWithExtension" && parsedHostname !== null) {
-          prefix = `${parsedHostname.domain}.${parsedHostname.topLevelDomains.join(".")}`;
-        } else if (variables.prefixFormat === "fullDomain" && parsedHostname !== null) {
-          prefix = hostname;
-        }
-
-        alias = generateAlias(
-          variables.format === "words" ? "words" : "characters",
-          variables.characterCount,
-          variables.wordCount,
-          variables.separator,
-          prefix,
-        );
-      }
-      alias = `${alias}@${zones.find((z) => z.id === variables.zoneId).name}`;
-
-      const rule: CloudflareEmailRule = {
-        actions: [
-          {
-            type: "forward",
-            value: [variables.destination],
-          },
-        ],
-        matchers: [
-          {
-            field: "to",
-            type: "literal",
-            value: alias,
-          },
-        ],
-        enabled: true,
-        name: `${emailRuleNamePrefix}${variables.description}`,
-        priority: Math.round(Date.now() / 1000),
-      };
-
-      const response = await fetch(
-        `${CloudflareApiBaseUrl}/zones/${variables.zoneId}/email/routing/rules`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(rule),
-        },
-      );
-      const json: CloudflareCreateEmailRuleResponse = await response.json();
-      if (response.ok && json.success) {
-        await setSelectedZoneId(variables.zoneId);
-        await setAliasSettings({
-          format: variables.format,
-          characterCount: variables.characterCount,
-          wordCount: variables.wordCount,
-          separator: variables.separator,
-          prefixFormat: variables.prefixFormat,
-          destination: variables.destination,
-        });
-        setAliasCreateModalOpened(false);
-        aliasCreateForm.reset();
-        if (copyAlias === true) {
-          clipboard.copy(alias);
-        }
-        showNotification({
-          color: "green",
-          title: "Success!",
-          message: "The alias was created and copied to your clipboard!",
-          autoClose: 3000,
-        });
-        return json.result;
-      }
-      console.error(json);
-      showNotification({
-        color: "red",
-        title: "Error",
-        message: json.errors[0].message,
-        autoClose: false,
-      });
-      throw new Error(json.errors[0].message);
-    },
-    {
-      onSuccess: (data, variables) => {
-        return queryClient.invalidateQueries({ queryKey: ["emailRules", variables.zoneId] });
-      },
-    },
-  );
-
-  const aliasEditForm = useForm({
-    initialValues: {
-      id: "",
-      zoneId: "",
-      alias: "",
-      description: "",
-      destination: "",
-      enabled: true,
-    },
-  });
-
-  const editMutation = useMutation(
-    async (variables: typeof aliasEditForm.values) => {
-      const original = rules.find((r) => r.tag === variables.id);
-      const updated: CloudflareEmailRule = {
-        ...original,
-        name: original.name.startsWith(emailRuleNamePrefix)
-          ? `${emailRuleNamePrefix}${variables.description}`
-          : variables.destination,
-        actions: [
-          {
-            type: "forward",
-            value: [variables.destination],
-          },
-        ],
-        enabled: variables.enabled,
-      };
-      const response = await fetch(
-        `${CloudflareApiBaseUrl}/zones/${variables.zoneId}/email/routing/rules/${variables.id}`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updated),
-        },
-      );
-      const json: CloudflareCreateEmailRuleResponse = await response.json();
-      if (response.ok && json.success) {
-        setAliasEditModalOpened(false);
-        aliasEditForm.reset();
-        showNotification({
-          color: "green",
-          title: "Success!",
-          message: "The alias was updated!",
-          autoClose: 3000,
-        });
-        return json.result;
-      }
-      console.error(json);
-      showNotification({
-        color: "red",
-        title: "Error",
-        message: json.errors[0].message,
-        autoClose: false,
-      });
-      throw new Error(json.errors[0].message);
-    },
-    {
-      onSuccess: (data, variables) => {
-        return queryClient.invalidateQueries({ queryKey: ["emailRules", variables.zoneId] });
-      },
-    },
-  );
-
-  const deleteMutation = useMutation(
-    async (variables: { id: string; zoneId: string }) => {
-      const response = await fetch(
-        `${CloudflareApiBaseUrl}/zones/${variables.zoneId}/email/routing/rules/${variables.id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        },
-      );
-      const json: CloudflareCreateEmailRuleResponse = await response.json();
-      if (response.ok && json.success) {
-        showNotification({
-          color: "green",
-          title: "Success!",
-          message: "The alias was deleted!",
-          autoClose: 3000,
-        });
-        return json.result;
-      }
-      console.error(json);
-      showNotification({
-        color: "red",
-        title: "Error",
-        message: json.errors[0].message,
-        autoClose: false,
-      });
-      throw new Error(json.errors[0].message);
-    },
-    {
-      onSuccess: (data, variables) => {
-        return queryClient.invalidateQueries({ queryKey: ["emailRules", variables.zoneId] });
-      },
-    },
-  );
-
   function getAliasBadge(rule: CloudflareEmailRule) {
     const destination = destinations.find((d) => rule.actions[0].value[0] === d.email);
     if (!destination || destination.verified === null) {
@@ -425,246 +186,20 @@ function AliasList() {
 
   return (
     <Stack p="md" spacing="xs">
-      {/* CREATE MODAL */}
-      <Modal
+      <AliasCreateModal
         opened={aliasCreateModalOpened}
-        onClose={() => {
-          if (createMutation.isLoading) {
-            showNotification({
-              color: "red",
-              message: "Cannot be closed right now.",
-              autoClose: 2000,
-            });
-            return;
-          }
-          setAliasCreateModalOpened(false);
-          aliasCreateForm.reset();
-        }}
-        title="Create alias"
-        fullScreen>
-        <form onSubmit={aliasCreateForm.onSubmit((values) => createMutation.mutate(values))}>
-          <Stack spacing="xs">
-            <Select
-              label="Domain"
-              data={zones.map((z) => ({
-                value: z.id,
-                label: z.name,
-              }))}
-              searchable={zones.length > 5}
-              {...aliasCreateForm.getInputProps("zoneId")}
-            />
-            <Select
-              label="Format"
-              data={[
-                {
-                  value: "characters",
-                  label: "Random characters",
-                },
-                {
-                  value: "words",
-                  label: "Random words",
-                },
-                {
-                  value: "custom",
-                  label: "Custom",
-                },
-              ]}
-              {...aliasCreateForm.getInputProps("format")}
-            />
+        onClose={() => setAliasCreateModalOpened(false)}
+      />
 
-            {aliasCreateForm.values.format === "characters" && (
-              <NumberInput
-                defaultValue={5}
-                min={1}
-                max={25}
-                label="Number of characters"
-                {...aliasCreateForm.getInputProps("characterCount")}
-              />
-            )}
-
-            {aliasCreateForm.values.format === "words" && (
-              <NumberInput
-                defaultValue={3}
-                min={1}
-                max={5}
-                label="Number of words"
-                {...aliasCreateForm.getInputProps("wordCount")}
-              />
-            )}
-
-            {aliasCreateForm.values.format === "custom" && (
-              <TextInput
-                label="Custom alias"
-                minLength={1}
-                {...aliasCreateForm.getInputProps("customAlias")}
-              />
-            )}
-
-            <TextInput
-              label="Description"
-              placeholder="Alias description (optional)"
-              {...aliasCreateForm.getInputProps("description")}
-            />
-
-            {(aliasCreateForm.values.format === "characters" ||
-              aliasCreateForm.values.format === "words") && (
-              <Select
-                label="Prefix"
-                data={[
-                  {
-                    value: "none",
-                    label: "None",
-                  },
-                  {
-                    value: "domainWithoutExtension",
-                    label: "Domain without extension",
-                    disabled: parsedHostname === null,
-                  },
-                  {
-                    value: "domainWithExtension",
-                    label: "Base Domain",
-                    disabled: parsedHostname === null,
-                  },
-                  {
-                    value: "fullDomain",
-                    label: "Full domain",
-                    disabled: parsedHostname === null,
-                  },
-                ]}
-                {...aliasCreateForm.getInputProps("prefixFormat")}
-              />
-            )}
-
-            <Select
-              label="Destination"
-              data={destinations.map((z) => ({
-                value: z.email,
-                label: z.email,
-              }))}
-              {...aliasCreateForm.getInputProps("destination")}
-              error={
-                aliasCreateForm.values.destination &&
-                destinations.find((d) => d.email === aliasCreateForm.values.destination)
-                  .verified === null
-                  ? "This address is not verified. You will not receive emails."
-                  : false
-              }
-            />
-
-            <Button type="submit" loading={createMutation.status === "loading"}>
-              Create
-            </Button>
-          </Stack>
-        </form>
-      </Modal>
-
-      {/* EDIT MODAL */}
-      <Modal
+      <AliasEditModal
         opened={aliasEditModalOpened}
-        onClose={() => {
-          if (editMutation.isLoading) {
-            showNotification({
-              color: "red",
-              message: "Cannot be closed right now.",
-              autoClose: 2000,
-            });
-            return;
-          }
-          setAliasEditModalOpened(false);
-        }}
-        title="Edit Alias"
-        fullScreen>
-        <form onSubmit={aliasEditForm.onSubmit((values) => editMutation.mutate(values))}>
-          <Stack spacing="xs">
-            <TextInput label="Alias" disabled {...aliasEditForm.getInputProps("alias")} />
-            <TextInput
-              label="Description"
-              placeholder="Alias description (optional)"
-              {...aliasEditForm.getInputProps("description")}
-            />
-            <Select
-              label="Destination"
-              data={destinations.map((z) => ({
-                value: z.email,
-                label: z.email,
-              }))}
-              {...aliasEditForm.getInputProps("destination")}
-              error={
-                aliasEditForm.values.destination &&
-                destinations.find((d) => d.email === aliasEditForm.values.destination).verified ===
-                  null
-                  ? "This address is not verified. You will not receive emails."
-                  : false
-              }
-            />
+        onClose={() => setAliasEditModalOpened(false)}
+      />
 
-            <Switch
-              label="Enabled"
-              {...aliasEditForm.getInputProps("enabled", { type: "checkbox" })}
-            />
-            <Button type="submit" loading={editMutation.status === "loading"}>
-              Save
-            </Button>
-          </Stack>
-        </form>
-      </Modal>
-
-      {/* DELETE MODAL */}
-      <Modal
+      <AliasDeleteModal
         opened={aliasDeleteModalOpened}
-        onClose={() => {
-          if (deleteMutation.isLoading) {
-            showNotification({
-              color: "red",
-              message: "Cannot be closed right now.",
-              autoClose: 2000,
-            });
-            return;
-          }
-          setAliasDeleteModalOpened(false);
-        }}
-        title="Delete Alias"
-        fullScreen>
-        <Stack spacing="xs">
-          {selectedAliases.length === 0 ? (
-            <Text>
-              Do you want to delete the alias {aliasToDelete?.matchers[0].value}? This cannot be
-              undone.
-            </Text>
-          ) : (
-            <Text>
-              Do you want to delete {selectedAliases.length} aliases? This cannot be undone.
-            </Text>
-          )}
-          <Button.Group>
-            <Button
-              fullWidth
-              disabled={deleteMutation.isLoading}
-              onClick={() => {
-                setAliasDeleteModalOpened(false);
-                setAliasToDelete(null);
-              }}>
-              No
-            </Button>
-            <Button
-              color="red"
-              fullWidth
-              loading={deleteMutation.isLoading}
-              onClick={() => {
-                if (selectedAliases.length > 0) {
-                  selectedAliases.forEach((a) =>
-                    deleteMutation.mutate({ id: a.tag, zoneId: selectedZoneId }),
-                  );
-                } else {
-                  setAliasDeleteModalOpened(false);
-                  deleteMutation.mutate({ id: aliasToDelete?.tag, zoneId: selectedZoneId });
-                }
-              }}>
-              Yes
-            </Button>
-          </Button.Group>
-        </Stack>
-      </Modal>
+        onClose={() => setAliasDeleteModalOpened(false)}
+      />
 
       {/* DOMAIN SELECTOR */}
       <Select
@@ -727,15 +262,7 @@ function AliasList() {
               fullWidth
               leftIcon={<IconPlaylistAdd size={16} />}
               disabled={zones.length === 0 || selectedZoneId === null}
-              onClick={() => {
-                aliasCreateForm.setValues({
-                  zoneId: selectedZoneId,
-                  destination: destinations[0].email,
-                  description: hostname,
-                  ...aliasSettings,
-                });
-                setAliasCreateModalOpened(true);
-              }}>
+              onClick={() => setAliasCreateModalOpened(true)}>
               Create
             </Button>
             <Button
@@ -840,18 +367,15 @@ function AliasList() {
                     <ActionIcon
                       variant="subtle"
                       size="sm"
-                      disabled={
-                        (deleteMutation.isLoading && aliasToDelete === r) || aliasSelectEnabled
-                      }
                       onClick={() => {
-                        aliasEditForm.setValues(() => ({
-                          id: r.tag,
-                          zoneId: selectedZoneId,
-                          alias: r.matchers[0].value,
-                          description: r.name.replace(emailRuleNamePrefix, "").trim(),
-                          destination: r.actions[0].value[0],
-                          enabled: r.enabled,
-                        }));
+                        // aliasEditForm.setValues(() => ({
+                        //   id: r.tag,
+                        //   zoneId: selectedZoneId,
+                        //   alias: r.matchers[0].value,
+                        //   description: r.name.replace(emailRuleNamePrefix, "").trim(),
+                        //   destination: r.actions[0].value[0],
+                        //   enabled: r.enabled,
+                        // }));
                         setAliasEditModalOpened(true);
                       }}>
                       <IconEdit size={16} />
@@ -859,10 +383,6 @@ function AliasList() {
                     <ActionIcon
                       variant="subtle"
                       size="sm"
-                      loading={deleteMutation.isLoading && aliasToDelete === r}
-                      disabled={
-                        (deleteMutation.isLoading && aliasToDelete !== r) || aliasSelectEnabled
-                      }
                       onClick={() => {
                         setAliasToDelete(r);
                         setAliasDeleteModalOpened(true);

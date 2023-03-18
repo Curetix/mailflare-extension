@@ -1,4 +1,6 @@
+import { atom } from "jotai";
 import { atomWithStorage, unstable_NO_STORAGE_VALUE } from "jotai/utils";
+import type { ParseResultListed } from "parse-domain";
 
 import { Storage } from "@plasmohq/storage";
 
@@ -43,6 +45,9 @@ const zonesAtom = atomWithStorage<CloudflareZone[]>("zones", [], storage);
 const accountIdAtom = atomWithStorage<string>("accountId", null, storage);
 const selectedZoneIdAtom = atomWithStorage<string>("selectedZoneId", null, storage);
 
+// State data
+const hostnameAtom = atom<ParseResultListed>(null);
+
 export {
   apiTokenAtom,
   themeAtom,
@@ -55,4 +60,5 @@ export {
   zonesAtom,
   accountIdAtom,
   selectedZoneIdAtom,
+  hostnameAtom,
 };

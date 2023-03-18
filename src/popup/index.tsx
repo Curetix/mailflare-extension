@@ -4,14 +4,16 @@ import { QueryClient } from "@tanstack/query-core";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useAtom } from "jotai";
-import { useState } from "react";
+import { ParseResultType, parseDomain } from "parse-domain";
+import { useEffect, useState } from "react";
+import browser from "webextension-polyfill";
 
 import AliasList from "~components/AliasList";
 import Login from "~components/Login";
 import Settings from "~components/Settings";
 import { popupHeight, popupWidth } from "~const";
 import { ThemeProvider } from "~popup/Theme";
-import { apiTokenAtom, devToolsAtom } from "~utils/storage";
+import { apiTokenAtom, devToolsAtom, hostnameAtom } from "~utils/storage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,7 +26,21 @@ const queryClient = new QueryClient({
 function Popup() {
   const [token] = useAtom(apiTokenAtom);
   const [devToolsEnabled] = useAtom(devToolsAtom);
+  const [hostname, setHostname] = useAtom(hostnameAtom);
+
   const [settingsModalOpened, setSettingsModalOpened] = useState(false);
+
+  useEffect(() => {
+    browser.tabs.query({ active: true }).then(([tab]) => {
+      if (tab && tab.url) {
+        const url = new URL(tab.url);
+        const parsed = parseDomain(url.hostname);
+        if (parsed.type === ParseResultType.Listed) {
+          setHostname(parsed);
+        }
+      }
+    });
+  }, []);
 
   return (
     <ThemeProvider>
