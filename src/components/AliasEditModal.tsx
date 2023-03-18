@@ -24,6 +24,7 @@ export default function AliasEditModal({ opened, onClose }: Props) {
   const queryClient = useQueryClient();
 
   const [destinations] = useAtom(destinationsAtom);
+  const [emailRules, emailRulesDispatch] = useAtom(emailRulesAtom);
   const [token] = useAtom(apiTokenAtom);
 
   const aliasEditForm = useForm({

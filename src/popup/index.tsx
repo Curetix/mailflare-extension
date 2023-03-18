@@ -1,8 +1,7 @@
 import { ActionIcon, Container, Divider, Group, Modal, Text } from "@mantine/core";
 import { IconSettings } from "@tabler/icons-react";
-import { QueryClient } from "@tanstack/query-core";
-import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { useAtom } from "jotai";
 import { ParseResultType, parseDomain } from "parse-domain";
 import { useEffect, useState } from "react";
@@ -15,15 +14,7 @@ import { popupHeight, popupWidth } from "~const";
 import { ThemeProvider } from "~popup/Theme";
 import { queryClient } from "~utils/cloudflare";
 import { apiTokenAtom, devToolsAtom, hostnameAtom } from "~utils/state";
-import { extensionLocalStorageInterface as storage } from "~utils/storage";
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-    },
-  },
-});
+import { extensionStoragePersister } from "~utils/storage";
 
 function Popup() {
   const [token] = useAtom(apiTokenAtom);
@@ -46,7 +37,9 @@ function Popup() {
 
   return (
     <ThemeProvider>
-      <QueryClientProvider client={queryClient}>
+      <PersistQueryClientProvider
+        client={queryClient}
+        persistOptions={{ persister: extensionStoragePersister }}>
         {devToolsEnabled && <ReactQueryDevtools initialIsOpen={false} />}
         <Container w={popupWidth} h={popupHeight} p={0}>
           <Modal
@@ -68,7 +61,7 @@ function Popup() {
           <Divider />
           {token ? <AliasList /> : <Login />}
         </Container>
-      </QueryClientProvider>
+      </PersistQueryClientProvider>
     </ThemeProvider>
   );
 }

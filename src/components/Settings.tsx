@@ -16,8 +16,6 @@ import {
 function Settings() {
   const queryClient = useQueryClient();
 
-  const [destinations, setDestinations] = useAtom(destinationsAtom);
-  const [zones, setZones] = useAtom(zonesAtom);
   const [theme, setTheme] = useAtom(themeAtom);
   const [ruleFilter, setRuleFilter] = useAtom(ruleFilterAtom);
   const [devToolsEnabled, setDevToolsEnabled] = useAtom(devToolsAtom);
@@ -25,8 +23,6 @@ function Settings() {
   const [showCreateButton, setShowCreateButton] = useAtom(showCreateButtonAtom);
 
   const clearCache = async () => {
-    await setZones([]);
-    await setDestinations([]);
     await queryClient.invalidateQueries(["zones"]);
     await queryClient.invalidateQueries(["destinations"]);
     showNotification({

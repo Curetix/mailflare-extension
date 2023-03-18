@@ -1428,10 +1428,10 @@
     "@parcel/utils" "2.8.3"
     nullthrows "1.1.1"
 
-"@plasmohq/parcel-config@0.33.3":
-  version "0.33.3"
-  resolved "https://registry.yarnpkg.com/@plasmohq/parcel-config/-/parcel-config-0.33.3.tgz#258f441f5795f8d87f35bdd144b7b808b4e4d258"
-  integrity sha512-fzITx+asBqAMF3hYT99Wwy0dkiYzkV1sImmWoHrm6sUCXd4cEDbHwbAwMcEEkKaKP5fZyBgmCCfH+JrAps90wA==
+"@plasmohq/parcel-config@0.33.4":
+  version "0.33.4"
+  resolved "https://registry.yarnpkg.com/@plasmohq/parcel-config/-/parcel-config-0.33.4.tgz#a3d973605a448fefa1f6bf0047a4cdac5e9155f0"
+  integrity sha512-OZxC4J6yJ2srjieYdO8la6UcNUhfjp1o/UbEjUU8RebcobqbDbwqwkakkKF4u98kg7rCynjAvm0SJMxPOP3Beg==
   dependencies:
     "@parcel/config-default" "2.8.3"
     "@parcel/core" "2.8.3"
@@ -1461,7 +1461,7 @@
     "@plasmohq/parcel-runtime" "0.18.0"
     "@plasmohq/parcel-transformer-inject-env" "0.2.6"
     "@plasmohq/parcel-transformer-inline-css" "0.3.3"
-    "@plasmohq/parcel-transformer-manifest" "0.14.2"
+    "@plasmohq/parcel-transformer-manifest" "0.14.3"
     "@plasmohq/parcel-transformer-svelte3" "0.4.5"
     "@plasmohq/parcel-transformer-vue3" "0.3.7"
 
@@ -1576,10 +1576,10 @@
     browserslist "4.21.5"
     lightningcss "1.19.0"
 
-"@plasmohq/parcel-transformer-manifest@0.14.2":
-  version "0.14.2"
-  resolved "https://registry.yarnpkg.com/@plasmohq/parcel-transformer-manifest/-/parcel-transformer-manifest-0.14.2.tgz#7507f36d6c7b56fbee3e3ee4a366a5b13285cec1"
-  integrity sha512-hXcP6e8X09K93pr0VuhkCnX+Gja98CwieFeqm2Xv2XPgqJW+2ffBXMKwQnzQ1SLAoRnEYQIpoCmpuVM4ih94Mw==
+"@plasmohq/parcel-transformer-manifest@0.14.3":
+  version "0.14.3"
+  resolved "https://registry.yarnpkg.com/@plasmohq/parcel-transformer-manifest/-/parcel-transformer-manifest-0.14.3.tgz#8f6781a4e61db7afb46827481442b64b4b2162ce"
+  integrity sha512-ylcc2ij5xOo/D4vbKjXEcwr3dc90kchWs9c7Zw5YG3qnnMyfXkV6jYT3JQFw3PtaLjRaQd3jcCATaeO9rrD8hg==
   dependencies:
     "@mischnic/json-sourcemap" "0.1.0"
     "@parcel/core" "2.8.3"
@@ -1633,10 +1633,10 @@
     lodash.clone "4.5.0"
     lodash.isequal "4.5.0"
 
-"@plasmohq/storage@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@plasmohq/storage/-/storage-1.3.0.tgz#245b853b066f59f3c97047976f629f632f3505bd"
-  integrity sha512-qdVGrkpKi0c6byMrdQqig22w/WuGROdQEKyjyBgf9n8hro0Wapt2RbsgaSuGW2LLaN3UELZi4WUyH+SMvJDbFg==
+"@plasmohq/storage@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@plasmohq/storage/-/storage-1.3.1.tgz#79f0b082f4bd6d4f36ae136b7bba35706a2ebe7f"
+  integrity sha512-K+EsksYrpBBnI3ZgWhNKJoKfjCzyEOrhZOC6oxzU9p7iKhvpQOIELY8JlFmc+sUnof+Ta6XwMvLJnxhrlcXt8w==
   dependencies:
     pify "6.1.0"
 
@@ -1876,26 +1876,47 @@
   dependencies:
     remove-accents "0.4.2"
 
-"@tanstack/query-core@4.26.1":
-  version "4.26.1"
-  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-4.26.1.tgz#7a441086c4d3d79e1d156c0a355bd3567213626e"
-  integrity sha512-Zrx2pVQUP4ndnsu6+K/m8zerXSVY8QM+YSbxA1/jbBY21GeCd5oKfYl92oXPK0hPEUtoNuunIdiq0ZMqLos+Zg==
+"@tanstack/query-async-storage-persister@^4.27.1":
+  version "4.27.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-async-storage-persister/-/query-async-storage-persister-4.27.1.tgz#03d2a533f5908c7a0df89f8884fd6a688fa4adbe"
+  integrity sha512-gyKm0PMR1Xn06ZpftaU3cPCWJmO/8OOsaNk1uaMVZXCxxxaoEqkZzm7GNvHczOx7xqflyWdFrRTqu2+SCnvSmA==
+  dependencies:
+    "@tanstack/query-persist-client-core" "4.27.0"
 
-"@tanstack/react-query-devtools@^4.26.1":
-  version "4.26.1"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-query-devtools/-/react-query-devtools-4.26.1.tgz#1895b2c6a257e461fa071a30202565d174e36238"
-  integrity sha512-ts2mA+fyFYFRi3Cee4xBk8Fx6waSFOM+yCkFqwJfGQRGjjTIMYMZPJv4wkv7vy12IVi1SYhL8au22LRKlXS1Zg==
+"@tanstack/query-core@4.27.0", "@tanstack/query-core@^4.27.0":
+  version "4.27.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-4.27.0.tgz#96bcef499008ea080b66611d029655e3ffdf8bea"
+  integrity sha512-sm+QncWaPmM73IPwFlmWSKPqjdTXZeFf/7aEmWh00z7yl2FjqophPt0dE1EHW9P1giMC5rMviv7OUbSDmWzXXA==
+
+"@tanstack/query-persist-client-core@4.27.0":
+  version "4.27.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-persist-client-core/-/query-persist-client-core-4.27.0.tgz#4b0c31a59a858eac9dc24adbe2b02a789d57ae91"
+  integrity sha512-A+dPA7zG0MJOMDeBc/2WcKXW4wV2JMkeBVydobPW9G02M4q0yAj7vI+7SmM2dFuXyIvxXp4KulCywN6abRKDSQ==
+  dependencies:
+    "@tanstack/query-core" "4.27.0"
+
+"@tanstack/react-query-devtools@^4.27.0":
+  version "4.27.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query-devtools/-/react-query-devtools-4.27.0.tgz#a9ea7274bb4a12db30ca888697a62430a382b155"
+  integrity sha512-DWtW1V2hG+I92ixr7uS3z70IMa4Yz4xwDiqyd7Af+qXGSD0cbcsnvBMyIcU20KaXW6PY1OdceX/SBkiioQUjCA==
   dependencies:
     "@tanstack/match-sorter-utils" "^8.7.0"
     superjson "^1.10.0"
     use-sync-external-store "^1.2.0"
 
-"@tanstack/react-query@^4.26.1":
-  version "4.26.1"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-4.26.1.tgz#d254f6b7b297b5ae4204c84e6622506e5ec77d09"
-  integrity sha512-i3dnz4TOARGIXrXQ5P7S25Zfi4noii/bxhcwPurh2nrf5EUCcAt/95TB2HSmMweUBx206yIMWUMEQ7ptd6zwDg==
+"@tanstack/react-query-persist-client@^4.27.0":
+  version "4.27.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query-persist-client/-/react-query-persist-client-4.27.0.tgz#7bc0b9f670de9f48fc5b1e1b417309d04ed64214"
+  integrity sha512-URFsByVeCf4CZoQ6S7vDeB9ioMyW/o6z42rbxidzkFBUu+jVs7ei4cADALD+YSwru6aj+JE5GhTNWHM9Uozhhw==
   dependencies:
-    "@tanstack/query-core" "4.26.1"
+    "@tanstack/query-persist-client-core" "4.27.0"
+
+"@tanstack/react-query@^4.27.0":
+  version "4.27.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-4.27.0.tgz#624da94e2e44e08f846f8caf91320bf93bd72ac7"
+  integrity sha512-9S49LTFenWbxVHx0iR6qUXP+MKL5kwz/mV9pzfNXvdIM1R0vT+hiecCCL+ox/tD2glAQ51JHHMffQaRuH7wYRA==
+  dependencies:
+    "@tanstack/query-core" "4.27.0"
     use-sync-external-store "^1.2.0"
 
 "@trysound/sax@0.2.0":
@@ -3429,6 +3450,11 @@ javascript-natural-sort@0.7.1:
   resolved "https://registry.npmjs.org/javascript-natural-sort/-/javascript-natural-sort-0.7.1.tgz"
   integrity sha512-nO6jcEfZWQXDhOiBtG2KvKyEptz7RVbpGP4vTD2hLBdmNQSsCiicO2Ioinv6UI4y9ukqnBpy+XZ9H6uLNgJTlw==
 
+jotai-tanstack-query@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/jotai-tanstack-query/-/jotai-tanstack-query-0.6.0.tgz#2786542d086570e41f49673bfc55c7b70df8f05e"
+  integrity sha512-87oD6MnjrgfLWeCJXB/dQt4xyCmyFYZeG9jw4Y2lIprtwLKS5s/vCEjNP5fnYG2nuPBkopiRECTEqtIysvHSxg==
+
 jotai@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/jotai/-/jotai-2.0.3.tgz#3b67cda9f6d5feb70a14db0b842a9873aacda8b5"
@@ -4161,10 +4187,10 @@ pirates@^4.0.1:
   resolved "https://registry.npmjs.org/pirates/-/pirates-4.0.5.tgz"
   integrity sha512-8V9+HQPupnaXMA23c5hvl69zXvTwTzyAYasnkb0Tts4XvO4CliqONMOnvlq26rkhLC3nWDFBJf73LU1e1VZLaQ==
 
-plasmo@0.67.3:
-  version "0.67.3"
-  resolved "https://registry.yarnpkg.com/plasmo/-/plasmo-0.67.3.tgz#b549e15f97ea26f8b92ffde62f3b4021437653a7"
-  integrity sha512-QOYOyThRzSweX0rn+r1Ycv07G5pV3XFU2U88wipX2/25w0KOo2fW2ea7Bx5YtqsfEIevQ4y9NXqMkdH91HNSqQ==
+plasmo@0.67.4:
+  version "0.67.4"
+  resolved "https://registry.yarnpkg.com/plasmo/-/plasmo-0.67.4.tgz#9dc2eced768385bdf4c39fe429c442298faed85a"
+  integrity sha512-j+wsxvEnzosNGprvXdoDzNRuKvZgcpPqFFYO+Em9ekqJnZ6RLP7GYpv0mXLDtq8RTQz1IYSyOFHyoecEtjsqaQ==
   dependencies:
     "@expo/spawn-async" "1.7.0"
     "@parcel/core" "2.8.3"
@@ -4172,7 +4198,7 @@ plasmo@0.67.3:
     "@parcel/package-manager" "2.8.3"
     "@parcel/watcher" "2.1.0"
     "@plasmohq/init" "0.6.2"
-    "@plasmohq/parcel-config" "0.33.3"
+    "@plasmohq/parcel-config" "0.33.4"
     "@plasmohq/parcel-core" "0.0.0"
     archiver "5.3.1"
     buffer "6.0.3"
@@ -4197,7 +4223,7 @@ plasmo@0.67.3:
     sharp "0.31.1"
     tempy "3.0.0"
     typescript "4.9.5"
-    ws "8.12.1"
+    ws "8.13.0"
 
 postcss-load-config@^3.0.1:
   version "3.1.4"
@@ -5153,10 +5179,10 @@ wrappy@1:
   resolved "https://registry.npmjs.org/wrappy/-/wrappy-1.0.2.tgz"
   integrity sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==
 
-ws@8.12.1:
-  version "8.12.1"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-8.12.1.tgz#c51e583d79140b5e42e39be48c934131942d4a8f"
-  integrity sha512-1qo+M9Ba+xNhPB+YTWUlK6M17brTut5EXbcBaMRN5pH5dFrXz7lzz1ChFSUq3bOUl8yEvSenhHmYUNJxFzdJew==
+ws@8.13.0:
+  version "8.13.0"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-8.13.0.tgz#9a9fb92f93cf41512a0735c8f4dd09b8a1211cd0"
+  integrity sha512-x9vcZYTrFPC7aSIbj7sRCYo7L/Xb8Iy+pW0ng0wt2vCJv7M9HOMy0UoN3rr+IFC7hb7vXoqS+P9ktyLLLhO+LA==
 
 xxhash-wasm@^0.4.2:
   version "0.4.2"

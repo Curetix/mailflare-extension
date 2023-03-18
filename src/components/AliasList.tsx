@@ -54,113 +54,25 @@ function AliasList() {
   const queryClient = useQueryClient();
   const clipboard = useClipboard();
 
-  const [destinations, setDestinations] = useAtom(destinationsAtom);
-  const [zones, setZones] = useAtom(zonesAtom);
-  const [accountId, setAccountId] = useAtom(accountIdAtom);
-  const [selectedZoneId, setSelectedZoneId] = useAtom(selectedZoneIdAtom);
+  const [zones] = useAtom(zonesAtom);
+  const [zonesStatus] = useAtom(zonesStatusAtom);
+  const [destinations] = useAtom(destinationsAtom);
+  const [destinationsStatus] = useAtom(destinationsStatusAtom);
+  const [emailRules, emailRulesDispatch] = useAtom(emailRulesAtom);
+  const [emailRulesStatus] = useAtom(emailRulesStatusAtom);
 
-  const [token] = useAtom(apiTokenAtom);
-  const [ruleFilter] = useAtom(ruleFilterAtom);
+  const [selectedZoneId, setSelectedZoneId] = useAtom(selectedZoneIdAtom);
 
   const [aliasSelectEnabled, setAliasSelectEnabled] = useState(false);
   const [selectedAliases, setSelectedAliases] = useState<CloudflareEmailRule[]>([]);
   const [aliasCreateModalOpened, setAliasCreateModalOpened] = useState(false);
   const [aliasEditModalOpened, setAliasEditModalOpened] = useState(false);
   const [aliasDeleteModalOpened, setAliasDeleteModalOpened] = useState(false);
-  const [aliasToDelete, setAliasToDelete] = useState<CloudflareEmailRule>(null);
-
-  const {
-    status: zonesStatus,
-    error: zonesError,
-    isFetching: zonesFetching,
-  } = useQuery(
-    ["zones"],
-    async () => {
-      const response = await fetch(`${CloudflareApiBaseUrl}/zones`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const json: CloudflareListZonesResponse = await response.json();
-      if (response.ok && json.success) {
-        await setZones(json.result);
-        if (json.result.length > 0) {
-          await setAccountId(json.result[0].account.id);
-        } else {
-          await setAccountId(null);
-          await setSelectedZoneId(null);
-        }
-        return json.result;
-      }
-      console.error(json);
-      throw new Error(json.errors[0].message);
-    },
-    { enabled: token !== null, retry: 1 },
-  );
-
-  const {
-    status: destinationsStatus,
-    error: destinationsError,
-    isFetching: destinationsFetching,
-  } = useQuery(
-    ["destinations"],
-    async () => {
-      const response = await fetch(
-        `${CloudflareApiBaseUrl}/accounts/${accountId}/email/routing/addresses`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-      const json: CloudflareListEmailDestinationsResponse = await response.json();
-      if (response.ok && json.success) {
-        await setDestinations(json.result);
-        return json.result;
-      }
-      console.error(json);
-      throw new Error(json.errors[0].message);
-    },
-    { enabled: accountId !== null, retry: 1 },
-  );
-
-  const {
-    status: rulesStatus,
-    error: rulesError,
-    data: rules,
-    isFetching: rulesFetching,
-  } = useQuery(
-    ["emailRules", selectedZoneId],
-    async ({ queryKey }) => {
-      const response = await fetch(
-        `${CloudflareApiBaseUrl}/zones/${queryKey[1]}/email/routing/rules`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-      const json: CloudflareListEmailRulesResponse = await response.json();
-      if (response.ok && json.success) {
-        const rules = json.result.filter(
-          (r) =>
-            (!ruleFilter || r.name.toLowerCase().startsWith(emailRuleNamePrefix)) &&
-            r.matchers[0].type === "literal" &&
-            r.actions[0].type === "forward",
-        );
-        // Filter selectedAliases in case something was deleted
-        setSelectedAliases(selectedAliases.filter((s) => rules.includes(s)));
-        return rules;
-      }
-      console.error(json);
-      throw new Error(json.errors[0].message);
-    },
-    { enabled: !!zones && zones.length > 0 && !!selectedZoneId, retry: 1 },
-  );
+  const [aliasToDelete, setAliasToDelete] = useState<CloudflareEmailRule | null>(null);
 
   function getAliasBadge(rule: CloudflareEmailRule) {
     const destination = destinations.find((d) => rule.actions[0].value[0] === d.email);
-    if (!destination || destination.verified === null) {
+    if (destinations.length > 0 && (!destination || destination.verified === null)) {
       return (
         <Badge color="red" variant="filled" size="xs">
           Invalid
@@ -205,7 +117,7 @@ function AliasList() {
         value={selectedZoneId}
         onChange={setSelectedZoneId}
         disabled={zones.length === 0}
-        rightSection={zonesFetching ? <Loader size="xs" /> : undefined}
+        rightSection={zonesStatus.isFetching ? <Loader size="xs" /> : undefined}
         dropdownPosition="bottom"
         data={zones.map((z) => ({
           value: z.id,
@@ -269,9 +181,9 @@ function AliasList() {
               compact
               fullWidth
               leftIcon={<IconRefresh size={16} />}
-              loading={rulesFetching}
+              loading={emailRulesStatus.isFetching}
               loaderProps={{ size: 16 }}
-              onClick={() => queryClient.invalidateQueries(["emailRules", selectedZoneId])}>
+              onClick={() => emailRulesDispatch({ type: "refetch" })}>
               Refresh
             </Button>
           </>
@@ -281,39 +193,39 @@ function AliasList() {
       {/* ALIAS LIST AREA */}
       <ScrollArea h={aliasListHeight}>
         <Stack spacing="xs">
-          {zonesStatus === "success" && zones.length === 0 && (
+          {zonesStatus.isSuccess && zones.length === 0 && (
             <Alert title="Oh no!" color="red">
               No domains for this Cloudflare account or API token.
             </Alert>
           )}
 
-          {zonesStatus === "error" && (
+          {zonesStatus.isError && (
             <Alert title="Oh no!" color="red">
-              {`Something went wrong while loading your domains: ${zonesError}`}
+              {`Something went wrong while loading your domains: ${zonesStatus.error}`}
             </Alert>
           )}
 
-          {!!selectedZoneId && rulesStatus === "loading" && (
+          {!!selectedZoneId && emailRulesStatus.isLoading && (
             <Center>
               <Loader height={aliasListHeight - 5} />
             </Center>
           )}
 
-          {rulesStatus === "success" && rules.length === 0 && (
+          {emailRulesStatus.isSuccess && emailRules.length === 0 && (
             <Alert title="Bummer!" color="yellow">
               There are no aliases for this domain yet.
             </Alert>
           )}
 
-          {rulesStatus === "error" && (
+          {emailRulesStatus.isError && (
             <Alert title="Oh no!" color="red">
-              {`Something went wrong while loading your aliases: ${rulesError}`}
+              {`Something went wrong while loading your aliases: ${emailRulesStatus.error}`}
             </Alert>
           )}
 
           {/* ALIAS LIST */}
-          {rulesStatus === "success" &&
-            rules.map((r) => (
+          {emailRulesStatus.isSuccess &&
+            emailRules.map((r) => (
               <Card
                 p="xs"
                 radius="sm"

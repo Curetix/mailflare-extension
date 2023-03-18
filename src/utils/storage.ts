@@ -1,3 +1,5 @@
+import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
+
 import { Storage } from "@plasmohq/storage";
 
 export const extensionLocalStorage = new Storage({
@@ -15,3 +17,7 @@ export const extensionLocalStorageInterface = {
     return extensionLocalStorage.remove(key);
   },
 };
+
+export const extensionStoragePersister = createAsyncStoragePersister({
+  storage: extensionLocalStorageInterface,
+});

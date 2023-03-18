@@ -1,5 +1,9 @@
-import {atomWithStorage} from "jotai/utils";
-import {extensionLocalStorageInterface as storage} from "~utils/storage";
+import { QueryClient } from "@tanstack/query-core";
+import { atom } from "jotai";
+import { atomsWithQuery } from "jotai-tanstack-query";
+
+import { emailRuleNamePrefix } from "~const";
+import { apiTokenAtom, ruleFilterAtom, selectedZoneIdAtom } from "~utils/state";
 
 const CloudflareApiBaseUrl = "https://api.cloudflare.com/client/v4";
 
@@ -98,12 +102,99 @@ export type {
   CloudflareCreateEmailRuleResponse,
 };
 
-const destinationsAtom = atomWithStorage<CloudflareEmailDestination[]>("destination", [], storage);
-const zonesAtom = atomWithStorage<CloudflareZone[]>("zones", [], storage);
-const accountIdAtom = atomWithStorage<string | null>("accountId", null, storage);
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      cacheTime: 1000 * 60 * 60,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
-export {
-  destinationsAtom,
-  zonesAtom,
-  accountIdAtom,
-}
+const queryClientAtom = atom(queryClient);
+
+export const [zonesAtom, zonesStatusAtom] = atomsWithQuery(
+  (get) => ({
+    queryKey: ["zones"],
+    queryFn: async () => {
+      const response = await fetch(`${CloudflareApiBaseUrl}/zones`, {
+        headers: {
+          Authorization: `Bearer ${get(apiTokenAtom)}`,
+        },
+      });
+      const json: CloudflareListZonesResponse = await response.json();
+      if (response.ok && json.success) {
+        return json.result;
+      }
+      console.error(json);
+      throw new Error(json.errors[0].message);
+    },
+    enabled: !!get(apiTokenAtom),
+    placeholderData: [],
+    retry: 1,
+  }),
+  (get) => get(queryClientAtom),
+);
+
+const accountIdAtom = atom((get) => {
+  const zones = get(zonesAtom);
+  if (!zones || zones instanceof Promise || zones.length === 0) return null;
+  return zones[0].account.id;
+});
+
+export const [destinationsAtom, destinationsStatusAtom] = atomsWithQuery(
+  (get) => ({
+    queryKey: ["destinations", get(accountIdAtom)],
+    queryFn: async ({ queryKey }) => {
+      const response = await fetch(
+        `${CloudflareApiBaseUrl}/accounts/${queryKey[1]}/email/routing/addresses`,
+        {
+          headers: {
+            Authorization: `Bearer ${get(apiTokenAtom)}`,
+          },
+        },
+      );
+      const json: CloudflareListEmailDestinationsResponse = await response.json();
+      if (response.ok && json.success) {
+        return json.result;
+      }
+      console.error(json);
+      throw new Error(json.errors[0].message);
+    },
+    enabled: !!get(accountIdAtom),
+    placeholderData: [],
+    retry: 1,
+  }),
+  (get) => get(queryClientAtom),
+);
+
+export const [emailRulesAtom, emailRulesStatusAtom] = atomsWithQuery(
+  (get) => ({
+    queryKey: ["emailRules", get(selectedZoneIdAtom)],
+    queryFn: async ({ queryKey }) => {
+      const response = await fetch(
+        `${CloudflareApiBaseUrl}/zones/${queryKey[1]}/email/routing/rules`,
+        {
+          headers: {
+            Authorization: `Bearer ${get(apiTokenAtom)}`,
+          },
+        },
+      );
+      const json: CloudflareListEmailRulesResponse = await response.json();
+      if (response.ok && json.success) {
+        return json.result.filter(
+          (r) =>
+            (!get(ruleFilterAtom) || r.name.toLowerCase().startsWith(emailRuleNamePrefix)) &&
+            r.matchers[0].type === "literal" &&
+            r.actions[0].type === "forward",
+        );
+      }
+      console.error(json);
+      throw new Error(json.errors[0].message);
+    },
+    enabled: !!get(selectedZoneIdAtom),
+    placeholderData: [],
+    retry: 1,
+  }),
+  (get) => get(queryClientAtom),
+);
