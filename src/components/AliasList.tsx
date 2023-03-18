@@ -38,15 +38,14 @@ import {
   CloudflareListEmailDestinationsResponse,
   CloudflareListEmailRulesResponse,
   CloudflareListZonesResponse,
-} from "~utils/cloudflare";
-import {
-  accountIdAtom,
-  apiTokenAtom,
   destinationsAtom,
-  ruleFilterAtom,
-  selectedZoneIdAtom,
+  destinationsStatusAtom,
+  emailRulesAtom,
+  emailRulesStatusAtom,
   zonesAtom,
-} from "~utils/storage";
+  zonesStatusAtom,
+} from "~utils/cloudflare";
+import { apiTokenAtom, ruleFilterAtom, selectedZoneIdAtom } from "~utils/state";
 
 // popupHeight - header - divider - padding - select - button group - gap
 const aliasListHeight = popupHeight - 52 - 1 - 16 * 2 - 36 - 26 - 10 * 2;

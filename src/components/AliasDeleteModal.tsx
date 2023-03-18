@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 
 import { CloudflareApiBaseUrl, CloudflareCreateEmailRuleResponse } from "~utils/cloudflare";
-import { apiTokenAtom } from "~utils/storage";
+import { apiTokenAtom } from "~utils/state";
 
 type Props = {
   opened: boolean;

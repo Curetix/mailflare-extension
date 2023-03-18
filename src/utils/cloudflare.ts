@@ -1,3 +1,6 @@
+import {atomWithStorage} from "jotai/utils";
+import {extensionLocalStorageInterface as storage} from "~utils/storage";
+
 const CloudflareApiBaseUrl = "https://api.cloudflare.com/client/v4";
 
 type CloudflareVerifyToken = {
@@ -94,3 +97,13 @@ export type {
   CloudflareListEmailRulesResponse,
   CloudflareCreateEmailRuleResponse,
 };
+
+const destinationsAtom = atomWithStorage<CloudflareEmailDestination[]>("destination", [], storage);
+const zonesAtom = atomWithStorage<CloudflareZone[]>("zones", [], storage);
+const accountIdAtom = atomWithStorage<string | null>("accountId", null, storage);
+
+export {
+  destinationsAtom,
+  zonesAtom,
+  accountIdAtom,
+}

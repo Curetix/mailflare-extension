@@ -11,16 +11,16 @@ import {
   CloudflareApiBaseUrl,
   CloudflareCreateEmailRuleResponse,
   CloudflareEmailRule,
+  destinationsAtom,
+  zonesAtom,
 } from "~utils/cloudflare";
 import {
   aliasSettingsAtom,
   apiTokenAtom,
   copyAliasAtom,
-  destinationsAtom,
   hostnameAtom,
   selectedZoneIdAtom,
-  zonesAtom,
-} from "~utils/storage";
+} from "~utils/state";
 
 type Props = {
   opened: boolean;

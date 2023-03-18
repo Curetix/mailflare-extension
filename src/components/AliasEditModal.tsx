@@ -1,26 +1,19 @@
 import { Button, Modal, NumberInput, Select, Stack, Switch, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useClipboard } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 
 import { emailRuleNamePrefix } from "~const";
-import { generateAlias } from "~utils/alias";
 import {
   CloudflareApiBaseUrl,
   CloudflareCreateEmailRuleResponse,
   CloudflareEmailRule,
-} from "~utils/cloudflare";
-import {
-  aliasSettingsAtom,
-  apiTokenAtom,
-  copyAliasAtom,
   destinationsAtom,
-  hostnameAtom,
-  selectedZoneIdAtom,
-  zonesAtom,
-} from "~utils/storage";
+  emailRulesAtom,
+  emailRulesStatusAtom,
+} from "~utils/cloudflare";
+import { apiTokenAtom } from "~utils/state";
 
 type Props = {
   opened: boolean;

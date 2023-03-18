@@ -4,7 +4,7 @@ import { useAtom } from "jotai";
 import { useState } from "react";
 
 import { CloudflareApiBaseUrl, CloudflareVerifyTokenResponse } from "~utils/cloudflare";
-import { apiTokenAtom } from "~utils/storage";
+import { apiTokenAtom } from "~utils/state";
 
 function Login() {
   const [storedToken, setStoredToken] = useAtom(apiTokenAtom);

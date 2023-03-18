@@ -7,13 +7,11 @@ import { useAtom } from "jotai";
 import { extensionName, extensionVersion, popupHeight } from "~const";
 import {
   copyAliasAtom,
-  destinationsAtom,
   devToolsAtom,
   ruleFilterAtom,
   showCreateButtonAtom,
   themeAtom,
-  zonesAtom,
-} from "~utils/storage";
+} from "~utils/state";
 
 function Settings() {
   const queryClient = useQueryClient();

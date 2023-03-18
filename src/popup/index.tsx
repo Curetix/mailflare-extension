@@ -13,7 +13,9 @@ import Login from "~components/Login";
 import Settings from "~components/Settings";
 import { popupHeight, popupWidth } from "~const";
 import { ThemeProvider } from "~popup/Theme";
-import { apiTokenAtom, devToolsAtom, hostnameAtom } from "~utils/storage";
+import { queryClient } from "~utils/cloudflare";
+import { apiTokenAtom, devToolsAtom, hostnameAtom } from "~utils/state";
+import { extensionLocalStorageInterface as storage } from "~utils/storage";
 
 const queryClient = new QueryClient({
   defaultOptions: {

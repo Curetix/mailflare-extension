@@ -4,7 +4,7 @@ import { Notifications } from "@mantine/notifications";
 import { useAtom } from "jotai";
 import type { PropsWithChildren } from "react";
 
-import { themeAtom } from "~utils/storage";
+import { themeAtom } from "~utils/state";
 
 interface Props extends PropsWithChildren {
   emotionCache?: EmotionCache;
