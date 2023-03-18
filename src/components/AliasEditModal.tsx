@@ -46,8 +46,12 @@ export default function AliasEditModal({ opened, onClose }: Props) {
 
   const editMutation = useMutation(
     async (variables: typeof aliasEditForm.values) => {
-      // const original = rules.find((r) => r.tag === variables.id);
-      const original = undefined;
+      const original = emailRules.find((r) => r.tag === variables.id);
+
+      if (!original) {
+        throw new Error("Could not find the alias to be edited.");
+      }
+
       const updated: CloudflareEmailRule = {
         ...original,
         name: original.name.startsWith(emailRuleNamePrefix)
@@ -133,8 +137,7 @@ export default function AliasEditModal({ opened, onClose }: Props) {
             {...aliasEditForm.getInputProps("destination")}
             error={
               aliasEditForm.values.destination &&
-              destinations.find((d) => d.email === aliasEditForm.values.destination).verified ===
-                null
+              !destinations.find((d) => d.email === aliasEditForm.values.destination)?.verified
                 ? "This address is not verified. You will not receive emails."
                 : false
             }

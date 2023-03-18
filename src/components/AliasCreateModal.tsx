@@ -63,7 +63,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
       } else {
         let prefix = "";
         if (hostname !== null) {
-          if (variables.prefixFormat === "domainWithoutExtension") {
+          if (variables.prefixFormat === "domainWithoutExtension" && hostname.domain) {
             prefix = hostname.domain;
           } else if (variables.prefixFormat === "domainWithExtension") {
             prefix = `${hostname.domain}.${hostname.topLevelDomains.join(".")}`;
@@ -80,7 +80,13 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
           prefix,
         );
       }
-      alias = `${alias}@${zones.find((z) => z.id === variables.zoneId).name}`;
+      const zone = zones.find((z) => z.id === variables.zoneId);
+
+      if (!zone) {
+        throw new Error("Could not find the domains zone.");
+      }
+
+      alias = `${alias}@${zone.name}`;
 
       const rule: CloudflareEmailRule = {
         actions: [
@@ -271,8 +277,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
             {...aliasCreateForm.getInputProps("destination")}
             error={
               aliasCreateForm.values.destination &&
-              destinations.find((d) => d.email === aliasCreateForm.values.destination).verified ===
-                null
+              !destinations.find((d) => d.email === aliasCreateForm.values.destination)?.verified
                 ? "This address is not verified. You will not receive emails."
                 : false
             }
