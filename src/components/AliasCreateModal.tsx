@@ -11,8 +11,8 @@ import {
   CloudflareApiBaseUrl,
   CloudflareCreateEmailRuleResponse,
   CloudflareEmailRule,
-  destinationsAtom,
-  zonesAtom,
+  destinationsStatusAtom,
+  zonesStatusAtom,
 } from "~utils/cloudflare";
 import {
   aliasSettingsAtom,
@@ -31,12 +31,13 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
   const queryClient = useQueryClient();
   const clipboard = useClipboard();
 
-  const [destinations] = useAtom(destinationsAtom);
-  const [zones] = useAtom(zonesAtom);
+  const [destinations] = useAtom(destinationsStatusAtom);
+  const [zones] = useAtom(zonesStatusAtom);
+
   const [token] = useAtom(apiTokenAtom);
   const [selectedZoneId, setSelectedZoneId] = useAtom(selectedZoneIdAtom);
   const [aliasSettings, setAliasSettings] = useAtom(aliasSettingsAtom);
-  const [copyAlias, setCopyAlias] = useAtom(copyAliasAtom);
+  const [copyAlias] = useAtom(copyAliasAtom);
 
   const [hostname] = useAtom(hostnameAtom);
 
@@ -80,7 +81,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
           prefix,
         );
       }
-      const zone = zones.find((z) => z.id === variables.zoneId);
+      const zone = zones.data?.find((z) => z.id === variables.zoneId);
 
       if (!zone) {
         throw new Error("Could not find the domains zone.");
@@ -131,7 +132,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
         });
         // TODO: close modal here
         aliasCreateForm.reset();
-        if (copyAlias === true) {
+        if (copyAlias) {
           clipboard.copy(alias);
         }
         showNotification({
@@ -179,11 +180,18 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
         <Stack spacing="xs">
           <Select
             label="Domain"
-            data={zones.map((z) => ({
-              value: z.id,
-              label: z.name,
-            }))}
-            searchable={zones.length > 5}
+            data={
+              zones.data?.map((z) => ({
+                value: z.id,
+                label: z.name,
+              })) || []
+            }
+            searchable={zones.isSuccess && zones.data.length > 5}
+            error={
+              !zones.data || zones.isError
+                ? zones.error?.toString() || "Could not load domains"
+                : undefined
+            }
             {...aliasCreateForm.getInputProps("zoneId")}
           />
           <Select
@@ -270,16 +278,21 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
 
           <Select
             label="Destination"
-            data={destinations.map((z) => ({
-              value: z.email,
-              label: z.email,
-            }))}
+            data={
+              destinations.data?.map((z) => ({
+                value: z.email,
+                label: z.email,
+              })) || []
+            }
             {...aliasCreateForm.getInputProps("destination")}
             error={
-              aliasCreateForm.values.destination &&
-              !destinations.find((d) => d.email === aliasCreateForm.values.destination)?.verified
-                ? "This address is not verified. You will not receive emails."
-                : false
+              ((!destinations.data || destinations.isError) &&
+                (destinations.error?.toString() || "Error loading destinations")) ||
+              (aliasCreateForm.values.destination &&
+                !destinations.data?.find((d) => d.email === aliasCreateForm.values.destination)
+                  ?.verified &&
+                "This address is not verified. You will not receive emails.") ||
+              false
             }
           />
 

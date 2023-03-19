@@ -137,9 +137,9 @@ export const [zonesAtom, zonesStatusAtom] = atomsWithQuery(
 );
 
 const accountIdAtom = atom((get) => {
-  const zones = get(zonesAtom);
-  if (!zones || zones instanceof Promise || zones.length === 0) return null;
-  return zones[0].account.id;
+  const zones = get(zonesStatusAtom);
+  if (!zones.isSuccess || !zones.data || zones.data.length === 0) return null;
+  return zones.data[0].account.id;
 });
 
 export const [destinationsAtom, destinationsStatusAtom] = atomsWithQuery(

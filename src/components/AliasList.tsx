@@ -24,7 +24,6 @@ import {
   IconRefresh,
   IconTrash,
 } from "@tabler/icons-react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { useState } from "react";
 
@@ -33,33 +32,22 @@ import AliasDeleteModal from "~components/AliasDeleteModal";
 import AliasEditModal from "~components/AliasEditModal";
 import { emailRuleNamePrefix, popupHeight } from "~const";
 import {
-  CloudflareApiBaseUrl,
   CloudflareEmailRule,
-  CloudflareListEmailDestinationsResponse,
-  CloudflareListEmailRulesResponse,
-  CloudflareListZonesResponse,
-  destinationsAtom,
   destinationsStatusAtom,
-  emailRulesAtom,
   emailRulesStatusAtom,
-  zonesAtom,
   zonesStatusAtom,
 } from "~utils/cloudflare";
-import { apiTokenAtom, ruleFilterAtom, selectedZoneIdAtom } from "~utils/state";
+import { selectedZoneIdAtom } from "~utils/state";
 
 // popupHeight - header - divider - padding - select - button group - gap
 const aliasListHeight = popupHeight - 52 - 1 - 16 * 2 - 36 - 26 - 10 * 2;
 
 function AliasList() {
-  const queryClient = useQueryClient();
   const clipboard = useClipboard();
 
-  const [zones] = useAtom(zonesAtom);
-  const [zonesStatus] = useAtom(zonesStatusAtom);
-  const [destinations] = useAtom(destinationsAtom);
-  const [destinationsStatus] = useAtom(destinationsStatusAtom);
-  const [emailRules, emailRulesDispatch] = useAtom(emailRulesAtom);
-  const [emailRulesStatus] = useAtom(emailRulesStatusAtom);
+  const [zones] = useAtom(zonesStatusAtom);
+  const [destinations] = useAtom(destinationsStatusAtom);
+  const [emailRules, emailRulesDispatch] = useAtom(emailRulesStatusAtom);
 
   const [selectedZoneId, setSelectedZoneId] = useAtom(selectedZoneIdAtom);
 
@@ -71,8 +59,12 @@ function AliasList() {
   const [aliasToDelete, setAliasToDelete] = useState<CloudflareEmailRule | null>(null);
 
   function getAliasBadge(rule: CloudflareEmailRule) {
-    const destination = destinations.find((d) => rule.actions[0].value[0] === d.email);
-    if (destinations.length > 0 && (!destination || destination.verified === null)) {
+    const destination = destinations.data?.find((d) => rule.actions[0].value[0] === d.email);
+    if (
+      destinations.data &&
+      destinations.data.length > 0 &&
+      (!destination || destination.verified === null)
+    ) {
       return (
         <Badge color="red" variant="filled" size="xs">
           Invalid
@@ -116,15 +108,17 @@ function AliasList() {
       <Select
         value={selectedZoneId}
         onChange={setSelectedZoneId}
-        disabled={zones.length === 0}
-        rightSection={zonesStatus.isFetching ? <Loader size="xs" /> : undefined}
+        disabled={!zones.data || zones.data.length === 0}
+        rightSection={zones.isFetching ? <Loader size="xs" /> : undefined}
         dropdownPosition="bottom"
-        data={zones.map((z) => ({
-          value: z.id,
-          label: z.name,
-        }))}
+        data={
+          zones.data?.map((z) => ({
+            value: z.id,
+            label: z.name,
+          })) || []
+        }
         placeholder="Domain"
-        searchable={zones.length > 5}
+        searchable={zones.isSuccess && zones.data.length > 5}
       />
 
       {/* ACTION BUTTONS */}
@@ -172,7 +166,7 @@ function AliasList() {
               compact
               fullWidth
               leftIcon={<IconPlaylistAdd size={16} />}
-              disabled={zones.length === 0 || selectedZoneId === null}
+              disabled={!zones.data || zones.data.length === 0 || selectedZoneId === null}
               onClick={() => setAliasCreateModalOpened(true)}>
               Create
             </Button>
@@ -181,7 +175,7 @@ function AliasList() {
               compact
               fullWidth
               leftIcon={<IconRefresh size={16} />}
-              loading={emailRulesStatus.isFetching}
+              loading={emailRules.isFetching}
               loaderProps={{ size: 16 }}
               onClick={() => emailRulesDispatch({ type: "refetch" })}>
               Refresh
@@ -193,39 +187,39 @@ function AliasList() {
       {/* ALIAS LIST AREA */}
       <ScrollArea h={aliasListHeight}>
         <Stack spacing="xs">
-          {zonesStatus.isSuccess && zones.length === 0 && (
+          {zones.isSuccess && zones.data.length === 0 && (
             <Alert title="Oh no!" color="red">
               No domains for this Cloudflare account or API token.
             </Alert>
           )}
 
-          {zonesStatus.isError && (
+          {zones.isError && (
             <Alert title="Oh no!" color="red">
-              {`Something went wrong while loading your domains: ${zonesStatus.error}`}
+              {`Something went wrong while loading your domains: ${zones.error}`}
             </Alert>
           )}
 
-          {!!selectedZoneId && emailRulesStatus.isLoading && (
+          {!!selectedZoneId && emailRules.isLoading && (
             <Center>
               <Loader height={aliasListHeight - 5} />
             </Center>
           )}
 
-          {emailRulesStatus.isSuccess && emailRules.length === 0 && (
+          {emailRules.isSuccess && emailRules.data.length === 0 && (
             <Alert title="Bummer!" color="yellow">
               There are no aliases for this domain yet.
             </Alert>
           )}
 
-          {emailRulesStatus.isError && (
+          {emailRules.isError && (
             <Alert title="Oh no!" color="red">
-              {`Something went wrong while loading your aliases: ${emailRulesStatus.error}`}
+              {`Something went wrong while loading your aliases: ${emailRules.error}`}
             </Alert>
           )}
 
           {/* ALIAS LIST */}
-          {emailRulesStatus.isSuccess &&
-            emailRules.map((r) => (
+          {emailRules.isSuccess &&
+            emailRules.data.map((r) => (
               <Card
                 p="xs"
                 radius="sm"

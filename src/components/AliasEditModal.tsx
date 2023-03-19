@@ -1,4 +1,4 @@
-import { Button, Modal, NumberInput, Select, Stack, Switch, TextInput } from "@mantine/core";
+import { Button, Modal, Select, Stack, Switch, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -9,8 +9,7 @@ import {
   CloudflareApiBaseUrl,
   CloudflareCreateEmailRuleResponse,
   CloudflareEmailRule,
-  destinationsAtom,
-  emailRulesAtom,
+  destinationsStatusAtom,
   emailRulesStatusAtom,
 } from "~utils/cloudflare";
 import { apiTokenAtom } from "~utils/state";
@@ -23,8 +22,8 @@ type Props = {
 export default function AliasEditModal({ opened, onClose }: Props) {
   const queryClient = useQueryClient();
 
-  const [destinations] = useAtom(destinationsAtom);
-  const [emailRules, emailRulesDispatch] = useAtom(emailRulesAtom);
+  const [destinations] = useAtom(destinationsStatusAtom);
+  const [emailRules] = useAtom(emailRulesStatusAtom);
   const [token] = useAtom(apiTokenAtom);
 
   const aliasEditForm = useForm({
@@ -40,7 +39,7 @@ export default function AliasEditModal({ opened, onClose }: Props) {
 
   const editMutation = useMutation(
     async (variables: typeof aliasEditForm.values) => {
-      const original = emailRules.find((r) => r.tag === variables.id);
+      const original = emailRules.data?.find((r) => r.tag === variables.id);
 
       if (!original) {
         throw new Error("Could not find the alias to be edited.");
@@ -124,16 +123,21 @@ export default function AliasEditModal({ opened, onClose }: Props) {
           />
           <Select
             label="Destination"
-            data={destinations.map((z) => ({
-              value: z.email,
-              label: z.email,
-            }))}
+            data={
+              destinations.data?.map((z) => ({
+                value: z.email,
+                label: z.email,
+              })) || []
+            }
             {...aliasEditForm.getInputProps("destination")}
             error={
-              aliasEditForm.values.destination &&
-              !destinations.find((d) => d.email === aliasEditForm.values.destination)?.verified
-                ? "This address is not verified. You will not receive emails."
-                : false
+              ((!destinations.data || destinations.isError) &&
+                (destinations.error?.toString() || "Error loading destinations")) ||
+              (aliasEditForm.values.destination &&
+                !destinations.data?.find((d) => d.email === aliasEditForm.values.destination)
+                  ?.verified &&
+                "This address is not verified. You will not receive emails.") ||
+              false
             }
           />
 

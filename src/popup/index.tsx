@@ -30,6 +30,8 @@ function Popup() {
         const parsed = parseDomain(url.hostname);
         if (parsed.type === ParseResultType.Listed) {
           setHostname(parsed);
+        } else {
+          setHostname(null);
         }
       }
     });

@@ -9,7 +9,7 @@ import {
   copyAliasAtom,
   devToolsAtom,
   ruleFilterAtom,
-  showCreateButtonAtom,
+  // showCreateButtonAtom,
   themeAtom,
 } from "~utils/state";
 
@@ -20,7 +20,7 @@ function Settings() {
   const [ruleFilter, setRuleFilter] = useAtom(ruleFilterAtom);
   const [devToolsEnabled, setDevToolsEnabled] = useAtom(devToolsAtom);
   const [copyAlias, setCopyAlias] = useAtom(copyAliasAtom);
-  const [showCreateButton, setShowCreateButton] = useAtom(showCreateButtonAtom);
+  // const [showCreateButton, setShowCreateButton] = useAtom(showCreateButtonAtom);
 
   const clearCache = async () => {
     await queryClient.invalidateQueries(["zones"]);
@@ -66,7 +66,7 @@ function Settings() {
           offLabel="OFF"
           size="lg"
           color="green"
-          checked={ruleFilter === true}
+          checked={ruleFilter}
           onChange={() => setRuleFilter(!ruleFilter)}
         />
       ),
@@ -80,7 +80,7 @@ function Settings() {
           offLabel="OFF"
           color="green"
           size="lg"
-          checked={copyAlias === true}
+          checked={copyAlias}
           onChange={() => setCopyAlias(!copyAlias)}
         />
       ),
@@ -142,7 +142,7 @@ function Settings() {
           onLabel="ON"
           offLabel="OFF"
           size="lg"
-          checked={devToolsEnabled === true}
+          checked={devToolsEnabled}
           onChange={() => setDevToolsEnabled(!devToolsEnabled)}
         />
       ),
