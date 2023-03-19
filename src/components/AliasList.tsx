@@ -128,6 +128,7 @@ function AliasList() {
           compact
           fullWidth
           leftIcon={aliasSelectEnabled ? <IconPlaylistX size={16} /> : <IconListCheck size={16} />}
+          disabled={!zones.data || zones.data.length === 0 || selectedZoneId === null}
           onClick={() => {
             setSelectedAliases([]);
             setAliasSelectEnabled(!aliasSelectEnabled);
@@ -175,6 +176,7 @@ function AliasList() {
               compact
               fullWidth
               leftIcon={<IconRefresh size={16} />}
+              disabled={!zones.data || zones.data.length === 0 || selectedZoneId === null}
               loading={emailRules.isFetching}
               loaderProps={{ size: 16 }}
               onClick={() => emailRulesDispatch({ type: "refetch" })}>
@@ -205,7 +207,7 @@ function AliasList() {
             </Center>
           )}
 
-          {emailRules.isSuccess && emailRules.data.length === 0 && (
+          {!!selectedZoneId && emailRules.isSuccess && emailRules.data.length === 0 && (
             <Alert title="Bummer!" color="yellow">
               There are no aliases for this domain yet.
             </Alert>

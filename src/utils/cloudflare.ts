@@ -146,6 +146,8 @@ export const [destinationsAtom, destinationsStatusAtom] = atomsWithQuery(
   (get) => ({
     queryKey: ["destinations", get(accountIdAtom)],
     queryFn: async ({ queryKey }) => {
+      if (!queryKey[1]) throw new Error("No account identifier provided.");
+
       const response = await fetch(
         `${CloudflareApiBaseUrl}/accounts/${queryKey[1]}/email/routing/addresses`,
         {
@@ -172,6 +174,8 @@ export const [emailRulesAtom, emailRulesStatusAtom] = atomsWithQuery(
   (get) => ({
     queryKey: ["emailRules", get(selectedZoneIdAtom)],
     queryFn: async ({ queryKey }) => {
+      if (!queryKey[1]) throw new Error("No zone identifier provided.");
+
       const response = await fetch(
         `${CloudflareApiBaseUrl}/zones/${queryKey[1]}/email/routing/rules`,
         {
