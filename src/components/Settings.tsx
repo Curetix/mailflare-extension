@@ -3,37 +3,47 @@ import { showNotification } from "@mantine/notifications";
 import { IconExternalLink } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
+import { RESET } from "jotai/utils";
 
 import { extensionName, extensionVersion, popupHeight } from "~const";
+import { destinationsStatusAtom, zonesStatusAtom } from "~utils/cloudflare";
 import {
+  apiTokenAtom,
   copyAliasAtom,
   devToolsAtom,
   ruleFilterAtom,
-  // showCreateButtonAtom,
+  selectedZoneIdAtom,
   themeAtom,
 } from "~utils/state";
 
 function Settings() {
   const queryClient = useQueryClient();
 
+  const [zones, zonesDispatch] = useAtom(zonesStatusAtom);
+  const [destinations, destinationsDispatch] = useAtom(destinationsStatusAtom);
+
+  const [token, setToken] = useAtom(apiTokenAtom);
   const [theme, setTheme] = useAtom(themeAtom);
   const [ruleFilter, setRuleFilter] = useAtom(ruleFilterAtom);
   const [devToolsEnabled, setDevToolsEnabled] = useAtom(devToolsAtom);
   const [copyAlias, setCopyAlias] = useAtom(copyAliasAtom);
   // const [showCreateButton, setShowCreateButton] = useAtom(showCreateButtonAtom);
 
+  const [selectedZoneId, setSelectedZoneId] = useAtom(selectedZoneIdAtom);
+
   const clearCache = async () => {
-    await queryClient.invalidateQueries(["zones"]);
-    await queryClient.invalidateQueries(["destinations"]);
+    await zonesDispatch({ type: "refetch" });
+    await destinationsDispatch({ type: "refetch" });
     showNotification({
       color: "green",
-      message: "Deleted cached data",
+      message: "Refreshed successfully",
       autoClose: 3000,
     });
   };
 
   const logout = async () => {
-    // TODO: reset storage
+    setToken(RESET);
+    setSelectedZoneId(RESET);
     await queryClient.invalidateQueries();
     showNotification({
       color: "green",
@@ -101,9 +111,13 @@ function Settings() {
     //   ),
     // },
     {
-      title: "Clear Cache",
-      description: "Clear locally cached data like Cloudflare zones and destination addresses",
-      action: <Button onClick={() => clearCache()}>Clear</Button>,
+      title: "Refresh data",
+      description: "Refresh Cloudflare domains and email destinations",
+      action: (
+        <Button loading={zones.isFetching || destinations.isFetching} onClick={() => clearCache()}>
+          Refresh
+        </Button>
+      ),
     },
     {
       title: "Logout",
