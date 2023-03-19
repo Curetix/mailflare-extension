@@ -51,11 +51,13 @@ function AliasList() {
 
   const [selectedZoneId, setSelectedZoneId] = useAtom(selectedZoneIdAtom);
 
-  const [aliasSelectEnabled, setAliasSelectEnabled] = useState(false);
-  const [selectedAliases, setSelectedAliases] = useState<CloudflareEmailRule[]>([]);
   const [aliasCreateModalOpened, setAliasCreateModalOpened] = useState(false);
   const [aliasEditModalOpened, setAliasEditModalOpened] = useState(false);
   const [aliasDeleteModalOpened, setAliasDeleteModalOpened] = useState(false);
+  const [aliasSelectEnabled, setAliasSelectEnabled] = useState(false);
+
+  const [selectedAliases, setSelectedAliases] = useState<CloudflareEmailRule[]>([]);
+  const [aliasToEdit, setAliasToEdit] = useState<CloudflareEmailRule | null>(null);
   const [aliasToDelete, setAliasToDelete] = useState<CloudflareEmailRule | null>(null);
 
   function getAliasBadge(rule: CloudflareEmailRule) {
@@ -95,13 +97,15 @@ function AliasList() {
       />
 
       <AliasEditModal
-        opened={aliasEditModalOpened}
+        opened={aliasEditModalOpened && !!aliasToEdit}
         onClose={() => setAliasEditModalOpened(false)}
+        aliasToEdit={aliasToEdit!}
       />
 
       <AliasDeleteModal
-        opened={aliasDeleteModalOpened}
+        opened={aliasDeleteModalOpened && !!aliasToDelete}
         onClose={() => setAliasDeleteModalOpened(false)}
+        aliasToDelete={aliasToDelete!}
       />
 
       {/* DOMAIN SELECTOR */}
@@ -275,14 +279,7 @@ function AliasList() {
                       variant="subtle"
                       size="sm"
                       onClick={() => {
-                        // aliasEditForm.setValues(() => ({
-                        //   id: r.tag,
-                        //   zoneId: selectedZoneId,
-                        //   alias: r.matchers[0].value,
-                        //   description: r.name.replace(emailRuleNamePrefix, "").trim(),
-                        //   destination: r.actions[0].value[0],
-                        //   enabled: r.enabled,
-                        // }));
+                        setAliasToEdit(r);
                         setAliasEditModalOpened(true);
                       }}>
                       <IconEdit size={16} />

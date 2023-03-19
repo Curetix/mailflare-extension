@@ -45,7 +45,7 @@ type CloudflareEmailRule = {
   enabled: boolean;
   name: string;
   priority: number;
-  tag?: string;
+  tag: string;
 };
 
 type CloudflareResponseResultInfo = {

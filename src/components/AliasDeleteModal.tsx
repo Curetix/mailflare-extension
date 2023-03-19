@@ -3,18 +3,25 @@ import { showNotification } from "@mantine/notifications";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 
-import { CloudflareApiBaseUrl, CloudflareCreateEmailRuleResponse } from "~utils/cloudflare";
-import { apiTokenAtom } from "~utils/state";
+import {
+  CloudflareApiBaseUrl,
+  CloudflareCreateEmailRuleResponse,
+  CloudflareEmailRule,
+} from "~utils/cloudflare";
+import { apiTokenAtom, selectedZoneIdAtom } from "~utils/state";
 
 type Props = {
   opened: boolean;
   onClose: () => void;
+  aliasToDelete: CloudflareEmailRule;
 };
 
-export default function AliasDeleteModal({ opened, onClose }: Props) {
+export default function AliasDeleteModal({ opened, onClose, aliasToDelete }: Props) {
   const queryClient = useQueryClient();
 
   const [token] = useAtom(apiTokenAtom);
+
+  const [selectedZoneId] = useAtom(selectedZoneIdAtom);
 
   const deleteMutation = useMutation(
     async (variables: { id: string; zoneId: string }) => {
@@ -49,6 +56,7 @@ export default function AliasDeleteModal({ opened, onClose }: Props) {
     },
     {
       onSuccess: (data, variables) => {
+        onClose();
         return queryClient.invalidateQueries({ queryKey: ["emailRules", variables.zoneId] });
       },
     },
@@ -71,43 +79,25 @@ export default function AliasDeleteModal({ opened, onClose }: Props) {
       title="Delete Alias"
       fullScreen>
       <Stack spacing="xs">
-        {/*{selectedAliases.length === 0 ? (*/}
-        {/*  <Text>*/}
-        {/*    Do you want to delete the alias {aliasToDelete?.matchers[0].value}? This cannot be*/}
-        {/*    undone.*/}
-        {/*  </Text>*/}
-        {/*) : (*/}
-        {/*  <Text>*/}
-        {/*    Do you want to delete {selectedAliases.length} aliases? This cannot be undone.*/}
-        {/*  </Text>*/}
-        {/*)}*/}
-        {/*<Button.Group>*/}
-        {/*  <Button*/}
-        {/*    fullWidth*/}
-        {/*    disabled={deleteMutation.isLoading}*/}
-        {/*    onClick={() => {*/}
-        {/*      setAliasDeleteModalOpened(false);*/}
-        {/*      setAliasToDelete(null);*/}
-        {/*    }}>*/}
-        {/*    No*/}
-        {/*  </Button>*/}
-        {/*  <Button*/}
-        {/*    color="red"*/}
-        {/*    fullWidth*/}
-        {/*    loading={deleteMutation.isLoading}*/}
-        {/*    onClick={() => {*/}
-        {/*      if (selectedAliases.length > 0) {*/}
-        {/*        selectedAliases.forEach((a) =>*/}
-        {/*          deleteMutation.mutate({ id: a.tag, zoneId: selectedZoneId }),*/}
-        {/*        );*/}
-        {/*      } else {*/}
-        {/*        setAliasDeleteModalOpened(false);*/}
-        {/*        deleteMutation.mutate({ id: aliasToDelete?.tag, zoneId: selectedZoneId });*/}
-        {/*      }*/}
-        {/*    }}>*/}
-        {/*    Yes*/}
-        {/*  </Button>*/}
-        {/*</Button.Group>*/}
+        <>
+          <Text>You are about to delete the alias</Text>
+          <Text fw={700}>{aliasToDelete?.matchers[0].value}</Text>
+          <Text>Do you want to proceed?</Text>
+        </>
+        <Button.Group>
+          <Button fullWidth disabled={deleteMutation.isLoading} onClick={() => onClose()}>
+            No
+          </Button>
+          <Button
+            color="red"
+            fullWidth
+            loading={deleteMutation.isLoading}
+            onClick={() => {
+              deleteMutation.mutate({ id: aliasToDelete?.tag, zoneId: selectedZoneId! });
+            }}>
+            Yes
+          </Button>
+        </Button.Group>
       </Stack>
     </Modal>
   );

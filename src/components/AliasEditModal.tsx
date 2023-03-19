@@ -3,6 +3,7 @@ import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
+import { useEffect } from "react";
 
 import { emailRuleNamePrefix } from "~const";
 import {
@@ -12,19 +13,22 @@ import {
   destinationsStatusAtom,
   emailRulesStatusAtom,
 } from "~utils/cloudflare";
-import { apiTokenAtom } from "~utils/state";
+import { apiTokenAtom, selectedZoneIdAtom } from "~utils/state";
 
 type Props = {
   opened: boolean;
   onClose: () => void;
+  aliasToEdit: CloudflareEmailRule;
 };
 
-export default function AliasEditModal({ opened, onClose }: Props) {
+export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) {
   const queryClient = useQueryClient();
 
   const [destinations] = useAtom(destinationsStatusAtom);
   const [emailRules] = useAtom(emailRulesStatusAtom);
   const [token] = useAtom(apiTokenAtom);
+
+  const [selectedZoneId] = useAtom(selectedZoneIdAtom);
 
   const aliasEditForm = useForm({
     initialValues: {
@@ -36,6 +40,19 @@ export default function AliasEditModal({ opened, onClose }: Props) {
       enabled: true,
     },
   });
+
+  useEffect(() => {
+    if (!!aliasToEdit) {
+      aliasEditForm.setValues({
+        id: aliasToEdit.tag,
+        zoneId: selectedZoneId!,
+        alias: aliasToEdit.matchers[0].value,
+        description: aliasToEdit.name.replace(emailRuleNamePrefix, "").trim(),
+        destination: aliasToEdit.actions[0].value[0],
+        enabled: aliasToEdit.enabled,
+      });
+    }
+  }, [aliasToEdit]);
 
   const editMutation = useMutation(
     async (variables: typeof aliasEditForm.values) => {
@@ -92,6 +109,7 @@ export default function AliasEditModal({ opened, onClose }: Props) {
     },
     {
       onSuccess: (data, variables) => {
+        onClose();
         return queryClient.invalidateQueries({ queryKey: ["emailRules", variables.zoneId] });
       },
     },
@@ -145,7 +163,7 @@ export default function AliasEditModal({ opened, onClose }: Props) {
             label="Enabled"
             {...aliasEditForm.getInputProps("enabled", { type: "checkbox" })}
           />
-          <Button type="submit" loading={editMutation.status === "loading"}>
+          <Button type="submit" loading={editMutation.isLoading}>
             Save
           </Button>
         </Stack>

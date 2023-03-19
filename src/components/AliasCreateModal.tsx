@@ -4,6 +4,7 @@ import { useClipboard } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
+import { useEffect } from "react";
 
 import { emailRuleNamePrefix } from "~const";
 import { generateAlias } from "~utils/alias";
@@ -52,9 +53,16 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
       description: "",
       prefixFormat: "none",
       destination: "",
-      ...aliasSettings,
     },
   });
+
+  useEffect(() => {
+    if (!!aliasSettings) {
+      aliasCreateForm.setValues({
+        ...aliasSettings,
+      });
+    }
+  }, [aliasSettings]);
 
   const createMutation = useMutation(
     async (variables: typeof aliasCreateForm.values) => {
@@ -89,7 +97,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
 
       alias = `${alias}@${zone.name}`;
 
-      const rule: CloudflareEmailRule = {
+      const rule: Omit<CloudflareEmailRule, "tag"> = {
         actions: [
           {
             type: "forward",
@@ -130,8 +138,6 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
           prefixFormat: variables.prefixFormat,
           destination: variables.destination,
         });
-        // TODO: close modal here
-        aliasCreateForm.reset();
         if (copyAlias) {
           clipboard.copy(alias);
         }
@@ -154,6 +160,8 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
     },
     {
       onSuccess: (data, variables) => {
+        aliasCreateForm.reset();
+        onClose();
         return queryClient.invalidateQueries({ queryKey: ["emailRules", variables.zoneId] });
       },
     },
@@ -170,7 +178,6 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
             autoClose: 2000,
           });
         } else {
-          // aliasCreateForm.reset();
           onClose();
         }
       }}
@@ -296,7 +303,10 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
             }
           />
 
-          <Button type="submit" loading={createMutation.status === "loading"}>
+          <Button
+            type="submit"
+            loading={createMutation.isLoading}
+            disabled={aliasCreateForm.values.destination === ""}>
             Create
           </Button>
         </Stack>
