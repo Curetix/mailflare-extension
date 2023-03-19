@@ -1,4 +1,4 @@
-import { Button, Divider, Group, ScrollArea, Stack, Switch, Text } from "@mantine/core";
+import { Button, Divider, Group, Modal, ScrollArea, Stack, Switch, Text } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { IconExternalLink } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -16,7 +16,12 @@ import {
   themeAtom,
 } from "~utils/state";
 
-function Settings() {
+type Props = {
+  opened: boolean;
+  onClose: () => void;
+};
+
+function SettingsModal({ opened, onClose }: Props) {
   const queryClient = useQueryClient();
 
   const [zones, zonesDispatch] = useAtom(zonesStatusAtom);
@@ -50,6 +55,7 @@ function Settings() {
       message: "Goodbye",
       autoClose: 3000,
     });
+    onClose();
   };
 
   const settingsItems = [
@@ -164,25 +170,32 @@ function Settings() {
   }
 
   return (
-    <ScrollArea h={popupHeight - 2 * 20 - 28 - 16}>
-      <Stack spacing="xs" pr={15}>
-        {settingsItems.map((item, index) => (
-          <Stack spacing="xs" key={index}>
-            <Group position="apart" noWrap spacing="xl">
-              <div>
-                <Text>{item.title}</Text>
-                <Text size="xs" color="dimmed">
-                  {item.description}
-                </Text>
-              </div>
-              {item.action}
-            </Group>
-            {index < settingsItems.length - 1 && <Divider />}
-          </Stack>
-        ))}
-      </Stack>
-    </ScrollArea>
+    <Modal
+      opened={opened}
+      onClose={() => onClose()}
+      title="Settings"
+      fullScreen
+      scrollAreaComponent={Modal.NativeScrollArea}>
+      <ScrollArea h={popupHeight - 2 * 20 - 28 - 16}>
+        <Stack spacing="xs" pr={15}>
+          {settingsItems.map((item, index) => (
+            <Stack spacing="xs" key={index}>
+              <Group position="apart" noWrap spacing="xl">
+                <div>
+                  <Text>{item.title}</Text>
+                  <Text size="xs" color="dimmed">
+                    {item.description}
+                  </Text>
+                </div>
+                {item.action}
+              </Group>
+              {index < settingsItems.length - 1 && <Divider />}
+            </Stack>
+          ))}
+        </Stack>
+      </ScrollArea>
+    </Modal>
   );
 }
 
-export default Settings;
+export default SettingsModal;

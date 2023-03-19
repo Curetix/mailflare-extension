@@ -9,7 +9,7 @@ import browser from "webextension-polyfill";
 
 import AliasList from "~components/AliasList";
 import Login from "~components/Login";
-import Settings from "~components/Settings";
+import SettingsModal from "~components/SettingsModal";
 import { popupHeight, popupWidth } from "~const";
 import { ThemeProvider } from "~popup/Theme";
 import { queryClient } from "~utils/cloudflare";
@@ -44,14 +44,10 @@ function Popup() {
         persistOptions={{ persister: extensionStoragePersister }}>
         {devToolsEnabled && <ReactQueryDevtools initialIsOpen={false} />}
         <Container w={popupWidth} h={popupHeight} p={0}>
-          <Modal
+          <SettingsModal
             opened={settingsModalOpened}
             onClose={() => setSettingsModalOpened(false)}
-            title="Settings"
-            fullScreen
-            scrollAreaComponent={Modal.NativeScrollArea}>
-            <Settings />
-          </Modal>
+          />
           <Group position="apart" px="md" py="sm">
             <Text fw="bold" size="md">
               MailFlare
