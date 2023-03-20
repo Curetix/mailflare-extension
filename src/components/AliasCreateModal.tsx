@@ -160,7 +160,6 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
     },
     {
       onSuccess: (data, variables) => {
-        aliasCreateForm.reset();
         onClose();
         return queryClient.invalidateQueries({ queryKey: ["emailRules", variables.zoneId] });
       },

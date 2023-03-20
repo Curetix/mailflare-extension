@@ -27,6 +27,8 @@ import {
 import { useAtom } from "jotai";
 import { useState } from "react";
 
+import AliasBulkDeleteModal from "~components/AliasBulkDeleteModal";
+import AliasBulkEditModal from "~components/AliasBulkEditModal";
 import AliasCreateModal from "~components/AliasCreateModal";
 import AliasDeleteModal from "~components/AliasDeleteModal";
 import AliasEditModal from "~components/AliasEditModal";
@@ -97,15 +99,39 @@ function AliasList() {
       />
 
       <AliasEditModal
-        opened={aliasEditModalOpened && !!aliasToEdit}
+        opened={aliasEditModalOpened && !!aliasToEdit && selectedAliases.length === 0}
         onClose={() => setAliasEditModalOpened(false)}
         aliasToEdit={aliasToEdit!}
       />
 
+      <AliasBulkEditModal
+        opened={aliasEditModalOpened && selectedAliases.length > 0}
+        onClose={(clear) => {
+          setAliasEditModalOpened(false);
+          if (clear) {
+            setAliasSelectEnabled(false);
+            setSelectedAliases([]);
+          }
+        }}
+        selectedAliases={selectedAliases}
+      />
+
       <AliasDeleteModal
-        opened={aliasDeleteModalOpened && !!aliasToDelete}
+        opened={aliasDeleteModalOpened && !!aliasToDelete && selectedAliases.length === 0}
         onClose={() => setAliasDeleteModalOpened(false)}
         aliasToDelete={aliasToDelete!}
+      />
+
+      <AliasBulkDeleteModal
+        opened={aliasDeleteModalOpened && selectedAliases.length > 0}
+        onClose={(clear) => {
+          setAliasDeleteModalOpened(false);
+          if (clear) {
+            setAliasSelectEnabled(false);
+            setSelectedAliases([]);
+          }
+        }}
+        selectedAliases={selectedAliases}
       />
 
       {/* DOMAIN SELECTOR */}
@@ -147,7 +173,7 @@ function AliasList() {
               fullWidth
               leftIcon={<IconEdit size={16} />}
               disabled={selectedAliases.length === 0}
-              onClick={() => {}}>
+              onClick={() => setAliasEditModalOpened(true)}>
               Edit
             </Button>
             <Button
@@ -157,9 +183,7 @@ function AliasList() {
               fullWidth
               leftIcon={<IconTrash size={16} />}
               disabled={selectedAliases.length === 0}
-              onClick={() => {
-                setAliasDeleteModalOpened(true);
-              }}>
+              onClick={() => setAliasDeleteModalOpened(true)}>
               Delete
             </Button>
           </>
@@ -278,6 +302,7 @@ function AliasList() {
                     <ActionIcon
                       variant="subtle"
                       size="sm"
+                      disabled={aliasSelectEnabled}
                       onClick={() => {
                         setAliasToEdit(r);
                         setAliasEditModalOpened(true);
@@ -287,6 +312,7 @@ function AliasList() {
                     <ActionIcon
                       variant="subtle"
                       size="sm"
+                      disabled={aliasSelectEnabled}
                       onClick={() => {
                         setAliasToDelete(r);
                         setAliasDeleteModalOpened(true);
