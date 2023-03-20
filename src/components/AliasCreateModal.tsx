@@ -3,7 +3,7 @@ import { useForm } from "@mantine/form";
 import { useClipboard } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import { useAtom } from "jotai";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { emailRuleNamePrefix } from "~const";
 import { generateAlias } from "~utils/alias";
@@ -160,7 +160,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
       }}
       title="Create alias"
       fullScreen>
-      <form onSubmit={aliasCreateForm.onSubmit((values) => createAlias(aliasCreateForm.values))}>
+      <form onSubmit={aliasCreateForm.onSubmit((values) => createAlias(values))}>
         <Stack spacing="xs">
           <Select
             label="Domain"

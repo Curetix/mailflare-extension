@@ -1,4 +1,4 @@
-import { ActionIcon, Container, Divider, Group, Modal, Text } from "@mantine/core";
+import { ActionIcon, Container, Divider, Group, Text } from "@mantine/core";
 import { IconSettings } from "@tabler/icons-react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
@@ -19,7 +19,7 @@ import { extensionStoragePersister } from "~utils/storage";
 function Popup() {
   const [token] = useAtom(apiTokenAtom);
   const [devToolsEnabled] = useAtom(devToolsAtom);
-  const [hostname, setHostname] = useAtom(hostnameAtom);
+  const [, setHostname] = useAtom(hostnameAtom);
 
   const [settingsModalOpened, setSettingsModalOpened] = useState(false);
 

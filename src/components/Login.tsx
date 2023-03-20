@@ -7,7 +7,7 @@ import { CloudflareApiBaseUrl, CloudflareVerifyTokenResponse } from "~utils/clou
 import { apiTokenAtom } from "~utils/state";
 
 function Login() {
-  const [storedToken, setStoredToken] = useAtom(apiTokenAtom);
+  const [, setStoredToken] = useAtom(apiTokenAtom);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [token, setToken] = useState<string>("");
   const [verifyError, setVerifyError] = useState<boolean>(false);

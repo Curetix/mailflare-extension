@@ -113,7 +113,7 @@ export const queryClient = new QueryClient({
 
 const queryClientAtom = atom(queryClient);
 
-export const [zonesAtom, zonesStatusAtom] = atomsWithQuery(
+export const [, zonesStatusAtom] = atomsWithQuery(
   (get) => ({
     queryKey: ["zones"],
     queryFn: async () => {
@@ -141,7 +141,7 @@ const accountIdAtom = atom((get) => {
   return zones.data[0].account.id;
 });
 
-export const [destinationsAtom, destinationsStatusAtom] = atomsWithQuery(
+export const [, destinationsStatusAtom] = atomsWithQuery(
   (get) => ({
     queryKey: ["destinations", get(accountIdAtom)],
     queryFn: async ({ queryKey }) => {
@@ -168,7 +168,7 @@ export const [destinationsAtom, destinationsStatusAtom] = atomsWithQuery(
   (get) => get(queryClientAtom),
 );
 
-export const [emailRulesAtom, emailRulesStatusAtom] = atomsWithQuery(
+export const [, emailRulesStatusAtom] = atomsWithQuery(
   (get) => ({
     queryKey: ["emailRules", get(selectedZoneIdAtom)],
     queryFn: async ({ queryKey }) => {

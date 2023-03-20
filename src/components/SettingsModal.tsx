@@ -27,14 +27,14 @@ function SettingsModal({ opened, onClose }: Props) {
   const [zones, zonesDispatch] = useAtom(zonesStatusAtom);
   const [destinations, destinationsDispatch] = useAtom(destinationsStatusAtom);
 
-  const [token, setToken] = useAtom(apiTokenAtom);
+  const [, setToken] = useAtom(apiTokenAtom);
   const [theme, setTheme] = useAtom(themeAtom);
   const [ruleFilter, setRuleFilter] = useAtom(ruleFilterAtom);
   const [devToolsEnabled, setDevToolsEnabled] = useAtom(devToolsAtom);
   const [copyAlias, setCopyAlias] = useAtom(copyAliasAtom);
   // const [showCreateButton, setShowCreateButton] = useAtom(showCreateButtonAtom);
 
-  const [selectedZoneId, setSelectedZoneId] = useAtom(selectedZoneIdAtom);
+  const [, setSelectedZoneId] = useAtom(selectedZoneIdAtom);
 
   const clearCache = async () => {
     await zonesDispatch({ type: "refetch" });
