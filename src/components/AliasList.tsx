@@ -100,7 +100,10 @@ function AliasList() {
 
       <AliasEditModal
         opened={aliasEditModalOpened && !!aliasToEdit && selectedAliases.length === 0}
-        onClose={() => setAliasEditModalOpened(false)}
+        onClose={() => {
+          setAliasEditModalOpened(false);
+          setAliasToEdit(null);
+        }}
         aliasToEdit={aliasToEdit!}
       />
 
@@ -118,7 +121,10 @@ function AliasList() {
 
       <AliasDeleteModal
         opened={aliasDeleteModalOpened && !!aliasToDelete && selectedAliases.length === 0}
-        onClose={() => setAliasDeleteModalOpened(false)}
+        onClose={() => {
+          setAliasDeleteModalOpened(false);
+          setAliasToDelete(null);
+        }}
         aliasToDelete={aliasToDelete!}
       />
 

@@ -2,26 +2,19 @@ import { Button, Modal, NumberInput, Select, Stack, TextInput } from "@mantine/c
 import { useForm } from "@mantine/form";
 import { useClipboard } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { emailRuleNamePrefix } from "~const";
 import { generateAlias } from "~utils/alias";
 import {
-  CloudflareApiBaseUrl,
-  CloudflareCreateEmailRuleResponse,
   CloudflareEmailRule,
+  createEmailRuleAtom,
   destinationsStatusAtom,
+  emailRulesStatusAtom,
   zonesStatusAtom,
 } from "~utils/cloudflare";
-import {
-  aliasSettingsAtom,
-  apiTokenAtom,
-  copyAliasAtom,
-  hostnameAtom,
-  selectedZoneIdAtom,
-} from "~utils/state";
+import { aliasSettingsAtom, copyAliasAtom, hostnameAtom, selectedZoneIdAtom } from "~utils/state";
 
 type Props = {
   opened: boolean;
@@ -29,13 +22,13 @@ type Props = {
 };
 
 export default function AliasCreateModal({ opened, onClose }: Props) {
-  const queryClient = useQueryClient();
   const clipboard = useClipboard();
 
   const [destinations] = useAtom(destinationsStatusAtom);
   const [zones] = useAtom(zonesStatusAtom);
+  const [createMutation, mutate] = useAtom(createEmailRuleAtom);
+  const [, emailRulesDispatch] = useAtom(emailRulesStatusAtom);
 
-  const [token] = useAtom(apiTokenAtom);
   const [selectedZoneId, setSelectedZoneId] = useAtom(selectedZoneIdAtom);
   const [aliasSettings, setAliasSettings] = useAtom(aliasSettingsAtom);
   const [copyAlias] = useAtom(copyAliasAtom);
@@ -64,107 +57,92 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
     }
   }, [aliasSettings]);
 
-  const createMutation = useMutation(
-    async (variables: typeof aliasCreateForm.values) => {
-      let alias: string;
-      if (variables.format === "custom") {
-        alias = variables.customAlias;
-      } else {
-        let prefix = "";
-        if (hostname !== null) {
-          if (variables.prefixFormat === "domainWithoutExtension" && hostname.domain) {
-            prefix = hostname.domain;
-          } else if (variables.prefixFormat === "domainWithExtension") {
-            prefix = `${hostname.domain}.${hostname.topLevelDomains.join(".")}`;
-          } else if (variables.prefixFormat === "fullDomain") {
-            prefix = hostname.hostname;
-          }
+  async function createAlias(variables: typeof aliasCreateForm.values) {
+    let alias: string;
+    if (variables.format === "custom") {
+      alias = variables.customAlias;
+    } else {
+      let prefix = "";
+      if (hostname !== null) {
+        if (variables.prefixFormat === "domainWithoutExtension" && hostname.domain) {
+          prefix = hostname.domain;
+        } else if (variables.prefixFormat === "domainWithExtension") {
+          prefix = `${hostname.domain}.${hostname.topLevelDomains.join(".")}`;
+        } else if (variables.prefixFormat === "fullDomain") {
+          prefix = hostname.hostname;
         }
-
-        alias = generateAlias(
-          variables.format === "words" ? "words" : "characters",
-          variables.characterCount,
-          variables.wordCount,
-          variables.separator,
-          prefix,
-        );
-      }
-      const zone = zones.data?.find((z) => z.id === variables.zoneId);
-
-      if (!zone) {
-        throw new Error("Could not find the domains zone.");
       }
 
-      alias = `${alias}@${zone.name}`;
-
-      const rule: Omit<CloudflareEmailRule, "tag"> = {
-        actions: [
-          {
-            type: "forward",
-            value: [variables.destination],
-          },
-        ],
-        matchers: [
-          {
-            field: "to",
-            type: "literal",
-            value: alias,
-          },
-        ],
-        enabled: true,
-        name: `${emailRuleNamePrefix}${variables.description}`,
-        priority: Math.round(Date.now() / 1000),
-      };
-
-      const response = await fetch(
-        `${CloudflareApiBaseUrl}/zones/${variables.zoneId}/email/routing/rules`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(rule),
-        },
+      alias = generateAlias(
+        variables.format === "words" ? "words" : "characters",
+        variables.characterCount,
+        variables.wordCount,
+        variables.separator,
+        prefix,
       );
-      const json: CloudflareCreateEmailRuleResponse = await response.json();
-      if (response.ok && json.success) {
-        await setSelectedZoneId(variables.zoneId);
-        await setAliasSettings({
-          format: variables.format,
-          characterCount: variables.characterCount,
-          wordCount: variables.wordCount,
-          separator: variables.separator,
-          prefixFormat: variables.prefixFormat,
-          destination: variables.destination,
-        });
-        if (copyAlias) {
-          clipboard.copy(alias);
-        }
-        showNotification({
-          color: "green",
-          title: "Success!",
-          message: "The alias was created and copied to your clipboard!",
-          autoClose: 3000,
-        });
-        return json.result;
-      }
-      console.error(json);
-      showNotification({
-        color: "red",
-        title: "Error",
-        message: json.errors[0].message,
-        autoClose: false,
-      });
-      throw new Error(json.errors[0].message);
-    },
-    {
-      onSuccess: (data, variables) => {
-        onClose();
-        return queryClient.invalidateQueries({ queryKey: ["emailRules", variables.zoneId] });
+    }
+    const zone = zones.data?.find((z) => z.id === variables.zoneId);
+
+    if (!zone) {
+      throw new Error("Could not find the domains zone.");
+    }
+
+    alias = `${alias}@${zone.name}`;
+
+    const rule: Omit<CloudflareEmailRule, "tag"> = {
+      actions: [
+        {
+          type: "forward",
+          value: [variables.destination],
+        },
+      ],
+      matchers: [
+        {
+          field: "to",
+          type: "literal",
+          value: alias,
+        },
+      ],
+      enabled: true,
+      name: `${emailRuleNamePrefix}${variables.description}`,
+      priority: Math.round(Date.now() / 1000),
+    };
+    return mutate([
+      rule,
+      {
+        onSuccess: (data) => {
+          setSelectedZoneId(variables.zoneId);
+          emailRulesDispatch({ type: "refetch" });
+          setAliasSettings({
+            format: variables.format,
+            characterCount: variables.characterCount,
+            wordCount: variables.wordCount,
+            separator: variables.separator,
+            prefixFormat: variables.prefixFormat,
+            destination: variables.destination,
+          });
+          if (copyAlias) {
+            clipboard.copy(data.result.matchers[0].value);
+          }
+          showNotification({
+            color: "green",
+            title: "Success!",
+            message: "The alias was created and copied to your clipboard!",
+            autoClose: 3000,
+          });
+          onClose();
+        },
+        onError: () => {
+          showNotification({
+            color: "red",
+            title: "Error",
+            message: "Could not save the alias.",
+            autoClose: false,
+          });
+        },
       },
-    },
-  );
+    ]);
+  }
 
   return (
     <Modal
@@ -182,7 +160,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
       }}
       title="Create alias"
       fullScreen>
-      <form onSubmit={aliasCreateForm.onSubmit((values) => createMutation.mutate(values))}>
+      <form onSubmit={aliasCreateForm.onSubmit((values) => createAlias(aliasCreateForm.values))}>
         <Stack spacing="xs">
           <Select
             label="Domain"

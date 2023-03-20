@@ -1,14 +1,8 @@
 import { Button, Modal, Stack, Text } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 
-import {
-  CloudflareApiBaseUrl,
-  CloudflareCreateEmailRuleResponse,
-  CloudflareEmailRule,
-} from "~utils/cloudflare";
-import { apiTokenAtom, selectedZoneIdAtom } from "~utils/state";
+import { CloudflareEmailRule, deleteEmailAtom, emailRulesStatusAtom } from "~utils/cloudflare";
 
 type Props = {
   opened: boolean;
@@ -17,50 +11,34 @@ type Props = {
 };
 
 export default function AliasDeleteModal({ opened, onClose, aliasToDelete }: Props) {
-  const queryClient = useQueryClient();
+  const [, emailRulesDispatch] = useAtom(emailRulesStatusAtom);
+  const [deleteMutation, mutate] = useAtom(deleteEmailAtom);
 
-  const [token] = useAtom(apiTokenAtom);
-
-  const [selectedZoneId] = useAtom(selectedZoneIdAtom);
-
-  const deleteMutation = useMutation(
-    async (variables: { id: string; zoneId: string }) => {
-      const response = await fetch(
-        `${CloudflareApiBaseUrl}/zones/${variables.zoneId}/email/routing/rules/${variables.id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
+  async function deleteAlias() {
+    return mutate([
+      aliasToDelete,
+      {
+        onSuccess: () => {
+          emailRulesDispatch({ type: "refetch" });
+          showNotification({
+            color: "green",
+            title: "Success!",
+            message: "The alias was deleted!",
+            autoClose: 3000,
+          });
+          onClose();
         },
-      );
-      const json: CloudflareCreateEmailRuleResponse = await response.json();
-      if (response.ok && json.success) {
-        showNotification({
-          color: "green",
-          title: "Success!",
-          message: "The alias was deleted!",
-          autoClose: 3000,
-        });
-        return json.result;
-      }
-      console.error(json);
-      showNotification({
-        color: "red",
-        title: "Error",
-        message: json.errors[0].message,
-        autoClose: false,
-      });
-      throw new Error(json.errors[0].message);
-    },
-    {
-      onSuccess: (data, variables) => {
-        onClose();
-        return queryClient.invalidateQueries({ queryKey: ["emailRules", variables.zoneId] });
+        onError: () => {
+          showNotification({
+            color: "red",
+            title: "Error",
+            message: "Could not delete the alias",
+            autoClose: false,
+          });
+        },
       },
-    },
-  );
+    ]);
+  }
 
   return (
     <Modal
@@ -92,9 +70,7 @@ export default function AliasDeleteModal({ opened, onClose, aliasToDelete }: Pro
             color="red"
             fullWidth
             loading={deleteMutation.isLoading}
-            onClick={() => {
-              deleteMutation.mutate({ id: aliasToDelete?.tag, zoneId: selectedZoneId! });
-            }}>
+            onClick={() => deleteAlias()}>
             Yes
           </Button>
         </Button.Group>

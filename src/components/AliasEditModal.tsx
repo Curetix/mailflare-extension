@@ -1,19 +1,17 @@
 import { Button, Modal, Select, Stack, Switch, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { useEffect } from "react";
 
 import { emailRuleNamePrefix } from "~const";
 import {
-  CloudflareApiBaseUrl,
-  CloudflareCreateEmailRuleResponse,
   CloudflareEmailRule,
   destinationsStatusAtom,
+  editEmailRuleAtom,
   emailRulesStatusAtom,
 } from "~utils/cloudflare";
-import { apiTokenAtom, selectedZoneIdAtom } from "~utils/state";
+import { selectedZoneIdAtom } from "~utils/state";
 
 type Props = {
   opened: boolean;
@@ -22,11 +20,9 @@ type Props = {
 };
 
 export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) {
-  const queryClient = useQueryClient();
-
   const [destinations] = useAtom(destinationsStatusAtom);
-  const [emailRules] = useAtom(emailRulesStatusAtom);
-  const [token] = useAtom(apiTokenAtom);
+  const [, emailRulesDispatch] = useAtom(emailRulesStatusAtom);
+  const [editMutation, mutate] = useAtom(editEmailRuleAtom);
 
   const [selectedZoneId] = useAtom(selectedZoneIdAtom);
 
@@ -54,66 +50,47 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
     }
   }, [aliasToEdit]);
 
-  const editMutation = useMutation(
-    async (variables: typeof aliasEditForm.values) => {
-      const original = emailRules.data?.find((r) => r.tag === variables.id);
-
-      if (!original) {
-        throw new Error("Could not find the alias to be edited.");
-      }
-
-      const updated: CloudflareEmailRule = {
-        ...original,
-        name: original.name.startsWith(emailRuleNamePrefix)
-          ? `${emailRuleNamePrefix}${variables.description}`
-          : variables.destination,
-        actions: [
-          {
-            type: "forward",
-            value: [variables.destination],
-          },
-        ],
-        enabled: variables.enabled,
-      };
-      const response = await fetch(
-        `${CloudflareApiBaseUrl}/zones/${variables.zoneId}/email/routing/rules/${variables.id}`,
+  async function saveAlias(variables: typeof aliasEditForm.values) {
+    const original = aliasToEdit;
+    const updated: CloudflareEmailRule = {
+      ...original,
+      name: original.name.startsWith(emailRuleNamePrefix)
+        ? `${emailRuleNamePrefix}${variables.description}`
+        : variables.destination,
+      actions: [
         {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updated),
+          type: "forward",
+          value: [variables.destination],
         },
-      );
-      const json: CloudflareCreateEmailRuleResponse = await response.json();
-      if (response.ok && json.success) {
-        // TODO: close here
-        aliasEditForm.reset();
-        showNotification({
-          color: "green",
-          title: "Success!",
-          message: "The alias was updated!",
-          autoClose: 3000,
-        });
-        return json.result;
-      }
-      console.error(json);
-      showNotification({
-        color: "red",
-        title: "Error",
-        message: json.errors[0].message,
-        autoClose: false,
-      });
-      throw new Error(json.errors[0].message);
-    },
-    {
-      onSuccess: (data, variables) => {
-        onClose();
-        return queryClient.invalidateQueries({ queryKey: ["emailRules", variables.zoneId] });
+      ],
+      enabled: variables.enabled,
+    };
+
+    return mutate([
+      updated,
+      {
+        onSuccess: () => {
+          emailRulesDispatch({ type: "refetch" });
+          aliasEditForm.reset();
+          showNotification({
+            color: "green",
+            title: "Success!",
+            message: "The alias was updated!",
+            autoClose: 3000,
+          });
+          onClose();
+        },
+        onError: () => {
+          showNotification({
+            color: "red",
+            title: "Error",
+            message: "Could not save the alias.",
+            autoClose: false,
+          });
+        },
       },
-    },
-  );
+    ]);
+  }
 
   return (
     <Modal
@@ -131,7 +108,7 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
       }}
       title="Edit Alias"
       fullScreen>
-      <form onSubmit={aliasEditForm.onSubmit((values) => editMutation.mutate(values))}>
+      <form onSubmit={aliasEditForm.onSubmit((values) => saveAlias(values))}>
         <Stack spacing="xs">
           <TextInput label="Alias" disabled {...aliasEditForm.getInputProps("alias")} />
           <TextInput

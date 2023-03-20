@@ -202,7 +202,7 @@ export const [emailRulesAtom, emailRulesStatusAtom] = atomsWithQuery(
 
 export const [, createEmailRuleAtom] = atomsWithMutation(
   (get) => ({
-    mutationFn: async (rule: CloudflareEmailRule) => {
+    mutationFn: async (rule: Omit<CloudflareEmailRule, "tag">) => {
       const response = await fetch(
         `${CloudflareApiBaseUrl}/zones/${get(selectedZoneIdAtom)}/email/routing/rules`,
         {
