@@ -27,7 +27,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
   const [destinations] = useAtom(destinationsStatusAtom);
   const [zones] = useAtom(zonesStatusAtom);
   const [createMutation, mutate] = useAtom(createEmailRuleAtom);
-  const [, emailRulesDispatch] = useAtom(emailRulesStatusAtom);
+  const [emailRules, emailRulesDispatch] = useAtom(emailRulesStatusAtom);
 
   const [selectedZoneId, setSelectedZoneId] = useAtom(selectedZoneIdAtom);
   const [aliasSettings, setAliasSettings] = useAtom(aliasSettingsAtom);
@@ -58,36 +58,68 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
   }, [aliasSettings]);
 
   async function createAlias(variables: typeof aliasCreateForm.values) {
-    let alias: string;
-    if (variables.format === "custom") {
-      alias = variables.customAlias;
-    } else {
-      let prefix = "";
-      if (hostname !== null) {
-        if (variables.prefixFormat === "domainWithoutExtension" && hostname.domain) {
-          prefix = hostname.domain;
-        } else if (variables.prefixFormat === "domainWithExtension") {
-          prefix = `${hostname.domain}.${hostname.topLevelDomains.join(".")}`;
-        } else if (variables.prefixFormat === "fullDomain") {
-          prefix = hostname.hostname;
-        }
-      }
-
-      alias = generateAlias(
-        variables.format === "words" ? "words" : "characters",
-        variables.characterCount,
-        variables.wordCount,
-        variables.separator,
-        prefix,
-      );
-    }
     const zone = zones.data?.find((z) => z.id === variables.zoneId);
 
     if (!zone) {
-      throw new Error("Could not find the domains zone.");
+      showNotification({
+        color: "red",
+        title: "Error",
+        message: "Could not find the domain.",
+        autoClose: false,
+      });
+      return;
     }
 
-    alias = `${alias}@${zone.name}`;
+    let alias: string;
+    if (variables.format === "custom") {
+      alias = `${variables.customAlias}@${zone.name}`;
+
+      if (emailRules.data?.find((r) => r.matchers[0].value === alias)) {
+        showNotification({
+          color: "red",
+          title: "Conflict",
+          message: "This alias already exists.",
+          autoClose: false,
+        });
+        return;
+      }
+    } else {
+      let attempts = 0;
+      while (true) {
+        attempts += 1;
+        let prefix = "";
+        if (hostname !== null) {
+          if (variables.prefixFormat === "domainWithoutExtension" && hostname.domain) {
+            prefix = hostname.domain;
+          } else if (variables.prefixFormat === "domainWithExtension") {
+            prefix = `${hostname.domain}.${hostname.topLevelDomains.join(".")}`;
+          } else if (variables.prefixFormat === "fullDomain") {
+            prefix = hostname.hostname;
+          }
+        }
+
+        alias = `${generateAlias(
+          variables.format === "words" ? "words" : "characters",
+          variables.characterCount,
+          variables.wordCount,
+          variables.separator,
+          prefix,
+        )}@${zone.name}`;
+
+        if (!emailRules.data?.find((r) => r.matchers[0].value === alias)) {
+          break;
+        } else if (attempts === 3) {
+          showNotification({
+            color: "red",
+            title: "Conflict",
+            message:
+              "Could not generate a unique alias after 3 attempts. Try again with changed settings.",
+            autoClose: false,
+          });
+          return;
+        }
+      }
+    }
 
     const rule: Omit<CloudflareEmailRule, "tag"> = {
       actions: [
@@ -111,6 +143,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
       rule,
       {
         onSuccess: (data) => {
+          aliasCreateForm.reset();
           setSelectedZoneId(variables.zoneId);
           emailRulesDispatch({ type: "refetch" });
           setAliasSettings({
