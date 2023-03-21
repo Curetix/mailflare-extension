@@ -70,6 +70,27 @@ Your API key is stored locally in your browser and is used to directly communica
 * **Zone | Zone | Read** - Listing of all the zones in your Cloudflare account (or the zone you select in the "Zone Resources" section)
 
 
+## Build instructions
+1. Install NodeJS (the automated build workflow uses NodeJS version 18) and yarn (with `npm install -g yarn`)
+2. Clone the repository: `git clone https://github.com/curetix/mailflare-extension`
+3. Install the dependencies: `yarn install`
+4. Run the build command: `yarn build` (for Chromium / Manifest V3), `yarn build:firefox` (for Firefox / Manifest V2)
+5. The output will be in the folder `build/chrome-mv3-prod` or `build/firefox-mv2-prod`
+
+Loading the extension:
+
+* Chrome
+  1. Go to Settings -> Extensions
+  2. Enable the **Developer mode** toggle (top right)
+  3. Click **Load unpacked** and select the folder of the built extension
+* Firefox
+  1. Enter `about:debugging` into the address bar
+  2. Click **This Firefox**
+  3. Click **Load Temporary Add-On...**
+  4. Navigate to the folder of the built extension and select the `manifest.json` file
+  5. (This will have to be repeated every time Firefox launches)
+
+
 ## Sending from alias using Email Worker
 
 **This is a purely an idea at the moment, it has not been tested!**
