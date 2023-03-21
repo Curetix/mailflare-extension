@@ -15,6 +15,7 @@ import {
   selectedZoneIdAtom,
   themeAtom,
 } from "~utils/state";
+import { extensionStoragePersister } from "~utils/storage";
 
 type Props = {
   opened: boolean;
@@ -37,8 +38,7 @@ function SettingsModal({ opened, onClose }: Props) {
   const [, setSelectedZoneId] = useAtom(selectedZoneIdAtom);
 
   const clearCache = async () => {
-    await zonesDispatch({ type: "refetch" });
-    await destinationsDispatch({ type: "refetch" });
+    await queryClient.invalidateQueries();
     showNotification({
       color: "green",
       message: "Refreshed successfully",
@@ -50,6 +50,7 @@ function SettingsModal({ opened, onClose }: Props) {
     setToken(RESET);
     setSelectedZoneId(RESET);
     await queryClient.invalidateQueries();
+    extensionStoragePersister.removeClient();
     showNotification({
       color: "green",
       message: "Goodbye",

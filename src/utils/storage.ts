@@ -1,4 +1,4 @@
-import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
+import type { PersistedClient, Persister } from "@tanstack/query-persist-client-core";
 
 import { Storage } from "@plasmohq/storage";
 
@@ -18,6 +18,15 @@ export const extensionLocalStorageInterface = {
   },
 };
 
-export const extensionStoragePersister = createAsyncStoragePersister({
-  storage: extensionLocalStorageInterface,
-});
+const persistedClientKey = "reactQueryCache";
+export const extensionStoragePersister: Persister = {
+  persistClient: async (client: PersistedClient) => {
+    await extensionLocalStorage.set(persistedClientKey, client);
+  },
+  restoreClient: async () => {
+    return await extensionLocalStorage.get<PersistedClient>(persistedClientKey);
+  },
+  removeClient: async () => {
+    await extensionLocalStorage.remove(persistedClientKey);
+  },
+};

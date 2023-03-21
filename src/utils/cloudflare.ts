@@ -130,7 +130,7 @@ export const [, zonesStatusAtom] = atomsWithQuery(
     },
     enabled: !!get(apiTokenAtom),
     placeholderData: [],
-    retry: 1,
+    retry: false,
   }),
   (get) => get(queryClientAtom),
 );
@@ -163,7 +163,7 @@ export const [, destinationsStatusAtom] = atomsWithQuery(
     },
     enabled: !!get(accountIdAtom),
     placeholderData: [],
-    retry: 1,
+    retry: false,
   }),
   (get) => get(queryClientAtom),
 );
@@ -195,7 +195,7 @@ export const [, emailRulesStatusAtom] = atomsWithQuery(
     },
     enabled: !!get(selectedZoneIdAtom),
     placeholderData: [],
-    retry: 1,
+    retry: false,
   }),
   (get) => get(queryClientAtom),
 );

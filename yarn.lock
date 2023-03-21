@@ -1876,13 +1876,6 @@
   dependencies:
     remove-accents "0.4.2"
 
-"@tanstack/query-async-storage-persister@^4.27.1":
-  version "4.27.1"
-  resolved "https://registry.yarnpkg.com/@tanstack/query-async-storage-persister/-/query-async-storage-persister-4.27.1.tgz#03d2a533f5908c7a0df89f8884fd6a688fa4adbe"
-  integrity sha512-gyKm0PMR1Xn06ZpftaU3cPCWJmO/8OOsaNk1uaMVZXCxxxaoEqkZzm7GNvHczOx7xqflyWdFrRTqu2+SCnvSmA==
-  dependencies:
-    "@tanstack/query-persist-client-core" "4.27.0"
-
 "@tanstack/query-core@4.27.0", "@tanstack/query-core@^4.27.0":
   version "4.27.0"
   resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-4.27.0.tgz#96bcef499008ea080b66611d029655e3ffdf8bea"
