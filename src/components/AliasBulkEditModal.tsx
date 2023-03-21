@@ -38,6 +38,13 @@ export default function AliasBulkEditModal({ opened, onClose, selectedAliases }:
         return mutate([a]);
       }),
     );
+    // TODO: handle errors
+    showNotification({
+      color: "green",
+      title: "Success!",
+      message: "The selected aliases were updated!",
+      autoClose: 3000,
+    });
     emailRulesDispatch({ type: "refetch" });
     onClose(true);
   }

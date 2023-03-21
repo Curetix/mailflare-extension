@@ -126,8 +126,10 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
           }
           showNotification({
             color: "green",
-            title: "Success!",
-            message: "The alias was created and copied to your clipboard!",
+            title: "Success",
+            message: copyAlias
+              ? "The alias was created and copied to the clipboard."
+              : "This alias was created.",
             autoClose: 3000,
           });
           onClose();

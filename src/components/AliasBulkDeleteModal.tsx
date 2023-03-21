@@ -16,7 +16,14 @@ export default function AliasBulkDeleteModal({ opened, onClose, selectedAliases 
 
   async function deleteSelectedAliases() {
     await Promise.all(selectedAliases.map((a) => mutate([a])));
+    // TODO: handle errors
     emailRulesDispatch({ type: "refetch" });
+    showNotification({
+      color: "green",
+      title: "Success!",
+      message: "The selected aliases were deleted!",
+      autoClose: 3000,
+    });
     onClose(true);
   }
 
