@@ -3,39 +3,22 @@ import { IconSettings } from "@tabler/icons-react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { useAtom } from "jotai";
-import { ParseResultType, parseDomain } from "parse-domain";
-import { useEffect, useState } from "react";
-import browser from "webextension-polyfill";
+import { useState } from "react";
 
 import AliasList from "~components/AliasList";
 import Login from "~components/Login";
 import SettingsModal from "~components/SettingsModal";
 import { popupHeight, popupWidth } from "~const";
-import { ThemeProvider } from "~popup/Theme";
+import { ThemeProvider } from "~theme";
 import { queryClient } from "~utils/cloudflare";
-import { apiTokenAtom, devToolsAtom, hostnameAtom } from "~utils/state";
+import { apiTokenAtom, devToolsAtom } from "~utils/state";
 import { extensionStoragePersister } from "~utils/storage";
 
-function Popup() {
+export default function Main() {
   const [token] = useAtom(apiTokenAtom);
   const [devToolsEnabled] = useAtom(devToolsAtom);
-  const [, setHostname] = useAtom(hostnameAtom);
 
   const [settingsModalOpened, setSettingsModalOpened] = useState(false);
-
-  useEffect(() => {
-    browser.tabs.query({ active: true }).then(([tab]) => {
-      if (tab && tab.url) {
-        const url = new URL(tab.url);
-        const parsed = parseDomain(url.hostname);
-        if (parsed.type === ParseResultType.Listed) {
-          setHostname(parsed);
-        } else {
-          setHostname(null);
-        }
-      }
-    });
-  }, []);
 
   return (
     <ThemeProvider>
@@ -63,5 +46,3 @@ function Popup() {
     </ThemeProvider>
   );
 }
-
-export default Popup;
