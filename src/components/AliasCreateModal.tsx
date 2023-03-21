@@ -37,7 +37,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
 
   const aliasCreateForm = useForm({
     initialValues: {
-      zoneId: selectedZoneId,
+      zoneId: "",
       format: "characters",
       characterCount: 5,
       wordCount: 2,
@@ -56,6 +56,14 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
       });
     }
   }, [aliasSettings]);
+
+  useEffect(() => {
+    if (!!selectedZoneId) {
+      aliasCreateForm.setValues({
+        zoneId: selectedZoneId,
+      });
+    }
+  }, [selectedZoneId]);
 
   async function createAlias(variables: typeof aliasCreateForm.values) {
     const zone = zones.data?.find((z) => z.id === variables.zoneId);
