@@ -47,6 +47,30 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
       prefixFormat: "none",
       destination: "",
     },
+    validate: {
+      zoneId: (value) =>
+        value.trim() === "" || !zones.data?.find((z) => z.id === selectedZoneId)
+          ? "Invalid domain"
+          : null,
+      format: (value) =>
+        !["characters", "words", "custom"].includes(value) ? "Invalid alias format" : null,
+      characterCount: (value, values) =>
+        values.format === "characters" && (value < 3 || value > 25)
+          ? "Must be between 3 and 25"
+          : null,
+      wordCount: (value, values) =>
+        values.format === "words" && (value < 1 || value > 5) ? "Must be between 1 and 5" : null,
+      customAlias: (value, values) =>
+        values.format === "custom" && value.trim().length < 3
+          ? "Must be at least 3 characters"
+          : null,
+      prefixFormat: (value) =>
+        !["none", "domainWithoutExtension", "domainWithExtension", "fullDomain"].includes(value)
+          ? "Invalid format"
+          : null,
+      destination: (value) =>
+        value.trim().length === 0 || !destinations.data?.find((d) => d.email === value),
+    },
   });
 
   useEffect(() => {
@@ -243,7 +267,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
           {aliasCreateForm.values.format === "characters" && (
             <NumberInput
               defaultValue={5}
-              min={1}
+              min={3}
               max={25}
               label="Number of characters"
               {...aliasCreateForm.getInputProps("characterCount")}

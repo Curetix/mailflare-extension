@@ -26,6 +26,10 @@ export default function AliasBulkEditModal({ opened, onClose, selectedAliases }:
       destination: "",
       enabled: true,
     },
+    validate: {
+      destination: (value) =>
+        value.trim().length === 0 || !destinations.data?.find((d) => d.email === value),
+    },
   });
 
   async function saveSelectedAliases(values: typeof aliasEditForm.values) {

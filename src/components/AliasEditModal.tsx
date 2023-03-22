@@ -35,6 +35,10 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
       destination: "",
       enabled: true,
     },
+    validate: {
+      destination: (value) =>
+        value.trim().length === 0 || !destinations.data?.find((d) => d.email === value),
+    },
   });
 
   useEffect(() => {
