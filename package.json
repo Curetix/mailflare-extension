@@ -7,9 +7,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "plasmo dev",
-    "dev:firefox": "plasmo dev --target=firefox-mv2",
-    "build": "plasmo build --zip",
-    "build:firefox": "plasmo build --target=firefox-mv2 --zip",
+    "dev:firefox": "yarn dev --target=firefox-mv2",
+    "build": "tsc && plasmo build --zip",
+    "build:firefox": "yarn build --target=firefox-mv2",
     "prettier": "prettier -w ./src/"
   },
   "dependencies": {
