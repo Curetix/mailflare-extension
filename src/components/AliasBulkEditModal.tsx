@@ -70,7 +70,7 @@ export default function AliasBulkEditModal({ opened, onClose, selectedAliases }:
       title="Edit Aliases"
       fullScreen>
       <form onSubmit={aliasEditForm.onSubmit((values) => saveSelectedAliases(values))}>
-        <Stack spacing="xs">
+        <Stack spacing="xs" mih={400}>
           <Select
             label="Destination"
             placeholder="Keep original destinations"
