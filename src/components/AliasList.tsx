@@ -12,6 +12,7 @@ import {
   Select,
   Stack,
   Text,
+  TextInput,
 } from "@mantine/core";
 import { useClipboard } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
@@ -22,6 +23,7 @@ import {
   IconPlaylistAdd,
   IconPlaylistX,
   IconRefresh,
+  IconSearch,
   IconTrash,
 } from "@tabler/icons-react";
 import { useAtom } from "jotai";
@@ -60,6 +62,7 @@ function AliasList() {
   const [aliasEditModalOpened, setAliasEditModalOpened] = useState(false);
   const [aliasDeleteModalOpened, setAliasDeleteModalOpened] = useState(false);
   const [aliasSelectEnabled, setAliasSelectEnabled] = useState(false);
+  const [searchVisible, setSearchVisible] = useState(false);
 
   const [selectedAliases, setSelectedAliases] = useState<Alias[]>([]);
   const [aliasToEdit, setAliasToEdit] = useState<Alias | null>(null);
@@ -145,6 +148,7 @@ function AliasList() {
 
       {/* DOMAIN SELECTOR */}
       <Select
+        placeholder="Domain"
         value={selectedZoneId}
         onChange={setSelectedZoneId}
         disabled={!zones.data || zones.data.length === 0}
@@ -156,7 +160,6 @@ function AliasList() {
             label: z.name,
           })) || []
         }
-        placeholder="Domain"
         searchable={zones.isSuccess && zones.data.length > 5}
       />
 
@@ -204,7 +207,7 @@ function AliasList() {
               compact
               fullWidth
               leftIcon={<IconPlaylistAdd size={16} />}
-              disabled={!zones.data || zones.data.length === 0 || selectedZoneId === null}
+              disabled={!zones.data || filteredAliases.length === 0 || selectedZoneId === null}
               onClick={() => setAliasCreateModalOpened(true)}>
               Create
             </Button>
@@ -212,8 +215,21 @@ function AliasList() {
               variant="light"
               compact
               fullWidth
+              leftIcon={<IconSearch size={16} />}
+              disabled={!zones.data || selectedZoneId === null}
+              loaderProps={{ size: 16 }}
+              onClick={() => {
+                setSearchVisible(!searchVisible);
+                setAliasSearch("");
+              }}>
+              Search
+            </Button>
+            <Button
+              variant="light"
+              compact
+              fullWidth
               leftIcon={<IconRefresh size={16} />}
-              disabled={!zones.data || zones.data.length === 0 || selectedZoneId === null}
+              disabled={!zones.data || filteredAliases.length === 0 || selectedZoneId === null}
               loading={emailRules.isFetching}
               loaderProps={{ size: 16 }}
               onClick={() => emailRulesDispatch({ type: "refetch" })}>
@@ -223,8 +239,17 @@ function AliasList() {
         )}
       </Button.Group>
 
+      {/* Search field */}
+      {searchVisible && (
+        <TextInput
+          placeholder="Search aliases"
+          value={aliasSearch}
+          onChange={(event) => setAliasSearch(event.currentTarget.value)}
+        />
+      )}
+
       {/* ALIAS LIST AREA */}
-      <ScrollArea h={aliasListHeight}>
+      <ScrollArea h={aliasListHeight - (searchVisible ? 46 : 0)}>
         <Stack spacing="xs">
           {zones.isSuccess && zones.data.length === 0 && (
             <Alert title="Oh no!" color="red">
