@@ -4,7 +4,7 @@ import { showNotification } from "@mantine/notifications";
 import { useAtom } from "jotai";
 
 import {
-  CloudflareEmailRule,
+  Alias,
   destinationsStatusAtom,
   editEmailRuleAtom,
   emailRulesStatusAtom,
@@ -13,7 +13,7 @@ import {
 type Props = {
   opened: boolean;
   onClose: (clear?: boolean) => void;
-  selectedAliases: CloudflareEmailRule[];
+  selectedAliases: Alias[];
 };
 
 export default function AliasBulkEditModal({ opened, onClose, selectedAliases }: Props) {
@@ -37,9 +37,9 @@ export default function AliasBulkEditModal({ opened, onClose, selectedAliases }:
       selectedAliases.map((a) => {
         a.enabled = values.enabled;
         if (values.destination !== "") {
-          a.actions[0].value[0] = values.destination;
+          a.forwardTo = values.destination;
         }
-        return mutate([a]);
+        return mutate([a.toEmailRule()]);
       }),
     );
     // TODO: handle errors

@@ -2,12 +2,12 @@ import { Button, Modal, Stack, Text } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { useAtom } from "jotai";
 
-import { CloudflareEmailRule, deleteEmailAtom, emailRulesStatusAtom } from "~utils/cloudflare";
+import { Alias, deleteEmailAtom, emailRulesStatusAtom } from "~utils/cloudflare";
 
 type Props = {
   opened: boolean;
   onClose: () => void;
-  aliasToDelete: CloudflareEmailRule;
+  aliasToDelete: Alias | null;
 };
 
 export default function AliasDeleteModal({ opened, onClose, aliasToDelete }: Props) {
@@ -15,8 +15,18 @@ export default function AliasDeleteModal({ opened, onClose, aliasToDelete }: Pro
   const [deleteMutation, mutate] = useAtom(deleteEmailAtom);
 
   async function deleteAlias() {
+    if (!aliasToDelete) {
+      showNotification({
+        color: "red",
+        title: "Error",
+        message: "Could not delete the alias",
+        autoClose: false,
+      });
+      return;
+    }
+
     return mutate([
-      aliasToDelete,
+      aliasToDelete.toEmailRule(),
       {
         onSuccess: () => {
           emailRulesDispatch({ type: "refetch" });
@@ -59,7 +69,7 @@ export default function AliasDeleteModal({ opened, onClose, aliasToDelete }: Pro
       <Stack spacing="xs">
         <>
           <Text>You are about to delete the alias</Text>
-          <Text fw={700}>{aliasToDelete?.matchers[0].value}</Text>
+          <Text fw={700}>{aliasToDelete?.address}</Text>
           <Text>Do you want to proceed?</Text>
         </>
         <Button.Group>

@@ -2,12 +2,12 @@ import { Button, Modal, Stack, Text } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { useAtom } from "jotai";
 
-import { CloudflareEmailRule, deleteEmailAtom, emailRulesStatusAtom } from "~utils/cloudflare";
+import { Alias, deleteEmailAtom, emailRulesStatusAtom } from "~utils/cloudflare";
 
 type Props = {
   opened: boolean;
   onClose: (clear?: boolean) => void;
-  selectedAliases: CloudflareEmailRule[];
+  selectedAliases: Alias[];
 };
 
 export default function AliasBulkDeleteModal({ opened, onClose, selectedAliases }: Props) {
@@ -15,7 +15,7 @@ export default function AliasBulkDeleteModal({ opened, onClose, selectedAliases 
   const [deleteMutation, mutate] = useAtom(deleteEmailAtom);
 
   async function deleteSelectedAliases() {
-    await Promise.all(selectedAliases.map((a) => mutate([a])));
+    await Promise.all(selectedAliases.map((a) => mutate([a.toEmailRule()])));
     // TODO: handle errors
     emailRulesDispatch({ type: "refetch" });
     showNotification({

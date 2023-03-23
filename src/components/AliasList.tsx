@@ -34,12 +34,13 @@ import AliasDeleteModal from "~components/AliasDeleteModal";
 import AliasEditModal from "~components/AliasEditModal";
 import { emailRuleNamePrefix, popupHeight } from "~const";
 import {
-  CloudflareEmailRule,
+  Alias,
   destinationsStatusAtom,
   emailRulesStatusAtom,
+  filteredAliasesAtom,
   zonesStatusAtom,
 } from "~utils/cloudflare";
-import { selectedZoneIdAtom } from "~utils/state";
+import { aliasSearchAtom, selectedZoneIdAtom } from "~utils/state";
 
 // popupHeight - header - divider - padding - select - button group - gap
 const aliasListHeight = popupHeight - 52 - 1 - 16 * 2 - 36 - 26 - 10 * 2;
@@ -50,20 +51,22 @@ function AliasList() {
   const [zones] = useAtom(zonesStatusAtom);
   const [destinations] = useAtom(destinationsStatusAtom);
   const [emailRules, emailRulesDispatch] = useAtom(emailRulesStatusAtom);
+  const [filteredAliases] = useAtom(filteredAliasesAtom);
 
   const [selectedZoneId, setSelectedZoneId] = useAtom(selectedZoneIdAtom);
+  const [aliasSearch, setAliasSearch] = useAtom(aliasSearchAtom);
 
   const [aliasCreateModalOpened, setAliasCreateModalOpened] = useState(false);
   const [aliasEditModalOpened, setAliasEditModalOpened] = useState(false);
   const [aliasDeleteModalOpened, setAliasDeleteModalOpened] = useState(false);
   const [aliasSelectEnabled, setAliasSelectEnabled] = useState(false);
 
-  const [selectedAliases, setSelectedAliases] = useState<CloudflareEmailRule[]>([]);
-  const [aliasToEdit, setAliasToEdit] = useState<CloudflareEmailRule | null>(null);
-  const [aliasToDelete, setAliasToDelete] = useState<CloudflareEmailRule | null>(null);
+  const [selectedAliases, setSelectedAliases] = useState<Alias[]>([]);
+  const [aliasToEdit, setAliasToEdit] = useState<Alias | null>(null);
+  const [aliasToDelete, setAliasToDelete] = useState<Alias | null>(null);
 
-  function getAliasBadge(rule: CloudflareEmailRule) {
-    const destination = destinations.data?.find((d) => rule.actions[0].value[0] === d.email);
+  function getAliasBadge(rule: Alias) {
+    const destination = destinations.data?.find((d) => rule.forwardTo === d.email);
     if (
       destinations.data &&
       destinations.data.length > 0 &&
@@ -75,7 +78,7 @@ function AliasList() {
         </Badge>
       );
     }
-    if (!rule.name.startsWith(emailRuleNamePrefix)) {
+    if (rule.isExternal) {
       return (
         <Badge color="blue" size="xs">
           External
@@ -241,9 +244,9 @@ function AliasList() {
             </Center>
           )}
 
-          {!!selectedZoneId && emailRules.isSuccess && emailRules.data.length === 0 && (
+          {!!selectedZoneId && emailRules.isSuccess && filteredAliases.length === 0 && (
             <Alert title="Bummer!" color="yellow">
-              There are no aliases for this domain yet.
+              There are no aliases for this domain or this filter.
             </Alert>
           )}
 
@@ -255,7 +258,7 @@ function AliasList() {
 
           {/* ALIAS LIST */}
           {emailRules.isSuccess &&
-            emailRules.data.map((r) => (
+            filteredAliases.map((r) => (
               <Card
                 p="xs"
                 radius="sm"
@@ -287,7 +290,7 @@ function AliasList() {
                     )}
 
                     <Text weight={500} truncate style={{ width: aliasSelectEnabled ? 230 : 260 }}>
-                      {r.matchers[0].value}
+                      {r.address}
                     </Text>
                   </Group>
 
@@ -296,7 +299,7 @@ function AliasList() {
                       variant="subtle"
                       size="sm"
                       onClick={() => {
-                        clipboard.copy(r.matchers[0].value);
+                        clipboard.copy(r.address);
                         showNotification({
                           color: "green",
                           message: "Email address was copied to the clipboard.",

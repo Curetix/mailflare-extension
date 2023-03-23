@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 import { emailRuleNamePrefix } from "~const";
 import {
-  CloudflareEmailRule,
+  Alias,
   destinationsStatusAtom,
   editEmailRuleAtom,
   emailRulesStatusAtom,
@@ -16,7 +16,7 @@ import { selectedZoneIdAtom } from "~utils/state";
 type Props = {
   opened: boolean;
   onClose: () => void;
-  aliasToEdit: CloudflareEmailRule;
+  aliasToEdit: Alias | null;
 };
 
 export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) {
@@ -46,32 +46,32 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
       aliasEditForm.setValues({
         id: aliasToEdit.tag,
         zoneId: selectedZoneId!,
-        alias: aliasToEdit.matchers[0].value,
+        alias: aliasToEdit.address,
         description: aliasToEdit.name.replace(emailRuleNamePrefix, "").trim(),
-        destination: aliasToEdit.actions[0].value[0],
+        destination: aliasToEdit.forwardTo,
         enabled: aliasToEdit.enabled,
       });
     }
   }, [aliasToEdit]);
 
   async function saveAlias(variables: typeof aliasEditForm.values) {
-    const original = aliasToEdit;
-    const updated: CloudflareEmailRule = {
-      ...original,
-      name: original.name.startsWith(emailRuleNamePrefix)
-        ? `${emailRuleNamePrefix}${variables.description}`
-        : variables.destination,
-      actions: [
-        {
-          type: "forward",
-          value: [variables.destination],
-        },
-      ],
-      enabled: variables.enabled,
-    };
+    if (!aliasToEdit) {
+      showNotification({
+        color: "red",
+        title: "Error",
+        message: "Could not save the alias",
+        autoClose: false,
+      });
+      return;
+    }
+
+    const updated = aliasToEdit;
+    updated.name = variables.description;
+    updated.forwardTo = variables.destination;
+    updated.enabled = variables.enabled;
 
     return mutate([
-      updated,
+      updated.toEmailRule(),
       {
         onSuccess: () => {
           emailRulesDispatch({ type: "refetch" });

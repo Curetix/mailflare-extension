@@ -24,6 +24,7 @@ const selectedZoneIdAtom = atomWithStorage<string | null>("selectedZoneId", null
 
 // State data
 const hostnameAtom = atom<ParseResultListed | null>(null);
+const aliasSearchAtom = atom<string>("");
 
 export {
   apiTokenAtom,
@@ -35,4 +36,5 @@ export {
   aliasSettingsAtom,
   selectedZoneIdAtom,
   hostnameAtom,
+  aliasSearchAtom,
 };
