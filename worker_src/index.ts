@@ -15,7 +15,7 @@ function parseEmailRecipient(original: string): { from: string; to: string } | n
 }
 export default {
   async email(message: EmailMessage, env: Env, ctx: ExecutionContext): Promise<void> {
-    const allowedSenders = [];
+    const allowedSenders: string[] = [];
     const aliases = [];
 
     if (allowedSenders.indexOf(message.from.toLowerCase()) < 0) {
