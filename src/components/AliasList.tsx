@@ -24,6 +24,7 @@ import {
   IconPlaylistX,
   IconRefresh,
   IconSearch,
+  IconSearchOff,
   IconTrash,
 } from "@tabler/icons-react";
 import { useAtom } from "jotai";
@@ -170,7 +171,11 @@ function AliasList() {
           compact
           fullWidth
           leftIcon={aliasSelectEnabled ? <IconPlaylistX size={16} /> : <IconListCheck size={16} />}
-          disabled={!zones.data || zones.data.length === 0 || selectedZoneId === null}
+          disabled={
+            !zones.data ||
+            (!aliasSelectEnabled && filteredAliases.length === 0) ||
+            selectedZoneId === null
+          }
           onClick={() => {
             setSelectedAliases([]);
             setAliasSelectEnabled(!aliasSelectEnabled);
@@ -207,7 +212,7 @@ function AliasList() {
               compact
               fullWidth
               leftIcon={<IconPlaylistAdd size={16} />}
-              disabled={!zones.data || filteredAliases.length === 0 || selectedZoneId === null}
+              disabled={!zones.data || zones.data.length === 0 || selectedZoneId === null}
               onClick={() => setAliasCreateModalOpened(true)}>
               Create
             </Button>
@@ -215,21 +220,27 @@ function AliasList() {
               variant="light"
               compact
               fullWidth
-              leftIcon={<IconSearch size={16} />}
-              disabled={!zones.data || selectedZoneId === null}
+              leftIcon={searchVisible ? <IconSearchOff size={16} /> : <IconSearch size={16} />}
+              disabled={
+                !zones.data ||
+                !emailRules.data ||
+                emailRules.data.length === 0 ||
+                (!searchVisible && filteredAliases.length === 0) ||
+                selectedZoneId === null
+              }
               loaderProps={{ size: 16 }}
               onClick={() => {
                 setSearchVisible(!searchVisible);
                 setAliasSearch("");
               }}>
-              Search
+              {searchVisible ? "Hide Search" : "Search"}
             </Button>
             <Button
               variant="light"
               compact
               fullWidth
               leftIcon={<IconRefresh size={16} />}
-              disabled={!zones.data || filteredAliases.length === 0 || selectedZoneId === null}
+              disabled={!zones.data || zones.data.length === 0 || selectedZoneId === null}
               loading={emailRules.isFetching}
               loaderProps={{ size: 16 }}
               onClick={() => emailRulesDispatch({ type: "refetch" })}>
@@ -251,8 +262,8 @@ function AliasList() {
       {/* ALIAS LIST AREA */}
       <ScrollArea h={aliasListHeight - (searchVisible ? 46 : 0)}>
         <Stack spacing="xs">
-          {zones.isSuccess && zones.data.length === 0 && (
-            <Alert title="Oh no!" color="red">
+          {!zones.isFetching && zones.isSuccess && zones.data.length === 0 && (
+            <Alert title="Bummer!" color="yellow">
               No domains for this Cloudflare account or API token.
             </Alert>
           )}
@@ -263,17 +274,20 @@ function AliasList() {
             </Alert>
           )}
 
-          {!!selectedZoneId && emailRules.isLoading && (
+          {!!selectedZoneId && filteredAliases.length === 0 && emailRules.isFetching && (
             <Center>
               <Loader height={aliasListHeight - 5} />
             </Center>
           )}
 
-          {!!selectedZoneId && emailRules.isSuccess && filteredAliases.length === 0 && (
-            <Alert title="Bummer!" color="yellow">
-              There are no aliases for this domain or this filter.
-            </Alert>
-          )}
+          {!!selectedZoneId &&
+            emailRules.isSuccess &&
+            !emailRules.isFetching &&
+            filteredAliases.length === 0 && (
+              <Alert title="Bummer!" color="yellow">
+                There are no aliases for this domain or this filter.
+              </Alert>
+            )}
 
           {emailRules.isError && (
             <Alert title="Oh no!" color="red">
