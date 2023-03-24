@@ -35,11 +35,20 @@ export default function AliasBulkEditModal({ opened, onClose, selectedAliases }:
   async function saveSelectedAliases(values: typeof aliasEditForm.values) {
     await Promise.all(
       selectedAliases.map((a) => {
-        a.enabled = values.enabled;
-        if (values.destination !== "") {
-          a.forwardTo = values.destination;
+        try {
+          a.enabled = values.enabled;
+          if (values.destination !== "") {
+            a.forwardTo = values.destination;
+          }
+          return mutate([a.toEmailRule()]);
+        } catch (error) {
+          showNotification({
+            color: "red",
+            title: "Error",
+            message: `Error saving alias ${a.address}: ${error}`,
+            autoClose: false,
+          });
         }
-        return mutate([a.toEmailRule()]);
       }),
     );
     // TODO: handle errors

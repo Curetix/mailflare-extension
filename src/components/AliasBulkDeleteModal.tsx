@@ -15,8 +15,20 @@ export default function AliasBulkDeleteModal({ opened, onClose, selectedAliases 
   const [deleteMutation, mutate] = useAtom(deleteEmailAtom);
 
   async function deleteSelectedAliases() {
-    await Promise.all(selectedAliases.map((a) => mutate([a.toEmailRule()])));
-    // TODO: handle errors
+    await Promise.all(
+      selectedAliases.map(async (a) => {
+        try {
+          return await mutate([a.toEmailRule()]);
+        } catch (error) {
+          showNotification({
+            color: "red",
+            title: "Error",
+            message: `Error deleting alias ${a.address}: ${error}`,
+            autoClose: false,
+          });
+        }
+      }),
+    );
     emailRulesDispatch({ type: "refetch" });
     showNotification({
       color: "green",
