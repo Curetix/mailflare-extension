@@ -19,14 +19,15 @@ No third-party services or tedious configuration of a self-hosted email server n
 
 - Create / edit / delete aliases, edit / delete aliases in bulk
 - Multiple formats for alias addresses (random characters, random words, custom), optionally prefixed with current website name
+- Search aliases and their descriptions
 
 
 ## Potential future features
 
-- Search aliases
 - Create / delete destination addresses
 - One-Click alias generation directly inside email input fields
 - Advanced login options, manually providing account ID and zone IDs to further limit the API token permissions
+- Web version of the extension that can be used on any device, including offline support
 - Email Reply worker (see below)
 
 
