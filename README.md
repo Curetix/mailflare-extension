@@ -39,15 +39,13 @@ Potential future features:
 
 ## Limitations
 
-See [this page](https://developers.cloudflare.com/email-routing/known-limitations):
+See [this page](https://developers.cloudflare.com/email-routing/postmaster/#known-limitations):
 
 - "Email Routing does not forward non-delivery reports to the original sender. This means the sender will not receive a notification indicating that the email did not reach the intended destination."
-- "Subdomains cannot use Email Routing to forward emails, unless they are part of an Enterprise account."
 - "Email Routing does not support sending or replying from your Cloudflare domain."
+- "Subdomains cannot use Email Routing to forward emails, unless they are part of an Enterprise account."
 
-On top of that, further limits might exist but are not stated by Cloudflare.
-For example, one community forum post claims that you cannot create more than 200 email rules
-(which the extension uses for aliases).
+Additionally, there is a [limit of 200 email rules (aliases) and 200 destination addresses](https://developers.cloudflare.com/email-routing/limits/#rules-and-addresses) per domain.
 
 ## Create a Cloudflare API token
 
