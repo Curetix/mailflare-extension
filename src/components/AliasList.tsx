@@ -289,7 +289,7 @@ function AliasList() {
               </Alert>
             )}
 
-          {emailRules.isError && (
+          {emailRules.isError && !zones.isError && (
             <Alert title="Oh no!" color="red">
               {`Something went wrong while loading your aliases: ${emailRules.error}`}
             </Alert>
