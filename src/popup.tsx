@@ -3,7 +3,7 @@ import { ParseResultType, parseDomain } from "parse-domain";
 import { useEffect } from "react";
 import browser from "webextension-polyfill";
 
-import Main from "~main";
+import App from "~app";
 import { hostnameAtom } from "~utils/state";
 
 // noinspection JSUnusedGlobalSymbols
@@ -24,5 +24,5 @@ export default function Popup() {
     });
   }, []);
 
-  return <Main />;
+  return <App />;
 }

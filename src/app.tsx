@@ -14,7 +14,7 @@ import { queryClient } from "~utils/cloudflare";
 import { apiTokenAtom, devToolsAtom } from "~utils/state";
 import { extensionStoragePersister } from "~utils/storage";
 
-export default function Main() {
+export default function App() {
   const [token] = useAtom(apiTokenAtom);
   const [devToolsEnabled] = useAtom(devToolsAtom);
 
