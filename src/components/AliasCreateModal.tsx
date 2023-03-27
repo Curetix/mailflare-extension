@@ -89,6 +89,14 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
     }
   }, [selectedZoneId]);
 
+  useEffect(() => {
+    if (!!hostname) {
+      aliasCreateForm.setValues({
+        description: hostname.hostname,
+      });
+    }
+  }, [hostname]);
+
   async function createAlias(variables: typeof aliasCreateForm.values) {
     const zone = zones.data?.find((z) => z.id === variables.zoneId);
 
