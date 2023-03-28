@@ -15,25 +15,35 @@ function Login() {
   async function verifyToken() {
     setVerifyError(false);
     setIsLoading(true);
-    const response = await fetch(`${CloudflareApiBaseUrl}/user/tokens/verify`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    setIsLoading(false);
+    try {
+      const response = await fetch(`${CloudflareApiBaseUrl}/user/tokens/verify`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    const json: CloudflareVerifyTokenResponse = await response.json();
-    if (response.ok && json.success) {
-      await setStoredToken(token);
-    } else {
+      const json: CloudflareVerifyTokenResponse = await response.json();
+      if (response.ok && json.success) {
+        await setStoredToken(token);
+      } else {
+        setVerifyError(true);
+        console.error(json);
+        showNotification({
+          title: "Error",
+          message: "Token could not be verified. Is it correct?",
+          color: "red",
+        });
+      }
+    } catch (error) {
       setVerifyError(true);
-      console.error(json);
+      console.error(error);
       showNotification({
         title: "Error",
         message: "Token could not be verified. Is it correct?",
         color: "red",
       });
     }
+    setIsLoading(false);
   }
 
   return (
