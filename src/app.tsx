@@ -8,7 +8,7 @@ import { useState } from "react";
 import AliasList from "~components/AliasList";
 import Login from "~components/Login";
 import SettingsModal from "~components/SettingsModal";
-import { popupHeight, popupWidth } from "~const";
+import { isExtension, popupHeight, popupWidth } from "~const";
 import { ThemeProvider } from "~theme";
 import { queryClient } from "~utils/cloudflare";
 import { apiTokenAtom, devToolsAtom } from "~utils/state";
@@ -26,7 +26,11 @@ export default function App() {
         client={queryClient}
         persistOptions={{ persister: extensionStoragePersister }}>
         {devToolsEnabled && <ReactQueryDevtools initialIsOpen={false} />}
-        <Container w={popupWidth} h={popupHeight} p={0}>
+        <Container
+          w={isExtension ? popupWidth : undefined}
+          h={isExtension ? popupHeight : window.innerHeight}
+          maw={600}
+          p={0}>
           <SettingsModal
             opened={settingsModalOpened}
             onClose={() => setSettingsModalOpened(false)}

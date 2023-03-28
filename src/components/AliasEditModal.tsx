@@ -4,7 +4,7 @@ import { showNotification } from "@mantine/notifications";
 import { useAtom } from "jotai";
 import { useEffect } from "react";
 
-import { emailRuleNamePrefix } from "~const";
+import { emailRuleNamePrefix, isExtension } from "~const";
 import {
   Alias,
   destinationsStatusAtom,
@@ -111,7 +111,7 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
         }
       }}
       title="Edit Alias"
-      fullScreen>
+      fullScreen={isExtension}>
       <form onSubmit={aliasEditForm.onSubmit((values) => saveAlias(values))}>
         <Stack spacing="xs" mih={400}>
           <TextInput label="Alias" disabled {...aliasEditForm.getInputProps("alias")} />

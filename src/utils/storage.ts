@@ -3,8 +3,11 @@ import { unstable_NO_STORAGE_VALUE } from "jotai/vanilla/utils";
 
 import { Storage } from "@plasmohq/storage";
 
+import { isWebApp } from "~const";
+
 export const extensionLocalStorage = new Storage({
   area: "local",
+  allCopied: isWebApp,
 });
 
 export const extensionLocalStorageInterface = {

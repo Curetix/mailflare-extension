@@ -5,7 +5,7 @@ import { showNotification } from "@mantine/notifications";
 import { useAtom } from "jotai";
 import { useEffect } from "react";
 
-import { emailRuleNamePrefix } from "~const";
+import { emailRuleNamePrefix, isExtension } from "~const";
 import { generateAlias } from "~utils/alias";
 import {
   CloudflareEmailRule,
@@ -234,7 +234,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
         }
       }}
       title="Create alias"
-      fullScreen>
+      fullScreen={isExtension}>
       <form onSubmit={aliasCreateForm.onSubmit((values) => createAlias(values))}>
         <Stack spacing="xs">
           <Select

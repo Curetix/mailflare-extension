@@ -2,6 +2,7 @@ import { Button, Modal, Stack, Text } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { useAtom } from "jotai";
 
+import { isExtension } from "~const";
 import { Alias, deleteEmailAtom, emailRulesStatusAtom } from "~utils/cloudflare";
 
 type Props = {
@@ -54,7 +55,7 @@ export default function AliasBulkDeleteModal({ opened, onClose, selectedAliases 
         }
       }}
       title="Delete Aliases"
-      fullScreen>
+      fullScreen={isExtension}>
       <Stack spacing="xs">
         <Text>You are about to delete {selectedAliases.length} aliases.</Text>
         <Text>Do you want to proceed?</Text>

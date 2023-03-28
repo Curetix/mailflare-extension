@@ -3,6 +3,7 @@ import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import { useAtom } from "jotai";
 
+import { isExtension } from "~const";
 import {
   Alias,
   destinationsStatusAtom,
@@ -77,7 +78,7 @@ export default function AliasBulkEditModal({ opened, onClose, selectedAliases }:
         }
       }}
       title="Edit Aliases"
-      fullScreen>
+      fullScreen={isExtension}>
       <form onSubmit={aliasEditForm.onSubmit((values) => saveSelectedAliases(values))}>
         <Stack spacing="xs" mih={400}>
           <Select

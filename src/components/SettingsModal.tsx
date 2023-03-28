@@ -5,7 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { RESET } from "jotai/utils";
 
-import { extensionName, extensionVersion, popupHeight } from "~const";
+import { extensionName, extensionVersion, isExtension, popupHeight } from "~const";
 import { destinationsStatusAtom, zonesStatusAtom } from "~utils/cloudflare";
 import {
   apiTokenAtom,
@@ -175,7 +175,7 @@ function SettingsModal({ opened, onClose }: Props) {
       opened={opened}
       onClose={() => onClose()}
       title="Settings"
-      fullScreen
+      fullScreen={isExtension}
       scrollAreaComponent={Modal.NativeScrollArea}>
       <ScrollArea h={popupHeight - 2 * 20 - 28 - 16}>
         <Stack spacing="xs" pr={15}>
