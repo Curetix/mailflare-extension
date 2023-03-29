@@ -6,6 +6,16 @@ import tsconfigPaths from "vite-tsconfig-paths";
 // https://vitejs.dev/config/
 // noinspection JSUnusedGlobalSymbols
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      onwarn: (warning, warn) => {
+        if (warning.code === "MODULE_LEVEL_DIRECTIVE") {
+          return;
+        }
+        warn(warning);
+      },
+    },
+  },
   plugins: [
     tsconfigPaths(),
     react(),
