@@ -10,7 +10,7 @@ function Login() {
   const [, setStoredToken] = useAtom(apiTokenAtom);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [token, setToken] = useState<string>("");
-  const [verifyError, setVerifyError] = useState<boolean>(false);
+  const [verifyError, setVerifyError] = useState<string | false>(false);
 
   async function verifyToken() {
     setVerifyError(false);
@@ -26,7 +26,7 @@ function Login() {
       if (response.ok && json.success) {
         await setStoredToken(token);
       } else {
-        setVerifyError(true);
+        setVerifyError(json.errors[0].message);
         console.error(json);
         showNotification({
           title: "Error",
@@ -34,8 +34,8 @@ function Login() {
           color: "red",
         });
       }
-    } catch (error) {
-      setVerifyError(true);
+    } catch (error: any) {
+      setVerifyError(error.toString());
       console.error(error);
       showNotification({
         title: "Error",
