@@ -1,6 +1,6 @@
 {
   "extends": "plasmo/templates/tsconfig.base",
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "functions"],
   "include": [".plasmo/index.d.ts", "./vite.config.ts", "./src/**/*.ts", "./src/**/*.tsx"],
   "compilerOptions": {
     "strict": true,

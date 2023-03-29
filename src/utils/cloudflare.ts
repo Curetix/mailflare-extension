@@ -2,10 +2,10 @@ import { QueryClient } from "@tanstack/query-core";
 import { atom } from "jotai";
 import { atomsWithMutation, atomsWithQuery } from "jotai-tanstack-query";
 
-import { emailRuleNamePrefix } from "~const";
+import { emailRuleNamePrefix, isWebApp } from "~const";
 import { aliasSearchAtom, apiTokenAtom, ruleFilterAtom, selectedZoneIdAtom } from "~utils/state";
 
-const CloudflareApiBaseUrl = "https://api.cloudflare.com/client/v4";
+const CloudflareApiBaseUrl = isWebApp ? "/api" : "https://api.cloudflare.com/client/v4";
 
 type CloudflareVerifyToken = {
   expires_on?: string;
