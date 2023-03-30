@@ -8,6 +8,7 @@ import tsconfigPaths from "vite-tsconfig-paths";
 export default defineConfig({
   build: {
     rollupOptions: {
+      // Suppress warnings about the "use client" directive
       onwarn: (warning, warn) => {
         if (warning.code === "MODULE_LEVEL_DIRECTIVE") {
           return;
@@ -23,7 +24,7 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["favicon.ico", "apple-touch-icon.png"],
       manifest: {
-        name: "MailFlare | Email Alias",
+        name: "MailFlare - Email Aliases",
         short_name: "MailFlare",
         description: "Create Email aliases for your own domains using Cloudflare Email Routing",
         start_url: "/",
