@@ -7,9 +7,10 @@
   "license": "MIT",
   "scripts": {
     "prepare": "husky install",
-    "dev": "plasmo dev",
-    "dev:firefox": "yarn dev --target=firefox-mv2",
-    "dev:vite": "vite",
+    "dev": "plasmo dev --target=chrome-mv3",
+    "dev:firefox": "plasmo dev --target=firefox-mv2",
+    "dev:web": "run-p dev:vite dev:functions",
+    "dev:vite": "vite --port 3000",
     "dev:functions": "wrangler pages dev --port 3001 dist/",
     "build": "tsc && plasmo build --zip",
     "build:firefox": "yarn build --target=firefox-mv2",
