@@ -6,9 +6,9 @@ import { useAtom } from "jotai";
 import { useEffect } from "react";
 
 import { emailRuleNamePrefix, isExtension } from "~const";
+import type { CloudflareEmailRule } from "~types/cloudflare.types";
 import { generateAlias } from "~utils/alias";
 import {
-  CloudflareEmailRule,
   createEmailRuleAtom,
   destinationsStatusAtom,
   emailRulesStatusAtom,

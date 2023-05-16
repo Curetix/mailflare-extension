@@ -3,7 +3,8 @@ import { showNotification } from "@mantine/notifications";
 import { useAtom } from "jotai";
 import { useState } from "react";
 
-import { CloudflareApiBaseUrl, CloudflareVerifyTokenResponse } from "~utils/cloudflare";
+import type { CloudflareVerifyTokenResponse } from "~types/cloudflare.types";
+import { CloudflareApiBaseUrl } from "~utils/cloudflare";
 import { apiTokenAtom } from "~utils/state";
 
 function Login() {

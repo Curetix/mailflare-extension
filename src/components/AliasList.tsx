@@ -312,6 +312,7 @@ function AliasList() {
                     }
                   }
                 }}>
+                {/* ADDRESS AND CHECKBOX */}
                 <Group position="apart">
                   <Group spacing="xs">
                     {aliasSelectEnabled && (
@@ -333,6 +334,7 @@ function AliasList() {
                     </Text>
                   </Group>
 
+                  {/* ACTION BUTTONS */}
                   <Button.Group>
                     <ActionIcon
                       variant="subtle"
@@ -370,6 +372,7 @@ function AliasList() {
                   </Button.Group>
                 </Group>
 
+                {/* DESCRIPTION AND BADGE */}
                 <Group position="apart" ml={aliasSelectEnabled ? 26 : 0}>
                   <Text
                     size="sm"

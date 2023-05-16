@@ -8,7 +8,7 @@
   "bracketSpacing": true,
   "bracketSameLine": true,
   "plugins": ["@plasmohq/prettier-plugin-sort-imports"],
-  "importOrder": ["^@plasmohq/(.*)$", "^~(.*)$", "^[./]"],
+  "importOrder": ["^~(.*)$", "^[./]"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true
 }

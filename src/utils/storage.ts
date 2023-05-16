@@ -1,7 +1,5 @@
-import type { PersistedClient, Persister } from "@tanstack/query-persist-client-core";
-import { unstable_NO_STORAGE_VALUE } from "jotai/vanilla/utils";
-
 import { Storage } from "@plasmohq/storage";
+import type { PersistedClient, Persister } from "@tanstack/react-query-persist-client";
 
 import { isWebApp } from "~const";
 
@@ -12,7 +10,7 @@ export const extensionLocalStorage = new Storage({
 
 export const extensionLocalStorageInterface = {
   getItem: async (key: string) => {
-    return (await extensionLocalStorage.get<any>(key)) || unstable_NO_STORAGE_VALUE;
+    return (await extensionLocalStorage.get<any>(key)) || undefined;
   },
   setItem: async (key: string, newValue: any) => {
     return extensionLocalStorage.set(key, newValue);

@@ -6,7 +6,7 @@ import { extensionLocalStorageInterface as storage } from "~utils/storage";
 
 // Settings
 const apiTokenAtom = atomWithStorage<string | null>("apiToken", null, storage);
-const themeAtom = atomWithStorage<"dark" | "light">("theme", "light", storage);
+const themeAtom = atomWithStorage<"dark" | "light">("theme", "dark", storage);
 const ruleFilterAtom = atomWithStorage<boolean>("ruleFilter", true, storage);
 const copyAliasAtom = atomWithStorage<boolean>("copyAliasAfterCreation", true, storage);
 // const showCreateButtonAtom = atomWithStorage<boolean>("showCreateButton", true, storage);
