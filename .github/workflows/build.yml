@@ -13,6 +13,7 @@ jobs:
           - chrome-mv3
           - edge-mv3
           - firefox-mv2
+          - firefox-mv3
     steps:
       - name: Checkout
         uses: actions/checkout@v3
