@@ -45,6 +45,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
       customAlias: "",
       description: "",
       prefixFormat: "none",
+      customPrefix: "",
       destination: "",
     },
     validate: {
@@ -65,8 +66,14 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
           ? "Must be at least 3 characters"
           : null,
       prefixFormat: (value) =>
-        !["none", "domainWithoutExtension", "domainWithExtension", "fullDomain"].includes(value)
+        !["none", "domainWithoutExtension", "domainWithExtension", "fullDomain", "custom"].includes(
+          value,
+        )
           ? "Invalid format"
+          : null,
+      customPrefix: (value, values) =>
+        values.prefixFormat === "custom" && value.trim().length < 1
+          ? "Must be at least 1 character."
           : null,
       destination: (value) =>
         value.trim().length === 0 || !destinations.data?.find((d) => d.email === value),
@@ -134,7 +141,9 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
       while (true) {
         attempts += 1;
         let prefix = "";
-        if (hostname !== null) {
+        if (variables.prefixFormat === "custom" && variables.customPrefix.trim() !== "") {
+          prefix = variables.customPrefix.trim();
+        } else if (hostname !== null) {
           if (variables.prefixFormat === "domainWithoutExtension" && hostname.domain) {
             prefix = hostname.domain;
           } else if (variables.prefixFormat === "domainWithExtension") {
@@ -336,10 +345,23 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
                   label: "Full domain",
                   disabled: hostname === null,
                 },
+                {
+                  value: "custom",
+                  label: "Custom",
+                },
               ]}
               {...aliasCreateForm.getInputProps("prefixFormat")}
             />
           )}
+
+          {(aliasCreateForm.values.format === "characters" ||
+            aliasCreateForm.values.format === "words") &&
+            aliasCreateForm.values.prefixFormat === "custom" && (
+              <TextInput
+                label="Custom alias prefix"
+                {...aliasCreateForm.getInputProps("customPrefix")}
+              />
+            )}
 
           <Select
             label="Destination"
