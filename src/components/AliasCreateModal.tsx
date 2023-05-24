@@ -73,29 +73,35 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
     },
   });
 
-  useEffect(() => {
+  function resetForm() {
+    aliasCreateForm.reset();
+
     if (!!aliasSettings) {
       aliasCreateForm.setValues({
         ...aliasSettings,
       });
     }
-  }, [aliasSettings]);
 
-  useEffect(() => {
     if (!!selectedZoneId) {
       aliasCreateForm.setValues({
         zoneId: selectedZoneId,
       });
     }
-  }, [selectedZoneId]);
 
-  useEffect(() => {
     if (!!hostname) {
       aliasCreateForm.setValues({
         description: hostname.hostname,
       });
+    } else {
+      aliasCreateForm.setValues({
+        prefixFormat: "none",
+      });
     }
-  }, [hostname]);
+  }
+
+  useEffect(() => {
+    resetForm();
+  }, [aliasSettings, selectedZoneId, hostname]);
 
   async function createAlias(variables: typeof aliasCreateForm.values) {
     const zone = zones.data?.find((z) => z.id === variables.zoneId);
@@ -183,7 +189,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
       { zoneId: zone.id, rule },
       {
         onSuccess: (data) => {
-          aliasCreateForm.reset();
+          resetForm();
           setSelectedZoneId(variables.zoneId);
           emailRulesDispatch({ type: "refetch" });
           setAliasSettings({
