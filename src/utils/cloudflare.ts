@@ -178,18 +178,21 @@ export const filteredAliasesAtom = atom<Alias[]>((get) => {
 
 export const [, createEmailRuleAtom] = atomsWithMutation(
   (get) => ({
-    mutationFn: async (rule: Omit<CloudflareEmailRule, "tag">) => {
-      const response = await fetch(
-        `${CloudflareApiBaseUrl}/zones/${get(selectedZoneIdAtom)}/email/routing/rules`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${get(apiTokenAtom)}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(rule),
+    mutationFn: async ({
+      zoneId,
+      rule,
+    }: {
+      zoneId: string;
+      rule: Omit<CloudflareEmailRule, "tag">;
+    }) => {
+      const response = await fetch(`${CloudflareApiBaseUrl}/zones/${zoneId}/email/routing/rules`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${get(apiTokenAtom)}`,
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify(rule),
+      });
       const json: CloudflareCreateEmailRuleResponse = await response.json();
       if (response.ok && json.success) {
         return json;

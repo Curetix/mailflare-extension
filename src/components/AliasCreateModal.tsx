@@ -180,7 +180,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
       priority: Math.round(Date.now() / 1000),
     };
     return mutate([
-      rule,
+      { zoneId: zone.id, rule },
       {
         onSuccess: (data) => {
           aliasCreateForm.reset();
