@@ -71,9 +71,9 @@ jobs:
         uses: PlasmoHQ/bpp@v3
         with:
           keys: ${{ secrets.SUBMIT_KEYS }}
-          chrome-file: chrome-mv3-prod.zip
-          edge-file: edge-mv3-prod.zip
-          firefox-file: firefox-mv2-prod.zip
+          chrome-file: chrome-mv3/chrome-mv3-prod.zip
+          edge-file: edge-mv3/edge-mv3-prod.zip
+          firefox-file: firefox-mv2/firefox-mv2-prod.zip
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
@@ -86,6 +86,6 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            chrome-mv3-prod.zip
-            edge-mv3-prod.zip
-            firefox-mv2-prod.zip
+            chrome-mv3/chrome-mv3-prod.zip
+            edge-mv3/edge-mv3-prod.zip
+            firefox-mv2/firefox-mv2-prod.zip
