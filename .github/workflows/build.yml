@@ -63,8 +63,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Download built extensions
-        uses: actions/download-artifacts@v3
+        uses: actions/download-artifact@v3
+
       - name: Publish to store
         uses: PlasmoHQ/bpp@v3
         with:
@@ -72,6 +74,7 @@ jobs:
           chrome-file: chrome-mv3-prod.zip
           edge-file: edge-mv3-prod.zip
           firefox-file: firefox-mv2-prod.zip
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         env:
