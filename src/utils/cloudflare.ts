@@ -173,7 +173,12 @@ export const filteredAliasesAtom = atom<Alias[]>((get) => {
     .filter((r) => r.matchers[0].type === "literal" && r.actions[0].type === "forward")
     .map((r) => new Alias(r))
     .filter((r) => !get(ruleFilterAtom) || !r.isExternal)
-    .filter((r) => search === "" || r.name.includes(search) || r.address.includes(search));
+    .filter(
+      (r) =>
+        search === "" ||
+        r.name.toLowerCase().includes(search.toLowerCase()) ||
+        r.address.toLowerCase().includes(search.toLowerCase()),
+    );
 });
 
 export const [, createEmailRuleAtom] = atomsWithMutation(
