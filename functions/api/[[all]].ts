@@ -1,6 +1,5 @@
-const CloudflareApiBaseUrl = "https://api.cloudflare.com/client/v4";
+import { CloudflareApiBaseUrl } from "shared/cloudflare";
 
-// noinspection JSUnusedGlobalSymbols
 export const onRequest: PagesFunction = async (context) => {
   try {
     const req = context.request;
@@ -12,7 +11,7 @@ export const onRequest: PagesFunction = async (context) => {
       headers: req.headers,
       body: req.body,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error during API proxy request", error);
     return new Response(
       JSON.stringify({

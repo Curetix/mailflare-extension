@@ -1,11 +1,12 @@
 {
   "extends": "plasmo/templates/tsconfig.base",
-  "exclude": ["node_modules", "functions"],
-  "include": [".plasmo/index.d.ts", "./vite.config.ts", "./src/**/*.ts", "./src/**/*.tsx"],
+  "exclude": ["node_modules"],
+  "include": [".plasmo/index.d.ts", "vite.config.ts", "src/**/*.ts", "src/**/*.tsx"],
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "~*": ["./src/*"]
+      "~*": ["./src/*"],
+      "shared/*": ["./shared/*"],
     },
     "baseUrl": "."
   }

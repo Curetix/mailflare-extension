@@ -36,8 +36,8 @@ import AliasCreateModal from "~components/AliasCreateModal";
 import AliasDeleteModal from "~components/AliasDeleteModal";
 import AliasEditModal from "~components/AliasEditModal";
 import { emailRuleNamePrefix, popupHeight } from "~const";
+import type { Alias } from "~utils/alias";
 import {
-  Alias,
   destinationsStatusAtom,
   emailRulesStatusAtom,
   filteredAliasesAtom,

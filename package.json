@@ -18,7 +18,7 @@
     "build:chrome": "plasmo build --zip --target=chrome-mv3",
     "build:firefox": "plasmo build --zip --target=firefox-mv2",
     "build:vite": "tsc && vite build",
-    "prettier": "prettier -w *.json vite.config.ts functions/ src/ worker_src/"
+    "prettier": "prettier -w *.json vite.config.ts functions/ shared/ src/ worker/"
   },
   "dependencies": {
     "@emotion/react": "^11.11.0",
@@ -59,7 +59,6 @@
     "vite": "^4.3.9",
     "vite-plugin-pwa": "^0.15.1",
     "vite-tsconfig-paths": "^4.2.0",
-    "vitest": "^0.31.1",
     "wrangler": "^3.0.1"
   },
   "manifest": {

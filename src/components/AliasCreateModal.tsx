@@ -4,9 +4,9 @@ import { useClipboard } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import { useAtom } from "jotai";
 import { useEffect } from "react";
+import type { CloudflareEmailRule } from "shared/cloudflare.types";
 
 import { emailRuleNamePrefix, isExtension } from "~const";
-import type { CloudflareEmailRule } from "~types/cloudflare.types";
 import { generateAlias } from "~utils/alias";
 import {
   createEmailRuleAtom,

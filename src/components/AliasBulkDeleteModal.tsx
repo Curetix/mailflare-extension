@@ -3,7 +3,8 @@ import { showNotification } from "@mantine/notifications";
 import { useAtom } from "jotai";
 
 import { isExtension } from "~const";
-import { Alias, deleteEmailAtom, emailRulesStatusAtom } from "~utils/cloudflare";
+import type { Alias } from "~utils/alias";
+import { deleteEmailAtom, emailRulesStatusAtom } from "~utils/cloudflare";
 
 type Props = {
   opened: boolean;

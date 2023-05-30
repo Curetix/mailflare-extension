@@ -2,8 +2,8 @@ import { Accordion, Anchor, Button, List, Stack, TextInput } from "@mantine/core
 import { showNotification } from "@mantine/notifications";
 import { useAtom } from "jotai";
 import { useState } from "react";
+import type { CloudflareVerifyTokenResponse } from "shared/cloudflare.types";
 
-import type { CloudflareVerifyTokenResponse } from "~types/cloudflare.types";
 import { CloudflareApiBaseUrl } from "~utils/cloudflare";
 import { apiTokenAtom } from "~utils/state";
 

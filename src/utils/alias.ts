@@ -1,4 +1,7 @@
 import randomWords from "random-words";
+import type { CloudflareEmailRule } from "shared/cloudflare.types";
+
+import { emailRuleNamePrefix } from "~const";
 
 export function randomString(length: number) {
   let result = "";
@@ -27,5 +30,56 @@ export function generateAlias(
       return `${aliasPrefix}${randomWords({ exactly: wordCount, join: separator })}`;
     default:
       throw new Error("Invalid alias type.");
+  }
+}
+
+export class Alias {
+  address: string;
+  forwardTo: string;
+  enabled: boolean;
+  name: string;
+  priority: number;
+  tag: string;
+  isExternal: boolean = false;
+
+  constructor(rule: CloudflareEmailRule) {
+    if (rule.matchers[0].type !== "literal" || rule.actions[0].type !== "forward") {
+      throw new Error("Rule is not supported by the Alias class");
+    }
+    if (!rule.name.toLowerCase().startsWith(emailRuleNamePrefix)) {
+      this.isExternal = true;
+    }
+    this.tag = rule.tag;
+    this.name = rule.name.replace(emailRuleNamePrefix, "");
+    this.enabled = rule.enabled;
+    this.priority = rule.priority;
+    this.address = rule.matchers[0].value;
+    this.forwardTo = rule.actions[0].value[0];
+  }
+
+  toString() {
+    return this.address;
+  }
+
+  toEmailRule(): CloudflareEmailRule {
+    return {
+      tag: this.tag,
+      name: this.isExternal ? this.name : `${emailRuleNamePrefix}${this.name}`,
+      enabled: this.enabled,
+      priority: this.priority,
+      matchers: [
+        {
+          type: "literal",
+          field: "to",
+          value: this.address,
+        },
+      ],
+      actions: [
+        {
+          type: "forward",
+          value: [this.forwardTo],
+        },
+      ],
+    };
   }
 }

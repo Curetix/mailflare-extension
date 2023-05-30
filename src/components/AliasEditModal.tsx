@@ -5,12 +5,8 @@ import { useAtom } from "jotai";
 import { useEffect } from "react";
 
 import { emailRuleNamePrefix, isExtension } from "~const";
-import {
-  Alias,
-  destinationsStatusAtom,
-  editEmailRuleAtom,
-  emailRulesStatusAtom,
-} from "~utils/cloudflare";
+import type { Alias } from "~utils/alias";
+import { destinationsStatusAtom, editEmailRuleAtom, emailRulesStatusAtom } from "~utils/cloudflare";
 import { selectedZoneIdAtom } from "~utils/state";
 
 type Props = {

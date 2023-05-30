@@ -1,8 +1,7 @@
 import { QueryClient } from "@tanstack/query-core";
 import { atom } from "jotai";
 import { atomsWithMutation, atomsWithQuery } from "jotai-tanstack-query";
-
-import { emailRuleNamePrefix, isWebApp } from "~const";
+import { CloudflareApiClient } from "shared/cloudflare";
 import type {
   CloudflareBaseResponse,
   CloudflareCreateEmailRuleResponse,
@@ -10,7 +9,10 @@ import type {
   CloudflareListEmailDestinationsResponse,
   CloudflareListEmailRulesResponse,
   CloudflareListZonesResponse,
-} from "~types/cloudflare.types";
+} from "shared/cloudflare.types";
+
+import { isWebApp } from "~const";
+import { Alias } from "~utils/alias";
 import { aliasSearchAtom, apiTokenAtom, ruleFilterAtom, selectedZoneIdAtom } from "~utils/state";
 
 const CloudflareApiBaseUrl = isWebApp
@@ -20,57 +22,6 @@ const CloudflareApiBaseUrl = isWebApp
   : "https://api.cloudflare.com/client/v4";
 
 export { CloudflareApiBaseUrl };
-
-export class Alias {
-  address: string;
-  forwardTo: string;
-  enabled: boolean;
-  name: string;
-  priority: number;
-  tag: string;
-  isExternal: boolean = false;
-
-  constructor(rule: CloudflareEmailRule) {
-    if (rule.matchers[0].type !== "literal" || rule.actions[0].type !== "forward") {
-      throw new Error("Rule is not supported by the Alias class");
-    }
-    if (!rule.name.toLowerCase().startsWith(emailRuleNamePrefix)) {
-      this.isExternal = true;
-    }
-    this.tag = rule.tag;
-    this.name = rule.name.replace(emailRuleNamePrefix, "");
-    this.enabled = rule.enabled;
-    this.priority = rule.priority;
-    this.address = rule.matchers[0].value;
-    this.forwardTo = rule.actions[0].value[0];
-  }
-
-  toString() {
-    return this.address;
-  }
-
-  toEmailRule(): CloudflareEmailRule {
-    return {
-      tag: this.tag,
-      name: this.isExternal ? this.name : `${emailRuleNamePrefix}${this.name}`,
-      enabled: this.enabled,
-      priority: this.priority,
-      matchers: [
-        {
-          type: "literal",
-          field: "to",
-          value: this.address,
-        },
-      ],
-      actions: [
-        {
-          type: "forward",
-          value: [this.forwardTo],
-        },
-      ],
-    };
-  }
-}
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -82,6 +33,10 @@ export const queryClient = new QueryClient({
 });
 
 const queryClientAtom = atom(queryClient);
+
+const apiClientAtom = atom((get) => {
+  return new CloudflareApiClient(get(apiTokenAtom) || "");
+});
 
 export const [, zonesStatusAtom] = atomsWithQuery(
   (get) => ({
