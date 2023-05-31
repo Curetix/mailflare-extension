@@ -1,5 +1,3 @@
-import fetcher from "shared/fetcher";
-
 import type {
   CloudflareBaseResponse,
   CloudflareCreateEmailRuleResponse,
@@ -9,6 +7,7 @@ import type {
   CloudflareListZonesResponse,
   CloudflareVerifyTokenResponse,
 } from "./cloudflare.types";
+import fetcher from "./fetcher";
 
 export const CloudflareApiBaseUrl = "https://api.cloudflare.com/client/v4";
 

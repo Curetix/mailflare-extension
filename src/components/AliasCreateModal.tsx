@@ -210,7 +210,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
             destination: variables.destination,
           });
           if (copyAlias) {
-            clipboard.copy(data.result.matchers[0].value);
+            clipboard.copy(data.matchers[0].value);
           }
           showNotification({
             color: "green",

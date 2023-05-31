@@ -2,9 +2,8 @@ import { Accordion, Anchor, Button, List, Stack, TextInput } from "@mantine/core
 import { showNotification } from "@mantine/notifications";
 import { useAtom } from "jotai";
 import { useState } from "react";
-import type { CloudflareVerifyTokenResponse } from "shared/cloudflare.types";
 
-import { CloudflareApiBaseUrl } from "~utils/cloudflare";
+import { apiClientAtom } from "~utils/cloudflare";
 import { apiTokenAtom } from "~utils/state";
 
 function Login() {
@@ -12,23 +11,18 @@ function Login() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [token, setToken] = useState<string>("");
   const [verifyError, setVerifyError] = useState<string | false>(false);
+  const [cloudflareApiClient] = useAtom(apiClientAtom);
 
   async function verifyToken() {
     setVerifyError(false);
     setIsLoading(true);
     try {
-      const response = await fetch(`${CloudflareApiBaseUrl}/user/tokens/verify`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const json: CloudflareVerifyTokenResponse = await response.json();
-      if (response.ok && json.success) {
+      const response = await cloudflareApiClient.verifyToken(token);
+      if (response.success) {
         await setStoredToken(token);
       } else {
-        setVerifyError(json.errors[0].message);
-        console.error(json);
+        setVerifyError(response.errors[0].message);
+        console.error(response);
         showNotification({
           title: "Error",
           message: "Token could not be verified. Is it correct?",
