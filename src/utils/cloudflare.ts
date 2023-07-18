@@ -19,13 +19,13 @@ export const queryClient = new QueryClient({
 
 const queryClientAtom = atom(queryClient);
 
-export const apiClientAtom = atom((get) => {
+export const apiClientAtom = atom(async (get) => {
   const apiUrl = isWebApp
     ? import.meta.env.DEV
       ? "http://localhost:3001/api"
       : "/api"
     : "https://api.cloudflare.com/client/v4";
-  return new CloudflareApiClient(get(apiTokenAtom) || "", apiUrl);
+  return new CloudflareApiClient((await get(apiTokenAtom)) || "", apiUrl);
 });
 
 const accountIdAtom = atom((get) => {
@@ -38,7 +38,7 @@ export const [, zonesStatusAtom] = atomsWithQuery(
   (get) => ({
     queryKey: ["zones"],
     queryFn: async () => {
-      const response = await get(apiClientAtom).getZones();
+      const response = await (await get(apiClientAtom)).getZones();
       if (!response.success) {
         throw new Error(response.errors[0].message);
       }
@@ -57,7 +57,7 @@ export const [, destinationsStatusAtom] = atomsWithQuery(
     queryFn: async ({ queryKey }) => {
       if (!queryKey[1]) throw new Error("No account identifier provided.");
 
-      const response = await get(apiClientAtom).getDestinations(queryKey[1] as string);
+      const response = await (await get(apiClientAtom)).getDestinations(queryKey[1] as string);
       if (!response.success) {
         throw new Error(response.errors[0].message);
       }
@@ -76,7 +76,7 @@ export const [, emailRulesStatusAtom] = atomsWithQuery(
     queryFn: async ({ queryKey }) => {
       if (!queryKey[1]) throw new Error("No zone identifier provided.");
 
-      const response = await get(apiClientAtom).getEmailRules(queryKey[1] as string);
+      const response = await (await get(apiClientAtom)).getEmailRules(queryKey[1] as string);
       if (!response.success) {
         throw new Error(response.errors[0].message);
       }
@@ -114,7 +114,7 @@ export const [, createEmailRuleAtom] = atomsWithMutation(
       zoneId: string;
       rule: Omit<CloudflareEmailRule, "tag">;
     }) => {
-      const response = await get(apiClientAtom).createEmailRule(zoneId, rule);
+      const response = await (await get(apiClientAtom)).createEmailRule(zoneId, rule);
       if (!response.success) {
         throw new Error(response.errors[0].message);
       }
@@ -127,7 +127,9 @@ export const [, createEmailRuleAtom] = atomsWithMutation(
 export const [, editEmailRuleAtom] = atomsWithMutation(
   (get) => ({
     mutationFn: async (rule: CloudflareEmailRule) => {
-      const response = await get(apiClientAtom).updateEmailRule(get(selectedZoneIdAtom)!, rule);
+      const response = await (
+        await get(apiClientAtom)
+      ).updateEmailRule((await get(selectedZoneIdAtom))!, rule);
       if (!response.success) {
         throw new Error(response.errors[0].message);
       }
@@ -140,7 +142,9 @@ export const [, editEmailRuleAtom] = atomsWithMutation(
 export const [, deleteEmailAtom] = atomsWithMutation(
   (get) => ({
     mutationFn: async (rule: CloudflareEmailRule) => {
-      const response = await get(apiClientAtom).deleteEmailRule(get(selectedZoneIdAtom)!, rule);
+      const response = await (
+        await get(apiClientAtom)
+      ).deleteEmailRule((await get(selectedZoneIdAtom))!, rule);
       if (!response.success) {
         throw new Error(response.errors[0].message);
       }
