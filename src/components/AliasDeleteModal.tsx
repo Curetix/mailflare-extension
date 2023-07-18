@@ -1,9 +1,10 @@
+import type { Alias } from "~utils/alias";
+
 import { Button, Modal, Stack, Text } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { useAtom } from "jotai";
 
 import { isExtension } from "~const";
-import type { Alias } from "~utils/alias";
 import { deleteEmailAtom, emailRulesStatusAtom } from "~utils/cloudflare";
 
 type Props = {

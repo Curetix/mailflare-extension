@@ -59,7 +59,7 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230710.1",
-    "@plasmohq/prettier-plugin-sort-imports": "^4.0.1",
+    "@ianvs/prettier-plugin-sort-imports": "^4.1.0",
     "@plasmohq/rps": "^1.8.7",
     "@types/chrome": "^0.0.241",
     "@types/node": "^20.4.2",

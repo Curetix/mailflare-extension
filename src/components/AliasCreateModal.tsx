@@ -1,10 +1,11 @@
+import type { CloudflareEmailRule } from "shared/cloudflare.types";
+
+import { useEffect } from "react";
 import { Button, Modal, NumberInput, Select, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useClipboard } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import { useAtom } from "jotai";
-import { useEffect } from "react";
-import type { CloudflareEmailRule } from "shared/cloudflare.types";
 
 import { emailRuleNamePrefix, isExtension } from "~const";
 import { generateAlias } from "~utils/alias";

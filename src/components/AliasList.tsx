@@ -1,3 +1,17 @@
+import type { Alias } from "~utils/alias";
+
+import {
+  IconClipboard,
+  IconEdit,
+  IconListCheck,
+  IconPlaylistAdd,
+  IconPlaylistX,
+  IconRefresh,
+  IconSearch,
+  IconSearchOff,
+  IconTrash,
+} from "@tabler/icons-react";
+import { useState } from "react";
 import {
   ActionIcon,
   Alert,
@@ -16,19 +30,7 @@ import {
 } from "@mantine/core";
 import { useClipboard } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
-import {
-  IconClipboard,
-  IconEdit,
-  IconListCheck,
-  IconPlaylistAdd,
-  IconPlaylistX,
-  IconRefresh,
-  IconSearch,
-  IconSearchOff,
-  IconTrash,
-} from "@tabler/icons-react";
 import { useAtom } from "jotai";
-import { useState } from "react";
 
 import AliasBulkDeleteModal from "~components/AliasBulkDeleteModal";
 import AliasBulkEditModal from "~components/AliasBulkEditModal";
@@ -36,7 +38,6 @@ import AliasCreateModal from "~components/AliasCreateModal";
 import AliasDeleteModal from "~components/AliasDeleteModal";
 import AliasEditModal from "~components/AliasEditModal";
 import { emailRuleNamePrefix, popupHeight } from "~const";
-import type { Alias } from "~utils/alias";
 import {
   destinationsStatusAtom,
   emailRulesStatusAtom,

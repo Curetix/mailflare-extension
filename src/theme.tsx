@@ -1,8 +1,9 @@
 import type { ColorScheme, EmotionCache } from "@mantine/core";
+import type { PropsWithChildren } from "react";
+
 import { ColorSchemeProvider, MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { useAtom } from "jotai";
-import type { PropsWithChildren } from "react";
 
 import { themeAtom } from "~utils/state";
 

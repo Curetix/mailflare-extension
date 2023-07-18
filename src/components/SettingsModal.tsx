@@ -1,7 +1,7 @@
-import { Button, Divider, Group, Modal, ScrollArea, Stack, Switch, Text } from "@mantine/core";
-import { showNotification } from "@mantine/notifications";
 import { IconExternalLink } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { Button, Divider, Group, Modal, ScrollArea, Stack, Switch, Text } from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
 import { useAtom } from "jotai";
 import { RESET } from "jotai/utils";
 

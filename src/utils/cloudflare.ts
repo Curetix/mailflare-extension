@@ -1,12 +1,13 @@
+import type { CloudflareEmailRule } from "shared/cloudflare.types";
+
 import { QueryClient } from "@tanstack/query-core";
 import { atom } from "jotai";
 import { atomsWithMutation, atomsWithQuery } from "jotai-tanstack-query";
-import { CloudflareApiClient } from "shared/cloudflare";
-import type { CloudflareEmailRule } from "shared/cloudflare.types";
 
 import { isWebApp } from "~const";
 import { Alias } from "~utils/alias";
 import { aliasSearchAtom, apiTokenAtom, ruleFilterAtom, selectedZoneIdAtom } from "~utils/state";
+import { CloudflareApiClient } from "shared/cloudflare";
 
 export const queryClient = new QueryClient({
   defaultOptions: {

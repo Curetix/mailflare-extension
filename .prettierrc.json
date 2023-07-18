@@ -7,8 +7,19 @@
   "trailingComma": "all",
   "bracketSpacing": true,
   "bracketSameLine": true,
-  "plugins": ["@plasmohq/prettier-plugin-sort-imports"],
-  "importOrder": ["^~(.*)$", "^[./]"],
-  "importOrderSeparation": true,
-  "importOrderSortSpecifiers": true
+  "plugins": ["@ianvs/prettier-plugin-sort-imports"],
+  "importOrder": [
+    "<TYPES>",
+    "<TYPES>^[.]",
+    "",
+    "<BUILTIN_MODULES>",
+    "",
+    "react",
+    "<THIRD_PARTY_MODULES>",
+    "",
+    "^~.*$",
+    "^shared/.*$",
+    "^[.]"
+  ],
+  "importOrderTypeScriptVersion": "5.1.6"
 }

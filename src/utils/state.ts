@@ -1,6 +1,7 @@
+import type { ParseResultListed } from "parse-domain";
+
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
-import type { ParseResultListed } from "parse-domain";
 
 import { extensionLocalStorageInterface as storage } from "~utils/storage";
 

@@ -1,9 +1,9 @@
-import { ActionIcon, Container, Divider, Group, Text } from "@mantine/core";
 import { IconSettings } from "@tabler/icons-react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
-import { useAtom } from "jotai";
 import { useState } from "react";
+import { ActionIcon, Container, Divider, Group, Text } from "@mantine/core";
+import { useAtom } from "jotai";
 
 import AliasList from "~components/AliasList";
 import Login from "~components/Login";

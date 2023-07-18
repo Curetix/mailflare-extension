@@ -1,6 +1,6 @@
-import { useAtom } from "jotai";
-import { ParseResultType, parseDomain } from "parse-domain";
 import { useEffect } from "react";
+import { useAtom } from "jotai";
+import { parseDomain, ParseResultType } from "parse-domain";
 import browser from "webextension-polyfill";
 
 import App from "~app";

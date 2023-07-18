@@ -1,5 +1,6 @@
-import { generate as randomWords } from "random-words";
 import type { CloudflareEmailRule } from "shared/cloudflare.types";
+
+import { generate as randomWords } from "random-words";
 
 import { emailRuleNamePrefix } from "~const";
 

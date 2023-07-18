@@ -1,5 +1,6 @@
-import { Storage } from "@plasmohq/storage";
 import type { PersistedClient, Persister } from "@tanstack/react-query-persist-client";
+
+import { Storage } from "@plasmohq/storage";
 
 import { isWebApp } from "~const";
 

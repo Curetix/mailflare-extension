@@ -6,7 +6,7 @@
     "strict": true,
     "paths": {
       "~*": ["./src/*"],
-      "shared/*": ["./shared/*"],
+      "shared/*": ["./shared/*"]
     },
     "baseUrl": "."
   }
