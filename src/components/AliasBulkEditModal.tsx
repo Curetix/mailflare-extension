@@ -7,6 +7,7 @@ import { useAtom } from "jotai";
 
 import { isExtension } from "~const";
 import { destinationsStatusAtom, editEmailRuleAtom, emailRulesStatusAtom } from "~utils/cloudflare";
+import { selectedZoneIdAtom } from "~utils/state";
 
 type Props = {
   opened: boolean;
@@ -18,6 +19,7 @@ export default function AliasBulkEditModal({ opened, onClose, selectedAliases }:
   const [, emailRulesDispatch] = useAtom(emailRulesStatusAtom);
   const [destinations] = useAtom(destinationsStatusAtom);
   const [editMutation, mutate] = useAtom(editEmailRuleAtom);
+  const [selectedZoneId] = useAtom(selectedZoneIdAtom);
 
   const aliasEditForm = useForm({
     initialValues: {
@@ -38,7 +40,7 @@ export default function AliasBulkEditModal({ opened, onClose, selectedAliases }:
           if (values.destination !== "") {
             a.forwardTo = values.destination;
           }
-          return mutate([a.toEmailRule()]);
+          return mutate([{ rule: a.toEmailRule(), zoneId: selectedZoneId }]);
         } catch (error) {
           showNotification({
             color: "red",

@@ -20,7 +20,6 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
   const [destinations] = useAtom(destinationsStatusAtom);
   const [, emailRulesDispatch] = useAtom(emailRulesStatusAtom);
   const [editMutation, mutate] = useAtom(editEmailRuleAtom);
-
   const [selectedZoneId] = useAtom(selectedZoneIdAtom);
 
   const aliasEditForm = useForm({
@@ -68,7 +67,7 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
     updated.enabled = variables.enabled;
 
     return mutate([
-      updated.toEmailRule(),
+      { rule: updated.toEmailRule(), zoneId: selectedZoneId },
       {
         onSuccess: () => {
           emailRulesDispatch({ type: "refetch" });

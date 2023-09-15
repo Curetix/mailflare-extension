@@ -6,6 +6,7 @@ import { useAtom } from "jotai";
 
 import { isExtension } from "~const";
 import { deleteEmailAtom, emailRulesStatusAtom } from "~utils/cloudflare";
+import { selectedZoneIdAtom } from "~utils/state";
 
 type Props = {
   opened: boolean;
@@ -16,12 +17,13 @@ type Props = {
 export default function AliasBulkDeleteModal({ opened, onClose, selectedAliases }: Props) {
   const [, emailRulesDispatch] = useAtom(emailRulesStatusAtom);
   const [deleteMutation, mutate] = useAtom(deleteEmailAtom);
+  const [selectedZoneId] = useAtom(selectedZoneIdAtom);
 
   async function deleteSelectedAliases() {
     await Promise.all(
       selectedAliases.map(async (a) => {
         try {
-          return await mutate([a.toEmailRule()]);
+          return await mutate([{ rule: a.toEmailRule(), zoneId: selectedZoneId }]);
         } catch (error) {
           showNotification({
             color: "red",

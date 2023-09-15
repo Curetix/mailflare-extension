@@ -6,6 +6,7 @@ import { useAtom } from "jotai";
 
 import { isExtension } from "~const";
 import { deleteEmailAtom, emailRulesStatusAtom } from "~utils/cloudflare";
+import { selectedZoneIdAtom } from "~utils/state";
 
 type Props = {
   opened: boolean;
@@ -16,6 +17,7 @@ type Props = {
 export default function AliasDeleteModal({ opened, onClose, aliasToDelete }: Props) {
   const [, emailRulesDispatch] = useAtom(emailRulesStatusAtom);
   const [deleteMutation, mutate] = useAtom(deleteEmailAtom);
+  const [selectedZoneId] = useAtom(selectedZoneIdAtom);
 
   async function deleteAlias() {
     if (!aliasToDelete) {
@@ -29,7 +31,7 @@ export default function AliasDeleteModal({ opened, onClose, aliasToDelete }: Pro
     }
 
     return mutate([
-      aliasToDelete.toEmailRule(),
+      { rule: aliasToDelete.toEmailRule(), zoneId: selectedZoneId },
       {
         onSuccess: () => {
           emailRulesDispatch({ type: "refetch" });
