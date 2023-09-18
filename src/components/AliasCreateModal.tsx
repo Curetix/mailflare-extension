@@ -1,4 +1,4 @@
-import type { CloudflareEmailRule } from "shared/cloudflare.types";
+import type { CloudflareEmailRule } from "~lib/cloudflare.types";
 
 import { useEffect } from "react";
 import { Button, Modal, NumberInput, Select, Stack, TextInput } from "@mantine/core";

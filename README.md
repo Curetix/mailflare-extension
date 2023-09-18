@@ -37,6 +37,13 @@ Potential future features:
   - Go to the browsers extension page, usually under [chrome://extensions](edge://extensions/)
   - Drag-and-drop the downloaded file into the list of extensions
 
+## Project Structure
+
+- functions/ - Cloudflare pages function for proxying requests to the Cloudflare API for the web version due to CORS
+- src/ - Main React app
+  - src/popup.tsx - Entrypoint for the extension
+  - src/web.ts - Entrypoint for the web app
+
 ## Limitations
 
 See [this page](https://developers.cloudflare.com/email-routing/postmaster/#known-limitations):

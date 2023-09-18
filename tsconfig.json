@@ -5,8 +5,7 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "~*": ["./src/*"],
-      "shared/*": ["./shared/*"]
+      "~*": ["./src/*"]
     },
     "baseUrl": "."
   }

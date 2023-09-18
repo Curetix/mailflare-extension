@@ -3,12 +3,9 @@
     "target": "ESNext",
     "module": "ESNext",
     "lib": ["ESNext"],
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "Node",
     "types": ["@cloudflare/workers-types"],
     "noEmit": true,
-    "strict": true,
-    "paths": {
-      "shared/*": ["../shared/*"]
-    }
+    "strict": true
   }
 }

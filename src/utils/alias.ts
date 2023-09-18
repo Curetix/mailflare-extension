@@ -1,4 +1,4 @@
-import type { CloudflareEmailRule } from "shared/cloudflare.types";
+import type { CloudflareEmailRule } from "~lib/cloudflare.types";
 
 import { generate as randomWords } from "random-words";
 
