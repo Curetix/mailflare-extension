@@ -20,6 +20,7 @@ import {
   Card,
   Center,
   Checkbox,
+  Flex,
   Group,
   Loader,
   ScrollArea,
@@ -100,7 +101,7 @@ function AliasList() {
   }
 
   return (
-    <Stack p="md" spacing="xs">
+    <Flex p="md" h="100%" direction="column" gap="xs">
       <AliasCreateModal
         opened={aliasCreateModalOpened}
         onClose={() => setAliasCreateModalOpened(false)}
@@ -155,7 +156,6 @@ function AliasList() {
         onChange={setSelectedZoneId}
         disabled={!zones.data || zones.data.length === 0}
         rightSection={zones.isFetching ? <Loader size="xs" /> : undefined}
-        dropdownPosition="bottom"
         data={
           zones.data?.map((z) => ({
             value: z.id,
@@ -169,9 +169,11 @@ function AliasList() {
       <Button.Group>
         <Button
           variant="light"
-          compact
+          size="compact-md"
           fullWidth
-          leftIcon={aliasSelectEnabled ? <IconPlaylistX size={16} /> : <IconListCheck size={16} />}
+          leftSection={
+            aliasSelectEnabled ? <IconPlaylistX size={16} /> : <IconListCheck size={16} />
+          }
           disabled={
             !zones.data ||
             (!aliasSelectEnabled && filteredAliases.length === 0) ||
@@ -187,9 +189,9 @@ function AliasList() {
           <>
             <Button
               variant="light"
-              compact
+              size="compact-md"
               fullWidth
-              leftIcon={<IconEdit size={16} />}
+              leftSection={<IconEdit size={16} />}
               disabled={selectedAliases.length === 0}
               onClick={() => setAliasEditModalOpened(true)}>
               Edit
@@ -197,9 +199,9 @@ function AliasList() {
             <Button
               variant="light"
               color="red"
-              compact
+              size="compact-md"
               fullWidth
-              leftIcon={<IconTrash size={16} />}
+              leftSection={<IconTrash size={16} />}
               disabled={selectedAliases.length === 0}
               onClick={() => setAliasDeleteModalOpened(true)}>
               Delete
@@ -210,18 +212,18 @@ function AliasList() {
           <>
             <Button
               variant="light"
-              compact
+              size="compact-md"
               fullWidth
-              leftIcon={<IconPlaylistAdd size={16} />}
+              leftSection={<IconPlaylistAdd size={16} />}
               disabled={!zones.data || zones.data.length === 0 || selectedZoneId === null}
               onClick={() => setAliasCreateModalOpened(true)}>
               Create
             </Button>
             <Button
               variant="light"
-              compact
+              size="compact-md"
               fullWidth
-              leftIcon={searchVisible ? <IconSearchOff size={16} /> : <IconSearch size={16} />}
+              leftSection={searchVisible ? <IconSearchOff size={16} /> : <IconSearch size={16} />}
               disabled={
                 !zones.data ||
                 !emailRules.data ||
@@ -238,9 +240,9 @@ function AliasList() {
             </Button>
             <Button
               variant="light"
-              compact
+              size="compact-md"
               fullWidth
-              leftIcon={<IconRefresh size={16} />}
+              leftSection={<IconRefresh size={16} />}
               disabled={!zones.data || zones.data.length === 0 || selectedZoneId === null}
               loading={emailRules.isFetching}
               loaderProps={{ size: 16 }}
@@ -262,7 +264,7 @@ function AliasList() {
 
       {/* ALIAS LIST AREA */}
       <ScrollArea h={aliasListHeight - (searchVisible ? 46 : 0)}>
-        <Stack spacing="xs">
+        <Stack gap="xs">
           {!zones.isFetching && zones.isSuccess && zones.data.length === 0 && (
             <Alert title="Bummer!" color="yellow">
               No domains for this Cloudflare account or API token.
@@ -314,8 +316,8 @@ function AliasList() {
                   }
                 }}>
                 {/* ADDRESS AND CHECKBOX */}
-                <Group position="apart">
-                  <Group spacing="xs">
+                <Group justify="space-between">
+                  <Group gap="xs">
                     {aliasSelectEnabled && (
                       <Checkbox
                         size="xs"
@@ -330,7 +332,7 @@ function AliasList() {
                       />
                     )}
 
-                    <Text weight={500} truncate style={{ width: aliasSelectEnabled ? 230 : 260 }}>
+                    <Text truncate style={{ width: aliasSelectEnabled ? 230 : 260 }}>
                       {r.address}
                     </Text>
                   </Group>
@@ -374,10 +376,10 @@ function AliasList() {
                 </Group>
 
                 {/* DESCRIPTION AND BADGE */}
-                <Group position="apart" ml={aliasSelectEnabled ? 26 : 0}>
+                <Group justify="space-between" ml={aliasSelectEnabled ? 26 : 0}>
                   <Text
                     size="sm"
-                    color="dimmed"
+                    c="dimmed"
                     truncate
                     style={{ width: aliasSelectEnabled ? 240 : 265 }}>
                     {r.name.replace(emailRuleNamePrefix, "").trim() || "(no description)"}
@@ -388,7 +390,7 @@ function AliasList() {
             ))}
         </Stack>
       </ScrollArea>
-    </Stack>
+    </Flex>
   );
 }
 

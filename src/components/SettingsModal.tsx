@@ -1,6 +1,16 @@
 import { IconExternalLink } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { Button, Divider, Group, Modal, ScrollArea, Stack, Switch, Text } from "@mantine/core";
+import {
+  Button,
+  Divider,
+  Group,
+  Modal,
+  ScrollArea,
+  Stack,
+  Switch,
+  Text,
+  useMantineColorScheme,
+} from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { useAtom } from "jotai";
 import { RESET } from "jotai/utils";
@@ -13,7 +23,6 @@ import {
   devToolsAtom,
   ruleFilterAtom,
   selectedZoneIdAtom,
-  themeAtom,
 } from "~utils/state";
 import { extensionStoragePersister } from "~utils/storage";
 
@@ -24,12 +33,12 @@ type Props = {
 
 function SettingsModal({ opened, onClose }: Props) {
   const queryClient = useQueryClient();
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
   const [zones, zonesDispatch] = useAtom(zonesStatusAtom);
   const [destinations, destinationsDispatch] = useAtom(destinationsStatusAtom);
 
   const [, setToken] = useAtom(apiTokenAtom);
-  const [theme, setTheme] = useAtom(themeAtom);
   const [ruleFilter, setRuleFilter] = useAtom(ruleFilterAtom);
   const [devToolsEnabled, setDevToolsEnabled] = useAtom(devToolsAtom);
   const [copyAlias, setCopyAlias] = useAtom(copyAliasAtom);
@@ -69,8 +78,8 @@ function SettingsModal({ opened, onClose }: Props) {
           offLabel="LIGHT"
           size="lg"
           color="green"
-          checked={theme === "dark"}
-          onChange={() => setTheme(theme === "dark" ? "light" : "dark")}
+          checked={colorScheme === "dark"}
+          onChange={() => toggleColorScheme()}
         />
       ),
     },
@@ -143,7 +152,7 @@ function SettingsModal({ opened, onClose }: Props) {
           component="a"
           href="https://developers.cloudflare.com/email-routing/"
           target="_blank"
-          rightIcon={<IconExternalLink />}>
+          rightSection={<IconExternalLink />}>
           Open
         </Button>
       ),
@@ -151,6 +160,16 @@ function SettingsModal({ opened, onClose }: Props) {
     {
       title: "Info",
       description: `${extensionName} v${extensionVersion}`,
+      action: (
+        <Button
+          component="a"
+          href="https://github.com/curetix/mailflare-extension"
+          target="_blank"
+          color="gray"
+          rightSection={<IconExternalLink />}>
+          GitHub
+        </Button>
+      ),
     },
   ];
 
@@ -171,20 +190,15 @@ function SettingsModal({ opened, onClose }: Props) {
   }
 
   return (
-    <Modal
-      opened={opened}
-      onClose={() => onClose()}
-      title="Settings"
-      fullScreen={isExtension}
-      scrollAreaComponent={Modal.NativeScrollArea}>
+    <Modal opened={opened} onClose={() => onClose()} title="Settings" fullScreen={isExtension}>
       <ScrollArea h={popupHeight - 2 * 20 - 28 - 16}>
-        <Stack spacing="xs" pr={15}>
+        <Stack gap="xs" pr={15}>
           {settingsItems.map((item, index) => (
-            <Stack spacing="xs" key={index}>
-              <Group position="apart" noWrap spacing="xl">
+            <Stack gap="xs" key={index}>
+              <Group justify="space-between" gap="xl">
                 <div>
                   <Text>{item.title}</Text>
-                  <Text size="xs" color="dimmed">
+                  <Text size="xs" c="dimmed">
                     {item.description}
                   </Text>
                 </div>

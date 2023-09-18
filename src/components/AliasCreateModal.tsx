@@ -252,7 +252,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
       title="Create alias"
       fullScreen={isExtension}>
       <form onSubmit={aliasCreateForm.onSubmit((values) => createAlias(values))}>
-        <Stack spacing="xs">
+        <Stack gap="xs">
           <Select
             label="Domain"
             data={

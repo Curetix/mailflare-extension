@@ -14,6 +14,8 @@ import { queryClient } from "~utils/cloudflare";
 import { apiTokenAtom, devToolsAtom } from "~utils/state";
 import { extensionStoragePersister } from "~utils/storage";
 
+import "@mantine/core/styles.css";
+
 export default function App() {
   const [token] = useAtom(apiTokenAtom);
   const [devToolsEnabled] = useAtom(devToolsAtom);
@@ -28,14 +30,14 @@ export default function App() {
         {devToolsEnabled && <ReactQueryDevtools initialIsOpen={false} />}
         <Container
           w={isExtension ? popupWidth : undefined}
-          h={isExtension ? popupHeight : window.innerHeight}
+          h={isExtension ? popupHeight : "100%"}
           maw={600}
           p={0}>
           <SettingsModal
             opened={settingsModalOpened}
             onClose={() => setSettingsModalOpened(false)}
           />
-          <Group position="apart" px="md" py="sm">
+          <Group justify="space-between" px="md" py="sm">
             <Text fw="bold" size="md">
               MailFlare
             </Text>

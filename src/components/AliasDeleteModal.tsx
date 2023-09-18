@@ -71,7 +71,7 @@ export default function AliasDeleteModal({ opened, onClose, aliasToDelete }: Pro
       }}
       title="Delete Alias"
       fullScreen={isExtension}>
-      <Stack spacing="xs">
+      <Stack gap="xs">
         <>
           <Text>You are about to delete the alias</Text>
           <Text fw={700}>{aliasToDelete?.address}</Text>

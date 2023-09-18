@@ -60,7 +60,7 @@ export default function AliasBulkDeleteModal({ opened, onClose, selectedAliases 
       }}
       title="Delete Aliases"
       fullScreen={isExtension}>
-      <Stack spacing="xs">
+      <Stack gap="xs">
         <Text>You are about to delete {selectedAliases.length} aliases.</Text>
         <Text>Do you want to proceed?</Text>
         <Button.Group>
