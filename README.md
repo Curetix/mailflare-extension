@@ -93,22 +93,6 @@ Loading the extension:
   4. Navigate to the folder of the built extension and select the `manifest.json` file
   5. (This will have to be repeated every time Firefox launches)
 
-## Sending from alias using Email Worker
-
-**This is a purely an idea at the moment, it has not been tested!**
-
-Email alias services like SimpleLogin and AnonAddy allow their users to reply to emails received from their alias addresses while keeping the users main email private.
-[Here is a nice explanation](https://anonaddy.com/help/replying-to-email-using-an-alias/) on how this works.
-
-While this is [not possible](https://developers.cloudflare.com/email-routing/known-limitations/#sending-or-replying-to-an-email-from-your-cloudflare-domain) directly with Cloudflare Email Routing,
-we can combine a catch-all address, an Email Worker, and an external API service like Mailjet for sending emails to achieve something similar like this.
-
-Let's say you have the alias **john@doe.net** for your private address **johndoe@gmail.com**. You receive an email from **alice@example.com** and want to reply using your alias address.
-Instead of replying directly to **alice@example.com**, you would use the address **john+alice=example.com@doe.net**.
-Since you do not have a rule matching this configured, it is processed by a catch-all Email Worker. It parses the address into sender and receiver (**john@doe.net** and **alice@example.com**),
-checks if **john@doe.net** is actually an alias, and forwards the email using an external API like Mailjet (which of course has to be configured for the domain **doe.net**).
-Finally, **alice@example.com** will receive a reply to her email from **john@doe.net** instead of your private email address **johndoe@gmail.com**.
-
 ## Built with
 
 - [Plasmo](https://github.com/PlasmoHQ/plasmo)

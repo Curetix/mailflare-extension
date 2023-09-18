@@ -31,7 +31,7 @@
     "build:chrome": "plasmo build --zip --target=chrome-mv3",
     "build:firefox": "plasmo build --zip --target=firefox-mv2",
     "build:vite": "tsc && vite build",
-    "prettier": "prettier -w *.json vite.config.ts functions/ shared/ src/ worker/"
+    "prettier": "prettier -w *.json vite.config.ts functions/ shared/ src/"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
