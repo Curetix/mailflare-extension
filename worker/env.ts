@@ -2,7 +2,8 @@ export interface Env {
   cloudflareApiToken: string;
   cloudflareAccountId: string;
 
-  emailService?: "mailjet";
+  emailService?: string;
+
   mailjetApiKey?: string;
   mailjetApiSecret?: string;
 }

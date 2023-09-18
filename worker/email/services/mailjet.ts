@@ -1,20 +1,38 @@
 import fetcher from "shared/fetcher";
 import { Address, EmailService } from "./service.interface";
 
+/*
+Mailjet API docs:
+https://dev.mailjet.com/email/guides/send-api-v31/#send-a-basic-email
+ */
+
+type MailjetAddress = {
+  Email: string;
+  Name?: string;
+};
+
+type MailjetSendPayload = {
+  Messages: {
+    From: MailjetAddress;
+    To: MailjetAddress[];
+    Cc?: MailjetAddress[];
+    Bcc?: MailjetAddress[];
+    Subject: string;
+    TextPart?: string;
+    HTMLPart?: string;
+  }[];
+};
+
 type MailjetSendResponse = {
-  Messages: [
-    {
-      Status: string;
-      To: [
-        {
-          Email: string;
-          MessageUUID: string;
-          MessageID: number;
-          MessageHref: string;
-        },
-      ];
-    },
-  ];
+  Messages: {
+    Status: string;
+    To: {
+      Email: string;
+      MessageUUID: string;
+      MessageID: number;
+      MessageHref: string;
+    }[];
+  }[];
 };
 
 export class Mailjet implements EmailService {
@@ -27,17 +45,19 @@ export class Mailjet implements EmailService {
   }
 
   async send(from: Address, to: Address, subject: string, body: string) {
-    const payload = {
+    const payload: MailjetSendPayload = {
       Messages: [
         {
           From: {
             Email: from.email,
             Name: from.name,
           },
-          To: {
-            Email: to.email,
-            Name: to.name,
-          },
+          To: [
+            {
+              Email: to.email,
+              Name: to.name,
+            },
+          ],
           Subject: subject,
           HTMLPart: body,
         },

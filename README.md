@@ -43,6 +43,7 @@ Potential future features:
 - src/ - Main React app
   - src/popup.tsx - Entrypoint for the extension
   - src/web.ts - Entrypoint for the web app
+- worker/ - [Reply worker]()
 
 ## Limitations
 
