@@ -101,7 +101,7 @@ function AliasList() {
   }
 
   return (
-    <Flex p="md" h="100%" direction="column" gap="xs">
+    <Flex p="md" h="calc(100% - 53px)" direction="column" gap="xs">
       <AliasCreateModal
         opened={aliasCreateModalOpened}
         onClose={() => setAliasCreateModalOpened(false)}
