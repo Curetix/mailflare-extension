@@ -29,12 +29,13 @@ import {
   Text,
   TextInput,
 } from "@mantine/core";
-import { useClipboard } from "@mantine/hooks";
+import { useClipboard, useListState } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import { useAtom } from "jotai";
 
 import AliasBulkDeleteModal from "~components/AliasBulkDeleteModal";
 import AliasBulkEditModal from "~components/AliasBulkEditModal";
+import AliasCard from "~components/AliasCard";
 import AliasCreateModal from "~components/AliasCreateModal";
 import AliasDeleteModal from "~components/AliasDeleteModal";
 import AliasEditModal from "~components/AliasEditModal";
@@ -67,7 +68,7 @@ function AliasList() {
   const [aliasSelectEnabled, setAliasSelectEnabled] = useState(false);
   const [searchVisible, setSearchVisible] = useState(false);
 
-  const [selectedAliases, setSelectedAliases] = useState<Alias[]>([]);
+  const [selectedAliases, selectedAliasesHandlers] = useListState<Alias>([]);
   const [aliasToEdit, setAliasToEdit] = useState<Alias | null>(null);
   const [aliasToDelete, setAliasToDelete] = useState<Alias | null>(null);
 
@@ -122,7 +123,7 @@ function AliasList() {
           setAliasEditModalOpened(false);
           if (clear) {
             setAliasSelectEnabled(false);
-            setSelectedAliases([]);
+            selectedAliasesHandlers.setState([]);
           }
         }}
         selectedAliases={selectedAliases}
@@ -143,7 +144,7 @@ function AliasList() {
           setAliasDeleteModalOpened(false);
           if (clear) {
             setAliasSelectEnabled(false);
-            setSelectedAliases([]);
+            selectedAliasesHandlers.setState([]);
           }
         }}
         selectedAliases={selectedAliases}
@@ -180,7 +181,7 @@ function AliasList() {
             selectedZoneId === null
           }
           onClick={() => {
-            setSelectedAliases([]);
+            selectedAliasesHandlers.setState([]);
             setAliasSelectEnabled(!aliasSelectEnabled);
           }}>
           {aliasSelectEnabled ? "Stop Select" : "Select"}
@@ -263,7 +264,7 @@ function AliasList() {
       )}
 
       {/* ALIAS LIST AREA */}
-      <ScrollArea h={aliasListHeight - (searchVisible ? 46 : 0)}>
+      <ScrollArea style={{ flex: 1 }}>
         <Stack gap="xs">
           {!zones.isFetching && zones.isSuccess && zones.data.length === 0 && (
             <Alert title="Bummer!" color="yellow">
@@ -301,92 +302,28 @@ function AliasList() {
           {/* ALIAS LIST */}
           {emailRules.isSuccess &&
             filteredAliases.map((r) => (
-              <Card
-                p="xs"
-                radius="sm"
-                withBorder
-                key={r.tag}
-                onClick={() => {
-                  if (aliasSelectEnabled) {
-                    if (!selectedAliases.includes(r)) {
-                      setSelectedAliases([...selectedAliases, r]);
-                    } else {
-                      setSelectedAliases(selectedAliases.filter((rr) => rr.tag !== r.tag));
-                    }
+              <AliasCard
+                alias={r}
+                badge={getAliasBadge(r)}
+                selectEnabled={aliasSelectEnabled}
+                isSelected={selectedAliases.includes(r)}
+                onSelect={() => {
+                  const i = selectedAliases.findIndex((a) => a.tag === r.tag);
+                  if (i > -1) {
+                    selectedAliasesHandlers.remove(i);
+                  } else {
+                    selectedAliasesHandlers.append(r);
                   }
-                }}>
-                {/* ADDRESS AND CHECKBOX */}
-                <Group justify="space-between">
-                  <Group gap="xs">
-                    {aliasSelectEnabled && (
-                      <Checkbox
-                        size="xs"
-                        checked={selectedAliases.includes(r)}
-                        onChange={(event) => {
-                          if (event.currentTarget.checked) {
-                            setSelectedAliases([...selectedAliases, r]);
-                          } else {
-                            setSelectedAliases(selectedAliases.filter((rr) => rr.tag !== r.tag));
-                          }
-                        }}
-                      />
-                    )}
-
-                    <Text truncate style={{ width: aliasSelectEnabled ? 230 : 260 }}>
-                      {r.address}
-                    </Text>
-                  </Group>
-
-                  {/* ACTION BUTTONS */}
-                  <Button.Group>
-                    <ActionIcon
-                      variant="subtle"
-                      size="sm"
-                      onClick={() => {
-                        clipboard.copy(r.address);
-                        showNotification({
-                          color: "green",
-                          message: "Email address was copied to the clipboard.",
-                          autoClose: 2000,
-                        });
-                      }}>
-                      <IconClipboard size={16} />
-                    </ActionIcon>
-                    <ActionIcon
-                      variant="subtle"
-                      size="sm"
-                      disabled={aliasSelectEnabled}
-                      onClick={() => {
-                        setAliasToEdit(r);
-                        setAliasEditModalOpened(true);
-                      }}>
-                      <IconEdit size={16} />
-                    </ActionIcon>
-                    <ActionIcon
-                      variant="subtle"
-                      size="sm"
-                      disabled={aliasSelectEnabled}
-                      onClick={() => {
-                        setAliasToDelete(r);
-                        setAliasDeleteModalOpened(true);
-                      }}>
-                      <IconTrash size={16} />
-                    </ActionIcon>
-                  </Button.Group>
-                </Group>
-
-                {/* DESCRIPTION AND BADGE */}
-                <Group justify="space-between" ml={aliasSelectEnabled ? 26 : 0}>
-                  <Text
-                    size="sm"
-                    c="dimmed"
-                    truncate
-                    style={{ width: aliasSelectEnabled ? 240 : 265 }}>
-                    {r.name.replace(emailRuleNamePrefix, "").trim() || "(no description)"}
-                  </Text>
-                  {getAliasBadge(r)}
-                </Group>
-              </Card>
+                }}
+                onEdit={() => {
+                  setAliasToEdit(r);
+                  setAliasEditModalOpened(true);
+                }}
+                onDelete={() => {
+                  setAliasToDelete(r);
+                  setAliasDeleteModalOpened(true);
+                }}
+              />
             ))}
         </Stack>
       </ScrollArea>
