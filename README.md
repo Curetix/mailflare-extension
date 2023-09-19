@@ -8,6 +8,8 @@ This extension provides an easy way to turn [Cloudflare Email Routing](https://d
 into your own private email alias service, similar to AnonAddy, SimpleLogin, and others.
 No third-party services or tedious configuration of a self-hosted email server needed.
 
+A web version is available at [mailflare.pages.dev](https://mailflare.pages.dev/).
+
 ## Screenshots
 
 ![Alias List](./assets/screen_aliases.png)
