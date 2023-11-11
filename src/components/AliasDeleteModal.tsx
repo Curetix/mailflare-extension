@@ -59,7 +59,7 @@ export default function AliasDeleteModal({ opened, onClose, aliasToDelete }: Pro
     <Modal
       opened={opened}
       onClose={() => {
-        if (deleteMutation.isLoading) {
+        if (deleteMutation.isPending) {
           showNotification({
             color: "red",
             message: "Cannot be closed right now.",
@@ -78,13 +78,13 @@ export default function AliasDeleteModal({ opened, onClose, aliasToDelete }: Pro
           <Text>Do you want to proceed?</Text>
         </>
         <Button.Group>
-          <Button fullWidth disabled={deleteMutation.isLoading} onClick={() => onClose()}>
+          <Button fullWidth disabled={deleteMutation.isPending} onClick={() => onClose()}>
             No
           </Button>
           <Button
             color="red"
             fullWidth
-            loading={deleteMutation.isLoading}
+            loading={deleteMutation.isPending}
             onClick={() => deleteAlias()}>
             Yes
           </Button>

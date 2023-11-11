@@ -12,7 +12,7 @@ import { aliasSearchAtom, apiTokenAtom, ruleFilterAtom, selectedZoneIdAtom } fro
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      cacheTime: 1000 * 60 * 60,
+      gcTime: 1000 * 60 * 60,
       refetchOnWindowFocus: false,
     },
   },

@@ -239,7 +239,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
     <Modal
       opened={opened}
       onClose={() => {
-        if (createMutation.isLoading) {
+        if (createMutation.isPending) {
           showNotification({
             color: "red",
             message: "Cannot be closed right now.",
@@ -386,7 +386,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
 
           <Button
             type="submit"
-            loading={createMutation.isLoading}
+            loading={createMutation.isPending}
             disabled={aliasCreateForm.values.destination === ""}>
             Create
           </Button>

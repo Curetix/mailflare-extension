@@ -48,7 +48,7 @@ export default function AliasBulkDeleteModal({ opened, onClose, selectedAliases 
     <Modal
       opened={opened}
       onClose={() => {
-        if (deleteMutation.isLoading) {
+        if (deleteMutation.isPending) {
           showNotification({
             color: "red",
             message: "Cannot be closed right now.",
@@ -64,13 +64,13 @@ export default function AliasBulkDeleteModal({ opened, onClose, selectedAliases 
         <Text>You are about to delete {selectedAliases.length} aliases.</Text>
         <Text>Do you want to proceed?</Text>
         <Button.Group>
-          <Button fullWidth disabled={deleteMutation.isLoading} onClick={() => onClose()}>
+          <Button fullWidth disabled={deleteMutation.isPending} onClick={() => onClose()}>
             No
           </Button>
           <Button
             color="red"
             fullWidth
-            loading={deleteMutation.isLoading}
+            loading={deleteMutation.isPending}
             onClick={() => deleteSelectedAliases()}>
             Yes
           </Button>

@@ -96,7 +96,7 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
     <Modal
       opened={opened}
       onClose={() => {
-        if (editMutation.isLoading) {
+        if (editMutation.isPending) {
           showNotification({
             color: "red",
             message: "Cannot be closed right now.",
@@ -140,7 +140,7 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
             label="Enabled"
             {...aliasEditForm.getInputProps("enabled", { type: "checkbox" })}
           />
-          <Button type="submit" loading={editMutation.isLoading}>
+          <Button type="submit" loading={editMutation.isPending}>
             Save
           </Button>
         </Stack>
