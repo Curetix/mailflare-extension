@@ -15,6 +15,7 @@ import { apiTokenAtom, devToolsAtom } from "~utils/state";
 import { extensionStoragePersister } from "~utils/storage";
 
 import "@mantine/core/styles.css";
+import "@mantine/notifications/styles.css";
 
 export default function App() {
   const [token] = useAtom(apiTokenAtom);
