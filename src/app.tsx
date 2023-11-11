@@ -11,7 +11,7 @@ import SettingsModal from "~components/SettingsModal";
 import { isExtension, popupHeight, popupWidth } from "~const";
 import { ThemeProvider } from "~theme";
 import { queryClient } from "~utils/cloudflare";
-import { apiTokenAtom, devToolsAtom } from "~utils/state";
+import { apiTokenAtom, settingsAtom } from "~utils/state";
 import { extensionStoragePersister } from "~utils/storage";
 
 import "@mantine/core/styles.css";
@@ -19,7 +19,7 @@ import "@mantine/notifications/styles.css";
 
 export default function App() {
   const [token] = useAtom(apiTokenAtom);
-  const [devToolsEnabled] = useAtom(devToolsAtom);
+  const [{ devTools }] = useAtom(settingsAtom);
 
   const [settingsModalOpened, setSettingsModalOpened] = useState(false);
 
@@ -28,7 +28,7 @@ export default function App() {
       <PersistQueryClientProvider
         client={queryClient}
         persistOptions={{ persister: extensionStoragePersister }}>
-        {devToolsEnabled && <ReactQueryDevtools initialIsOpen={false} />}
+        {devTools && <ReactQueryDevtools initialIsOpen={false} />}
         <Container
           w={isExtension ? popupWidth : undefined}
           h={isExtension ? popupHeight : "100%"}

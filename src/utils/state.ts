@@ -3,35 +3,54 @@ import { atomWithStorage } from "jotai/utils";
 
 import { extensionLocalStorageInterface as storage } from "~utils/storage";
 
-// Settings
-const apiTokenAtom = atomWithStorage<string | null>("apiToken", null, storage);
-const themeAtom = atomWithStorage<"dark" | "light">("theme", "dark", storage);
-const ruleFilterAtom = atomWithStorage<boolean>("ruleFilter", true, storage);
-const copyAliasAtom = atomWithStorage<boolean>("copyAliasAfterCreation", true, storage);
-// const showCreateButtonAtom = atomWithStorage<boolean>("showCreateButton", true, storage);
-const devToolsAtom = atomWithStorage<boolean>("devToolsEnabled", false, storage);
-const aliasSettingsAtom = atomWithStorage<{
+/*
+ * General Settings
+ */
+type Settings = {
+  ruleFilter: boolean;
+  copyAlias: boolean;
+  devTools: boolean;
+  showCreateButton: boolean;
+  theme: "dark" | "light";
+};
+const settingsAtom = atomWithStorage<Settings>("mailflare-settings", {
+  ruleFilter: true,
+  copyAlias: true,
+  devTools: false,
+  showCreateButton: false,
+  theme: "light",
+});
+
+/*
+ * Alias Settings
+ */
+type AliasSettings = {
   format?: string;
   characterCount?: number;
   wordCount?: number;
   separator?: string;
   prefixFormat?: string;
   destination?: string;
-}>("aliasSettings", {}, storage);
+};
+const aliasSettingsAtom = atomWithStorage<AliasSettings>("alias-settings", {}, storage);
 
-const selectedZoneIdAtom = atomWithStorage<string | null>("selectedZoneId", null, storage);
+/*
+ * Cloudflare
+ */
+const selectedZoneIdAtom = atomWithStorage<string | null>("zone-id", null, storage);
+const apiTokenAtom = atomWithStorage<string | null>("api-token", null, storage);
 
-// State data
+/*
+ * Normal State
+ */
 const hostnameAtom = atom<string>("");
 const aliasSearchAtom = atom<string>("");
 
 export {
+  type Settings,
+  type AliasSettings,
   apiTokenAtom,
-  themeAtom,
-  ruleFilterAtom,
-  copyAliasAtom,
-  // showCreateButtonAtom,
-  devToolsAtom,
+  settingsAtom,
   aliasSettingsAtom,
   selectedZoneIdAtom,
   hostnameAtom,

@@ -1,7 +1,6 @@
 import type { Alias } from "~utils/alias";
 
 import {
-  IconClipboard,
   IconEdit,
   IconListCheck,
   IconPlaylistAdd,
@@ -13,24 +12,18 @@ import {
 } from "@tabler/icons-react";
 import { useState } from "react";
 import {
-  ActionIcon,
   Alert,
   Badge,
   Button,
-  Card,
   Center,
-  Checkbox,
   Flex,
-  Group,
   Loader,
   ScrollArea,
   Select,
   Stack,
-  Text,
   TextInput,
 } from "@mantine/core";
-import { useClipboard, useListState } from "@mantine/hooks";
-import { showNotification } from "@mantine/notifications";
+import { useListState } from "@mantine/hooks";
 import { useAtom } from "jotai";
 
 import AliasBulkDeleteModal from "~components/AliasBulkDeleteModal";
@@ -39,7 +32,7 @@ import AliasCard from "~components/AliasCard";
 import AliasCreateModal from "~components/AliasCreateModal";
 import AliasDeleteModal from "~components/AliasDeleteModal";
 import AliasEditModal from "~components/AliasEditModal";
-import { emailRuleNamePrefix, popupHeight } from "~const";
+import { popupHeight } from "~const";
 import {
   destinationsStatusAtom,
   emailRulesStatusAtom,
@@ -52,8 +45,6 @@ import { aliasSearchAtom, selectedZoneIdAtom } from "~utils/state";
 const aliasListHeight = popupHeight - 52 - 1 - 16 * 2 - 36 - 26 - 10 * 2;
 
 function AliasList() {
-  const clipboard = useClipboard();
-
   const [zones] = useAtom(zonesStatusAtom);
   const [destinations] = useAtom(destinationsStatusAtom);
   const [emailRules, emailRulesDispatch] = useAtom(emailRulesStatusAtom);

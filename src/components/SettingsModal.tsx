@@ -17,13 +17,7 @@ import { RESET } from "jotai/utils";
 
 import { extensionName, extensionVersion, isExtension, popupHeight } from "~const";
 import { destinationsStatusAtom, zonesStatusAtom } from "~utils/cloudflare";
-import {
-  apiTokenAtom,
-  copyAliasAtom,
-  devToolsAtom,
-  ruleFilterAtom,
-  selectedZoneIdAtom,
-} from "~utils/state";
+import { apiTokenAtom, selectedZoneIdAtom, settingsAtom } from "~utils/state";
 import { extensionStoragePersister } from "~utils/storage";
 
 type Props = {
@@ -39,10 +33,7 @@ function SettingsModal({ opened, onClose }: Props) {
   const [destinations, destinationsDispatch] = useAtom(destinationsStatusAtom);
 
   const [, setToken] = useAtom(apiTokenAtom);
-  const [ruleFilter, setRuleFilter] = useAtom(ruleFilterAtom);
-  const [devToolsEnabled, setDevToolsEnabled] = useAtom(devToolsAtom);
-  const [copyAlias, setCopyAlias] = useAtom(copyAliasAtom);
-  // const [showCreateButton, setShowCreateButton] = useAtom(showCreateButtonAtom);
+  const [settings, setSettings] = useAtom(settingsAtom);
 
   const [, setSelectedZoneId] = useAtom(selectedZoneIdAtom);
 
@@ -92,8 +83,10 @@ function SettingsModal({ opened, onClose }: Props) {
           offLabel="OFF"
           size="lg"
           color="green"
-          checked={ruleFilter}
-          onChange={() => setRuleFilter(!ruleFilter)}
+          checked={settings.ruleFilter}
+          onChange={(event) =>
+            setSettings({ ...settings, ruleFilter: event.currentTarget.checked })
+          }
         />
       ),
     },
@@ -106,26 +99,28 @@ function SettingsModal({ opened, onClose }: Props) {
           offLabel="OFF"
           color="green"
           size="lg"
-          checked={copyAlias}
-          onChange={() => setCopyAlias(!copyAlias)}
+          checked={settings.copyAlias}
+          onChange={(event) => setSettings({ ...settings, copyAlias: event.currentTarget.checked })}
         />
       ),
     },
-    // {
-    //   title: "Show Quick-Create button",
-    //   description:
-    //     "Show a button inside email input fields to quickly create an alias for the current site",
-    //   action: (
-    //     <Switch
-    //       onLabel="ON"
-    //       offLabel="OFF"
-    //       color="green"
-    //       size="lg"
-    //       checked={showCreateButton === true}
-    //       onChange={() => setShowCreateButton(!showCreateButton)}
-    //     />
-    //   ),
-    // },
+    {
+      title: "Show Quick-Create Button",
+      description:
+        "Show a button inside email input fields to quickly create an alias for the current site",
+      action: (
+        <Switch
+          onLabel="ON"
+          offLabel="OFF"
+          color="green"
+          size="lg"
+          checked={settings.showCreateButton}
+          onChange={(event) =>
+            setSettings({ ...settings, showCreateButton: event.currentTarget.checked })
+          }
+        />
+      ),
+    },
     {
       title: "Refresh data",
       description: "Refresh Cloudflare domains and email destinations",
@@ -182,8 +177,8 @@ function SettingsModal({ opened, onClose }: Props) {
           onLabel="ON"
           offLabel="OFF"
           size="lg"
-          checked={devToolsEnabled}
-          onChange={() => setDevToolsEnabled(!devToolsEnabled)}
+          checked={settings.devTools}
+          onChange={(event) => setSettings({ ...settings, devTools: event.currentTarget.checked })}
         />
       ),
     });

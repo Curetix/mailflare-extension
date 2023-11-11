@@ -17,7 +17,7 @@ import {
   emailRulesStatusAtom,
   zonesStatusAtom,
 } from "~utils/cloudflare";
-import { aliasSettingsAtom, copyAliasAtom, hostnameAtom, selectedZoneIdAtom } from "~utils/state";
+import { aliasSettingsAtom, hostnameAtom, selectedZoneIdAtom, settingsAtom } from "~utils/state";
 
 type Props = {
   opened: boolean;
@@ -34,7 +34,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
 
   const [selectedZoneId, setSelectedZoneId] = useAtom(selectedZoneIdAtom);
   const [aliasSettings, setAliasSettings] = useAtom(aliasSettingsAtom);
-  const [copyAlias] = useAtom(copyAliasAtom);
+  const [{ copyAlias }] = useAtom(settingsAtom);
 
   const [hostname] = useAtom(hostnameAtom);
   const [parsedHostname, setParsedHostname] = useState<ParsedDomain | null>(null);

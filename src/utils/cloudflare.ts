@@ -7,7 +7,7 @@ import { atomsWithMutation, atomsWithQuery } from "jotai-tanstack-query";
 import { isWebApp } from "~const";
 import { CloudflareApiClient } from "~lib/cloudflare";
 import { Alias } from "~utils/alias";
-import { aliasSearchAtom, apiTokenAtom, ruleFilterAtom, selectedZoneIdAtom } from "~utils/state";
+import { aliasSearchAtom, apiTokenAtom, selectedZoneIdAtom, settingsAtom } from "~utils/state";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -100,7 +100,7 @@ export const filteredAliasesAtom = atom<Alias[]>((get) => {
   return rules.data
     .filter((r) => r.matchers[0].type === "literal" && r.actions[0].type === "forward")
     .map((r) => new Alias(r))
-    .filter((r) => !get(ruleFilterAtom) || !r.isExternal)
+    .filter((r) => !get(settingsAtom).ruleFilter || !r.isExternal)
     .filter(
       (r) =>
         search === "" ||
