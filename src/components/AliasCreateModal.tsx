@@ -1,11 +1,13 @@
 import type { CloudflareEmailRule } from "~lib/cloudflare.types";
+import type { ParsedDomain } from "psl";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button, Modal, NumberInput, Select, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useClipboard } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import { useAtom } from "jotai";
+import psl from "psl";
 
 import { emailRuleNamePrefix, isExtension } from "~const";
 import { generateAlias } from "~utils/alias";
@@ -35,6 +37,14 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
   const [copyAlias] = useAtom(copyAliasAtom);
 
   const [hostname] = useAtom(hostnameAtom);
+  const [parsedHostname, setParsedHostname] = useState<ParsedDomain | null>(null);
+
+  useEffect(() => {
+    const parsed = psl.parse(hostname);
+    if (!parsed.error) {
+      setParsedHostname(parsed);
+    }
+  }, [hostname]);
 
   const aliasCreateForm = useForm({
     initialValues: {
@@ -98,7 +108,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
 
     if (!!hostname) {
       aliasCreateForm.setValues({
-        description: hostname.hostname,
+        description: hostname,
       });
     } else {
       aliasCreateForm.setValues({
@@ -145,12 +155,12 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
         if (variables.prefixFormat === "custom" && variables.customPrefix.trim() !== "") {
           prefix = variables.customPrefix.trim();
         } else if (hostname !== null) {
-          if (variables.prefixFormat === "domainWithoutExtension" && hostname.domain) {
-            prefix = hostname.domain;
-          } else if (variables.prefixFormat === "domainWithExtension") {
-            prefix = `${hostname.domain}.${hostname.topLevelDomains.join(".")}`;
+          if (variables.prefixFormat === "domainWithoutExtension" && parsedHostname?.sld) {
+            prefix = parsedHostname.sld;
+          } else if (variables.prefixFormat === "domainWithExtension" && parsedHostname?.domain) {
+            prefix = parsedHostname.domain;
           } else if (variables.prefixFormat === "fullDomain") {
-            prefix = hostname.hostname;
+            prefix = hostname;
           }
         }
 

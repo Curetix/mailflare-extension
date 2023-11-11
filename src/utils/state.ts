@@ -1,5 +1,3 @@
-import type { ParseResultListed } from "parse-domain";
-
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 
@@ -24,7 +22,7 @@ const aliasSettingsAtom = atomWithStorage<{
 const selectedZoneIdAtom = atomWithStorage<string | null>("selectedZoneId", null, storage);
 
 // State data
-const hostnameAtom = atom<ParseResultListed | null>(null);
+const hostnameAtom = atom<string>("");
 const aliasSearchAtom = atom<string>("");
 
 export {
