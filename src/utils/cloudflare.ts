@@ -25,8 +25,9 @@ export const apiClientAtom = atom(async (get) => {
     ? import.meta.env.DEV
       ? "http://localhost:4001/api"
       : "/api"
-    : "https://api.cloudflare.com/client/v4";
-  return new CloudflareApiClient((await get(apiTokenAtom)) || "", apiUrl);
+    : undefined;
+  const token = await get(apiTokenAtom);
+  return new CloudflareApiClient(token || "", apiUrl);
 });
 
 const accountIdAtom = atom((get) => {
@@ -99,7 +100,7 @@ export const filteredAliasesAtom = atom<Alias[]>((get) => {
   const search = get(aliasSearchAtom);
   return rules.data
     .filter((r) => r.matchers[0].type === "literal" && r.actions[0].type === "forward")
-    .map((r) => new Alias(r))
+    .map((r) => Alias.fromCloudflareEmailRule(r))
     .filter((r) => !get(settingsAtom).ruleFilter || !r.isExternal)
     .filter(
       (r) =>

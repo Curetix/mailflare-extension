@@ -10,7 +10,7 @@ import {
   IconSearchOff,
   IconTrash,
 } from "@tabler/icons-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Alert,
   Badge,
@@ -64,7 +64,7 @@ function AliasList() {
   const [aliasToDelete, setAliasToDelete] = useState<Alias | null>(null);
 
   function getAliasBadge(rule: Alias) {
-    const destination = destinations.data?.find((d) => rule.forwardTo === d.email);
+    const destination = destinations.data?.find((d) => rule.destination === d.email);
     if (
       destinations.data &&
       destinations.data.length > 0 &&
@@ -91,6 +91,12 @@ function AliasList() {
       );
     }
   }
+
+  useEffect(() => {
+    if (!selectedZoneId && zones.data && zones.data.length > 0) {
+      setSelectedZoneId(zones.data[0].id);
+    }
+  }, [zones]);
 
   return (
     <Flex p="md" h="calc(100% - 53px)" direction="column" gap="xs">
@@ -155,6 +161,7 @@ function AliasList() {
           })) || []
         }
         searchable={zones.isSuccess && zones.data.length > 5}
+        allowDeselect={false}
       />
 
       {/* ACTION BUTTONS */}
@@ -294,6 +301,7 @@ function AliasList() {
           {emailRules.isSuccess &&
             filteredAliases.map((r) => (
               <AliasCard
+                key={r.tag}
                 alias={r}
                 badge={getAliasBadge(r)}
                 selectEnabled={aliasSelectEnabled}

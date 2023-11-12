@@ -58,14 +58,17 @@ function Login() {
         loading={isLoading}>
         Save
       </Button>
-      <Accordion variant="filled">
+      <Accordion variant="filled" defaultValue="instructions">
         <Accordion.Item value="instructions">
           <Accordion.Control>Instructions</Accordion.Control>
           <Accordion.Panel>
             <List size="sm" type="ordered">
               <List.Item>
                 Open{" "}
-                <Anchor href="https://dash.cloudflare.com/profile/api-tokens/" target="_blank">
+                <Anchor
+                  href="https://dash.cloudflare.com/profile/api-tokens/"
+                  target="_blank"
+                  size="sm">
                   https://dash.cloudflare.com/profile/api-tokens
                 </Anchor>
               </List.Item>

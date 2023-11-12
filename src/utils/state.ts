@@ -3,6 +3,13 @@ import { atomWithStorage } from "jotai/utils";
 
 import { extensionLocalStorageInterface as storage } from "~utils/storage";
 
+export enum StorageKeys {
+  MailflareSettings = "mailflare-settings",
+  AliasSettings = "alias-settings",
+  ZoneId = "zone-id",
+  ApiToken = "api-token",
+}
+
 /*
  * General Settings
  */
@@ -13,7 +20,7 @@ type Settings = {
   showCreateButton: boolean;
   theme: "dark" | "light";
 };
-const settingsAtom = atomWithStorage<Settings>("mailflare-settings", {
+const settingsAtom = atomWithStorage<Settings>(StorageKeys.MailflareSettings, {
   ruleFilter: true,
   copyAlias: true,
   devTools: false,
@@ -25,20 +32,25 @@ const settingsAtom = atomWithStorage<Settings>("mailflare-settings", {
  * Alias Settings
  */
 type AliasSettings = {
-  format?: string;
+  format?: "characters" | "words";
   characterCount?: number;
   wordCount?: number;
   separator?: string;
-  prefixFormat?: string;
+  prefixFormat?:
+    | "fullDomain"
+    | "domainWithExtension"
+    | "domainWithoutExtension"
+    | "custom"
+    | "none";
   destination?: string;
 };
-const aliasSettingsAtom = atomWithStorage<AliasSettings>("alias-settings", {}, storage);
+const aliasSettingsAtom = atomWithStorage<AliasSettings>(StorageKeys.AliasSettings, {}, storage);
 
 /*
  * Cloudflare
  */
-const selectedZoneIdAtom = atomWithStorage<string | null>("zone-id", null, storage);
-const apiTokenAtom = atomWithStorage<string | null>("api-token", null, storage);
+const selectedZoneIdAtom = atomWithStorage<string | null>(StorageKeys.ZoneId, null, storage);
+const apiTokenAtom = atomWithStorage<string | null>(StorageKeys.ApiToken, null, storage);
 
 /*
  * Normal State

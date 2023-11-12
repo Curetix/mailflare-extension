@@ -47,8 +47,8 @@ function SettingsModal({ opened, onClose }: Props) {
   };
 
   const logout = async () => {
-    setToken(RESET);
-    setSelectedZoneId(RESET);
+    await setToken(RESET);
+    await setSelectedZoneId(RESET);
     await queryClient.invalidateQueries();
     extensionStoragePersister.removeClient();
     showNotification({

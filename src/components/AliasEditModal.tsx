@@ -44,7 +44,7 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
         zoneId: selectedZoneId!,
         alias: aliasToEdit.address,
         description: aliasToEdit.name.replace(emailRuleNamePrefix, "").trim(),
-        destination: aliasToEdit.forwardTo,
+        destination: aliasToEdit.destination,
         enabled: aliasToEdit.enabled,
       });
     }
@@ -63,7 +63,7 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
 
     const updated = aliasToEdit;
     updated.name = variables.description;
-    updated.forwardTo = variables.destination;
+    updated.destination = variables.destination;
     updated.enabled = variables.enabled;
 
     return mutate([
@@ -124,6 +124,7 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
                 label: z.email,
               })) || []
             }
+            allowDeselect={false}
             {...aliasEditForm.getInputProps("destination")}
             error={
               ((!destinations.data || destinations.isError) &&

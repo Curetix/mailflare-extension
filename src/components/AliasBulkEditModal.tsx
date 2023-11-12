@@ -38,7 +38,7 @@ export default function AliasBulkEditModal({ opened, onClose, selectedAliases }:
         try {
           a.enabled = values.enabled;
           if (values.destination !== "") {
-            a.forwardTo = values.destination;
+            a.destination = values.destination;
           }
           return mutate([{ rule: a.toEmailRule(), zoneId: selectedZoneId }]);
         } catch (error) {

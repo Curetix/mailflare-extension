@@ -20,6 +20,9 @@ dependencies:
   '@mantine/notifications':
     specifier: ^7.2.1
     version: 7.2.1(@mantine/core@7.2.1)(@mantine/hooks@7.2.1)(react-dom@18.2.0)(react@18.2.0)
+  '@plasmohq/messaging':
+    specifier: ^0.6.0
+    version: 0.6.0(react@18.2.0)
   '@plasmohq/storage':
     specifier: ^1.9.0
     version: 1.9.0(react@18.2.0)
@@ -3364,6 +3367,18 @@ packages:
 
   /@plasmohq/init@0.7.0:
     resolution: {integrity: sha512-P75g48dqOGneJ+n0AcqnLE/TYflcaPc3B7h6EopnCBBYUDnCNBMwYmKAkaf5pnhsEB0ybPS6TU1C2DTGfqaW7A==}
+    dev: false
+
+  /@plasmohq/messaging@0.6.0(react@18.2.0):
+    resolution: {integrity: sha512-iRyhtoWuS96YKZyga/nsBESXVzVrTQbyGRwR1/aNyWvuvt68G00Gtb6+zcWXd2uLSs5ExU/gYxakHYBbWqy2QA==}
+    peerDependencies:
+      react: ^16.8.6 || ^17 || ^18
+    peerDependenciesMeta:
+      react:
+        optional: true
+    dependencies:
+      nanoid: 4.0.2
+      react: 18.2.0
     dev: false
 
   /@plasmohq/parcel-bundler@0.5.5:
@@ -6888,6 +6903,12 @@ packages:
     resolution: {integrity: sha512-BGcqMMJuToF7i1rt+2PWSNVnWIkGCU78jBG3RxO/bZlnZPK2Cmi2QaffxGO/2RvWi9sL+FAiRiXMgsyxQ1DIDA==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
+
+  /nanoid@4.0.2:
+    resolution: {integrity: sha512-7ZtY5KTCNheRGfEFxnedV5zFiORN1+Y1N6zvPTnHQd8ENUvfaDBeuJDZb2bN/oXwXxu3qkTXDzy57W5vAmDTBw==}
+    engines: {node: ^14 || ^16 || >=18}
+    hasBin: true
+    dev: false
 
   /napi-build-utils@1.0.2:
     resolution: {integrity: sha512-ONmRUqK7zj7DWX0D9ADe03wbwOBZxNAfF20PlGfCWQcD3+/MakShIHrMqx9YwPTfxDdF1zLeL+RGZiR9kGMLdg==}

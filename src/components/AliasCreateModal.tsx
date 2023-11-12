@@ -1,16 +1,14 @@
 import type { CloudflareEmailRule } from "~lib/cloudflare.types";
-import type { ParsedDomain } from "psl";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Button, Modal, NumberInput, Select, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useClipboard } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import { useAtom } from "jotai";
-import psl from "psl";
 
 import { emailRuleNamePrefix, isExtension } from "~const";
-import { generateAlias } from "~utils/alias";
+import { generateAliasAddress } from "~utils/alias";
 import {
   createEmailRuleAtom,
   destinationsStatusAtom,
@@ -37,14 +35,6 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
   const [{ copyAlias }] = useAtom(settingsAtom);
 
   const [hostname] = useAtom(hostnameAtom);
-  const [parsedHostname, setParsedHostname] = useState<ParsedDomain | null>(null);
-
-  useEffect(() => {
-    const parsed = psl.parse(hostname);
-    if (!parsed.error) {
-      setParsedHostname(parsed);
-    }
-  }, [hostname]);
 
   const aliasCreateForm = useForm({
     initialValues: {
@@ -134,11 +124,11 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
       return;
     }
 
-    let alias: string;
+    let aliasAddress: string;
     if (variables.format === "custom") {
-      alias = `${variables.customAlias}@${zone.name}`;
+      aliasAddress = `${variables.customAlias}@${zone.name}`;
 
-      if (emailRules.data?.find((r) => r.matchers[0].value === alias)) {
+      if (emailRules.data?.find((r) => r.matchers[0].value === aliasAddress)) {
         showNotification({
           color: "red",
           title: "Conflict",
@@ -151,28 +141,17 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
       let attempts = 0;
       while (true) {
         attempts += 1;
-        let prefix = "";
-        if (variables.prefixFormat === "custom" && variables.customPrefix.trim() !== "") {
-          prefix = variables.customPrefix.trim();
-        } else if (hostname !== null) {
-          if (variables.prefixFormat === "domainWithoutExtension" && parsedHostname?.sld) {
-            prefix = parsedHostname.sld;
-          } else if (variables.prefixFormat === "domainWithExtension" && parsedHostname?.domain) {
-            prefix = parsedHostname.domain;
-          } else if (variables.prefixFormat === "fullDomain") {
-            prefix = hostname;
-          }
-        }
 
-        alias = `${generateAlias(
-          variables.format === "words" ? "words" : "characters",
-          variables.characterCount,
-          variables.wordCount,
-          variables.separator,
-          prefix,
-        )}@${zone.name}`;
+        aliasAddress = `${generateAliasAddress({
+          format: variables.format === "words" ? "words" : "characters",
+          characterCount: variables.characterCount,
+          wordCount: variables.wordCount,
+          separator: variables.separator,
+          customPrefix: variables.customPrefix,
+          hostname,
+        })}@${zone.name}`;
 
-        if (!emailRules.data?.find((r) => r.matchers[0].value === alias)) {
+        if (!emailRules.data?.find((r) => r.matchers[0].value === aliasAddress)) {
           break;
         } else if (attempts === 3) {
           showNotification({
@@ -198,7 +177,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
         {
           field: "to",
           type: "literal",
-          value: alias,
+          value: aliasAddress,
         },
       ],
       enabled: true,
@@ -213,11 +192,16 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
           setSelectedZoneId(variables.zoneId);
           emailRulesDispatch({ type: "refetch" });
           setAliasSettings({
-            format: variables.format,
+            format: variables.format as "characters" | "words",
             characterCount: variables.characterCount,
             wordCount: variables.wordCount,
             separator: variables.separator,
-            prefixFormat: variables.prefixFormat,
+            prefixFormat: variables.prefixFormat as
+              | "none"
+              | "custom"
+              | "domainWithoutExtension"
+              | "domainWithExtension"
+              | "fullDomain",
             destination: variables.destination,
           });
           if (copyAlias) {
@@ -277,6 +261,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
                 ? zones.error?.toString() || "Could not load domains"
                 : undefined
             }
+            allowDeselect={false}
             {...aliasCreateForm.getInputProps("zoneId")}
           />
           <Select
@@ -295,6 +280,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
                 label: "Custom",
               },
             ]}
+            allowDeselect={false}
             {...aliasCreateForm.getInputProps("format")}
           />
 
@@ -361,6 +347,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
                   label: "Custom",
                 },
               ]}
+              allowDeselect={false}
               {...aliasCreateForm.getInputProps("prefixFormat")}
             />
           )}
@@ -382,6 +369,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
                 label: z.email,
               })) || []
             }
+            allowDeselect={false}
             {...aliasCreateForm.getInputProps("destination")}
             error={
               ((!destinations.data || destinations.isError) &&
