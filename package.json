@@ -19,7 +19,7 @@
     "url": "https://github.com/curetix/mailflare-extension.git"
   },
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "husky install && plasmo build",
     "dev": "plasmo dev --target=chrome-mv3",
     "dev:firefox": "plasmo dev --target=firefox-mv2",
     "dev:web": "run-p dev:vite dev:functions",
