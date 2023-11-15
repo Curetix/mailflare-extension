@@ -7,8 +7,7 @@ import { showNotification } from "@mantine/notifications";
 import { useAtom } from "jotai";
 
 import { emailRuleNamePrefix, isExtension } from "~const";
-import { destinationsStatusAtom, editEmailRuleAtom, emailRulesStatusAtom } from "~utils/cloudflare";
-import { selectedZoneIdAtom } from "~utils/state";
+import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
 
 type Props = {
   opened: boolean;
@@ -17,10 +16,7 @@ type Props = {
 };
 
 export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) {
-  const [destinations] = useAtom(destinationsStatusAtom);
-  const [, emailRulesDispatch] = useAtom(emailRulesStatusAtom);
-  const [editMutation, mutate] = useAtom(editEmailRuleAtom);
-  const [selectedZoneId] = useAtom(selectedZoneIdAtom);
+  const { selectedZoneId, emailDestinations, emailRules, updateEmailRule } = useCloudflare();
 
   const aliasEditForm = useForm({
     initialValues: {
@@ -33,7 +29,7 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
     },
     validate: {
       destination: (value) =>
-        value.trim().length === 0 || !destinations.data?.find((d) => d.email === value),
+        value.trim().length === 0 || !emailDestinations.data?.find((d) => d.email === value),
     },
   });
 
@@ -66,11 +62,11 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
     updated.destination = variables.destination;
     updated.enabled = variables.enabled;
 
-    return mutate([
+    return updateEmailRule.mutate(
       { rule: updated.toEmailRule(), zoneId: selectedZoneId },
       {
         onSuccess: () => {
-          emailRulesDispatch({ type: "refetch" });
+          emailRules.refetch();
           aliasEditForm.reset();
           showNotification({
             color: "green",
@@ -89,14 +85,14 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
           });
         },
       },
-    ]);
+    );
   }
 
   return (
     <Modal
       opened={opened}
       onClose={() => {
-        if (editMutation.isPending) {
+        if (updateEmailRule.isPending) {
           showNotification({
             color: "red",
             message: "Cannot be closed right now.",
@@ -119,7 +115,7 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
           <Select
             label="Destination"
             data={
-              destinations.data?.map((z) => ({
+              emailDestinations.data?.map((z) => ({
                 value: z.email,
                 label: z.email,
               })) || []
@@ -127,10 +123,10 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
             allowDeselect={false}
             {...aliasEditForm.getInputProps("destination")}
             error={
-              ((!destinations.data || destinations.isError) &&
-                (destinations.error?.toString() || "Error loading destinations")) ||
+              ((!emailDestinations.data || emailDestinations.isError) &&
+                (emailDestinations.error?.toString() || "Error loading destinations")) ||
               (aliasEditForm.values.destination &&
-                !destinations.data?.find((d) => d.email === aliasEditForm.values.destination)
+                !emailDestinations.data?.find((d) => d.email === aliasEditForm.values.destination)
                   ?.verified &&
                 "This address is not verified. You will not receive emails.") ||
               false
@@ -141,7 +137,7 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
             label="Enabled"
             {...aliasEditForm.getInputProps("enabled", { type: "checkbox" })}
           />
-          <Button type="submit" loading={editMutation.isPending}>
+          <Button type="submit" loading={updateEmailRule.isPending}>
             Save
           </Button>
         </Stack>

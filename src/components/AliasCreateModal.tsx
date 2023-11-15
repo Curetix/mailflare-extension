@@ -1,4 +1,4 @@
-import type { CloudflareEmailRule } from "~lib/cloudflare.types";
+import type { CloudflareEmailRule } from "~lib/cloudflare/cloudflare.types";
 
 import { useEffect } from "react";
 import { Button, Modal, NumberInput, Select, Stack, TextInput } from "@mantine/core";
@@ -8,14 +8,9 @@ import { showNotification } from "@mantine/notifications";
 import { useAtom } from "jotai";
 
 import { emailRuleNamePrefix, isExtension } from "~const";
+import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
 import { generateAliasAddress } from "~utils/alias";
-import {
-  createEmailRuleAtom,
-  destinationsStatusAtom,
-  emailRulesStatusAtom,
-  zonesStatusAtom,
-} from "~utils/cloudflare";
-import { aliasSettingsAtom, hostnameAtom, selectedZoneIdAtom, settingsAtom } from "~utils/state";
+import { aliasSettingsAtom, hostnameAtom, settingsAtom } from "~utils/state";
 
 type Props = {
   opened: boolean;
@@ -25,12 +20,15 @@ type Props = {
 export default function AliasCreateModal({ opened, onClose }: Props) {
   const clipboard = useClipboard();
 
-  const [destinations] = useAtom(destinationsStatusAtom);
-  const [zones] = useAtom(zonesStatusAtom);
-  const [createMutation, mutate] = useAtom(createEmailRuleAtom);
-  const [emailRules, emailRulesDispatch] = useAtom(emailRulesStatusAtom);
+  const {
+    selectedZoneId,
+    setSelectedZoneId,
+    zones,
+    emailDestinations,
+    emailRules,
+    createEmailRule,
+  } = useCloudflare();
 
-  const [selectedZoneId, setSelectedZoneId] = useAtom(selectedZoneIdAtom);
   const [aliasSettings, setAliasSettings] = useAtom(aliasSettingsAtom);
   const [{ copyAlias }] = useAtom(settingsAtom);
 
@@ -77,7 +75,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
           ? "Must be at least 1 character."
           : null,
       destination: (value) =>
-        value.trim().length === 0 || !destinations.data?.find((d) => d.email === value),
+        value.trim().length === 0 || !emailDestinations.data?.find((d) => d.email === value),
     },
   });
 
@@ -184,13 +182,13 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
       name: `${emailRuleNamePrefix}${variables.description}`,
       priority: Math.round(Date.now() / 1000),
     };
-    return mutate([
+    return createEmailRule.mutate(
       { zoneId: zone.id, rule },
       {
         onSuccess: (data) => {
           resetForm();
           setSelectedZoneId(variables.zoneId);
-          emailRulesDispatch({ type: "refetch" });
+          emailRules.refetch();
           setAliasSettings({
             format: variables.format as "characters" | "words",
             characterCount: variables.characterCount,
@@ -226,14 +224,14 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
           });
         },
       },
-    ]);
+    );
   }
 
   return (
     <Modal
       opened={opened}
       onClose={() => {
-        if (createMutation.isPending) {
+        if (createEmailRule.isPending) {
           showNotification({
             color: "red",
             message: "Cannot be closed right now.",
@@ -364,7 +362,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
           <Select
             label="Destination"
             data={
-              destinations.data?.map((z) => ({
+              emailDestinations.data?.map((z) => ({
                 value: z.email,
                 label: z.email,
               })) || []
@@ -372,10 +370,10 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
             allowDeselect={false}
             {...aliasCreateForm.getInputProps("destination")}
             error={
-              ((!destinations.data || destinations.isError) &&
-                (destinations.error?.toString() || "Error loading destinations")) ||
+              ((!emailDestinations.data || emailDestinations.isError) &&
+                (emailDestinations.error?.toString() || "Error loading destinations")) ||
               (aliasCreateForm.values.destination &&
-                !destinations.data?.find((d) => d.email === aliasCreateForm.values.destination)
+                !emailDestinations.data?.find((d) => d.email === aliasCreateForm.values.destination)
                   ?.verified &&
                 "This address is not verified. You will not receive emails.") ||
               false
@@ -384,7 +382,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
 
           <Button
             type="submit"
-            loading={createMutation.isPending}
+            loading={createEmailRule.isPending}
             disabled={aliasCreateForm.values.destination === ""}>
             Create
           </Button>

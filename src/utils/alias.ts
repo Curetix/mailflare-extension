@@ -1,4 +1,4 @@
-import type { CloudflareEmailRule } from "~lib/cloudflare.types";
+import type { CloudflareEmailRule } from "~lib/cloudflare/cloudflare.types";
 import type { AliasSettings } from "~utils/state";
 
 import psl from "psl";
@@ -71,8 +71,8 @@ export class Alias {
     this.address = address;
     this.destination = destination;
     this.enabled = enabled;
-    this.name = name;
-    this.isExternal = name.toLowerCase().startsWith(emailRuleNamePrefix);
+    this.name = name.replace(emailRuleNamePrefix, "");
+    this.isExternal = !name.toLowerCase().startsWith(emailRuleNamePrefix);
   }
 
   toString() {
@@ -97,7 +97,7 @@ export class Alias {
     const alias = new Alias(
       rule.matchers[0].value,
       rule.actions[0].value[0],
-      rule.name.replace(emailRuleNamePrefix, ""),
+      rule.name,
       rule.enabled,
     );
     alias.tag = rule.tag;

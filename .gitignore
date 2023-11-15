@@ -40,3 +40,6 @@ keys.json
 # editors
 .idea/
 .vscode/
+
+# wrangler
+.wrangler/

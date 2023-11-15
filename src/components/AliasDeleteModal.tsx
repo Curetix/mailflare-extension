@@ -5,8 +5,7 @@ import { showNotification } from "@mantine/notifications";
 import { useAtom } from "jotai";
 
 import { isExtension } from "~const";
-import { deleteEmailAtom, emailRulesStatusAtom } from "~utils/cloudflare";
-import { selectedZoneIdAtom } from "~utils/state";
+import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
 
 type Props = {
   opened: boolean;
@@ -15,9 +14,7 @@ type Props = {
 };
 
 export default function AliasDeleteModal({ opened, onClose, aliasToDelete }: Props) {
-  const [, emailRulesDispatch] = useAtom(emailRulesStatusAtom);
-  const [deleteMutation, mutate] = useAtom(deleteEmailAtom);
-  const [selectedZoneId] = useAtom(selectedZoneIdAtom);
+  const { selectedZoneId, emailRules, deleteEmailRule } = useCloudflare();
 
   async function deleteAlias() {
     if (!aliasToDelete) {
@@ -30,11 +27,11 @@ export default function AliasDeleteModal({ opened, onClose, aliasToDelete }: Pro
       return;
     }
 
-    return mutate([
+    return deleteEmailRule.mutate(
       { rule: aliasToDelete.toEmailRule(), zoneId: selectedZoneId },
       {
         onSuccess: () => {
-          emailRulesDispatch({ type: "refetch" });
+          emailRules.refetch();
           showNotification({
             color: "green",
             title: "Success!",
@@ -52,14 +49,14 @@ export default function AliasDeleteModal({ opened, onClose, aliasToDelete }: Pro
           });
         },
       },
-    ]);
+    );
   }
 
   return (
     <Modal
       opened={opened}
       onClose={() => {
-        if (deleteMutation.isPending) {
+        if (deleteEmailRule.isPending) {
           showNotification({
             color: "red",
             message: "Cannot be closed right now.",
@@ -78,13 +75,13 @@ export default function AliasDeleteModal({ opened, onClose, aliasToDelete }: Pro
           <Text>Do you want to proceed?</Text>
         </>
         <Button.Group>
-          <Button fullWidth disabled={deleteMutation.isPending} onClick={() => onClose()}>
+          <Button fullWidth disabled={deleteEmailRule.isPending} onClick={() => onClose()}>
             No
           </Button>
           <Button
             color="red"
             fullWidth
-            loading={deleteMutation.isPending}
+            loading={deleteEmailRule.isPending}
             onClick={() => deleteAlias()}>
             Yes
           </Button>

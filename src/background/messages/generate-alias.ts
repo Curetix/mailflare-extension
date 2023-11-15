@@ -3,7 +3,7 @@ import type { AliasSettings } from "~utils/state";
 
 import { Storage } from "@plasmohq/storage";
 
-import { CloudflareApiClient } from "~lib/cloudflare";
+import { CloudflareApiClient } from "~lib/cloudflare/api";
 import { Alias } from "~utils/alias";
 import { StorageKeys } from "~utils/state";
 
@@ -75,7 +75,7 @@ const handler: PlasmoMessaging.MessageHandler<Request, Response> = async (req, r
   return res.send({
     success: result.success,
     message: result.success ? "Alias created" : "Error",
-    data: alias.address,
+    data: result.success ? alias.address : result.errors,
   });
 };
 

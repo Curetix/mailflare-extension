@@ -16,7 +16,7 @@ import { useAtom } from "jotai";
 import { RESET } from "jotai/utils";
 
 import { extensionName, extensionVersion, isExtension, popupHeight } from "~const";
-import { destinationsStatusAtom, zonesStatusAtom } from "~utils/cloudflare";
+import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
 import { apiTokenAtom, selectedZoneIdAtom, settingsAtom } from "~utils/state";
 import { extensionStoragePersister } from "~utils/storage";
 
@@ -29,8 +29,7 @@ function SettingsModal({ opened, onClose }: Props) {
   const queryClient = useQueryClient();
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
-  const [zones, zonesDispatch] = useAtom(zonesStatusAtom);
-  const [destinations, destinationsDispatch] = useAtom(destinationsStatusAtom);
+  const { zones, emailDestinations } = useCloudflare();
 
   const [, setToken] = useAtom(apiTokenAtom);
   const [settings, setSettings] = useAtom(settingsAtom);
@@ -50,7 +49,7 @@ function SettingsModal({ opened, onClose }: Props) {
     await setToken(RESET);
     await setSelectedZoneId(RESET);
     await queryClient.invalidateQueries();
-    extensionStoragePersister.removeClient();
+    await extensionStoragePersister.removeClient();
     showNotification({
       color: "green",
       message: "Goodbye",
@@ -125,7 +124,9 @@ function SettingsModal({ opened, onClose }: Props) {
       title: "Refresh data",
       description: "Refresh Cloudflare domains and email destinations",
       action: (
-        <Button loading={zones.isFetching || destinations.isFetching} onClick={() => clearCache()}>
+        <Button
+          loading={zones.isFetching || emailDestinations.isFetching}
+          onClick={() => clearCache()}>
           Refresh
         </Button>
       ),

@@ -1,21 +1,33 @@
 import { IconSettings } from "@tabler/icons-react";
+import { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { useState } from "react";
 import { ActionIcon, Container, Divider, Group, Text } from "@mantine/core";
 import { useAtom } from "jotai";
+import { DevTools as JotaiDevTools } from "jotai-devtools";
 
 import AliasList from "~components/AliasList";
 import Login from "~components/Login";
 import SettingsModal from "~components/SettingsModal";
 import { isExtension, popupHeight, popupWidth } from "~const";
 import { ThemeProvider } from "~theme";
-import { queryClient } from "~utils/cloudflare";
 import { apiTokenAtom, settingsAtom } from "~utils/state";
 import { extensionStoragePersister } from "~utils/storage";
 
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
+
+import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
+
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      gcTime: 1000 * 60 * 60,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 export default function App() {
   const [token] = useAtom(apiTokenAtom);
@@ -28,7 +40,12 @@ export default function App() {
       <PersistQueryClientProvider
         client={queryClient}
         persistOptions={{ persister: extensionStoragePersister }}>
-        {devTools && <ReactQueryDevtools initialIsOpen={false} />}
+        {devTools && (
+          <>
+            <ReactQueryDevtools initialIsOpen={false} />
+            <JotaiDevTools />
+          </>
+        )}
         <Container
           w={isExtension ? popupWidth : undefined}
           h={isExtension ? popupHeight : "100%"}

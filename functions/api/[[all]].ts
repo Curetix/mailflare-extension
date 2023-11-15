@@ -1,4 +1,4 @@
-import { CloudflareApiBaseUrl } from "../../src/lib/cloudflare";
+import { CloudflareApiBaseUrl } from "../../src/lib/cloudflare/api";
 
 export const onRequest: PagesFunction = async (context) => {
   try {

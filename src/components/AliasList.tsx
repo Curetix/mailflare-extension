@@ -1,5 +1,3 @@
-import type { Alias } from "~utils/alias";
-
 import {
   IconEdit,
   IconListCheck,
@@ -33,25 +31,20 @@ import AliasCreateModal from "~components/AliasCreateModal";
 import AliasDeleteModal from "~components/AliasDeleteModal";
 import AliasEditModal from "~components/AliasEditModal";
 import { popupHeight } from "~const";
-import {
-  destinationsStatusAtom,
-  emailRulesStatusAtom,
-  filteredAliasesAtom,
-  zonesStatusAtom,
-} from "~utils/cloudflare";
-import { aliasSearchAtom, selectedZoneIdAtom } from "~utils/state";
+import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
+import { Alias } from "~utils/alias";
+import { aliasSearchAtom, settingsAtom } from "~utils/state";
 
 // popupHeight - header - divider - padding - select - button group - gap
 const aliasListHeight = popupHeight - 52 - 1 - 16 * 2 - 36 - 26 - 10 * 2;
 
 function AliasList() {
-  const [zones] = useAtom(zonesStatusAtom);
-  const [destinations] = useAtom(destinationsStatusAtom);
-  const [emailRules, emailRulesDispatch] = useAtom(emailRulesStatusAtom);
-  const [filteredAliases] = useAtom(filteredAliasesAtom);
+  const { selectedZoneId, setSelectedZoneId, zones, emailDestinations, emailRules } =
+    useCloudflare();
 
-  const [selectedZoneId, setSelectedZoneId] = useAtom(selectedZoneIdAtom);
+  const [{ ruleFilter }] = useAtom(settingsAtom);
   const [aliasSearch, setAliasSearch] = useAtom(aliasSearchAtom);
+  const [filteredAliases, setFilteredAliases] = useState<Alias[]>([]);
 
   const [aliasCreateModalOpened, setAliasCreateModalOpened] = useState(false);
   const [aliasEditModalOpened, setAliasEditModalOpened] = useState(false);
@@ -64,10 +57,10 @@ function AliasList() {
   const [aliasToDelete, setAliasToDelete] = useState<Alias | null>(null);
 
   function getAliasBadge(rule: Alias) {
-    const destination = destinations.data?.find((d) => rule.destination === d.email);
+    const destination = emailDestinations.data?.find((d) => rule.destination === d.email);
     if (
-      destinations.data &&
-      destinations.data.length > 0 &&
+      emailDestinations.data &&
+      emailDestinations.data.length > 0 &&
       (!destination || destination.verified === null)
     ) {
       return (
@@ -93,10 +86,22 @@ function AliasList() {
   }
 
   useEffect(() => {
-    if (!selectedZoneId && zones.data && zones.data.length > 0) {
-      setSelectedZoneId(zones.data[0].id);
+    if (!emailRules.isSuccess || !emailRules.data || emailRules.data.length === 0) {
+      return;
     }
-  }, [zones]);
+    setFilteredAliases(
+      emailRules.data
+        .filter((r) => r.matchers[0].type === "literal" && r.actions[0].type === "forward")
+        .map((r) => Alias.fromCloudflareEmailRule(r))
+        .filter((r) => ruleFilter || !r.isExternal)
+        .filter(
+          (r) =>
+            aliasSearch === "" ||
+            r.name.toLowerCase().includes(aliasSearch.toLowerCase()) ||
+            r.address.toLowerCase().includes(aliasSearch.toLowerCase()),
+        ),
+    );
+  }, [emailRules.data, ruleFilter, aliasSearch]);
 
   return (
     <Flex p="md" h="calc(100% - 53px)" direction="column" gap="xs">
@@ -245,7 +250,7 @@ function AliasList() {
               disabled={!zones.data || zones.data.length === 0 || selectedZoneId === null}
               loading={emailRules.isFetching}
               loaderProps={{ size: 16 }}
-              onClick={() => emailRulesDispatch({ type: "refetch" })}>
+              onClick={() => emailRules.refetch()}>
               Refresh
             </Button>
           </>

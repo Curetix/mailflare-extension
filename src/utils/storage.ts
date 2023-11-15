@@ -3,6 +3,7 @@ import type { PersistedClient, Persister } from "@tanstack/react-query-persist-c
 import { Storage } from "@plasmohq/storage";
 
 import { isWebApp } from "~const";
+import { StorageKeys } from "~utils/state";
 
 export const extensionLocalStorage = new Storage({
   area: "local",
@@ -21,15 +22,14 @@ export const extensionLocalStorageInterface = {
   },
 };
 
-const persistedClientKey = "reactQueryCache";
 export const extensionStoragePersister: Persister = {
   persistClient: async (client: PersistedClient) => {
-    await extensionLocalStorage.set(persistedClientKey, client);
+    await extensionLocalStorage.set(StorageKeys.QueryCache, client);
   },
   restoreClient: async () => {
-    return await extensionLocalStorage.get<PersistedClient>(persistedClientKey);
+    return await extensionLocalStorage.get<PersistedClient>(StorageKeys.QueryCache);
   },
   removeClient: async () => {
-    await extensionLocalStorage.remove(persistedClientKey);
+    await extensionLocalStorage.remove(StorageKeys.QueryCache);
   },
 };

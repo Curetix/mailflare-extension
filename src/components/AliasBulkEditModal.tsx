@@ -3,11 +3,9 @@ import type { Alias } from "~utils/alias";
 import { Button, Modal, Select, Stack, Switch } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
-import { useAtom } from "jotai";
 
 import { isExtension } from "~const";
-import { destinationsStatusAtom, editEmailRuleAtom, emailRulesStatusAtom } from "~utils/cloudflare";
-import { selectedZoneIdAtom } from "~utils/state";
+import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
 
 type Props = {
   opened: boolean;
@@ -16,10 +14,7 @@ type Props = {
 };
 
 export default function AliasBulkEditModal({ opened, onClose, selectedAliases }: Props) {
-  const [, emailRulesDispatch] = useAtom(emailRulesStatusAtom);
-  const [destinations] = useAtom(destinationsStatusAtom);
-  const [editMutation, mutate] = useAtom(editEmailRuleAtom);
-  const [selectedZoneId] = useAtom(selectedZoneIdAtom);
+  const { selectedZoneId, emailDestinations, emailRules, updateEmailRule } = useCloudflare();
 
   const aliasEditForm = useForm({
     initialValues: {
@@ -28,7 +23,7 @@ export default function AliasBulkEditModal({ opened, onClose, selectedAliases }:
     },
     validate: {
       destination: (value) =>
-        value.trim().length === 0 || !destinations.data?.find((d) => d.email === value),
+        value.trim().length === 0 || !emailDestinations.data?.find((d) => d.email === value),
     },
   });
 
@@ -40,7 +35,10 @@ export default function AliasBulkEditModal({ opened, onClose, selectedAliases }:
           if (values.destination !== "") {
             a.destination = values.destination;
           }
-          return mutate([{ rule: a.toEmailRule(), zoneId: selectedZoneId }]);
+          return updateEmailRule.mutate({
+            rule: a.toEmailRule(),
+            zoneId: selectedZoneId,
+          });
         } catch (error) {
           showNotification({
             color: "red",
@@ -58,7 +56,7 @@ export default function AliasBulkEditModal({ opened, onClose, selectedAliases }:
       message: "The selected aliases were updated!",
       autoClose: 3000,
     });
-    emailRulesDispatch({ type: "refetch" });
+    await emailRules.refetch();
     onClose(true);
   }
 
@@ -66,7 +64,7 @@ export default function AliasBulkEditModal({ opened, onClose, selectedAliases }:
     <Modal
       opened={opened}
       onClose={() => {
-        if (editMutation.isPending) {
+        if (updateEmailRule.isPending) {
           showNotification({
             color: "red",
             message: "Cannot be closed right now.",
@@ -84,17 +82,17 @@ export default function AliasBulkEditModal({ opened, onClose, selectedAliases }:
             label="Destination"
             placeholder="Keep original destinations"
             data={
-              destinations.data?.map((z) => ({
+              emailDestinations.data?.map((z) => ({
                 value: z.email,
                 label: z.email,
               })) || []
             }
             {...aliasEditForm.getInputProps("destination")}
             error={
-              ((!destinations.data || destinations.isError) &&
-                (destinations.error?.toString() || "Error loading destinations")) ||
+              ((!emailDestinations.data || emailDestinations.isError) &&
+                (emailDestinations.error?.toString() || "Error loading destinations")) ||
               (aliasEditForm.values.destination &&
-                !destinations.data?.find((d) => d.email === aliasEditForm.values.destination)
+                !emailDestinations.data?.find((d) => d.email === aliasEditForm.values.destination)
                   ?.verified &&
                 "This address is not verified. You will not receive emails.") ||
               false
@@ -105,7 +103,7 @@ export default function AliasBulkEditModal({ opened, onClose, selectedAliases }:
             label="Enabled"
             {...aliasEditForm.getInputProps("enabled", { type: "checkbox" })}
           />
-          <Button type="submit" loading={editMutation.isPending}>
+          <Button type="submit" loading={updateEmailRule.isPending}>
             Save
           </Button>
         </Stack>

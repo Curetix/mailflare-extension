@@ -8,7 +8,7 @@ import type {
   CloudflareVerifyTokenResponse,
 } from "./cloudflare.types";
 
-import fetcher from "./fetcher";
+import fetcher from "../fetcher";
 
 export const CloudflareApiBaseUrl = "https://api.cloudflare.com/client/v4";
 

@@ -2,11 +2,9 @@ import type { Alias } from "~utils/alias";
 
 import { Button, Modal, Stack, Text } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
-import { useAtom } from "jotai";
 
 import { isExtension } from "~const";
-import { deleteEmailAtom, emailRulesStatusAtom } from "~utils/cloudflare";
-import { selectedZoneIdAtom } from "~utils/state";
+import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
 
 type Props = {
   opened: boolean;
@@ -15,15 +13,16 @@ type Props = {
 };
 
 export default function AliasBulkDeleteModal({ opened, onClose, selectedAliases }: Props) {
-  const [, emailRulesDispatch] = useAtom(emailRulesStatusAtom);
-  const [deleteMutation, mutate] = useAtom(deleteEmailAtom);
-  const [selectedZoneId] = useAtom(selectedZoneIdAtom);
+  const { selectedZoneId, emailRules, deleteEmailRule } = useCloudflare();
 
   async function deleteSelectedAliases() {
     await Promise.all(
       selectedAliases.map(async (a) => {
         try {
-          return await mutate([{ rule: a.toEmailRule(), zoneId: selectedZoneId }]);
+          deleteEmailRule.mutate({
+            rule: a.toEmailRule(),
+            zoneId: selectedZoneId,
+          });
         } catch (error) {
           showNotification({
             color: "red",
@@ -34,7 +33,7 @@ export default function AliasBulkDeleteModal({ opened, onClose, selectedAliases 
         }
       }),
     );
-    emailRulesDispatch({ type: "refetch" });
+    await emailRules.refetch();
     showNotification({
       color: "green",
       title: "Success!",
@@ -48,7 +47,7 @@ export default function AliasBulkDeleteModal({ opened, onClose, selectedAliases 
     <Modal
       opened={opened}
       onClose={() => {
-        if (deleteMutation.isPending) {
+        if (deleteEmailRule.isPending) {
           showNotification({
             color: "red",
             message: "Cannot be closed right now.",
@@ -64,13 +63,13 @@ export default function AliasBulkDeleteModal({ opened, onClose, selectedAliases 
         <Text>You are about to delete {selectedAliases.length} aliases.</Text>
         <Text>Do you want to proceed?</Text>
         <Button.Group>
-          <Button fullWidth disabled={deleteMutation.isPending} onClick={() => onClose()}>
+          <Button fullWidth disabled={deleteEmailRule.isPending} onClick={() => onClose()}>
             No
           </Button>
           <Button
             color="red"
             fullWidth
-            loading={deleteMutation.isPending}
+            loading={deleteEmailRule.isPending}
             onClick={() => deleteSelectedAliases()}>
             Yes
           </Button>

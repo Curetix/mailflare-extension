@@ -8,6 +8,7 @@ export enum StorageKeys {
   AliasSettings = "alias-settings",
   ZoneId = "zone-id",
   ApiToken = "api-token",
+  QueryCache = "query-cache",
 }
 
 /*
@@ -27,6 +28,7 @@ const settingsAtom = atomWithStorage<Settings>(StorageKeys.MailflareSettings, {
   showCreateButton: false,
   theme: "light",
 });
+settingsAtom.debugLabel = "settingsAtom";
 
 /*
  * Alias Settings
@@ -45,18 +47,25 @@ type AliasSettings = {
   destination?: string;
 };
 const aliasSettingsAtom = atomWithStorage<AliasSettings>(StorageKeys.AliasSettings, {}, storage);
+aliasSettingsAtom.debugLabel = "aliasSettingsAtom";
 
 /*
  * Cloudflare
  */
 const selectedZoneIdAtom = atomWithStorage<string | null>(StorageKeys.ZoneId, null, storage);
+selectedZoneIdAtom.debugLabel = "selectedZoneIdAtom";
+
 const apiTokenAtom = atomWithStorage<string | null>(StorageKeys.ApiToken, null, storage);
+apiTokenAtom.debugLabel = "apiTokenAtom";
 
 /*
  * Normal State
  */
 const hostnameAtom = atom<string>("");
+hostnameAtom.debugLabel = "hostnameAtom";
+
 const aliasSearchAtom = atom<string>("");
+aliasSearchAtom.debugLabel = "aliasSearchAtom";
 
 export {
   type Settings,
