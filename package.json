@@ -35,23 +35,23 @@
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
-    "@mantine/core": "^7.2.1",
-    "@mantine/form": "^7.2.1",
-    "@mantine/hooks": "^7.2.1",
-    "@mantine/notifications": "^7.2.1",
+    "@mantine/core": "^7.2.2",
+    "@mantine/form": "^7.2.2",
+    "@mantine/hooks": "^7.2.2",
+    "@mantine/notifications": "^7.2.2",
     "@plasmohq/messaging": "^0.6.0",
     "@plasmohq/storage": "^1.9.0",
     "@tabler/icons-react": "^2.40.0",
-    "@tanstack/query-core": "^5.8.1",
-    "@tanstack/react-query": "^5.8.1",
-    "@tanstack/react-query-devtools": "^5.8.1",
-    "@tanstack/react-query-persist-client": "^5.8.1",
+    "@tanstack/query-core": "^5.8.3",
+    "@tanstack/react-query": "^5.8.4",
+    "@tanstack/react-query-devtools": "^5.8.4",
+    "@tanstack/react-query-persist-client": "^5.8.4",
     "jotai": "^2.5.1",
     "jotai-devtools": "^0.7.0",
     "jotai-tanstack-query": "^0.7.2",
     "plasmo": "^0.84.0",
     "postcss": "^8.4.31",
-    "postcss-preset-mantine": "^1.10.0",
+    "postcss-preset-mantine": "^1.11.0",
     "postcss-simple-vars": "^7.0.1",
     "psl": "^1.9.0",
     "random-words": "^2.0.0",
@@ -71,7 +71,7 @@
     "@types/webextension-polyfill": "^0.10.6",
     "@vitejs/plugin-react": "^4.1.1",
     "husky": "^8.0.3",
-    "prettier": "^3.0.3",
+    "prettier": "^3.1.0",
     "typescript": "^5.2.2",
     "vite": "^4.5.0",
     "vite-plugin-pwa": "^0.16.7",
@@ -99,6 +99,6 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,json,css,html,md}": "prettier --write"
+    "**/*.{js,jsx,ts,tsx,json,css,html,md}": "prettier --write"
   }
 }
