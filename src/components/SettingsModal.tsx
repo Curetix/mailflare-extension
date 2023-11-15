@@ -3,7 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import {
   Button,
   Divider,
-  Group,
+  Flex,
   Modal,
   ScrollArea,
   Stack,
@@ -191,7 +191,7 @@ function SettingsModal({ opened, onClose }: Props) {
         <Stack gap="xs" pr={15}>
           {settingsItems.map((item, index) => (
             <Stack gap="xs" key={index}>
-              <Group justify="space-between" gap="xl">
+              <Flex justify="space-between" align="center">
                 <div>
                   <Text>{item.title}</Text>
                   <Text size="xs" c="dimmed">
@@ -199,7 +199,7 @@ function SettingsModal({ opened, onClose }: Props) {
                   </Text>
                 </div>
                 {item.action}
-              </Group>
+              </Flex>
               {index < settingsItems.length - 1 && <Divider />}
             </Stack>
           ))}
