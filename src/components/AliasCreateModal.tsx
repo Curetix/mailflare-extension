@@ -188,7 +188,6 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
         onSuccess: (data) => {
           resetForm();
           setSelectedZoneId(variables.zoneId);
-          emailRules.refetch();
           setAliasSettings({
             format: variables.format as "characters" | "words",
             characterCount: variables.characterCount,

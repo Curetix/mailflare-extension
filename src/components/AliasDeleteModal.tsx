@@ -31,7 +31,6 @@ export default function AliasDeleteModal({ opened, onClose, aliasToDelete }: Pro
       { rule: aliasToDelete.toEmailRule(), zoneId: selectedZoneId },
       {
         onSuccess: () => {
-          emailRules.refetch();
           showNotification({
             color: "green",
             title: "Success!",

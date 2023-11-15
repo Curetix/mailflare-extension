@@ -14,7 +14,7 @@ type Props = {
 };
 
 export default function AliasBulkEditModal({ opened, onClose, selectedAliases }: Props) {
-  const { selectedZoneId, emailDestinations, emailRules, updateEmailRule } = useCloudflare();
+  const { selectedZoneId, emailDestinations, updateEmailRule } = useCloudflare();
 
   const aliasEditForm = useForm({
     initialValues: {
@@ -56,7 +56,6 @@ export default function AliasBulkEditModal({ opened, onClose, selectedAliases }:
       message: "The selected aliases were updated!",
       autoClose: 3000,
     });
-    await emailRules.refetch();
     onClose(true);
   }
 

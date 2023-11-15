@@ -13,7 +13,7 @@ type Props = {
 };
 
 export default function AliasBulkDeleteModal({ opened, onClose, selectedAliases }: Props) {
-  const { selectedZoneId, emailRules, deleteEmailRule } = useCloudflare();
+  const { selectedZoneId, deleteEmailRule } = useCloudflare();
 
   async function deleteSelectedAliases() {
     await Promise.all(
@@ -33,7 +33,6 @@ export default function AliasBulkDeleteModal({ opened, onClose, selectedAliases 
         }
       }),
     );
-    await emailRules.refetch();
     showNotification({
       color: "green",
       title: "Success!",

@@ -5,7 +5,7 @@ import type {
   CloudflareZone,
 } from "~lib/cloudflare/cloudflare.types";
 
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { useAtom } from "jotai";
 
@@ -21,6 +21,7 @@ type RuleMutation<T> = {
 };
 
 export function useCloudflare() {
+  const queryClient = useQueryClient();
   const apiClient = useRef(new CloudflareApiClient("", apiUrl));
   const [apiToken, setApiToken] = useAtom(apiTokenAtom);
   const [accountId, setAccountId] = useState<string | null>(null);
@@ -105,17 +106,26 @@ export function useCloudflare() {
     mutationFn: async ({ zoneId, rule }: RuleMutation<Omit<CloudflareEmailRule, "tag">>) => {
       return handleResponse<CloudflareEmailRule>(apiClient.current.createEmailRule(zoneId!, rule));
     },
+    onSuccess: () => {
+      return queryClient.invalidateQueries({ queryKey: ["emailRules", selectedZoneId] });
+    },
   });
 
   const updateEmailRule = useMutation({
     mutationFn: async ({ zoneId, rule }: RuleMutation<CloudflareEmailRule>) => {
       return handleResponse<CloudflareEmailRule>(apiClient.current.updateEmailRule(zoneId!, rule));
     },
+    onSuccess: () => {
+      return queryClient.invalidateQueries({ queryKey: ["emailRules", selectedZoneId] });
+    },
   });
 
   const deleteEmailRule = useMutation({
     mutationFn: async ({ zoneId, rule }: RuleMutation<CloudflareEmailRule>) => {
       return handleResponse<null>(apiClient.current.deleteEmailRule(zoneId!, rule));
+    },
+    onSuccess: () => {
+      return queryClient.invalidateQueries({ queryKey: ["emailRules", selectedZoneId] });
     },
   });
 

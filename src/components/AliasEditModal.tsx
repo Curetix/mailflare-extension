@@ -66,7 +66,6 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
       { rule: updated.toEmailRule(), zoneId: selectedZoneId },
       {
         onSuccess: () => {
-          emailRules.refetch();
           aliasEditForm.reset();
           showNotification({
             color: "green",
