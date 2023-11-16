@@ -21,13 +21,17 @@ type Settings = {
   showCreateButton: boolean;
   theme: "dark" | "light";
 };
-const settingsAtom = atomWithStorage<Settings>(StorageKeys.MailflareSettings, {
-  ruleFilter: true,
-  copyAlias: true,
-  devTools: false,
-  showCreateButton: false,
-  theme: "light",
-});
+const settingsAtom = atomWithStorage<Settings>(
+  StorageKeys.MailflareSettings,
+  {
+    ruleFilter: true,
+    copyAlias: true,
+    devTools: false,
+    showCreateButton: false,
+    theme: "light",
+  },
+  storage,
+);
 settingsAtom.debugLabel = "settingsAtom";
 
 /*

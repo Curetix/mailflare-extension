@@ -32,6 +32,7 @@ import AliasDeleteModal from "~components/AliasDeleteModal";
 import AliasEditModal from "~components/AliasEditModal";
 import { popupHeight } from "~const";
 import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
+import { sortBy } from "~utils";
 import { Alias } from "~utils/alias";
 import { aliasSearchAtom, settingsAtom } from "~utils/state";
 
@@ -93,13 +94,14 @@ function AliasList() {
       emailRules.data
         .filter((r) => r.matchers[0].type === "literal" && r.actions[0].type === "forward")
         .map((r) => Alias.fromCloudflareEmailRule(r))
-        .filter((r) => ruleFilter || !r.isExternal)
+        .filter((r) => (ruleFilter ? !r.isExternal : true))
         .filter(
           (r) =>
             aliasSearch === "" ||
             r.name.toLowerCase().includes(aliasSearch.toLowerCase()) ||
             r.address.toLowerCase().includes(aliasSearch.toLowerCase()),
-        ),
+        )
+        .sort(sortBy<Alias>("priority", "descending")),
     );
   }, [emailRules.data, ruleFilter, aliasSearch]);
 

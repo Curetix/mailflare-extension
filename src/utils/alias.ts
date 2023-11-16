@@ -5,18 +5,7 @@ import psl from "psl";
 import { generate as randomWords } from "random-words";
 
 import { emailRuleNamePrefix } from "~const";
-
-export function randomString(length: number) {
-  let result = "";
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  const charactersLength = characters.length;
-  let counter = 0;
-  while (counter < length) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    counter += 1;
-  }
-  return result;
-}
+import { randomString } from "~utils";
 
 type GenerateAliasOptions = Omit<AliasSettings, "destination"> & {
   customPrefix?: string;
@@ -50,9 +39,9 @@ export function generateAliasAddress({
   prefix = prefix.trim() !== "" ? `${prefix}${separator}` : "";
   switch (format) {
     case "characters":
-      return `${prefix}${randomString(characterCount)}`;
+      return `${prefix}${randomString(characterCount)}`.toLowerCase();
     case "words":
-      return `${prefix}${randomWords({ exactly: wordCount, join: separator })}`;
+      return `${prefix}${randomWords({ exactly: wordCount, join: separator })}`.toLowerCase();
     default:
       throw new Error("Invalid alias type.");
   }
@@ -67,12 +56,19 @@ export class Alias {
   priority?: number;
   tag?: string;
 
-  constructor(address: string, destination: string, name: string, enabled = true) {
+  constructor(
+    address: string,
+    destination: string,
+    name: string,
+    enabled = true,
+    isExternal?: boolean,
+  ) {
     this.address = address;
     this.destination = destination;
     this.enabled = enabled;
     this.name = name.replace(emailRuleNamePrefix, "");
-    this.isExternal = !name.toLowerCase().startsWith(emailRuleNamePrefix);
+    this.isExternal =
+      isExternal !== undefined ? isExternal : !name.toLowerCase().startsWith(emailRuleNamePrefix);
   }
 
   toString() {
@@ -86,7 +82,7 @@ export class Alias {
     name: string,
   ) {
     const address = `${generateAliasAddress(addressOptions)}@${domain}`;
-    return new Alias(address, destination, name);
+    return new Alias(address, destination, name, true, false);
   }
 
   static fromCloudflareEmailRule(rule: CloudflareEmailRule) {

@@ -1,4 +1,5 @@
 import type { PersistedClient, Persister } from "@tanstack/react-query-persist-client";
+import type { AsyncStorage } from "jotai/vanilla/utils/atomWithStorage";
 
 import { Storage } from "@plasmohq/storage";
 
@@ -10,9 +11,9 @@ export const extensionLocalStorage = new Storage({
   allCopied: isWebApp,
 });
 
-export const extensionLocalStorageInterface = {
-  getItem: async (key: string) => {
-    return (await extensionLocalStorage.get<any>(key)) || undefined;
+export const extensionLocalStorageInterface: AsyncStorage<any> = {
+  getItem: async (key: string, initialValue: any) => {
+    return (await extensionLocalStorage.get<any>(key)) || initialValue;
   },
   setItem: async (key: string, newValue: any) => {
     return extensionLocalStorage.set(key, newValue);

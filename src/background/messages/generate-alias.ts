@@ -40,7 +40,7 @@ const handler: PlasmoMessaging.MessageHandler<Request, Response> = async (req, r
       message: "No domain selected",
     });
   }
-  if (!aliasSettings.destination) {
+  if (!aliasSettings?.destination) {
     return res.send({
       success: false,
       message: "No destination selected",

@@ -18,8 +18,6 @@ import { extensionStoragePersister } from "~utils/storage";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 
-import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
-
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
