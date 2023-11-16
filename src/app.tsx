@@ -5,7 +5,6 @@ import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client
 import { useState } from "react";
 import { ActionIcon, Container, Divider, Group, Text } from "@mantine/core";
 import { useAtom } from "jotai";
-import { DevTools as JotaiDevTools } from "jotai-devtools";
 
 import AliasList from "~components/AliasList";
 import Login from "~components/Login";
@@ -38,12 +37,7 @@ export default function App() {
       <PersistQueryClientProvider
         client={queryClient}
         persistOptions={{ persister: extensionStoragePersister }}>
-        {devTools && (
-          <>
-            <ReactQueryDevtools initialIsOpen={false} />
-            <JotaiDevTools />
-          </>
-        )}
+        {devTools && <ReactQueryDevtools initialIsOpen={false} />}
         <Container
           w={isExtension ? popupWidth : undefined}
           h={isExtension ? popupHeight : "100%"}

@@ -47,7 +47,6 @@
     "@tanstack/react-query-devtools": "^5.8.4",
     "@tanstack/react-query-persist-client": "^5.8.4",
     "jotai": "^2.5.1",
-    "jotai-devtools": "^0.7.0",
     "jotai-tanstack-query": "^0.7.2",
     "plasmo": "^0.84.0",
     "postcss": "^8.4.31",
