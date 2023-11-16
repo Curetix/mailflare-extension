@@ -195,7 +195,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
           resetForm();
           setSelectedZoneId(variables.zoneId);
           setAliasSettings({
-            format: variables.format as "characters" | "words",
+            format: variables.format as "characters" | "words" | "custom",
             characterCount: variables.characterCount,
             wordCount: variables.wordCount,
             separator: variables.separator,

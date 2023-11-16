@@ -38,7 +38,7 @@ settingsAtom.debugLabel = "settingsAtom";
  * Alias Settings
  */
 type AliasSettings = {
-  format?: "characters" | "words";
+  format?: "characters" | "words" | "custom";
   characterCount?: number;
   wordCount?: number;
   separator?: string;

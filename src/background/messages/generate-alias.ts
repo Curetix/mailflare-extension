@@ -26,7 +26,7 @@ const handler: PlasmoMessaging.MessageHandler<Request, Response> = async (req, r
   const zoneId = await storage.get<string>(StorageKeys.ZoneId);
   const aliasSettings = await storage.get<AliasSettings>(StorageKeys.AliasSettings);
 
-  console.log(req.body);
+  console.log("Received request for background alias generation:", req.body);
 
   if (!apiToken) {
     return res.send({
@@ -44,6 +44,12 @@ const handler: PlasmoMessaging.MessageHandler<Request, Response> = async (req, r
     return res.send({
       success: false,
       message: "No destination selected",
+    });
+  }
+  if (aliasSettings.format === "custom" || aliasSettings.prefixFormat === "custom") {
+    return res.send({
+      success: false,
+      message: "Cannot generate an alias when the (prefix) format is set to Custom",
     });
   }
 
