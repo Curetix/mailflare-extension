@@ -8,7 +8,7 @@ This extension provides an easy way to turn [Cloudflare Email Routing](https://d
 into your own private email alias service, similar to AnonAddy, SimpleLogin, and others.
 No third-party services or tedious configuration of a self-hosted email server needed.
 
-A web version is available at [mailflare.pages.dev](https://mailflare.pages.dev/).
+A web version is available at [mailflare.pages.dev](https://mailflare.pages.dev/)
 
 ## Screenshots
 
@@ -27,11 +27,29 @@ Potential future features:
 - One-Click alias generation directly inside email input fields
 - Advanced login options, manually providing account ID and zone IDs to further limit the API token permissions
 - Web version of the extension that can be used on any device, including offline support
-- Email Reply worker (see below)
 
 # Installation
 
-- Download the latest version for your browser from the [releases section](https://github.com/curetix/mailflare-extension/releases/latest)
+<div>
+  <a
+    href="https://chromewebstore.google.com/detail/mailflare-email-alias-ext/aomfbgcabccoecaoimicmmkjdmdgcfpi"
+  >
+    <img
+      alt="Chrome Web Store"
+      src="assets/chrome_web_store.png"
+      height="58"
+    />
+  </a>
+  <a href="/releases/latest">
+    <img
+      alt="Firefox Add-ons"
+      src="assets/firefox_addons.png"
+      height="58"
+    />
+  </a>
+</div>
+
+- Download the latest version for your browser from the [releases section](/releases/latest)
 - Firefox
   - When clicking on the file, Firefox will automatically ask if you want to install the extension
   - Alternatively: right-click on the file, **Save target as**, drag-and-drop the downloaded file into Firefox
