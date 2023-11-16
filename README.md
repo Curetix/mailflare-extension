@@ -40,7 +40,7 @@ Potential future features:
       height="58"
     />
   </a>
-  <a href="/releases/latest">
+  <a href="https://github.com/Curetix/mailflare-extension/releases/latest">
     <img
       alt="Firefox Add-ons"
       src="assets/firefox_addons.png"
@@ -49,7 +49,7 @@ Potential future features:
   </a>
 </div>
 
-- Download the latest version for your browser from the [releases section](/releases/latest)
+- Download the latest version for your browser from the [releases section](https://github.com/Curetix/mailflare-extension/releases/latest)
 - Firefox
   - When clicking on the file, Firefox will automatically ask if you want to install the extension
   - Alternatively: right-click on the file, **Save target as**, drag-and-drop the downloaded file into Firefox
