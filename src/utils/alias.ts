@@ -75,6 +75,10 @@ export class Alias {
     return this.address;
   }
 
+  static fromCustomAddress(address: string, destination: string, name: string) {
+    return new Alias(address, destination, name, true, false);
+  }
+
   static fromOptions(
     addressOptions: GenerateAliasOptions,
     domain: string,

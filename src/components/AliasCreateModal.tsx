@@ -146,6 +146,12 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
           wordCount: variables.wordCount,
           separator: variables.separator,
           customPrefix: variables.customPrefix,
+          prefixFormat: variables.prefixFormat as
+            | "fullDomain"
+            | "domainWithExtension"
+            | "domainWithoutExtension"
+            | "custom"
+            | "none",
           hostname,
         })}@${zone.name}`;
 
