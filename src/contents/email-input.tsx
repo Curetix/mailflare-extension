@@ -1,3 +1,4 @@
+import type { Settings } from "~utils/state";
 import type {
   PlasmoCSConfig,
   PlasmoCSUIProps,
@@ -6,13 +7,13 @@ import type {
 } from "plasmo";
 
 import { IconMailPlus } from "@tabler/icons-react";
-import { useEffect, useState } from "react";
-import { ActionIcon, MantineProvider, Popover, Text } from "@mantine/core";
+import { useState } from "react";
 import { useClipboard, useDisclosure } from "@mantine/hooks";
 import { sendToBackground } from "@plasmohq/messaging";
-import cssText from "data-text:@mantine/core/styles.css";
+import { Storage } from "@plasmohq/storage";
+import cssText from "data-text:./email-input.style.css";
 
-import "@mantine/core/styles.css";
+import { StorageKeys } from "~utils/state";
 
 export const getStyle: PlasmoGetStyle = () => {
   const style = document.createElement("style");
@@ -24,13 +25,15 @@ export const config: PlasmoCSConfig = {
   matches: ["https://*/*"],
 };
 
+const storage = new Storage({
+  area: "local",
+});
+
 // @ts-ignore
 export const getOverlayAnchor: PlasmoGetOverlayAnchor = async () => {
-  const enabled: boolean = await sendToBackground({
-    name: "enable-csui-button",
-  });
+  const settings = await storage.get<Settings>(StorageKeys.MailflareSettings);
 
-  if (!enabled) {
+  if (!settings || !settings.showCreateButton) {
     return null;
   }
 
@@ -62,12 +65,6 @@ export default function Inline(props: PlasmoCSUIProps) {
   const [opened, { close, open }] = useDisclosure(false);
   const [error, setError] = useState<string>();
 
-  useEffect(() => {
-    sendToBackground({
-      name: "enable-csui-button",
-    }).then(console.log);
-  }, []);
-
   async function generateAlias() {
     setIsLoading(true);
     const response = await sendToBackground({
@@ -90,38 +87,36 @@ export default function Inline(props: PlasmoCSUIProps) {
   }
 
   return (
-    <MantineProvider>
-      <Popover position="top" withArrow opened={opened || !!error}>
-        <Popover.Target>
-          <ActionIcon
-            variant={!!error ? "filled" : "gradient"}
-            gradient={{ from: "orange", to: "yellow", deg: 150 }}
-            color="red"
-            size="lg"
-            aria-label="Settings"
-            style={{
-              position: "absolute",
-              top: (props.anchor!.element.clientHeight - 34) / 2,
-              left:
-                props.anchor!.element.clientWidth -
-                34 -
-                (props.anchor!.element.clientHeight - 34) / 2,
-            }}
-            loading={isLoading}
-            disabled={!!error}
-            onClick={() => {
-              return generateAlias();
-            }}
-            onMouseEnter={open}
-            onMouseLeave={close}>
+    <html>
+      <div
+        className="dropdown dropdown-end dropdown-hover"
+        data-theme="light"
+        style={{
+          position: "absolute",
+          top: (props.anchor!.element.clientHeight - 32) / 2,
+          left:
+            props.anchor!.element.clientWidth - 32 - (props.anchor!.element.clientHeight - 32) / 2,
+        }}>
+        <label
+          tabIndex={0}
+          className={`btn btn-square ${!!error ? "btn-error" : "btn-warning"} btn-sm ${
+            (isLoading || !!error) && "btn-disabled"
+          }`}
+          onClick={() => {
+            return generateAlias();
+          }}>
+          {isLoading ? (
+            <span className="loading loading-spinner text-white"></span>
+          ) : (
             <IconMailPlus color="white" />
-          </ActionIcon>
-        </Popover.Target>
-
-        <Popover.Dropdown>
-          <Text size="sm">{error ? `Error: ${error}` : "Create a new MailFlare Alias"}</Text>
-        </Popover.Dropdown>
-      </Popover>
-    </MantineProvider>
+          )}
+        </label>
+        <div
+          tabIndex={0}
+          className="dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-56">
+          {error ? `Error: ${error}` : "Create a new MailFlare Alias"}
+        </div>
+      </div>
+    </html>
   );
 }
