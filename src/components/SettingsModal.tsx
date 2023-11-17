@@ -32,7 +32,7 @@ function SettingsModal({ opened, onClose }: Props) {
 
   const { zones, emailDestinations } = useCloudflare();
 
-  const [, setToken] = useAtom(apiTokenAtom);
+  const [apiToken, setToken] = useAtom(apiTokenAtom);
   const [settings, setSettings] = useAtom(settingsAtom);
 
   const [, setSelectedZoneId] = useAtom(selectedZoneIdAtom);
@@ -77,6 +77,7 @@ function SettingsModal({ opened, onClose }: Props) {
     {
       title: "Rule Filter",
       description: "Only show email rules created by this extension",
+      requiresAuth: true,
       action: (
         <Switch
           onLabel="ON"
@@ -93,6 +94,7 @@ function SettingsModal({ opened, onClose }: Props) {
     {
       title: "Copy Alias",
       description: "Copy alias to clipboard after creating it",
+      requiresAuth: true,
       action: (
         <Switch
           onLabel="ON"
@@ -108,6 +110,7 @@ function SettingsModal({ opened, onClose }: Props) {
       title: "Show Quick-Create Button",
       description:
         "Show a button inside email input fields to quickly create an alias for the current site",
+      requiresAuth: true,
       action: (
         <Switch
           onLabel="ON"
@@ -124,6 +127,7 @@ function SettingsModal({ opened, onClose }: Props) {
     {
       title: "Refresh data",
       description: "Refresh Cloudflare domains and email destinations",
+      requiresAuth: true,
       action: (
         <Button
           loading={zones.isFetching || emailDestinations.isFetching}
@@ -135,6 +139,7 @@ function SettingsModal({ opened, onClose }: Props) {
     {
       title: "Logout",
       description: "Clear all data and settings",
+      requiresAuth: true,
       action: (
         <Button color="red" onClick={() => logout()}>
           Logout
@@ -190,20 +195,22 @@ function SettingsModal({ opened, onClose }: Props) {
     <Modal opened={opened} onClose={() => onClose()} title="Settings" fullScreen={isExtension}>
       <ScrollArea h={popupHeight - 2 * 20 - 28 - 16}>
         <Stack gap="xs" pr={15}>
-          {settingsItems.map((item, index) => (
-            <Stack gap="xs" key={index}>
-              <Flex justify="space-between" align="center">
-                <div>
-                  <Text>{item.title}</Text>
-                  <Text size="xs" c="dimmed">
-                    {item.description}
-                  </Text>
-                </div>
-                {item.action}
-              </Flex>
-              {index < settingsItems.length - 1 && <Divider />}
-            </Stack>
-          ))}
+          {settingsItems.map((item, index) =>
+            (item.requiresAuth && apiToken) || !item.requiresAuth ? (
+              <Stack gap="xs" key={index}>
+                <Flex justify="space-between" align="center">
+                  <div>
+                    <Text>{item.title}</Text>
+                    <Text size="xs" c="dimmed">
+                      {item.description}
+                    </Text>
+                  </div>
+                  {item.action}
+                </Flex>
+                {index < settingsItems.length - 1 && <Divider />}
+              </Stack>
+            ) : null,
+          )}
         </Stack>
       </ScrollArea>
     </Modal>
