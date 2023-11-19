@@ -109,6 +109,23 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
     resetForm();
   }, [aliasSettings, selectedZoneId, hostname]);
 
+  function saveAliasSettings() {
+    const { values } = aliasCreateForm;
+    return setAliasSettings({
+      format: values.format as "characters" | "words" | "custom",
+      characterCount: values.characterCount,
+      wordCount: values.wordCount,
+      separator: values.separator,
+      prefixFormat: values.prefixFormat as
+        | "none"
+        | "custom"
+        | "domainWithoutExtension"
+        | "domainWithExtension"
+        | "fullDomain",
+      destination: values.destination,
+    });
+  }
+
   async function createAlias(variables: typeof aliasCreateForm.values) {
     const zone = zones.data?.find((z) => z.id === variables.zoneId);
 
@@ -194,19 +211,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
         onSuccess: (data) => {
           resetForm();
           setSelectedZoneId(variables.zoneId);
-          setAliasSettings({
-            format: variables.format as "characters" | "words" | "custom",
-            characterCount: variables.characterCount,
-            wordCount: variables.wordCount,
-            separator: variables.separator,
-            prefixFormat: variables.prefixFormat as
-              | "none"
-              | "custom"
-              | "domainWithoutExtension"
-              | "domainWithExtension"
-              | "fullDomain",
-            destination: variables.destination,
-          });
+          saveAliasSettings();
           if (copyAlias) {
             clipboard.copy(data.matchers[0].value);
           }
@@ -388,8 +393,15 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
           <Button
             type="submit"
             loading={createEmailRule.isPending}
-            disabled={aliasCreateForm.values.destination === ""}>
+            disabled={!aliasCreateForm.isValid()}>
             Create
+          </Button>
+
+          <Button
+            color="gray"
+            disabled={!aliasCreateForm.isValid()}
+            onClick={() => saveAliasSettings()}>
+            Save Settings
           </Button>
         </Stack>
       </form>
