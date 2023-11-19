@@ -1,3 +1,5 @@
+// noinspection JSXDomNesting
+
 import type { Settings } from "~utils/state";
 import type {
   PlasmoCSConfig,
@@ -8,12 +10,16 @@ import type {
 
 import { IconMailPlus } from "@tabler/icons-react";
 import { useState } from "react";
-import { useClipboard, useDisclosure } from "@mantine/hooks";
+import { useClipboard } from "@mantine/hooks";
 import { sendToBackground } from "@plasmohq/messaging";
 import { Storage } from "@plasmohq/storage";
 import cssText from "data-text:./email-input.style.css";
 
 import { StorageKeys } from "~utils/state";
+
+const storage = new Storage({
+  area: "local",
+});
 
 export const getStyle: PlasmoGetStyle = () => {
   const style = document.createElement("style");
@@ -24,10 +30,6 @@ export const getStyle: PlasmoGetStyle = () => {
 export const config: PlasmoCSConfig = {
   matches: ["https://*/*"],
 };
-
-const storage = new Storage({
-  area: "local",
-});
 
 // @ts-ignore
 export const getOverlayAnchor: PlasmoGetOverlayAnchor = async () => {
@@ -62,8 +64,11 @@ function setValueForElementByEvent(el: HTMLInputElement, valueToSet: string) {
 export default function Inline(props: PlasmoCSUIProps) {
   const [isLoading, setIsLoading] = useState(false);
   const clipboard = useClipboard();
-  const [opened, { close, open }] = useDisclosure(false);
   const [error, setError] = useState<string>();
+
+  if (!props.anchor?.element) return;
+
+  const { clientWidth: inputElementWidth, clientHeight: inputElementHeight } = props.anchor.element;
 
   async function generateAlias() {
     setIsLoading(true);
@@ -74,7 +79,7 @@ export default function Inline(props: PlasmoCSUIProps) {
       },
     });
     setIsLoading(false);
-    console.log(response);
+    console.log("[MailFlare] Response from background worker:", response);
     if (response.success) {
       clipboard.copy(response.data);
       const element = props.anchor?.element as HTMLInputElement;
@@ -87,21 +92,17 @@ export default function Inline(props: PlasmoCSUIProps) {
   }
 
   return (
-    <html>
+    <html data-theme="light">
       <div
         className="dropdown dropdown-end dropdown-hover"
-        data-theme="light"
         style={{
           position: "absolute",
-          top: (props.anchor!.element.clientHeight - 32) / 2,
-          left:
-            props.anchor!.element.clientWidth - 32 - (props.anchor!.element.clientHeight - 32) / 2,
+          top: (inputElementHeight - 32) / 2,
+          left: inputElementWidth - 32 - (inputElementHeight - 32) / 2,
         }}>
         <label
           tabIndex={0}
-          className={`btn btn-square ${!!error ? "btn-error" : "btn-warning"} btn-sm ${
-            (isLoading || !!error) && "btn-disabled"
-          }`}
+          className={`btn btn-square btn-sm ${!!error ? "btn-error" : "btn-warning"}`}
           onClick={() => {
             return generateAlias();
           }}>
