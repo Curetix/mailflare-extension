@@ -101,13 +101,13 @@ Your API key is stored locally in your browser and is used to directly communica
 
 ## Build instructions
 
-1. Install NodeJS (the automated build workflow uses NodeJS version 18) and yarn (with `npm install -g yarn`)
+1. Install Node.js (the automated build workflow uses Node.js v20) and pnpm (with `npm install -g pnpm`)
 2. Clone the repository: `git clone https://github.com/curetix/mailflare-extension`
-3. Install the dependencies: `yarn install`
-4. Run the build command: `yarn build` (for Chromium / Manifest V3), `yarn build:firefox` (for Firefox / Manifest V2)
+3. Install the dependencies: `pnpm install`
+4. Run the build command: `pnpm build` (for Chromium), `pnpm build:firefox` (for Firefox), or `pnpm build:all` for all targets
 5. The output will be in the folder `build/chrome-mv3-prod` or `build/firefox-mv2-prod`
 
-Loading the extension:
+Loading the extension (non-signed builds):
 
 - Chrome
   1. Go to Settings -> Extensions
