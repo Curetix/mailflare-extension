@@ -68,9 +68,11 @@ export default function Inline(props: PlasmoCSUIProps) {
 
   if (!props.anchor?.element) return;
 
+  const buttonSize = 32;
   const { clientWidth: inputElementWidth, clientHeight: inputElementHeight } = props.anchor.element;
 
   async function generateAlias() {
+    setError(undefined);
     setIsLoading(true);
     const response = await sendToBackground({
       name: "generate-alias",
@@ -97,8 +99,8 @@ export default function Inline(props: PlasmoCSUIProps) {
         className="dropdown dropdown-end dropdown-hover"
         style={{
           position: "absolute",
-          top: (inputElementHeight - 32) / 2,
-          left: inputElementWidth - 32 - (inputElementHeight - 32) / 2,
+          top: (inputElementHeight - buttonSize) / 2,
+          left: inputElementWidth - buttonSize - (inputElementHeight - buttonSize) / 2,
         }}>
         <label
           tabIndex={0}

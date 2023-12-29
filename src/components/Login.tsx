@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Accordion, Anchor, Button, List, Stack, TextInput } from "@mantine/core";
+import { Accordion, Anchor, Button, List, PasswordInput, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 
@@ -34,7 +34,7 @@ function Login() {
   return (
     <form onSubmit={tokenForm.onSubmit((values) => verifyToken(values.token))}>
       <Stack p="md" gap="sm">
-        <TextInput
+        <PasswordInput
           label="Cloudflare API token"
           placeholder="Paste your Cloudflare API token here"
           disabled={isLoading}
