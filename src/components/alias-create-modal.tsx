@@ -1,5 +1,6 @@
 import type { CloudflareEmailRule } from "~lib/cloudflare/cloudflare.types";
 
+import { useI18nContext } from "~i18n/i18n-react";
 import { useEffect } from "react";
 import { Button, Modal, NumberInput, Select, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
@@ -18,6 +19,7 @@ type Props = {
 };
 
 export default function AliasCreateModal({ opened, onClose }: Props) {
+  const { LL } = useI18nContext();
   const clipboard = useClipboard();
 
   const {
@@ -50,32 +52,30 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
     validate: {
       zoneId: (value) =>
         value.trim() === "" || !zones.data?.find((z) => z.id === selectedZoneId)
-          ? "Invalid domain"
+          ? LL.INVALID_DOMAIN()
           : null,
       format: (value) =>
-        !["characters", "words", "custom"].includes(value) ? "Invalid alias format" : null,
+        !["characters", "words", "custom"].includes(value) ? LL.INVALID_FORMAT() : null,
       characterCount: (value, values) =>
-        values.format === "characters" && (value < 3 || value > 25)
-          ? "Must be between 3 and 25"
-          : null,
+        values.format === "characters" && (value < 3 || value > 25) ? LL.INVALID_LENGTH() : null,
       wordCount: (value, values) =>
-        values.format === "words" && (value < 1 || value > 5) ? "Must be between 1 and 5" : null,
+        values.format === "words" && (value < 1 || value > 5) ? LL.INVALID_WORD_COUNT() : null,
       customAlias: (value, values) =>
-        values.format === "custom" && value.trim().length < 3
-          ? "Must be at least 3 characters"
-          : null,
+        values.format === "custom" && value.trim().length < 3 ? LL.INVALID_CUSTOM_ALIAS() : null,
       prefixFormat: (value) =>
         !["none", "domainWithoutExtension", "domainWithExtension", "fullDomain", "custom"].includes(
           value,
         )
-          ? "Invalid format"
+          ? LL.INVALID_PREFIX_FORMAT()
           : null,
       customPrefix: (value, values) =>
         values.prefixFormat === "custom" && value.trim().length < 1
-          ? "Must be at least 1 character."
+          ? LL.INVALID_CUSTOM_PREFIX()
           : null,
       destination: (value) =>
-        value.trim().length === 0 || !emailDestinations.data?.find((d) => d.email === value),
+        value.trim().length === 0 || !emailDestinations.data?.find((d) => d.email === value)
+          ? LL.INVALID_DESTINATION()
+          : null,
     },
   });
 
@@ -132,8 +132,8 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
     if (!zone) {
       showNotification({
         color: "red",
-        title: "Error",
-        message: "Could not find the domain.",
+        title: LL.ERROR(),
+        message: LL.DOMAIN_NOT_FOUND(),
         autoClose: false,
       });
       return;
@@ -146,8 +146,8 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
       if (emailRules.data?.find((r) => r.matchers[0].value === aliasAddress)) {
         showNotification({
           color: "red",
-          title: "Conflict",
-          message: "This alias already exists.",
+          title: LL.CONFLICT(),
+          message: LL.ALIAS_ALREADY_EXISTS(),
           autoClose: false,
         });
         return;
@@ -177,9 +177,8 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
         } else if (attempts === 3) {
           showNotification({
             color: "red",
-            title: "Conflict",
-            message:
-              "Could not generate a unique alias after 3 attempts. Try again with changed settings.",
+            title: LL.CONFLICT(),
+            message: LL.ALIAS_GENERATION_ERROR(),
             autoClose: false,
           });
           return;
@@ -217,10 +216,8 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
           }
           showNotification({
             color: "green",
-            title: "Success",
-            message: copyAlias
-              ? "The alias was created and copied to the clipboard."
-              : "This alias was created.",
+            title: LL.SUCCESS(),
+            message: copyAlias ? LL.ALIAS_CREATED_AND_COPIED() : LL.ALIAS_CREATED(),
             autoClose: 3000,
           });
           onClose();
@@ -228,8 +225,8 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
         onError: () => {
           showNotification({
             color: "red",
-            title: "Error",
-            message: "Could not save the alias.",
+            title: LL.ERROR(),
+            message: LL.ALIAS_CREATION_ERROR(),
             autoClose: false,
           });
         },
@@ -244,19 +241,19 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
         if (createEmailRule.isPending) {
           showNotification({
             color: "red",
-            message: "Cannot be closed right now.",
+            message: LL.MODAL_CLOSE_BLOCKED(),
             autoClose: 2000,
           });
         } else {
           onClose();
         }
       }}
-      title="Create alias"
+      title={LL.CREATE_MODAL_TITLE()}
       fullScreen={isExtension}>
       <form onSubmit={aliasCreateForm.onSubmit((values) => createAlias(values))}>
         <Stack gap="xs">
           <Select
-            label="Domain"
+            label={LL.DOMAIN()}
             data={
               zones.data?.map((z) => ({
                 value: z.id,
@@ -266,7 +263,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
             searchable={zones.isSuccess && zones.data.length > 5}
             error={
               !zones.data || zones.isError
-                ? zones.error?.toString() || "Could not load domains"
+                ? zones.error?.toString() || LL.ZONES_LOADING_ERROR()
                 : undefined
             }
             allowDeselect={false}
@@ -277,15 +274,15 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
             data={[
               {
                 value: "characters",
-                label: "Random characters",
+                label: LL.ALIAS_FORMAT_CHARS(),
               },
               {
                 value: "words",
-                label: "Random words",
+                label: LL.ALIAS_FORMAT_WORDS(),
               },
               {
                 value: "custom",
-                label: "Custom",
+                label: LL.ALIAS_FORMAT_CUSTOM(),
               },
             ]}
             allowDeselect={false}
@@ -297,7 +294,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
               defaultValue={5}
               min={3}
               max={25}
-              label="Number of characters"
+              label={LL.NUMBER_OF_CHARS()}
               {...aliasCreateForm.getInputProps("characterCount")}
             />
           )}
@@ -307,52 +304,52 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
               defaultValue={3}
               min={1}
               max={5}
-              label="Number of words"
+              label={LL.NUMBER_OF_WORDS()}
               {...aliasCreateForm.getInputProps("wordCount")}
             />
           )}
 
           {aliasCreateForm.values.format === "custom" && (
             <TextInput
-              label="Custom alias"
+              label={LL.CUSTOM_ALIAS()}
               minLength={1}
               {...aliasCreateForm.getInputProps("customAlias")}
             />
           )}
 
           <TextInput
-            label="Description"
-            placeholder="Alias description (optional)"
+            label={LL.ALIAS_DESCRIPTION()}
+            placeholder={LL.ALIAS_DESCRIPTION_PLACEHOLDER()}
             {...aliasCreateForm.getInputProps("description")}
           />
 
           {(aliasCreateForm.values.format === "characters" ||
             aliasCreateForm.values.format === "words") && (
             <Select
-              label="Prefix"
+              label={LL.PREFIX()}
               data={[
                 {
                   value: "none",
-                  label: "None",
+                  label: LL.PREFIX_NONE(),
                 },
                 {
                   value: "domainWithoutExtension",
-                  label: "Domain without extension",
+                  label: LL.PREFIX_DOMAIN_WITHOUT_EXTENSION(),
                   disabled: hostname === null,
                 },
                 {
                   value: "domainWithExtension",
-                  label: "Base Domain",
+                  label: LL.PREFIX_DOMAIN_WITH_EXTENSION(),
                   disabled: hostname === null,
                 },
                 {
                   value: "fullDomain",
-                  label: "Full domain",
+                  label: LL.PREFIX_FULL_DOMAIN(),
                   disabled: hostname === null,
                 },
                 {
                   value: "custom",
-                  label: "Custom",
+                  label: LL.PREFIX_CUSTOM(),
                 },
               ]}
               allowDeselect={false}
@@ -364,13 +361,13 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
             aliasCreateForm.values.format === "words") &&
             aliasCreateForm.values.prefixFormat === "custom" && (
               <TextInput
-                label="Custom alias prefix"
+                label={LL.PREFIX_CUSTOM_LABEL()}
                 {...aliasCreateForm.getInputProps("customPrefix")}
               />
             )}
 
           <Select
-            label="Destination"
+            label={LL.DESTINATION()}
             data={
               emailDestinations.data?.map((z) => ({
                 value: z.email,
@@ -381,11 +378,11 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
             {...aliasCreateForm.getInputProps("destination")}
             error={
               ((!emailDestinations.data || emailDestinations.isError) &&
-                (emailDestinations.error?.toString() || "Error loading destinations")) ||
+                (emailDestinations.error?.toString() || LL.DESTINATIONS_LOADING_ERROR())) ||
               (aliasCreateForm.values.destination &&
                 !emailDestinations.data?.find((d) => d.email === aliasCreateForm.values.destination)
                   ?.verified &&
-                "This address is not verified. You will not receive emails.") ||
+                LL.DESTINATION_NOT_VERIFIED()) ||
               false
             }
           />
@@ -394,14 +391,14 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
             type="submit"
             loading={createEmailRule.isPending}
             disabled={!aliasCreateForm.isValid()}>
-            Create
+            {LL.CREATE()}
           </Button>
 
           <Button
             color="gray"
             disabled={!aliasCreateForm.isValid()}
             onClick={() => saveAliasSettings()}>
-            Save Settings
+            {LL.SAVE_SETTINGS()}
           </Button>
         </Stack>
       </form>

@@ -1,5 +1,6 @@
 import type { Alias } from "~utils/alias";
 
+import { useI18nContext } from "~i18n/i18n-react";
 import { Button, Modal, Stack, Text } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 
@@ -13,21 +14,22 @@ type Props = {
 };
 
 export default function AliasBulkDeleteModal({ opened, onClose, selectedAliases }: Props) {
+  const { LL } = useI18nContext();
   const { selectedZoneId, deleteEmailRule } = useCloudflare();
 
   async function deleteSelectedAliases() {
     await Promise.all(
       selectedAliases.map(async (a) => {
         try {
-          deleteEmailRule.mutate({
+          await deleteEmailRule.mutateAsync({
             rule: a.toEmailRule(),
             zoneId: selectedZoneId,
           });
         } catch (error) {
           showNotification({
             color: "red",
-            title: "Error",
-            message: `Error deleting alias ${a.address}: ${error}`,
+            title: LL.ERROR(),
+            message: LL.DELETE_ERROR_DETAILED({ alias: a.address, error }),
             autoClose: false,
           });
         }
@@ -35,8 +37,8 @@ export default function AliasBulkDeleteModal({ opened, onClose, selectedAliases 
     );
     showNotification({
       color: "green",
-      title: "Success!",
-      message: "The selected aliases were deleted!",
+      title: LL.SUCCESS(),
+      message: LL.DELETE_SUCCESS_MULTIPLE(),
       autoClose: 3000,
     });
     onClose(true);
@@ -49,28 +51,28 @@ export default function AliasBulkDeleteModal({ opened, onClose, selectedAliases 
         if (deleteEmailRule.isPending) {
           showNotification({
             color: "red",
-            message: "Cannot be closed right now.",
+            message: LL.MODAL_CLOSE_BLOCKED(),
             autoClose: 2000,
           });
         } else {
           onClose();
         }
       }}
-      title="Delete Aliases"
+      title={LL.DELETE_MULTIPLE_TITLE()}
       fullScreen={isExtension}>
       <Stack gap="xs">
-        <Text>You are about to delete {selectedAliases.length} aliases.</Text>
-        <Text>Do you want to proceed?</Text>
+        <Text>{LL.DELETE_MULTIPLE_QUESTION({ count: selectedAliases.length })}</Text>
+        <Text>{LL.DELETE_QUESTION_2()}</Text>
         <Button.Group>
           <Button fullWidth disabled={deleteEmailRule.isPending} onClick={() => onClose()}>
-            No
+            {LL.NO()}
           </Button>
           <Button
             color="red"
             fullWidth
             loading={deleteEmailRule.isPending}
             onClick={() => deleteSelectedAliases()}>
-            Yes
+            {LL.YES()}
           </Button>
         </Button.Group>
       </Stack>

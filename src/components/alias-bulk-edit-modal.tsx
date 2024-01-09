@@ -1,5 +1,6 @@
 import type { Alias } from "~utils/alias";
 
+import { useI18nContext } from "~i18n/i18n-react";
 import { Button, Modal, Select, Stack, Switch } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
@@ -14,6 +15,7 @@ type Props = {
 };
 
 export default function AliasBulkEditModal({ opened, onClose, selectedAliases }: Props) {
+  const { LL } = useI18nContext();
   const { selectedZoneId, emailDestinations, updateEmailRule } = useCloudflare();
 
   const aliasEditForm = useForm({
@@ -42,8 +44,8 @@ export default function AliasBulkEditModal({ opened, onClose, selectedAliases }:
         } catch (error) {
           showNotification({
             color: "red",
-            title: "Error",
-            message: `Error saving alias ${a.address}: ${error}`,
+            title: LL.ERROR(),
+            message: LL.UPDATE_ERROR_DETAILED({ alias: a.address, error }),
             autoClose: false,
           });
         }
@@ -52,8 +54,8 @@ export default function AliasBulkEditModal({ opened, onClose, selectedAliases }:
     // TODO: handle errors
     showNotification({
       color: "green",
-      title: "Success!",
-      message: "The selected aliases were updated!",
+      title: LL.SUCCESS(),
+      message: LL.UPDATE_SUCCESS_MULTIPLE(),
       autoClose: 3000,
     });
     onClose(true);
@@ -66,20 +68,20 @@ export default function AliasBulkEditModal({ opened, onClose, selectedAliases }:
         if (updateEmailRule.isPending) {
           showNotification({
             color: "red",
-            message: "Cannot be closed right now.",
+            message: LL.MODAL_CLOSE_BLOCKED(),
             autoClose: 2000,
           });
         } else {
           onClose();
         }
       }}
-      title="Edit Aliases"
+      title={LL.UPDATE_MULTIPLE_TITLE()}
       fullScreen={isExtension}>
       <form onSubmit={aliasEditForm.onSubmit((values) => saveSelectedAliases(values))}>
         <Stack gap="xs" mih={400}>
           <Select
-            label="Destination"
-            placeholder="Keep original destinations"
+            label={LL.DESTINATION()}
+            placeholder={LL.KEEP_DESTINATIONS()}
             data={
               emailDestinations.data?.map((z) => ({
                 value: z.email,
@@ -89,21 +91,22 @@ export default function AliasBulkEditModal({ opened, onClose, selectedAliases }:
             {...aliasEditForm.getInputProps("destination")}
             error={
               ((!emailDestinations.data || emailDestinations.isError) &&
-                (emailDestinations.error?.toString() || "Error loading destinations")) ||
+                (emailDestinations.error?.toString() || LL.DESTINATIONS_LOADING_ERROR())) ||
               (aliasEditForm.values.destination &&
                 !emailDestinations.data?.find((d) => d.email === aliasEditForm.values.destination)
                   ?.verified &&
-                "This address is not verified. You will not receive emails.") ||
+                LL.DESTINATION_NOT_VERIFIED()) ||
               false
             }
           />
 
           <Switch
-            label="Enabled"
+            label={LL.ENABLED()}
             {...aliasEditForm.getInputProps("enabled", { type: "checkbox" })}
           />
+
           <Button type="submit" loading={updateEmailRule.isPending}>
-            Save
+            {LL.SAVE()}
           </Button>
         </Stack>
       </form>

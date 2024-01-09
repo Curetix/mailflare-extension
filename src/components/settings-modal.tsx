@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 
 import { IconExternalLink } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { useI18nContext } from "~i18n/i18n-react";
 import {
   Button,
   Divider,
@@ -36,6 +37,7 @@ type SettingsItem = {
 };
 
 function SettingsModal({ opened, onClose }: SettingsModalProps) {
+  const { LL } = useI18nContext();
   const queryClient = useQueryClient();
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
@@ -50,7 +52,7 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
     await queryClient.invalidateQueries();
     showNotification({
       color: "green",
-      message: "Refreshed successfully",
+      message: LL.REFRESH_DATA_SUCCESS(),
       autoClose: 3000,
     });
   };
@@ -62,7 +64,7 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
     await extensionStoragePersister.removeClient();
     showNotification({
       color: "green",
-      message: "Goodbye",
+      message: LL.LOGOUT_SUCCESS(),
       autoClose: 3000,
     });
     onClose();
@@ -70,12 +72,12 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
 
   const settingsItems: SettingsItem[] = [
     {
-      title: "Theme",
-      description: "Toggle between theme modes",
+      title: LL.THEME(),
+      description: LL.THEME_DESC(),
       action: (
         <Switch
-          onLabel="DARK"
-          offLabel="LIGHT"
+          onLabel={LL.THEME_DARK()}
+          offLabel={LL.THEME_LIGHT()}
           size="lg"
           color="green"
           checked={colorScheme === "dark"}
@@ -84,13 +86,13 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
       ),
     },
     {
-      title: "Rule Filter",
-      description: "Only show email rules created by this extension",
+      title: LL.RULE_FILTER(),
+      description: LL.RULE_FILTER_DESC(),
       hide: !apiToken,
       action: (
         <Switch
-          onLabel="ON"
-          offLabel="OFF"
+          onLabel={LL.ON()}
+          offLabel={LL.OFF()}
           size="lg"
           color="green"
           checked={settings.ruleFilter}
@@ -101,13 +103,13 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
       ),
     },
     {
-      title: "Copy Alias",
-      description: "Copy alias to clipboard after creating it",
+      title: LL.COPY_ALIAS(),
+      description: LL.COPY_ALIAS_DESC(),
       hide: !apiToken,
       action: (
         <Switch
-          onLabel="ON"
-          offLabel="OFF"
+          onLabel={LL.ON()}
+          offLabel={LL.OFF()}
           color="green"
           size="lg"
           checked={settings.copyAlias}
@@ -116,14 +118,13 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
       ),
     },
     {
-      title: "Show Quick-Create Button",
-      description:
-        "Show a button inside email input fields to quickly create an alias for the current site",
+      title: LL.QUICK_CREATE_BUTTON(),
+      description: LL.QUICK_CREATE_BUTTON_DESC(),
       hide: !apiToken || isWebApp,
       action: (
         <Switch
-          onLabel="ON"
-          offLabel="OFF"
+          onLabel={LL.ON()}
+          offLabel={LL.OFF()}
           color="green"
           size="lg"
           checked={settings.showCreateButton}
@@ -134,42 +135,42 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
       ),
     },
     {
-      title: "Refresh data",
-      description: "Refresh Cloudflare domains and email destinations",
+      title: LL.REFRESH_DATA(),
+      description: LL.REFRESH_DATA_DESC(),
       hide: !apiToken,
       action: (
         <Button
           loading={zones.isFetching || emailDestinations.isFetching}
           onClick={() => clearCache()}>
-          Refresh
+          {LL.REFRESH()}
         </Button>
       ),
     },
     {
-      title: "Logout",
-      description: "Clear all data and settings",
+      title: LL.LOGOUT(),
+      description: LL.LOGOUT_DESC(),
       hide: !apiToken,
       action: (
         <Button color="red" onClick={() => logout()}>
-          Logout
+          {LL.LOGOUT()}
         </Button>
       ),
     },
     {
-      title: "Cloudflare Docs",
-      description: "For more information about Email Routing",
+      title: LL.DOCS(),
+      description: LL.DOCS_DESC(),
       action: (
         <Button
           component="a"
           href="https://developers.cloudflare.com/email-routing/"
           target="_blank"
           rightSection={<IconExternalLink />}>
-          Open
+          {LL.OPEN()}
         </Button>
       ),
     },
     {
-      title: "Info",
+      title: LL.INFO(),
       description: `${extensionName} v${extensionVersion}`,
       action: (
         <Button
@@ -178,18 +179,18 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
           target="_blank"
           color="gray"
           rightSection={<IconExternalLink />}>
-          GitHub
+          {LL.GITHUB()}
         </Button>
       ),
     },
     {
-      title: "Dev Tools",
-      description: "Enable development tools",
+      title: LL.DEVTOOLS(),
+      description: LL.DEVTOOLS_DESC(),
       hide: process.env.NODE_ENV !== "development",
       action: (
         <Switch
-          onLabel="ON"
-          offLabel="OFF"
+          onLabel={LL.ON()}
+          offLabel={LL.OFF()}
           size="lg"
           checked={settings.devTools}
           onChange={(event) => setSettings({ ...settings, devTools: event.currentTarget.checked })}

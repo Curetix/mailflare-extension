@@ -2,6 +2,7 @@ import type { Alias } from "~utils/alias";
 import type { ReactNode } from "react";
 
 import { IconClipboard, IconEdit, IconTrash } from "@tabler/icons-react";
+import { useI18nContext } from "~i18n/i18n-react";
 import { ActionIcon, Button, Card, Checkbox, Group, Text } from "@mantine/core";
 import { useClipboard } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
@@ -27,6 +28,7 @@ export default function AliasCard({
   onEdit,
   onDelete,
 }: AliasCardProps) {
+  const { LL } = useI18nContext();
   const clipboard = useClipboard();
 
   return (
@@ -67,7 +69,7 @@ export default function AliasCard({
               clipboard.copy(alias.address);
               showNotification({
                 color: "green",
-                message: "Email address was copied to the clipboard.",
+                message: LL.COPY_SUCCESS(),
                 autoClose: 2000,
               });
             }}>
@@ -97,7 +99,7 @@ export default function AliasCard({
       {/* DESCRIPTION AND BADGE */}
       <Group justify="space-between" ml={selectEnabled ? 26 : 0}>
         <Text size="sm" c="dimmed" truncate style={{ width: selectEnabled ? 240 : 265 }}>
-          {alias.name.replace(emailRuleNamePrefix, "").trim() || "(no description)"}
+          {alias.name.replace(emailRuleNamePrefix, "").trim() || LL.NO_ALIAS_DESCRIPTION()}
         </Text>
         {badge}
       </Group>

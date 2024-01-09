@@ -1,3 +1,4 @@
+import { useI18nContext } from "~i18n/i18n-react";
 import { useState } from "react";
 import { Accordion, Anchor, Button, List, PasswordInput, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
@@ -6,6 +7,7 @@ import { showNotification } from "@mantine/notifications";
 import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
 
 function Login() {
+  const { LL } = useI18nContext();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const cloudflare = useCloudflare();
 
@@ -15,8 +17,8 @@ function Login() {
     setIsLoading(false);
     if (!response.success) {
       showNotification({
-        title: "Error",
-        message: "Token could not be verified. Is it correct?",
+        title: LL.ERROR(),
+        message: LL.CLOUDFLARE_LOGIN_ERROR(),
         color: "red",
       });
     }
@@ -35,8 +37,8 @@ function Login() {
     <form onSubmit={tokenForm.onSubmit((values) => verifyToken(values.token))}>
       <Stack p="md" gap="sm">
         <PasswordInput
-          label="Cloudflare API token"
-          placeholder="Paste your Cloudflare API token here"
+          label={LL.CLOUDFlARE_TOKEN_LABEL()}
+          placeholder={LL.CLOUDFLARE_TOKEN_PLACEHOLDER()}
           disabled={isLoading}
           autoComplete="off"
           {...tokenForm.getInputProps("token")}
@@ -45,41 +47,36 @@ function Login() {
           type="submit"
           disabled={tokenForm.values.token.trim().length != 40}
           loading={isLoading}>
-          Save
+          {LL.SAVE()}
         </Button>
         <Accordion variant="filled" defaultValue="instructions">
           <Accordion.Item value="instructions">
-            <Accordion.Control>Instructions</Accordion.Control>
+            <Accordion.Control>{LL.INSTRUCTIONS()}</Accordion.Control>
             <Accordion.Panel>
               <List size="sm" type="ordered">
                 <List.Item>
-                  Open{" "}
                   <Anchor
                     href="https://dash.cloudflare.com/profile/api-tokens/"
                     target="_blank"
                     size="sm">
-                    https://dash.cloudflare.com/profile/api-tokens
+                    {LL.CLOUDFLARE_TOKEN_STEP_1()}
                   </Anchor>
                 </List.Item>
-                <List.Item>Click "Create Token", select "Create Custom Token"</List.Item>
-                <List.Item>Choose a name, like "Email Extension"</List.Item>
+                <List.Item>{LL.CLOUDFLARE_TOKEN_STEP_2()}</List.Item>
+                <List.Item>{LL.CLOUDFLARE_TOKEN_STEP_3()}</List.Item>
                 <List.Item>
-                  Configure the following permissions:
+                  {LL.CLOUDFLARE_TOKEN_STEP_4()}
                   <List withPadding listStyleType="disc" size="sm">
-                    <List.Item>Account | Email Routing Addresses | Read</List.Item>
-                    <List.Item>Zone | Email Routing Rules | Edit</List.Item>
-                    <List.Item>Zone | Zone | Read</List.Item>
+                    <List.Item>{LL.CLOUDFLARE_TOKEN_STEP_4_1()}</List.Item>
+                    <List.Item>{LL.CLOUDFLARE_TOKEN_STEP_4_2()}</List.Item>
+                    <List.Item>{LL.CLOUDFLARE_TOKEN_STEP_4_3()}</List.Item>
                   </List>
                 </List.Item>
-                <List.Item>Set "Account Resources" to your account</List.Item>
-                <List.Item>
-                  Set "Zone Resources" to "All zones" or select the zone you want to use
-                </List.Item>
-                <List.Item>
-                  Configure "Client IP Address Filtering" and "TTL" if you want to
-                </List.Item>
-                <List.Item>Click "Continue to summary" and then "Create token"</List.Item>
-                <List.Item>Paste the generated token above</List.Item>
+                <List.Item>{LL.CLOUDFLARE_TOKEN_STEP_5()}</List.Item>
+                <List.Item>{LL.CLOUDFLARE_TOKEN_STEP_6()}</List.Item>
+                <List.Item>{LL.CLOUDFLARE_TOKEN_STEP_7()}</List.Item>
+                <List.Item>{LL.CLOUDFLARE_TOKEN_STEP_8()}</List.Item>
+                <List.Item>{LL.CLOUDFLARE_TOKEN_STEP_9()}</List.Item>
               </List>
             </Accordion.Panel>
           </Accordion.Item>

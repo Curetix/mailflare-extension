@@ -8,6 +8,7 @@ import {
   IconSearchOff,
   IconTrash,
 } from "@tabler/icons-react";
+import { useI18nContext } from "~i18n/i18n-react";
 import { useEffect, useState } from "react";
 import {
   Alert,
@@ -40,6 +41,8 @@ import { aliasSearchAtom, settingsAtom } from "~utils/state";
 const aliasListHeight = popupHeight - 52 - 1 - 16 * 2 - 36 - 26 - 10 * 2;
 
 function AliasList() {
+  const { LL } = useI18nContext();
+
   const { selectedZoneId, setSelectedZoneId, zones, emailDestinations, emailRules } =
     useCloudflare();
 
@@ -66,21 +69,21 @@ function AliasList() {
     ) {
       return (
         <Badge color="red" variant="filled" size="xs">
-          Invalid
+          {LL.INVALID()}
         </Badge>
       );
     }
     if (rule.isExternal) {
       return (
         <Badge color="blue" size="xs">
-          External
+          {LL.EXTERNAL()}
         </Badge>
       );
     }
     if (!rule.enabled) {
       return (
         <Badge color="red" size="xs">
-          Disabled
+          {LL.DISABLED()}
         </Badge>
       );
     }
@@ -156,7 +159,7 @@ function AliasList() {
 
       {/* DOMAIN SELECTOR */}
       <Select
-        placeholder="Domain"
+        placeholder={LL.DOMAIN()}
         value={selectedZoneId}
         onChange={setSelectedZoneId}
         disabled={!zones.data || zones.data.length === 0}
@@ -189,7 +192,7 @@ function AliasList() {
             selectedAliasesHandlers.setState([]);
             setAliasSelectEnabled(!aliasSelectEnabled);
           }}>
-          {aliasSelectEnabled ? "Stop Select" : "Select"}
+          {aliasSelectEnabled ? LL.STOP_SELECT() : LL.SELECT()}
         </Button>
         {aliasSelectEnabled && (
           <>
@@ -200,7 +203,7 @@ function AliasList() {
               leftSection={<IconEdit size={16} />}
               disabled={selectedAliases.length === 0}
               onClick={() => setAliasEditModalOpened(true)}>
-              Edit
+              {LL.EDIT()}
             </Button>
             <Button
               variant="light"
@@ -210,7 +213,7 @@ function AliasList() {
               leftSection={<IconTrash size={16} />}
               disabled={selectedAliases.length === 0}
               onClick={() => setAliasDeleteModalOpened(true)}>
-              Delete
+              {LL.DELETE()}
             </Button>
           </>
         )}
@@ -223,7 +226,7 @@ function AliasList() {
               leftSection={<IconPlaylistAdd size={16} />}
               disabled={!zones.data || zones.data.length === 0 || selectedZoneId === null}
               onClick={() => setAliasCreateModalOpened(true)}>
-              Create
+              {LL.CREATE()}
             </Button>
             <Button
               variant="light"
@@ -242,7 +245,7 @@ function AliasList() {
                 setSearchVisible(!searchVisible);
                 setAliasSearch("");
               }}>
-              {searchVisible ? "Hide Search" : "Search"}
+              {searchVisible ? LL.STOP_SEARCH() : LL.SEARCH()}
             </Button>
             <Button
               variant="light"
@@ -253,7 +256,7 @@ function AliasList() {
               loading={emailRules.isFetching}
               loaderProps={{ size: 16 }}
               onClick={() => emailRules.refetch()}>
-              Refresh
+              {LL.REFRESH()}
             </Button>
           </>
         )}
@@ -262,7 +265,7 @@ function AliasList() {
       {/* Search field */}
       {searchVisible && (
         <TextInput
-          placeholder="Search aliases"
+          placeholder={LL.SEARCH_PLACEHOLDER()}
           value={aliasSearch}
           onChange={(event) => setAliasSearch(event.currentTarget.value)}
         />
@@ -272,14 +275,14 @@ function AliasList() {
       <ScrollArea style={{ flex: 1 }}>
         <Stack gap="xs">
           {!zones.isFetching && zones.isSuccess && zones.data.length === 0 && (
-            <Alert title="Bummer!" color="yellow">
-              No domains for this Cloudflare account or API token.
+            <Alert title={LL.NO_ZONES_TITLE()} color="yellow">
+              {LL.NO_ZONES()}
             </Alert>
           )}
 
           {zones.isError && (
-            <Alert title="Oh no!" color="red">
-              {`Something went wrong while loading your domains: ${zones.error}`}
+            <Alert title={LL.ZONES_ERROR_TITLE()} color="red">
+              {LL.ZONES_ERROR({ error: zones.error })}
             </Alert>
           )}
 
@@ -293,14 +296,14 @@ function AliasList() {
             emailRules.isSuccess &&
             !emailRules.isFetching &&
             filteredAliases.length === 0 && (
-              <Alert title="Bummer!" color="yellow">
-                There are no aliases for this domain or this filter.
+              <Alert title={LL.NO_RULES_TITLE()} color="yellow">
+                {LL.NO_RULES()}
               </Alert>
             )}
 
           {emailRules.isError && !zones.isError && (
-            <Alert title="Oh no!" color="red">
-              {`Something went wrong while loading your aliases: ${emailRules.error}`}
+            <Alert title={LL.RULES_ERROR_TITLE()} color="red">
+              {LL.RULES_ERROR({ error: emailRules.error })}
             </Alert>
           )}
 

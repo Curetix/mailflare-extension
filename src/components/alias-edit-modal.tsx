@@ -1,10 +1,10 @@
 import type { Alias } from "~utils/alias";
 
+import { useI18nContext } from "~i18n/i18n-react";
 import { useEffect } from "react";
 import { Button, Modal, Select, Stack, Switch, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
-import { useAtom } from "jotai";
 
 import { emailRuleNamePrefix, isExtension } from "~const";
 import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
@@ -16,6 +16,7 @@ type Props = {
 };
 
 export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) {
+  const { LL } = useI18nContext();
   const { selectedZoneId, emailDestinations, emailRules, updateEmailRule } = useCloudflare();
 
   const aliasEditForm = useForm({
@@ -50,8 +51,8 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
     if (!aliasToEdit) {
       showNotification({
         color: "red",
-        title: "Error",
-        message: "Could not save the alias",
+        title: LL.ERROR(),
+        message: LL.UPDATE_ERROR(),
         autoClose: false,
       });
       return;
@@ -69,8 +70,8 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
           aliasEditForm.reset();
           showNotification({
             color: "green",
-            title: "Success!",
-            message: "The alias was updated!",
+            title: LL.SUCCESS(),
+            message: LL.UPDATE_SUCCESS(),
             autoClose: 3000,
           });
           onClose();
@@ -78,8 +79,8 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
         onError: () => {
           showNotification({
             color: "red",
-            title: "Error",
-            message: "Could not save the alias.",
+            title: LL.ERROR(),
+            message: LL.UPDATE_ERROR(),
             autoClose: false,
           });
         },
@@ -94,7 +95,7 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
         if (updateEmailRule.isPending) {
           showNotification({
             color: "red",
-            message: "Cannot be closed right now.",
+            message: LL.MODAL_CLOSE_BLOCKED(),
             autoClose: 2000,
           });
         } else {
@@ -105,14 +106,14 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
       fullScreen={isExtension}>
       <form onSubmit={aliasEditForm.onSubmit((values) => saveAlias(values))}>
         <Stack gap="xs" mih={400}>
-          <TextInput label="Alias" disabled {...aliasEditForm.getInputProps("alias")} />
+          <TextInput label={LL.ALIAS()} disabled {...aliasEditForm.getInputProps("alias")} />
           <TextInput
-            label="Description"
-            placeholder="Alias description (optional)"
+            label={LL.ALIAS_DESCRIPTION()}
+            placeholder={LL.ALIAS_DESCRIPTION_PLACEHOLDER()}
             {...aliasEditForm.getInputProps("description")}
           />
           <Select
-            label="Destination"
+            label={LL.DESTINATION()}
             data={
               emailDestinations.data?.map((z) => ({
                 value: z.email,
@@ -123,21 +124,21 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
             {...aliasEditForm.getInputProps("destination")}
             error={
               ((!emailDestinations.data || emailDestinations.isError) &&
-                (emailDestinations.error?.toString() || "Error loading destinations")) ||
+                (emailDestinations.error?.toString() || LL.DESTINATIONS_LOADING_ERROR())) ||
               (aliasEditForm.values.destination &&
                 !emailDestinations.data?.find((d) => d.email === aliasEditForm.values.destination)
                   ?.verified &&
-                "This address is not verified. You will not receive emails.") ||
+                LL.DESTINATION_NOT_VERIFIED()) ||
               false
             }
           />
 
           <Switch
-            label="Enabled"
+            label={LL.ENABLED()}
             {...aliasEditForm.getInputProps("enabled", { type: "checkbox" })}
           />
           <Button type="submit" loading={updateEmailRule.isPending}>
-            Save
+            {LL.SAVE()}
           </Button>
         </Stack>
       </form>

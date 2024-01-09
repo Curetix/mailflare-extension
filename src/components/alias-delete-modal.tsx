@@ -1,8 +1,8 @@
 import type { Alias } from "~utils/alias";
 
+import { useI18nContext } from "~i18n/i18n-react";
 import { Button, Modal, Stack, Text } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
-import { useAtom } from "jotai";
 
 import { isExtension } from "~const";
 import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
@@ -14,14 +14,15 @@ type Props = {
 };
 
 export default function AliasDeleteModal({ opened, onClose, aliasToDelete }: Props) {
+  const { LL } = useI18nContext();
   const { selectedZoneId, emailRules, deleteEmailRule } = useCloudflare();
 
   async function deleteAlias() {
     if (!aliasToDelete) {
       showNotification({
         color: "red",
-        title: "Error",
-        message: "Could not delete the alias",
+        title: LL.ERROR(),
+        message: LL.DELETE_ERROR(),
         autoClose: false,
       });
       return;
@@ -33,8 +34,8 @@ export default function AliasDeleteModal({ opened, onClose, aliasToDelete }: Pro
         onSuccess: () => {
           showNotification({
             color: "green",
-            title: "Success!",
-            message: "The alias was deleted!",
+            title: LL.SUCCESS(),
+            message: LL.DELETE_SUCCESS(),
             autoClose: 3000,
           });
           onClose();
@@ -42,8 +43,8 @@ export default function AliasDeleteModal({ opened, onClose, aliasToDelete }: Pro
         onError: () => {
           showNotification({
             color: "red",
-            title: "Error",
-            message: "Could not delete the alias",
+            title: LL.ERROR(),
+            message: LL.DELETE_ERROR(),
             autoClose: false,
           });
         },
@@ -58,31 +59,29 @@ export default function AliasDeleteModal({ opened, onClose, aliasToDelete }: Pro
         if (deleteEmailRule.isPending) {
           showNotification({
             color: "red",
-            message: "Cannot be closed right now.",
+            message: LL.MODAL_CLOSE_BLOCKED(),
             autoClose: 2000,
           });
         } else {
           onClose();
         }
       }}
-      title="Delete Alias"
+      title={LL.DELETE_TITLE()}
       fullScreen={isExtension}>
       <Stack gap="xs">
-        <>
-          <Text>You are about to delete the alias</Text>
-          <Text fw={700}>{aliasToDelete?.address}</Text>
-          <Text>Do you want to proceed?</Text>
-        </>
+        <Text>{LL.DELETE_QUESTION_1()}</Text>
+        <Text fw={700}>{aliasToDelete?.address}</Text>
+        <Text>{LL.DELETE_QUESTION_2()}</Text>
         <Button.Group>
           <Button fullWidth disabled={deleteEmailRule.isPending} onClick={() => onClose()}>
-            No
+            {LL.NO()}
           </Button>
           <Button
             color="red"
             fullWidth
             loading={deleteEmailRule.isPending}
             onClick={() => deleteAlias()}>
-            Yes
+            {LL.YES()}
           </Button>
         </Button.Group>
       </Stack>

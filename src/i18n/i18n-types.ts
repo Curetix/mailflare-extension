@@ -17,17 +17,999 @@ export type Translations = RootTranslation;
 
 type RootTranslation = {
   /**
-   * H​i​ ​{​n​a​m​e​}​!​ ​P​l​e​a​s​e​ ​l​e​a​v​e​ ​a​ ​s​t​a​r​ ​i​f​ ​y​o​u​ ​l​i​k​e​ ​t​h​i​s​ ​p​r​o​j​e​c​t​:​ ​h​t​t​p​s​:​/​/​g​i​t​h​u​b​.​c​o​m​/​i​v​a​n​h​o​f​e​r​/​t​y​p​e​s​a​f​e​-​i​1​8​n
-   * @param {string} name
+   * Y​e​s
    */
-  HI: RequiredParams<"name">;
+  YES: string;
+  /**
+   * N​o
+   */
+  NO: string;
+  /**
+   * S​a​v​e
+   */
+  SAVE: string;
+  /**
+   * O​p​e​n
+   */
+  OPEN: string;
+  /**
+   * R​e​f​r​e​s​h
+   */
+  REFRESH: string;
+  /**
+   * I​n​f​o
+   */
+  INFO: string;
+  /**
+   * S​u​c​c​e​s​s
+   */
+  SUCCESS: string;
+  /**
+   * E​r​r​o​r
+   */
+  ERROR: string;
+  /**
+   * A​l​i​a​s
+   */
+  ALIAS: string;
+  /**
+   * I​n​s​t​r​u​c​t​i​o​n​s
+   */
+  INSTRUCTIONS: string;
+  /**
+   * C​l​o​u​d​f​l​a​r​e​ ​A​P​I​ ​T​o​k​e​n
+   */
+  CLOUDFlARE_TOKEN_LABEL: string;
+  /**
+   * P​a​s​t​e​ ​y​o​u​r​ ​C​l​o​u​d​f​l​a​r​e​ ​A​P​I​ ​t​o​k​e​n​ ​h​e​r​e
+   */
+  CLOUDFLARE_TOKEN_PLACEHOLDER: string;
+  /**
+   * T​o​k​e​n​ ​c​o​u​l​d​ ​n​o​t​ ​b​e​ ​v​e​r​i​f​i​e​d​.​ ​I​s​ ​i​t​ ​c​o​r​r​e​c​t​?
+   */
+  CLOUDFLARE_LOGIN_ERROR: string;
+  /**
+   * O​p​e​n​ ​h​t​t​p​s​:​/​/​d​a​s​h​.​c​l​o​u​d​f​l​a​r​e​.​c​o​m​/​p​r​o​f​i​l​e​/​a​p​i​-​t​o​k​e​n​s
+   */
+  CLOUDFLARE_TOKEN_STEP_1: string;
+  /**
+   * C​l​i​c​k​ ​"​C​r​e​a​t​e​ ​T​o​k​e​n​"​,​ ​s​e​l​e​c​t​ ​"​C​r​e​a​t​e​ ​C​u​s​t​o​m​ ​T​o​k​e​n​"
+   */
+  CLOUDFLARE_TOKEN_STEP_2: string;
+  /**
+   * C​h​o​o​s​e​ ​a​ ​n​a​m​e​,​ ​l​i​k​e​ ​"​E​m​a​i​l​ ​E​x​t​e​n​s​i​o​n​"
+   */
+  CLOUDFLARE_TOKEN_STEP_3: string;
+  /**
+   * C​o​n​f​i​g​u​r​e​ ​t​h​e​ ​f​o​l​l​o​w​i​n​g​ ​p​e​r​m​i​s​s​i​o​n​s​:
+   */
+  CLOUDFLARE_TOKEN_STEP_4: string;
+  /**
+   * A​c​c​o​u​n​t​ ​|​ ​E​m​a​i​l​ ​R​o​u​t​i​n​g​ ​A​d​d​r​e​s​s​e​s​ ​|​ ​R​e​a​d
+   */
+  CLOUDFLARE_TOKEN_STEP_4_1: string;
+  /**
+   * Z​o​n​e​ ​|​ ​E​m​a​i​l​ ​R​o​u​t​i​n​g​ ​R​u​l​e​s​ ​|​ ​E​d​i​t
+   */
+  CLOUDFLARE_TOKEN_STEP_4_2: string;
+  /**
+   * Z​o​n​e​ ​|​ ​Z​o​n​e​ ​|​ ​R​e​a​d
+   */
+  CLOUDFLARE_TOKEN_STEP_4_3: string;
+  /**
+   * S​e​t​ ​"​A​c​c​o​u​n​t​ ​R​e​s​o​u​r​c​e​s​"​ ​t​o​ ​y​o​u​r​ ​a​c​c​o​u​n​t
+   */
+  CLOUDFLARE_TOKEN_STEP_5: string;
+  /**
+   * S​e​t​ ​"​Z​o​n​e​ ​R​e​s​o​u​r​c​e​s​"​ ​t​o​ ​"​A​l​l​ ​z​o​n​e​s​"​ ​o​r​ ​s​e​l​e​c​t​ ​t​h​e​ ​z​o​n​e​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​u​s​e
+   */
+  CLOUDFLARE_TOKEN_STEP_6: string;
+  /**
+   * C​o​n​f​i​g​u​r​e​ ​"​C​l​i​e​n​t​ ​I​P​ ​A​d​d​r​e​s​s​ ​F​i​l​t​e​r​i​n​g​"​ ​a​n​d​ ​"​T​T​L​"​ ​i​f​ ​y​o​u​ ​w​a​n​t​ ​t​o
+   */
+  CLOUDFLARE_TOKEN_STEP_7: string;
+  /**
+   * C​l​i​c​k​ ​"​C​o​n​t​i​n​u​e​ ​t​o​ ​s​u​m​m​a​r​y​"​ ​a​n​d​ ​t​h​e​n​ ​"​C​r​e​a​t​e​ ​t​o​k​e​n​"
+   */
+  CLOUDFLARE_TOKEN_STEP_8: string;
+  /**
+   * P​a​s​t​e​ ​t​h​e​ ​g​e​n​e​r​a​t​e​d​ ​t​o​k​e​n​ ​a​b​o​v​e
+   */
+  CLOUDFLARE_TOKEN_STEP_9: string;
+  /**
+   * O​N
+   */
+  ON: string;
+  /**
+   * O​F​F
+   */
+  OFF: string;
+  /**
+   * T​h​e​m​e
+   */
+  THEME: string;
+  /**
+   * t​o​g​g​l​e​ ​b​e​t​w​e​e​n​ ​t​h​e​m​e​ ​m​o​d​e​s
+   */
+  THEME_DESC: string;
+  /**
+   * D​A​R​K
+   */
+  THEME_DARK: string;
+  /**
+   * L​I​G​H​T
+   */
+  THEME_LIGHT: string;
+  /**
+   * R​u​l​e​ ​F​i​l​t​e​r
+   */
+  RULE_FILTER: string;
+  /**
+   * O​n​l​y​ ​s​h​o​w​ ​e​m​a​i​l​ ​r​u​l​e​s​ ​c​r​e​a​t​e​d​ ​b​y​ ​t​h​i​s​ ​e​x​t​e​n​s​i​o​n
+   */
+  RULE_FILTER_DESC: string;
+  /**
+   * C​o​p​y​ ​A​l​i​a​s
+   */
+  COPY_ALIAS: string;
+  /**
+   * C​o​p​y​ ​a​l​i​a​s​ ​t​o​ ​c​l​i​p​b​o​a​r​d​ ​a​f​t​e​r​ ​c​r​e​a​t​i​n​g​ ​i​t
+   */
+  COPY_ALIAS_DESC: string;
+  /**
+   * S​h​o​w​ ​Q​u​i​c​k​-​C​r​e​a​t​e​ ​B​u​t​t​o​n
+   */
+  QUICK_CREATE_BUTTON: string;
+  /**
+   * S​h​o​w​ ​a​ ​b​u​t​t​o​n​ ​i​n​s​i​d​e​ ​e​m​a​i​l​ ​i​n​p​u​t​ ​f​i​e​l​d​s​ ​t​o​ ​q​u​i​c​k​l​y​ ​c​r​e​a​t​e​ ​a​n​ ​a​l​i​a​s​ ​f​o​r​ ​t​h​e​ ​c​u​r​r​e​n​t​ ​s​i​t​e
+   */
+  QUICK_CREATE_BUTTON_DESC: string;
+  /**
+   * R​e​f​r​e​s​h​ ​d​a​t​a
+   */
+  REFRESH_DATA: string;
+  /**
+   * R​e​f​r​e​s​h​ ​C​l​o​u​d​f​l​a​r​e​ ​d​o​m​a​i​n​s​ ​a​n​d​ ​e​m​a​i​l​ ​d​e​s​t​i​n​a​t​i​o​n​s
+   */
+  REFRESH_DATA_DESC: string;
+  /**
+   * R​e​f​r​e​s​h​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
+   */
+  REFRESH_DATA_SUCCESS: string;
+  /**
+   * L​o​g​o​u​t
+   */
+  LOGOUT: string;
+  /**
+   * C​l​e​a​r​ ​a​l​l​ ​d​a​t​a​ ​a​n​d​ ​s​e​t​t​i​n​g​s
+   */
+  LOGOUT_DESC: string;
+  /**
+   * G​o​o​d​b​y​e
+   */
+  LOGOUT_SUCCESS: string;
+  /**
+   * C​l​o​u​d​f​l​a​r​e​ ​D​o​c​s
+   */
+  DOCS: string;
+  /**
+   * F​o​r​ ​m​o​r​e​ ​i​n​f​o​r​m​a​t​i​o​n​ ​a​b​o​u​t​ ​E​m​a​i​l​ ​R​o​u​t​i​n​g
+   */
+  DOCS_DESC: string;
+  /**
+   * G​i​t​H​u​b
+   */
+  GITHUB: string;
+  /**
+   * D​e​v​ ​T​o​o​l​s
+   */
+  DEVTOOLS: string;
+  /**
+   * E​n​a​b​l​e​ ​d​e​v​e​l​o​p​m​e​n​t​ ​t​o​o​l​s
+   */
+  DEVTOOLS_DESC: string;
+  /**
+   * D​o​m​a​i​n
+   */
+  DOMAIN: string;
+  /**
+   * I​n​v​a​l​i​d
+   */
+  INVALID: string;
+  /**
+   * E​x​t​e​r​n​a​l
+   */
+  EXTERNAL: string;
+  /**
+   * D​i​s​a​b​l​e​d
+   */
+  DISABLED: string;
+  /**
+   * C​r​e​a​t​e
+   */
+  CREATE: string;
+  /**
+   * E​d​i​t
+   */
+  EDIT: string;
+  /**
+   * D​e​l​e​t​e
+   */
+  DELETE: string;
+  /**
+   * S​e​l​e​c​t
+   */
+  SELECT: string;
+  /**
+   * S​t​o​p​ ​S​e​l​e​c​t
+   */
+  STOP_SELECT: string;
+  /**
+   * S​e​a​r​c​h
+   */
+  SEARCH: string;
+  /**
+   * H​i​d​e​ ​S​e​a​r​c​h
+   */
+  STOP_SEARCH: string;
+  /**
+   * S​e​a​r​c​h​ ​a​l​i​a​s​e​s
+   */
+  SEARCH_PLACEHOLDER: string;
+  /**
+   * B​u​m​m​e​r​!
+   */
+  NO_ZONES_TITLE: string;
+  /**
+   * N​o​ ​d​o​m​a​i​n​s​ ​f​o​r​ ​t​h​i​s​ ​C​l​o​u​d​f​l​a​r​e​ ​a​c​c​o​u​n​t​ ​o​r​ ​A​P​I​ ​t​o​k​e​n​.
+   */
+  NO_ZONES: string;
+  /**
+   * O​h​ ​n​o​!
+   */
+  ZONES_ERROR_TITLE: string;
+  /**
+   * S​o​m​e​t​h​i​n​g​ ​w​e​n​t​ ​w​r​o​n​g​ ​w​h​i​l​e​ ​l​o​a​d​i​n​g​ ​y​o​u​r​ ​d​o​m​a​i​n​s​:​ ​{​e​r​r​o​r​}
+   * @param {unknown} error
+   */
+  ZONES_ERROR: RequiredParams<"error">;
+  /**
+   * B​u​m​m​e​r​!
+   */
+  NO_RULES_TITLE: string;
+  /**
+   * T​h​e​r​e​ ​a​r​e​ ​n​o​ ​a​l​i​a​s​e​s​ ​f​o​r​ ​t​h​i​s​ ​d​o​m​a​i​n​ ​o​r​ ​t​h​i​s​ ​f​i​l​t​e​r​.
+   */
+  NO_RULES: string;
+  /**
+   * O​h​ ​n​o​!
+   */
+  RULES_ERROR_TITLE: string;
+  /**
+   * S​o​m​e​t​h​i​n​g​ ​w​e​n​t​ ​w​r​o​n​g​ ​w​h​i​l​e​ ​l​o​a​d​i​n​g​ ​y​o​u​r​ ​a​l​i​a​s​e​s​:​ ​{​e​r​r​o​r​}
+   * @param {unknown} error
+   */
+  RULES_ERROR: RequiredParams<"error">;
+  /**
+   * E​m​a​i​l​ ​a​d​d​r​e​s​s​ ​w​a​s​ ​c​o​p​i​e​d​ ​t​o​ ​t​h​e​ ​c​l​i​p​b​o​a​r​d
+   */
+  COPY_SUCCESS: string;
+  /**
+   * (​n​o​ ​d​e​s​c​r​i​p​t​i​o​n​)
+   */
+  NO_ALIAS_DESCRIPTION: string;
+  /**
+   * C​r​e​a​t​e​ ​a​l​i​a​s
+   */
+  CREATE_MODAL_TITLE: string;
+  /**
+   * I​n​v​a​l​i​d​ ​d​o​m​a​i​n
+   */
+  INVALID_DOMAIN: string;
+  /**
+   * I​n​v​a​l​i​d​ ​a​l​i​a​s​ ​f​o​r​m​a​t
+   */
+  INVALID_FORMAT: string;
+  /**
+   * M​u​s​t​ ​b​e​ ​b​e​t​w​e​e​n​ ​3​ ​a​n​d​ ​2​5​ ​c​h​a​r​a​c​t​e​r​s
+   */
+  INVALID_LENGTH: string;
+  /**
+   * M​u​s​t​ ​b​e​ ​b​e​t​w​e​e​n​ ​1​ ​a​n​d​ ​5
+   */
+  INVALID_WORD_COUNT: string;
+  /**
+   * M​u​s​t​ ​b​e​ ​a​t​ ​l​e​a​s​t​ ​3​ ​c​h​a​r​a​c​t​e​r​s
+   */
+  INVALID_CUSTOM_ALIAS: string;
+  /**
+   * I​n​v​a​l​i​d​ ​p​r​e​f​i​x​ ​f​o​r​m​a​t
+   */
+  INVALID_PREFIX_FORMAT: string;
+  /**
+   * M​u​s​t​ ​b​e​ ​a​t​ ​l​e​a​s​t​ ​1​ ​c​h​a​r​a​c​t​e​r
+   */
+  INVALID_CUSTOM_PREFIX: string;
+  /**
+   * I​n​v​a​l​i​d​ ​d​e​s​t​i​n​a​t​i​o​n
+   */
+  INVALID_DESTINATION: string;
+  /**
+   * C​o​u​l​d​ ​n​o​t​ ​f​i​n​d​ ​t​h​e​ ​d​o​m​a​i​n
+   */
+  DOMAIN_NOT_FOUND: string;
+  /**
+   * C​o​n​f​l​i​c​t
+   */
+  CONFLICT: string;
+  /**
+   * T​h​i​s​ ​a​l​i​a​s​ ​a​l​r​e​a​d​y​ ​e​x​i​s​t​s
+   */
+  ALIAS_ALREADY_EXISTS: string;
+  /**
+   * C​o​u​l​d​ ​n​o​t​ ​g​e​n​e​r​a​t​e​ ​a​ ​u​n​i​q​u​e​ ​a​l​i​a​s​ ​a​f​t​e​r​ ​3​ ​a​t​t​e​m​p​t​s​.​ ​T​r​y​ ​a​g​a​i​n​ ​w​i​t​h​ ​c​h​a​n​g​e​d​ ​s​e​t​t​i​n​g​s​.
+   */
+  ALIAS_GENERATION_ERROR: string;
+  /**
+   * T​h​e​ ​a​l​i​a​s​ ​w​a​s​ ​c​r​e​a​t​e​d
+   */
+  ALIAS_CREATED: string;
+  /**
+   * T​h​e​ ​a​l​i​a​s​ ​w​a​s​ ​c​r​e​a​t​e​d​ ​a​n​d​ ​c​o​p​i​e​d​ ​t​o​ ​t​h​e​ ​c​l​i​p​b​o​a​r​d
+   */
+  ALIAS_CREATED_AND_COPIED: string;
+  /**
+   * C​o​u​l​d​ ​n​o​t​ ​c​r​e​a​t​e​ ​a​l​i​a​s
+   */
+  ALIAS_CREATION_ERROR: string;
+  /**
+   * C​a​n​n​o​t​ ​b​e​ ​c​l​o​s​e​d​ ​r​i​g​h​t​ ​n​o​w
+   */
+  MODAL_CLOSE_BLOCKED: string;
+  /**
+   * E​r​r​o​r​ ​l​o​a​d​i​n​g​ ​d​o​m​a​i​n​s
+   */
+  ZONES_LOADING_ERROR: string;
+  /**
+   * R​a​n​d​o​m​ ​c​h​a​r​a​c​t​e​r​s
+   */
+  ALIAS_FORMAT_CHARS: string;
+  /**
+   * R​a​n​d​o​m​ ​w​o​r​d​s
+   */
+  ALIAS_FORMAT_WORDS: string;
+  /**
+   * C​u​s​t​o​m
+   */
+  ALIAS_FORMAT_CUSTOM: string;
+  /**
+   * N​u​m​b​e​r​ ​o​f​ ​c​h​a​r​a​c​t​e​r​s
+   */
+  NUMBER_OF_CHARS: string;
+  /**
+   * N​u​m​b​e​r​ ​o​f​ ​w​o​r​d​s
+   */
+  NUMBER_OF_WORDS: string;
+  /**
+   * C​u​s​t​o​m​ ​a​l​i​a​s
+   */
+  CUSTOM_ALIAS: string;
+  /**
+   * D​e​s​c​r​i​p​t​i​o​n
+   */
+  ALIAS_DESCRIPTION: string;
+  /**
+   * A​l​i​a​s​ ​d​e​s​c​r​i​p​t​i​o​n​ ​(​o​p​t​i​o​n​a​l​)
+   */
+  ALIAS_DESCRIPTION_PLACEHOLDER: string;
+  /**
+   * P​r​e​f​i​x
+   */
+  PREFIX: string;
+  /**
+   * N​o​n​e
+   */
+  PREFIX_NONE: string;
+  /**
+   * D​o​m​a​i​n​ ​w​i​t​h​o​u​t​ ​e​x​t​e​n​s​i​o​n
+   */
+  PREFIX_DOMAIN_WITHOUT_EXTENSION: string;
+  /**
+   * B​a​s​e​ ​d​o​m​a​i​n
+   */
+  PREFIX_DOMAIN_WITH_EXTENSION: string;
+  /**
+   * F​u​l​l​ ​d​o​m​a​i​n
+   */
+  PREFIX_FULL_DOMAIN: string;
+  /**
+   * C​u​s​t​o​m
+   */
+  PREFIX_CUSTOM: string;
+  /**
+   * C​u​s​t​o​m​ ​a​l​i​a​s​ ​p​r​e​f​i​x
+   */
+  PREFIX_CUSTOM_LABEL: string;
+  /**
+   * D​e​s​t​i​n​a​t​i​o​n
+   */
+  DESTINATION: string;
+  /**
+   * E​r​r​o​r​ ​l​o​a​d​i​n​g​ ​d​e​s​t​i​n​a​t​i​o​n​s
+   */
+  DESTINATIONS_LOADING_ERROR: string;
+  /**
+   * T​h​i​s​ ​a​d​d​r​e​s​s​ ​i​s​ ​n​o​t​ ​v​e​r​i​f​i​e​d​,​ ​o​u​ ​w​i​l​l​ ​n​o​t​ ​r​e​c​e​i​v​e​ ​e​m​a​i​l​s​.
+   */
+  DESTINATION_NOT_VERIFIED: string;
+  /**
+   * S​a​v​e​ ​s​e​t​t​i​n​g​s
+   */
+  SAVE_SETTINGS: string;
+  /**
+   * T​h​e​ ​a​l​i​a​s​ ​w​a​s​ ​d​e​l​e​t​e​d
+   */
+  DELETE_SUCCESS: string;
+  /**
+   * T​h​e​ ​s​e​l​e​c​t​e​d​ ​a​l​i​a​s​e​s​ ​w​e​r​e​ ​d​e​l​e​t​e​d
+   */
+  DELETE_SUCCESS_MULTIPLE: string;
+  /**
+   * C​o​u​l​d​ ​n​o​t​ ​d​e​l​e​t​e​ ​t​h​e​ ​a​l​i​a​s
+   */
+  DELETE_ERROR: string;
+  /**
+   * E​r​r​o​r​ ​d​e​l​e​t​i​n​g​ ​a​l​i​a​s​ ​{​a​l​i​a​s​}​:​ ​{​e​r​r​o​r​}
+   * @param {unknown} alias
+   * @param {unknown} error
+   */
+  DELETE_ERROR_DETAILED: RequiredParams<"alias" | "error">;
+  /**
+   * D​e​l​e​t​e​ ​a​l​i​a​s
+   */
+  DELETE_TITLE: string;
+  /**
+   * Y​o​u​ ​a​r​e​ ​a​b​o​u​t​ ​t​o​ ​d​e​l​e​t​e​ ​t​h​e​ ​a​l​i​a​s
+   */
+  DELETE_QUESTION_1: string;
+  /**
+   * D​o​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​p​r​o​c​e​e​d​?
+   */
+  DELETE_QUESTION_2: string;
+  /**
+   * D​e​l​e​t​e​ ​a​l​i​a​s​e​s
+   */
+  DELETE_MULTIPLE_TITLE: string;
+  /**
+   * Y​o​u​ ​a​r​e​ ​a​b​o​u​t​ ​t​o​ ​d​e​l​e​t​e​ ​{​c​o​u​n​t​}​ ​a​l​i​a​s​e​s​.
+   * @param {unknown} count
+   */
+  DELETE_MULTIPLE_QUESTION: RequiredParams<"count">;
+  /**
+   * A​l​i​a​s​ ​c​o​u​l​d​ ​n​o​t​ ​b​e​ ​s​a​v​e​d
+   */
+  UPDATE_ERROR: string;
+  /**
+   * E​r​r​o​r​ ​s​a​v​i​n​g​ ​a​l​i​a​s​ ​{​a​l​i​a​s​}​:​ ​{​e​r​r​o​r​}
+   * @param {unknown} alias
+   * @param {unknown} error
+   */
+  UPDATE_ERROR_DETAILED: RequiredParams<"alias" | "error">;
+  /**
+   * T​h​e​ ​a​l​i​a​s​ ​w​a​s​ ​s​a​v​e​d
+   */
+  UPDATE_SUCCESS: string;
+  /**
+   * T​h​e​ ​s​e​l​e​c​t​e​d​ ​a​l​i​a​s​e​s​ ​w​e​r​e​ ​s​a​v​e​d
+   */
+  UPDATE_SUCCESS_MULTIPLE: string;
+  /**
+   * E​n​a​b​l​e​d
+   */
+  ENABLED: string;
+  /**
+   * E​d​i​t​ ​a​l​i​a​s​e​s
+   */
+  UPDATE_MULTIPLE_TITLE: string;
+  /**
+   * K​e​e​p​ ​o​r​i​g​i​n​a​l​ ​d​e​s​t​i​n​a​t​i​o​n​s
+   */
+  KEEP_DESTINATIONS: string;
 };
 
 export type TranslationFunctions = {
   /**
-   * Hi {name}! Please leave a star if you like this project: https://github.com/ivanhofer/typesafe-i18n
+   * Yes
    */
-  HI: (arg: { name: string }) => LocalizedString;
+  YES: () => LocalizedString;
+  /**
+   * No
+   */
+  NO: () => LocalizedString;
+  /**
+   * Save
+   */
+  SAVE: () => LocalizedString;
+  /**
+   * Open
+   */
+  OPEN: () => LocalizedString;
+  /**
+   * Refresh
+   */
+  REFRESH: () => LocalizedString;
+  /**
+   * Info
+   */
+  INFO: () => LocalizedString;
+  /**
+   * Success
+   */
+  SUCCESS: () => LocalizedString;
+  /**
+   * Error
+   */
+  ERROR: () => LocalizedString;
+  /**
+   * Alias
+   */
+  ALIAS: () => LocalizedString;
+  /**
+   * Instructions
+   */
+  INSTRUCTIONS: () => LocalizedString;
+  /**
+   * Cloudflare API Token
+   */
+  CLOUDFlARE_TOKEN_LABEL: () => LocalizedString;
+  /**
+   * Paste your Cloudflare API token here
+   */
+  CLOUDFLARE_TOKEN_PLACEHOLDER: () => LocalizedString;
+  /**
+   * Token could not be verified. Is it correct?
+   */
+  CLOUDFLARE_LOGIN_ERROR: () => LocalizedString;
+  /**
+   * Open https://dash.cloudflare.com/profile/api-tokens
+   */
+  CLOUDFLARE_TOKEN_STEP_1: () => LocalizedString;
+  /**
+   * Click "Create Token", select "Create Custom Token"
+   */
+  CLOUDFLARE_TOKEN_STEP_2: () => LocalizedString;
+  /**
+   * Choose a name, like "Email Extension"
+   */
+  CLOUDFLARE_TOKEN_STEP_3: () => LocalizedString;
+  /**
+   * Configure the following permissions:
+   */
+  CLOUDFLARE_TOKEN_STEP_4: () => LocalizedString;
+  /**
+   * Account | Email Routing Addresses | Read
+   */
+  CLOUDFLARE_TOKEN_STEP_4_1: () => LocalizedString;
+  /**
+   * Zone | Email Routing Rules | Edit
+   */
+  CLOUDFLARE_TOKEN_STEP_4_2: () => LocalizedString;
+  /**
+   * Zone | Zone | Read
+   */
+  CLOUDFLARE_TOKEN_STEP_4_3: () => LocalizedString;
+  /**
+   * Set "Account Resources" to your account
+   */
+  CLOUDFLARE_TOKEN_STEP_5: () => LocalizedString;
+  /**
+   * Set "Zone Resources" to "All zones" or select the zone you want to use
+   */
+  CLOUDFLARE_TOKEN_STEP_6: () => LocalizedString;
+  /**
+   * Configure "Client IP Address Filtering" and "TTL" if you want to
+   */
+  CLOUDFLARE_TOKEN_STEP_7: () => LocalizedString;
+  /**
+   * Click "Continue to summary" and then "Create token"
+   */
+  CLOUDFLARE_TOKEN_STEP_8: () => LocalizedString;
+  /**
+   * Paste the generated token above
+   */
+  CLOUDFLARE_TOKEN_STEP_9: () => LocalizedString;
+  /**
+   * ON
+   */
+  ON: () => LocalizedString;
+  /**
+   * OFF
+   */
+  OFF: () => LocalizedString;
+  /**
+   * Theme
+   */
+  THEME: () => LocalizedString;
+  /**
+   * toggle between theme modes
+   */
+  THEME_DESC: () => LocalizedString;
+  /**
+   * DARK
+   */
+  THEME_DARK: () => LocalizedString;
+  /**
+   * LIGHT
+   */
+  THEME_LIGHT: () => LocalizedString;
+  /**
+   * Rule Filter
+   */
+  RULE_FILTER: () => LocalizedString;
+  /**
+   * Only show email rules created by this extension
+   */
+  RULE_FILTER_DESC: () => LocalizedString;
+  /**
+   * Copy Alias
+   */
+  COPY_ALIAS: () => LocalizedString;
+  /**
+   * Copy alias to clipboard after creating it
+   */
+  COPY_ALIAS_DESC: () => LocalizedString;
+  /**
+   * Show Quick-Create Button
+   */
+  QUICK_CREATE_BUTTON: () => LocalizedString;
+  /**
+   * Show a button inside email input fields to quickly create an alias for the current site
+   */
+  QUICK_CREATE_BUTTON_DESC: () => LocalizedString;
+  /**
+   * Refresh data
+   */
+  REFRESH_DATA: () => LocalizedString;
+  /**
+   * Refresh Cloudflare domains and email destinations
+   */
+  REFRESH_DATA_DESC: () => LocalizedString;
+  /**
+   * Refreshed successfully
+   */
+  REFRESH_DATA_SUCCESS: () => LocalizedString;
+  /**
+   * Logout
+   */
+  LOGOUT: () => LocalizedString;
+  /**
+   * Clear all data and settings
+   */
+  LOGOUT_DESC: () => LocalizedString;
+  /**
+   * Goodbye
+   */
+  LOGOUT_SUCCESS: () => LocalizedString;
+  /**
+   * Cloudflare Docs
+   */
+  DOCS: () => LocalizedString;
+  /**
+   * For more information about Email Routing
+   */
+  DOCS_DESC: () => LocalizedString;
+  /**
+   * GitHub
+   */
+  GITHUB: () => LocalizedString;
+  /**
+   * Dev Tools
+   */
+  DEVTOOLS: () => LocalizedString;
+  /**
+   * Enable development tools
+   */
+  DEVTOOLS_DESC: () => LocalizedString;
+  /**
+   * Domain
+   */
+  DOMAIN: () => LocalizedString;
+  /**
+   * Invalid
+   */
+  INVALID: () => LocalizedString;
+  /**
+   * External
+   */
+  EXTERNAL: () => LocalizedString;
+  /**
+   * Disabled
+   */
+  DISABLED: () => LocalizedString;
+  /**
+   * Create
+   */
+  CREATE: () => LocalizedString;
+  /**
+   * Edit
+   */
+  EDIT: () => LocalizedString;
+  /**
+   * Delete
+   */
+  DELETE: () => LocalizedString;
+  /**
+   * Select
+   */
+  SELECT: () => LocalizedString;
+  /**
+   * Stop Select
+   */
+  STOP_SELECT: () => LocalizedString;
+  /**
+   * Search
+   */
+  SEARCH: () => LocalizedString;
+  /**
+   * Hide Search
+   */
+  STOP_SEARCH: () => LocalizedString;
+  /**
+   * Search aliases
+   */
+  SEARCH_PLACEHOLDER: () => LocalizedString;
+  /**
+   * Bummer!
+   */
+  NO_ZONES_TITLE: () => LocalizedString;
+  /**
+   * No domains for this Cloudflare account or API token.
+   */
+  NO_ZONES: () => LocalizedString;
+  /**
+   * Oh no!
+   */
+  ZONES_ERROR_TITLE: () => LocalizedString;
+  /**
+   * Something went wrong while loading your domains: {error}
+   */
+  ZONES_ERROR: (arg: { error: unknown }) => LocalizedString;
+  /**
+   * Bummer!
+   */
+  NO_RULES_TITLE: () => LocalizedString;
+  /**
+   * There are no aliases for this domain or this filter.
+   */
+  NO_RULES: () => LocalizedString;
+  /**
+   * Oh no!
+   */
+  RULES_ERROR_TITLE: () => LocalizedString;
+  /**
+   * Something went wrong while loading your aliases: {error}
+   */
+  RULES_ERROR: (arg: { error: unknown }) => LocalizedString;
+  /**
+   * Email address was copied to the clipboard
+   */
+  COPY_SUCCESS: () => LocalizedString;
+  /**
+   * (no description)
+   */
+  NO_ALIAS_DESCRIPTION: () => LocalizedString;
+  /**
+   * Create alias
+   */
+  CREATE_MODAL_TITLE: () => LocalizedString;
+  /**
+   * Invalid domain
+   */
+  INVALID_DOMAIN: () => LocalizedString;
+  /**
+   * Invalid alias format
+   */
+  INVALID_FORMAT: () => LocalizedString;
+  /**
+   * Must be between 3 and 25 characters
+   */
+  INVALID_LENGTH: () => LocalizedString;
+  /**
+   * Must be between 1 and 5
+   */
+  INVALID_WORD_COUNT: () => LocalizedString;
+  /**
+   * Must be at least 3 characters
+   */
+  INVALID_CUSTOM_ALIAS: () => LocalizedString;
+  /**
+   * Invalid prefix format
+   */
+  INVALID_PREFIX_FORMAT: () => LocalizedString;
+  /**
+   * Must be at least 1 character
+   */
+  INVALID_CUSTOM_PREFIX: () => LocalizedString;
+  /**
+   * Invalid destination
+   */
+  INVALID_DESTINATION: () => LocalizedString;
+  /**
+   * Could not find the domain
+   */
+  DOMAIN_NOT_FOUND: () => LocalizedString;
+  /**
+   * Conflict
+   */
+  CONFLICT: () => LocalizedString;
+  /**
+   * This alias already exists
+   */
+  ALIAS_ALREADY_EXISTS: () => LocalizedString;
+  /**
+   * Could not generate a unique alias after 3 attempts. Try again with changed settings.
+   */
+  ALIAS_GENERATION_ERROR: () => LocalizedString;
+  /**
+   * The alias was created
+   */
+  ALIAS_CREATED: () => LocalizedString;
+  /**
+   * The alias was created and copied to the clipboard
+   */
+  ALIAS_CREATED_AND_COPIED: () => LocalizedString;
+  /**
+   * Could not create alias
+   */
+  ALIAS_CREATION_ERROR: () => LocalizedString;
+  /**
+   * Cannot be closed right now
+   */
+  MODAL_CLOSE_BLOCKED: () => LocalizedString;
+  /**
+   * Error loading domains
+   */
+  ZONES_LOADING_ERROR: () => LocalizedString;
+  /**
+   * Random characters
+   */
+  ALIAS_FORMAT_CHARS: () => LocalizedString;
+  /**
+   * Random words
+   */
+  ALIAS_FORMAT_WORDS: () => LocalizedString;
+  /**
+   * Custom
+   */
+  ALIAS_FORMAT_CUSTOM: () => LocalizedString;
+  /**
+   * Number of characters
+   */
+  NUMBER_OF_CHARS: () => LocalizedString;
+  /**
+   * Number of words
+   */
+  NUMBER_OF_WORDS: () => LocalizedString;
+  /**
+   * Custom alias
+   */
+  CUSTOM_ALIAS: () => LocalizedString;
+  /**
+   * Description
+   */
+  ALIAS_DESCRIPTION: () => LocalizedString;
+  /**
+   * Alias description (optional)
+   */
+  ALIAS_DESCRIPTION_PLACEHOLDER: () => LocalizedString;
+  /**
+   * Prefix
+   */
+  PREFIX: () => LocalizedString;
+  /**
+   * None
+   */
+  PREFIX_NONE: () => LocalizedString;
+  /**
+   * Domain without extension
+   */
+  PREFIX_DOMAIN_WITHOUT_EXTENSION: () => LocalizedString;
+  /**
+   * Base domain
+   */
+  PREFIX_DOMAIN_WITH_EXTENSION: () => LocalizedString;
+  /**
+   * Full domain
+   */
+  PREFIX_FULL_DOMAIN: () => LocalizedString;
+  /**
+   * Custom
+   */
+  PREFIX_CUSTOM: () => LocalizedString;
+  /**
+   * Custom alias prefix
+   */
+  PREFIX_CUSTOM_LABEL: () => LocalizedString;
+  /**
+   * Destination
+   */
+  DESTINATION: () => LocalizedString;
+  /**
+   * Error loading destinations
+   */
+  DESTINATIONS_LOADING_ERROR: () => LocalizedString;
+  /**
+   * This address is not verified, ou will not receive emails.
+   */
+  DESTINATION_NOT_VERIFIED: () => LocalizedString;
+  /**
+   * Save settings
+   */
+  SAVE_SETTINGS: () => LocalizedString;
+  /**
+   * The alias was deleted
+   */
+  DELETE_SUCCESS: () => LocalizedString;
+  /**
+   * The selected aliases were deleted
+   */
+  DELETE_SUCCESS_MULTIPLE: () => LocalizedString;
+  /**
+   * Could not delete the alias
+   */
+  DELETE_ERROR: () => LocalizedString;
+  /**
+   * Error deleting alias {alias}: {error}
+   */
+  DELETE_ERROR_DETAILED: (arg: { alias: unknown; error: unknown }) => LocalizedString;
+  /**
+   * Delete alias
+   */
+  DELETE_TITLE: () => LocalizedString;
+  /**
+   * You are about to delete the alias
+   */
+  DELETE_QUESTION_1: () => LocalizedString;
+  /**
+   * Do you want to proceed?
+   */
+  DELETE_QUESTION_2: () => LocalizedString;
+  /**
+   * Delete aliases
+   */
+  DELETE_MULTIPLE_TITLE: () => LocalizedString;
+  /**
+   * You are about to delete {count} aliases.
+   */
+  DELETE_MULTIPLE_QUESTION: (arg: { count: unknown }) => LocalizedString;
+  /**
+   * Alias could not be saved
+   */
+  UPDATE_ERROR: () => LocalizedString;
+  /**
+   * Error saving alias {alias}: {error}
+   */
+  UPDATE_ERROR_DETAILED: (arg: { alias: unknown; error: unknown }) => LocalizedString;
+  /**
+   * The alias was saved
+   */
+  UPDATE_SUCCESS: () => LocalizedString;
+  /**
+   * The selected aliases were saved
+   */
+  UPDATE_SUCCESS_MULTIPLE: () => LocalizedString;
+  /**
+   * Enabled
+   */
+  ENABLED: () => LocalizedString;
+  /**
+   * Edit aliases
+   */
+  UPDATE_MULTIPLE_TITLE: () => LocalizedString;
+  /**
+   * Keep original destinations
+   */
+  KEEP_DESTINATIONS: () => LocalizedString;
 };
 
 export type Formatters = {};
