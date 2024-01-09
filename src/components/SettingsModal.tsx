@@ -1,6 +1,7 @@
+import type { ReactNode } from "react";
+
 import { IconExternalLink } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
 import {
   Button,
   Divider,
@@ -16,17 +17,25 @@ import { showNotification } from "@mantine/notifications";
 import { useAtom } from "jotai";
 import { RESET } from "jotai/utils";
 
-import { extensionName, extensionVersion, isExtension, popupHeight } from "~const";
+import { extensionName, extensionVersion, isExtension, isWebApp, popupHeight } from "~const";
 import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
 import { apiTokenAtom, selectedZoneIdAtom, settingsAtom } from "~utils/state";
 import { extensionStoragePersister } from "~utils/storage";
 
-type Props = {
+type SettingsModalProps = {
   opened: boolean;
   onClose: () => void;
 };
 
-function SettingsModal({ opened, onClose }: Props) {
+type SettingsItem = {
+  title: string;
+  description: string;
+  action: ReactNode;
+  requiresAuth?: boolean;
+  hide?: boolean;
+};
+
+function SettingsModal({ opened, onClose }: SettingsModalProps) {
   const queryClient = useQueryClient();
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
@@ -59,7 +68,7 @@ function SettingsModal({ opened, onClose }: Props) {
     onClose();
   };
 
-  const settingsItems = [
+  const settingsItems: SettingsItem[] = [
     {
       title: "Theme",
       description: "Toggle between theme modes",
@@ -77,7 +86,7 @@ function SettingsModal({ opened, onClose }: Props) {
     {
       title: "Rule Filter",
       description: "Only show email rules created by this extension",
-      requiresAuth: true,
+      hide: !apiToken,
       action: (
         <Switch
           onLabel="ON"
@@ -94,7 +103,7 @@ function SettingsModal({ opened, onClose }: Props) {
     {
       title: "Copy Alias",
       description: "Copy alias to clipboard after creating it",
-      requiresAuth: true,
+      hide: !apiToken,
       action: (
         <Switch
           onLabel="ON"
@@ -110,7 +119,7 @@ function SettingsModal({ opened, onClose }: Props) {
       title: "Show Quick-Create Button",
       description:
         "Show a button inside email input fields to quickly create an alias for the current site",
-      requiresAuth: true,
+      hide: !apiToken || isWebApp,
       action: (
         <Switch
           onLabel="ON"
@@ -127,7 +136,7 @@ function SettingsModal({ opened, onClose }: Props) {
     {
       title: "Refresh data",
       description: "Refresh Cloudflare domains and email destinations",
-      requiresAuth: true,
+      hide: !apiToken,
       action: (
         <Button
           loading={zones.isFetching || emailDestinations.isFetching}
@@ -139,7 +148,7 @@ function SettingsModal({ opened, onClose }: Props) {
     {
       title: "Logout",
       description: "Clear all data and settings",
-      requiresAuth: true,
+      hide: !apiToken,
       action: (
         <Button color="red" onClick={() => logout()}>
           Logout
@@ -173,12 +182,10 @@ function SettingsModal({ opened, onClose }: Props) {
         </Button>
       ),
     },
-  ];
-
-  if (process.env.NODE_ENV === "development") {
-    settingsItems.push({
+    {
       title: "Dev Tools",
       description: "Enable development tools",
+      hide: process.env.NODE_ENV !== "development",
       action: (
         <Switch
           onLabel="ON"
@@ -188,28 +195,29 @@ function SettingsModal({ opened, onClose }: Props) {
           onChange={(event) => setSettings({ ...settings, devTools: event.currentTarget.checked })}
         />
       ),
-    });
-  }
+    },
+  ];
 
   return (
     <Modal opened={opened} onClose={() => onClose()} title="Settings" fullScreen={isExtension}>
       <ScrollArea h={popupHeight - 2 * 20 - 28 - 16}>
         <Stack gap="xs" pr={15}>
-          {settingsItems.map((item, index) =>
-            (item.requiresAuth && apiToken) || !item.requiresAuth ? (
-              <Stack gap="xs" key={index}>
-                <Flex justify="space-between" align="center">
-                  <div>
-                    <Text>{item.title}</Text>
-                    <Text size="xs" c="dimmed">
-                      {item.description}
-                    </Text>
-                  </div>
-                  {item.action}
-                </Flex>
-                {index < settingsItems.length - 1 && <Divider />}
-              </Stack>
-            ) : null,
+          {settingsItems.map(
+            (item, index) =>
+              !item.hide && (
+                <Stack gap="xs" key={index}>
+                  <Flex justify="space-between" align="center">
+                    <div>
+                      <Text>{item.title}</Text>
+                      <Text size="xs" c="dimmed">
+                        {item.description}
+                      </Text>
+                    </div>
+                    {item.action}
+                  </Flex>
+                  {index < settingsItems.length - 1 && <Divider />}
+                </Stack>
+              ),
           )}
         </Stack>
       </ScrollArea>
