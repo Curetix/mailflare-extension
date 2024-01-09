@@ -1,22 +1,9 @@
-import react from "@vitejs/plugin-react";
+import react from "@vitejs/plugin-react-swc";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 import tsconfigPaths from "vite-tsconfig-paths";
 
-// https://vitejs.dev/config/
-// noinspection JSUnusedGlobalSymbols
 export default defineConfig({
-  build: {
-    rollupOptions: {
-      // Suppress warnings about the "use client" directive
-      onwarn: (warning, warn) => {
-        if (warning.code === "MODULE_LEVEL_DIRECTIVE") {
-          return;
-        }
-        warn(warning);
-      },
-    },
-  },
   plugins: [
     tsconfigPaths(),
     react(),
