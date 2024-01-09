@@ -80,6 +80,9 @@ dependencies:
   tailwindcss:
     specifier: ^3.4.1
     version: 3.4.1
+  typesafe-i18n:
+    specifier: ^5.26.2
+    version: 5.26.2(typescript@5.3.3)
   webextension-polyfill:
     specifier: ^0.10.0
     version: 0.10.0
@@ -9309,6 +9312,15 @@ packages:
       is-typed-array: 1.1.12
     dev: true
 
+  /typesafe-i18n@5.26.2(typescript@5.3.3):
+    resolution: {integrity: sha512-2QAriFmiY5JwUAJtG7yufoE/XZ1aFBY++wj7YFS2yo89a3jLBfKoWSdq5JfQYk1V2BS7V2c/u+KEcaCQoE65hw==}
+    hasBin: true
+    peerDependencies:
+      typescript: '>=3.5.1'
+    dependencies:
+      typescript: 5.3.3
+    dev: false
+
   /typescript@5.2.2:
     resolution: {integrity: sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==}
     engines: {node: '>=14.17'}
@@ -9319,7 +9331,6 @@ packages:
     resolution: {integrity: sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==}
     engines: {node: '>=14.17'}
     hasBin: true
-    dev: true
 
   /unbox-primitive@1.0.2:
     resolution: {integrity: sha512-61pPlCD9h51VoreyJ0BReideM3MDKMKnh6+V9L08331ipq6Q8OFXZYiqP6n/tbHx4s5I9uRhcye6BrbkizkBDw==}

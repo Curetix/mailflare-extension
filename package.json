@@ -30,7 +30,8 @@
     "build:chrome": "plasmo build --zip --hoist --target=chrome-mv3",
     "build:firefox": "plasmo build --zip --hoist --target=firefox-mv2",
     "build:vite": "tsc && vite build",
-    "prettier": "prettier -w *.json postcss.config.js vite.config.ts functions/ src/"
+    "prettier": "prettier -w *.json postcss.config.js vite.config.ts functions/ src/",
+    "typesafe-i18n": "typesafe-i18n"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
@@ -58,6 +59,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tailwindcss": "^3.4.1",
+    "typesafe-i18n": "^5.26.2",
     "webextension-polyfill": "^0.10.0"
   },
   "devDependencies": {
