@@ -24,12 +24,12 @@ import {
 import { useListState } from "@mantine/hooks";
 import { useAtom } from "jotai";
 
-import AliasBulkDeleteModal from "~components/AliasBulkDeleteModal";
-import AliasBulkEditModal from "~components/AliasBulkEditModal";
-import AliasCard from "~components/AliasCard";
-import AliasCreateModal from "~components/AliasCreateModal";
-import AliasDeleteModal from "~components/AliasDeleteModal";
-import AliasEditModal from "~components/AliasEditModal";
+import AliasBulkDeleteModal from "~components/alias-bulk-delete-modal";
+import AliasBulkEditModal from "~components/alias-bulk-edit-modal";
+import AliasCard from "~components/alias-card";
+import AliasCreateModal from "~components/alias-create-modal";
+import AliasDeleteModal from "~components/alias-delete-modal";
+import AliasEditModal from "~components/alias-edit-modal";
 import { popupHeight } from "~const";
 import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
 import { sortBy } from "~utils";

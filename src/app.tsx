@@ -6,9 +6,9 @@ import { useState } from "react";
 import { ActionIcon, Container, Divider, Group, Text } from "@mantine/core";
 import { useAtom } from "jotai";
 
-import AliasList from "~components/AliasList";
-import Login from "~components/Login";
-import SettingsModal from "~components/SettingsModal";
+import AliasList from "~components/alias-list";
+import Login from "~components/login";
+import SettingsModal from "~components/settings-modal";
 import { isExtension, popupHeight, popupWidth } from "~const";
 import { ThemeProvider } from "~theme";
 import { apiTokenAtom, settingsAtom } from "~utils/state";
