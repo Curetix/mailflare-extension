@@ -75,6 +75,7 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
 
   const onLocaleSelected = async (value: string | null) => {
     const locale = value as Locales;
+    localStorage.setItem("lang", locale);
     await loadLocaleAsync(locale);
     setLocale(locale);
   };

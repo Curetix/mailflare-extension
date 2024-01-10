@@ -4,8 +4,10 @@ import { QueryClient } from "@tanstack/react-query";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import TypesafeI18n from "~i18n/i18n-react";
 import { useEffect, useState } from "react";
+import { localStorageDetector } from "typesafe-i18n/detectors";
 
-import { loadLocale } from "~i18n/i18n-util.sync";
+import { detectLocale } from "~i18n/i18n-util";
+import { loadLocaleAsync } from "~i18n/i18n-util.async";
 import { ThemeProvider } from "~theme";
 import { extensionStoragePersister } from "~utils/storage";
 
@@ -18,21 +20,21 @@ export const queryClient = new QueryClient({
   },
 });
 
+const detectedLocale = detectLocale(localStorageDetector);
+
 export default function Providers({ children }: { children: ReactNode }) {
-  const locale = "en";
   const [localesLoaded, setLocalesLoaded] = useState(false);
 
   useEffect(() => {
-    loadLocale(locale);
-    setLocalesLoaded(true);
-  }, [locale]);
+    loadLocaleAsync(detectedLocale).then(() => setLocalesLoaded(true));
+  }, []);
 
   if (!localesLoaded) {
     return null;
   }
 
   return (
-    <TypesafeI18n locale={locale}>
+    <TypesafeI18n locale={detectedLocale}>
       <ThemeProvider>
         <PersistQueryClientProvider
           client={queryClient}
