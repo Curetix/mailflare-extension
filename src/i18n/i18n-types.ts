@@ -53,6 +53,10 @@ type RootTranslation = {
    */
   ALIAS: string;
   /**
+   * N​o​t​ ​f​o​u​n​d
+   */
+  NOT_FOUND: string;
+  /**
    * I​n​s​t​r​u​c​t​i​o​n​s
    */
   INSTRUCTIONS: string;
@@ -140,6 +144,22 @@ type RootTranslation = {
    * L​I​G​H​T
    */
   THEME_LIGHT: string;
+  /**
+   * L​a​n​g​u​a​g​e
+   */
+  LANGUAGE: string;
+  /**
+   * C​h​o​o​s​e​ ​a​ ​l​a​n​g​u​a​g​e​ ​f​o​r​ ​t​h​e​ ​U​I
+   */
+  LANGUAGE_DESC: string;
+  /**
+   * �​�​�​�​ ​E​n​g​l​i​s​h
+   */
+  LANGUAGE_ENGLISH: string;
+  /**
+   * �​�​�​�​ ​G​e​r​m​a​n​ ​(​D​e​u​t​s​c​h​)
+   */
+  LANGUAGE_GERMAN: string;
   /**
    * R​u​l​e​ ​F​i​l​t​e​r
    */
@@ -455,15 +475,11 @@ type RootTranslation = {
    */
   DELETE_SUCCESS_MULTIPLE: string;
   /**
-   * C​o​u​l​d​ ​n​o​t​ ​d​e​l​e​t​e​ ​t​h​e​ ​a​l​i​a​s
-   */
-  DELETE_ERROR: string;
-  /**
    * E​r​r​o​r​ ​d​e​l​e​t​i​n​g​ ​a​l​i​a​s​ ​{​a​l​i​a​s​}​:​ ​{​e​r​r​o​r​}
    * @param {unknown} alias
    * @param {unknown} error
    */
-  DELETE_ERROR_DETAILED: RequiredParams<"alias" | "error">;
+  DELETE_ERROR: RequiredParams<"alias" | "error">;
   /**
    * D​e​l​e​t​e​ ​a​l​i​a​s
    */
@@ -486,15 +502,11 @@ type RootTranslation = {
    */
   DELETE_MULTIPLE_QUESTION: RequiredParams<"count">;
   /**
-   * A​l​i​a​s​ ​c​o​u​l​d​ ​n​o​t​ ​b​e​ ​s​a​v​e​d
-   */
-  UPDATE_ERROR: string;
-  /**
    * E​r​r​o​r​ ​s​a​v​i​n​g​ ​a​l​i​a​s​ ​{​a​l​i​a​s​}​:​ ​{​e​r​r​o​r​}
    * @param {unknown} alias
    * @param {unknown} error
    */
-  UPDATE_ERROR_DETAILED: RequiredParams<"alias" | "error">;
+  UPDATE_ERROR: RequiredParams<"alias" | "error">;
   /**
    * T​h​e​ ​a​l​i​a​s​ ​w​a​s​ ​s​a​v​e​d
    */
@@ -554,6 +566,10 @@ export type TranslationFunctions = {
    * Alias
    */
   ALIAS: () => LocalizedString;
+  /**
+   * Not found
+   */
+  NOT_FOUND: () => LocalizedString;
   /**
    * Instructions
    */
@@ -642,6 +658,22 @@ export type TranslationFunctions = {
    * LIGHT
    */
   THEME_LIGHT: () => LocalizedString;
+  /**
+   * Language
+   */
+  LANGUAGE: () => LocalizedString;
+  /**
+   * Choose a language for the UI
+   */
+  LANGUAGE_DESC: () => LocalizedString;
+  /**
+   * 🇬🇧 English
+   */
+  LANGUAGE_ENGLISH: () => LocalizedString;
+  /**
+   * 🇩🇪 German (Deutsch)
+   */
+  LANGUAGE_GERMAN: () => LocalizedString;
   /**
    * Rule Filter
    */
@@ -955,13 +987,9 @@ export type TranslationFunctions = {
    */
   DELETE_SUCCESS_MULTIPLE: () => LocalizedString;
   /**
-   * Could not delete the alias
-   */
-  DELETE_ERROR: () => LocalizedString;
-  /**
    * Error deleting alias {alias}: {error}
    */
-  DELETE_ERROR_DETAILED: (arg: { alias: unknown; error: unknown }) => LocalizedString;
+  DELETE_ERROR: (arg: { alias: unknown; error: unknown }) => LocalizedString;
   /**
    * Delete alias
    */
@@ -983,13 +1011,9 @@ export type TranslationFunctions = {
    */
   DELETE_MULTIPLE_QUESTION: (arg: { count: unknown }) => LocalizedString;
   /**
-   * Alias could not be saved
-   */
-  UPDATE_ERROR: () => LocalizedString;
-  /**
    * Error saving alias {alias}: {error}
    */
-  UPDATE_ERROR_DETAILED: (arg: { alias: unknown; error: unknown }) => LocalizedString;
+  UPDATE_ERROR: (arg: { alias: unknown; error: unknown }) => LocalizedString;
   /**
    * The alias was saved
    */
