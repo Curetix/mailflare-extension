@@ -1,3 +1,4 @@
+import type { Locales } from "~i18n/i18n-types";
 import type { ReactNode } from "react";
 
 import { IconExternalLink } from "@tabler/icons-react";
@@ -9,6 +10,7 @@ import {
   Flex,
   Modal,
   ScrollArea,
+  Select,
   Stack,
   Switch,
   Text,
@@ -19,6 +21,7 @@ import { useAtom } from "jotai";
 import { RESET } from "jotai/utils";
 
 import { extensionName, extensionVersion, isExtension, isWebApp, popupHeight } from "~const";
+import { loadLocaleAsync } from "~i18n/i18n-util.async";
 import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
 import { apiTokenAtom, selectedZoneIdAtom, settingsAtom } from "~utils/state";
 import { extensionStoragePersister } from "~utils/storage";
@@ -30,14 +33,14 @@ type SettingsModalProps = {
 
 type SettingsItem = {
   title: string;
-  description: string;
+  description?: string;
   action: ReactNode;
   requiresAuth?: boolean;
   hide?: boolean;
 };
 
 function SettingsModal({ opened, onClose }: SettingsModalProps) {
-  const { LL } = useI18nContext();
+  const { LL, locale, setLocale } = useI18nContext();
   const queryClient = useQueryClient();
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
@@ -70,6 +73,12 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
     onClose();
   };
 
+  const onLocaleSelected = async (value: string | null) => {
+    const locale = value as Locales;
+    await loadLocaleAsync(locale);
+    setLocale(locale);
+  };
+
   const settingsItems: SettingsItem[] = [
     {
       title: LL.THEME(),
@@ -82,6 +91,21 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
           color="green"
           checked={colorScheme === "dark"}
           onChange={() => toggleColorScheme()}
+        />
+      ),
+    },
+    {
+      title: LL.LANGUAGE(),
+      description: LL.LANGUAGE_DESC(),
+      action: (
+        <Select
+          value={locale}
+          onChange={onLocaleSelected}
+          allowDeselect={false}
+          data={[
+            { value: "en", label: LL.LANGUAGE_ENGLISH() },
+            { value: "de", label: LL.LANGUAGE_GERMAN() },
+          ]}
         />
       ),
     },
