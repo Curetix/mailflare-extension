@@ -52,7 +52,7 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
       showNotification({
         color: "red",
         title: LL.ERROR(),
-        message: LL.UPDATE_ERROR(),
+        message: LL.UPDATE_ERROR({ alias: "", error: LL.NOT_FOUND() }),
         autoClose: false,
       });
       return;
@@ -76,11 +76,11 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
           });
           onClose();
         },
-        onError: () => {
+        onError: (error) => {
           showNotification({
             color: "red",
             title: LL.ERROR(),
-            message: LL.UPDATE_ERROR(),
+            message: LL.UPDATE_ERROR({ alias: updated.address, error }),
             autoClose: false,
           });
         },

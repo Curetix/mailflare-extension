@@ -29,7 +29,7 @@ export default function AliasBulkDeleteModal({ opened, onClose, selectedAliases 
           showNotification({
             color: "red",
             title: LL.ERROR(),
-            message: LL.DELETE_ERROR_DETAILED({ alias: a.address, error }),
+            message: LL.DELETE_ERROR({ alias: a.address, error }),
             autoClose: false,
           });
         }

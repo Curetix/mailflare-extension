@@ -22,7 +22,7 @@ export default function AliasDeleteModal({ opened, onClose, aliasToDelete }: Pro
       showNotification({
         color: "red",
         title: LL.ERROR(),
-        message: LL.DELETE_ERROR(),
+        message: LL.DELETE_ERROR({ alias: "", error: LL.NOT_FOUND() }),
         autoClose: false,
       });
       return;
@@ -40,11 +40,11 @@ export default function AliasDeleteModal({ opened, onClose, aliasToDelete }: Pro
           });
           onClose();
         },
-        onError: () => {
+        onError: (error) => {
           showNotification({
             color: "red",
             title: LL.ERROR(),
-            message: LL.DELETE_ERROR(),
+            message: LL.DELETE_ERROR({ alias: aliasToDelete.address, error }),
             autoClose: false,
           });
         },

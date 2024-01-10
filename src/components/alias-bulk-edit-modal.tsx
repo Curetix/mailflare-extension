@@ -31,13 +31,13 @@ export default function AliasBulkEditModal({ opened, onClose, selectedAliases }:
 
   async function saveSelectedAliases(values: typeof aliasEditForm.values) {
     await Promise.all(
-      selectedAliases.map((a) => {
+      selectedAliases.map(async (a) => {
         try {
           a.enabled = values.enabled;
           if (values.destination !== "") {
             a.destination = values.destination;
           }
-          return updateEmailRule.mutate({
+          await updateEmailRule.mutateAsync({
             rule: a.toEmailRule(),
             zoneId: selectedZoneId,
           });
@@ -45,7 +45,7 @@ export default function AliasBulkEditModal({ opened, onClose, selectedAliases }:
           showNotification({
             color: "red",
             title: LL.ERROR(),
-            message: LL.UPDATE_ERROR_DETAILED({ alias: a.address, error }),
+            message: LL.UPDATE_ERROR({ alias: a.address, error }),
             autoClose: false,
           });
         }
