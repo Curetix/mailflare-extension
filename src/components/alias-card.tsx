@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 
 import { IconClipboard, IconEdit, IconTrash } from "@tabler/icons-react";
 import { useI18nContext } from "~i18n/i18n-react";
-import { ActionIcon, Button, Card, Checkbox, Group, Text } from "@mantine/core";
+import { ActionIcon, Box, Button, Card, Checkbox, Flex, Group, Text } from "@mantine/core";
 import { useClipboard } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 
@@ -42,67 +42,64 @@ export default function AliasCard({
           onSelect(!isSelected);
         }
       }}>
-      {/* ADDRESS AND CHECKBOX */}
-      <Group justify="space-between">
-        <Group gap="xs">
-          {selectEnabled && (
-            <Checkbox
-              size="xs"
-              checked={isSelected}
-              onChange={(event) => {
-                onSelect(event.currentTarget.checked);
-              }}
-            />
-          )}
+      <Flex gap="xs" align="center">
+        {/* SELECT CHECKBOX */}
+        {selectEnabled && (
+          <Checkbox
+            size="xs"
+            checked={isSelected}
+            onChange={(event) => {
+              onSelect(event.currentTarget.checked);
+            }}
+          />
+        )}
 
-          <Text truncate style={{ width: selectEnabled ? 230 : 260 }}>
-            {alias.address}
+        {/* ADDRESS AND DESCRIPTION */}
+        <Box flex={1} miw={0}>
+          <Text truncate>{alias.address}</Text>
+          <Text size="sm" c="dimmed" truncate>
+            {alias.name.replace(emailRuleNamePrefix, "").trim() || LL.NO_ALIAS_DESCRIPTION()}
           </Text>
-        </Group>
+        </Box>
 
         {/* ACTION BUTTONS */}
-        <Button.Group>
-          <ActionIcon
-            variant="subtle"
-            size="sm"
-            onClick={() => {
-              clipboard.copy(alias.address);
-              showNotification({
-                color: "green",
-                message: LL.COPY_SUCCESS(),
-                autoClose: 2000,
-              });
-            }}>
-            <IconClipboard size={16} />
-          </ActionIcon>
-          <ActionIcon
-            variant="subtle"
-            size="sm"
-            disabled={selectEnabled}
-            onClick={() => {
-              onEdit();
-            }}>
-            <IconEdit size={16} />
-          </ActionIcon>
-          <ActionIcon
-            variant="subtle"
-            size="sm"
-            disabled={selectEnabled}
-            onClick={() => {
-              onDelete();
-            }}>
-            <IconTrash size={16} />
-          </ActionIcon>
-        </Button.Group>
-      </Group>
-
-      {/* DESCRIPTION AND BADGE */}
-      <Group justify="space-between" ml={selectEnabled ? 26 : 0}>
-        <Text size="sm" c="dimmed" truncate style={{ width: selectEnabled ? 240 : 265 }}>
-          {alias.name.replace(emailRuleNamePrefix, "").trim() || LL.NO_ALIAS_DESCRIPTION()}
-        </Text>
-        {badge}
-      </Group>
+        <Box>
+          <Button.Group>
+            <ActionIcon
+              variant="subtle"
+              size="sm"
+              onClick={() => {
+                clipboard.copy(alias.address);
+                showNotification({
+                  color: "green",
+                  message: LL.COPY_SUCCESS(),
+                  autoClose: 2000,
+                });
+              }}>
+              <IconClipboard size={16} />
+            </ActionIcon>
+            <ActionIcon
+              variant="subtle"
+              size="sm"
+              disabled={selectEnabled}
+              onClick={() => {
+                onEdit();
+              }}>
+              <IconEdit size={16} />
+            </ActionIcon>
+            <ActionIcon
+              variant="subtle"
+              size="sm"
+              disabled={selectEnabled}
+              onClick={() => {
+                onDelete();
+              }}>
+              <IconTrash size={16} />
+            </ActionIcon>
+          </Button.Group>
+          {badge}
+        </Box>
+      </Flex>
     </Card>
   );
 }

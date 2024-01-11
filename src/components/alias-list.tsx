@@ -37,6 +37,8 @@ import { sortBy } from "~utils";
 import { Alias } from "~utils/alias";
 import { aliasSearchAtom, settingsAtom } from "~utils/state";
 
+import "~/styles/scroll-area.css";
+
 // popupHeight - header - divider - padding - select - button group - gap
 const aliasListHeight = popupHeight - 52 - 1 - 16 * 2 - 36 - 26 - 10 * 2;
 
