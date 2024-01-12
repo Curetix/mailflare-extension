@@ -105,7 +105,7 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
       title="Edit Alias"
       fullScreen={isExtension}>
       <form onSubmit={aliasEditForm.onSubmit((values) => saveAlias(values))}>
-        <Stack gap="xs" mih={400}>
+        <Stack gap="xs">
           <TextInput label={LL.ALIAS()} disabled {...aliasEditForm.getInputProps("alias")} />
           <TextInput
             label={LL.ALIAS_DESCRIPTION()}

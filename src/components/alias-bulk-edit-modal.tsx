@@ -78,7 +78,7 @@ export default function AliasBulkEditModal({ opened, onClose, selectedAliases }:
       title={LL.UPDATE_MULTIPLE_TITLE()}
       fullScreen={isExtension}>
       <form onSubmit={aliasEditForm.onSubmit((values) => saveSelectedAliases(values))}>
-        <Stack gap="xs" mih={400}>
+        <Stack gap="xs">
           <Select
             label={LL.DESTINATION()}
             placeholder={LL.KEEP_DESTINATIONS()}
