@@ -31,16 +31,12 @@ import AliasCard from "~components/alias-card";
 import AliasCreateModal from "~components/alias-create-modal";
 import AliasDeleteModal from "~components/alias-delete-modal";
 import AliasEditModal from "~components/alias-edit-modal";
-import { popupHeight } from "~const";
 import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
 import { sortBy } from "~utils";
 import { Alias } from "~utils/alias";
 import { aliasSearchAtom, settingsAtom } from "~utils/state";
 
 import "~/styles/scroll-area.css";
-
-// popupHeight - header - divider - padding - select - button group - gap
-const aliasListHeight = popupHeight - 52 - 1 - 16 * 2 - 36 - 26 - 10 * 2;
 
 function AliasList() {
   const { LL } = useI18nContext();
@@ -273,43 +269,42 @@ function AliasList() {
         />
       )}
 
-      {/* ALIAS LIST AREA */}
-      <ScrollArea style={{ flex: 1 }}>
+      {!!selectedZoneId && filteredAliases.length === 0 && emailRules.isFetching && (
+        <Center flex={1}>
+          <Loader />
+        </Center>
+      )}
+
+      {!zones.isFetching && zones.isSuccess && zones.data.length === 0 && (
+        <Alert title={LL.NO_ZONES_TITLE()} color="yellow">
+          {LL.NO_ZONES()}
+        </Alert>
+      )}
+
+      {zones.isError && (
+        <Alert title={LL.ZONES_ERROR_TITLE()} color="red">
+          {LL.ZONES_ERROR({ error: zones.error })}
+        </Alert>
+      )}
+
+      {!!selectedZoneId &&
+        emailRules.isSuccess &&
+        !emailRules.isFetching &&
+        filteredAliases.length === 0 && (
+          <Alert title={LL.NO_RULES_TITLE()} color="yellow">
+            {LL.NO_RULES()}
+          </Alert>
+        )}
+
+      {emailRules.isError && !zones.isError && (
+        <Alert title={LL.RULES_ERROR_TITLE()} color="red">
+          {LL.RULES_ERROR({ error: emailRules.error })}
+        </Alert>
+      )}
+
+      {/* ALIAS LIST */}
+      <ScrollArea style={{ flex: filteredAliases.length > 0 ? 1 : 0 }}>
         <Stack gap="xs">
-          {!zones.isFetching && zones.isSuccess && zones.data.length === 0 && (
-            <Alert title={LL.NO_ZONES_TITLE()} color="yellow">
-              {LL.NO_ZONES()}
-            </Alert>
-          )}
-
-          {zones.isError && (
-            <Alert title={LL.ZONES_ERROR_TITLE()} color="red">
-              {LL.ZONES_ERROR({ error: zones.error })}
-            </Alert>
-          )}
-
-          {!!selectedZoneId && filteredAliases.length === 0 && emailRules.isFetching && (
-            <Center>
-              <Loader height={aliasListHeight - 5} />
-            </Center>
-          )}
-
-          {!!selectedZoneId &&
-            emailRules.isSuccess &&
-            !emailRules.isFetching &&
-            filteredAliases.length === 0 && (
-              <Alert title={LL.NO_RULES_TITLE()} color="yellow">
-                {LL.NO_RULES()}
-              </Alert>
-            )}
-
-          {emailRules.isError && !zones.isError && (
-            <Alert title={LL.RULES_ERROR_TITLE()} color="red">
-              {LL.RULES_ERROR({ error: emailRules.error })}
-            </Alert>
-          )}
-
-          {/* ALIAS LIST */}
           {emailRules.isSuccess &&
             filteredAliases.map((r) => (
               <AliasCard
