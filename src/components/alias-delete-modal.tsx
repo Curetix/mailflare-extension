@@ -70,7 +70,9 @@ export default function AliasDeleteModal({ opened, onClose, aliasToDelete }: Pro
       fullScreen={isExtension}>
       <Stack gap="xs">
         <Text>{LL.DELETE_QUESTION_1()}</Text>
-        <Text fw={700}>{aliasToDelete?.address}</Text>
+        <Text fw={700} style={{ lineBreak: "anywhere" }}>
+          {aliasToDelete?.address}
+        </Text>
         <Text>{LL.DELETE_QUESTION_2()}</Text>
         <Button.Group>
           <Button fullWidth disabled={deleteEmailRule.isPending} onClick={() => onClose()}>
