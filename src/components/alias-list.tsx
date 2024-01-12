@@ -1,3 +1,5 @@
+import type { FlexProps } from "@mantine/core";
+
 import {
   IconEdit,
   IconListCheck,
@@ -38,7 +40,7 @@ import { aliasSearchAtom, settingsAtom } from "~utils/state";
 
 import "~/styles/scroll-area.css";
 
-function AliasList() {
+function AliasList(props: FlexProps) {
   const { LL } = useI18nContext();
 
   const { selectedZoneId, setSelectedZoneId, zones, emailDestinations, emailRules } =
@@ -107,7 +109,7 @@ function AliasList() {
   }, [emailRules.data, ruleFilter, aliasSearch]);
 
   return (
-    <Flex p="md" h="calc(100% - 53px)" direction="column" gap="xs">
+    <Flex p="md" direction="column" gap="xs" {...props}>
       <AliasCreateModal
         opened={aliasCreateModalOpened}
         onClose={() => setAliasCreateModalOpened(false)}

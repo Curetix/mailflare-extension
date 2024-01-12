@@ -1,13 +1,12 @@
 import { IconSettings } from "@tabler/icons-react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useState } from "react";
-import { ActionIcon, Container, Divider, Group, Text } from "@mantine/core";
+import { ActionIcon, Divider, Flex, Group, Text } from "@mantine/core";
 import { useAtom } from "jotai";
 
 import AliasList from "~components/alias-list";
 import Login from "~components/login";
 import SettingsModal from "~components/settings-modal";
-import { isExtension, popupHeight, popupWidth } from "~const";
 import Providers from "~providers";
 import { apiTokenAtom, settingsAtom } from "~utils/state";
 
@@ -22,11 +21,7 @@ export default function App() {
   return (
     <Providers>
       {devTools && <ReactQueryDevtools initialIsOpen={false} />}
-      <Container
-        w={isExtension ? popupWidth : undefined}
-        h={isExtension ? popupHeight : "100%"}
-        maw={600}
-        p={0}>
+      <Flex direction="column" h="100%" maw={600} m="auto">
         <SettingsModal opened={settingsModalOpened} onClose={() => setSettingsModalOpened(false)} />
         <Group justify="space-between" px="md" py="sm">
           <Text fw="bold" size="md">
@@ -37,8 +32,8 @@ export default function App() {
           </ActionIcon>
         </Group>
         <Divider />
-        {token ? <AliasList /> : <Login />}
-      </Container>
+        {token ? <AliasList flex={1} mih={0} /> : <Login />}
+      </Flex>
     </Providers>
   );
 }

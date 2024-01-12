@@ -335,17 +335,17 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
                 {
                   value: "domainWithoutExtension",
                   label: LL.PREFIX_DOMAIN_WITHOUT_EXTENSION(),
-                  disabled: hostname === null,
+                  disabled: !hostname,
                 },
                 {
                   value: "domainWithExtension",
                   label: LL.PREFIX_DOMAIN_WITH_EXTENSION(),
-                  disabled: hostname === null,
+                  disabled: !hostname,
                 },
                 {
                   value: "fullDomain",
                   label: LL.PREFIX_FULL_DOMAIN(),
-                  disabled: hostname === null,
+                  disabled: !hostname,
                 },
                 {
                   value: "custom",

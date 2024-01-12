@@ -35,7 +35,7 @@ function Login() {
 
   return (
     <form onSubmit={tokenForm.onSubmit((values) => verifyToken(values.token))}>
-      <Stack p="md" gap="sm">
+      <Stack p="md" gap="xs">
         <PasswordInput
           label={LL.CLOUDFlARE_TOKEN_LABEL()}
           placeholder={LL.CLOUDFLARE_TOKEN_PLACEHOLDER()}

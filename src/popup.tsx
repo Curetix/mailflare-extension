@@ -3,6 +3,7 @@ import { useAtom } from "jotai";
 import browser from "webextension-polyfill";
 
 import App from "~app";
+import { popupHeight, popupWidth } from "~const";
 import { hostnameAtom } from "~utils/state";
 
 // noinspection JSUnusedGlobalSymbols
@@ -18,5 +19,9 @@ export default function Popup() {
     });
   }, []);
 
-  return <App />;
+  return (
+    <div style={{ height: popupHeight, width: popupWidth }}>
+      <App />
+    </div>
+  );
 }
