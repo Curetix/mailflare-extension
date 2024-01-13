@@ -36,7 +36,9 @@ export default function Providers({ localeDetectors, children }: ProvidersProps)
   );
   const [localesLoaded, setLocalesLoaded] = useState(false);
   const theme: MantineThemeOverride = {
-    primaryColor: "blue",
+    primaryColor: "orange",
+    autoContrast: true,
+    luminanceThreshold: 0.4,
   };
 
   useEffect(() => {
