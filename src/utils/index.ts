@@ -1,3 +1,5 @@
+import { useMediaQuery } from "@mantine/hooks";
+
 /**
  * Error class for failed fetch requests.
  */
@@ -48,4 +50,8 @@ export function randomString(length: number) {
     counter += 1;
   }
   return result;
+}
+
+export function useFullscreenModal() {
+  return useMediaQuery("(max-width: 600px)");
 }

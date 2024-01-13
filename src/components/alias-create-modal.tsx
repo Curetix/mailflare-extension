@@ -8,8 +8,9 @@ import { useClipboard } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import { useAtom } from "jotai";
 
-import { emailRuleNamePrefix, isExtension } from "~const";
+import { emailRuleNamePrefix } from "~const";
 import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
+import { useFullscreenModal } from "~utils";
 import { generateAliasAddress } from "~utils/alias";
 import { aliasSettingsAtom, hostnameAtom, settingsAtom } from "~utils/state";
 
@@ -21,6 +22,7 @@ type Props = {
 export default function AliasCreateModal({ opened, onClose }: Props) {
   const { LL } = useI18nContext();
   const clipboard = useClipboard();
+  const isFullscreen = useFullscreenModal();
 
   const {
     selectedZoneId,
@@ -249,7 +251,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
         }
       }}
       title={LL.CREATE_MODAL_TITLE()}
-      fullScreen={isExtension}>
+      fullScreen={isFullscreen}>
       <form onSubmit={aliasCreateForm.onSubmit((values) => createAlias(values))}>
         <Stack gap="xs">
           <Select

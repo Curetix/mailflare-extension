@@ -6,8 +6,9 @@ import { Button, Modal, Select, Stack, Switch, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 
-import { emailRuleNamePrefix, isExtension } from "~const";
+import { emailRuleNamePrefix } from "~const";
 import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
+import { useFullscreenModal } from "~utils";
 
 type Props = {
   opened: boolean;
@@ -18,6 +19,7 @@ type Props = {
 export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) {
   const { LL } = useI18nContext();
   const { selectedZoneId, emailDestinations, emailRules, updateEmailRule } = useCloudflare();
+  const isFullscreen = useFullscreenModal();
 
   const aliasEditForm = useForm({
     initialValues: {
@@ -103,7 +105,7 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
         }
       }}
       title="Edit Alias"
-      fullScreen={isExtension}>
+      fullScreen={isFullscreen}>
       <form onSubmit={aliasEditForm.onSubmit((values) => saveAlias(values))}>
         <Stack gap="xs">
           <TextInput label={LL.ALIAS()} disabled {...aliasEditForm.getInputProps("alias")} />

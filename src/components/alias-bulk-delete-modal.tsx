@@ -4,8 +4,8 @@ import { useI18nContext } from "~i18n/i18n-react";
 import { Button, Modal, Stack, Text } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 
-import { isExtension } from "~const";
 import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
+import { useFullscreenModal } from "~utils";
 
 type Props = {
   opened: boolean;
@@ -16,6 +16,7 @@ type Props = {
 export default function AliasBulkDeleteModal({ opened, onClose, selectedAliases }: Props) {
   const { LL } = useI18nContext();
   const { selectedZoneId, deleteEmailRule } = useCloudflare();
+  const isFullscreen = useFullscreenModal();
 
   async function deleteSelectedAliases() {
     await Promise.all(
@@ -59,7 +60,7 @@ export default function AliasBulkDeleteModal({ opened, onClose, selectedAliases 
         }
       }}
       title={LL.DELETE_MULTIPLE_TITLE()}
-      fullScreen={isExtension}>
+      fullScreen={isFullscreen}>
       <Stack gap="xs">
         <Text>{LL.DELETE_MULTIPLE_QUESTION({ count: selectedAliases.length })}</Text>
         <Text>{LL.DELETE_QUESTION_2()}</Text>

@@ -7,6 +7,7 @@ import { showNotification } from "@mantine/notifications";
 
 import { isExtension } from "~const";
 import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
+import { useFullscreenModal } from "~utils";
 
 type Props = {
   opened: boolean;
@@ -17,6 +18,7 @@ type Props = {
 export default function AliasBulkEditModal({ opened, onClose, selectedAliases }: Props) {
   const { LL } = useI18nContext();
   const { selectedZoneId, emailDestinations, updateEmailRule } = useCloudflare();
+  const isFullscreen = useFullscreenModal();
 
   const aliasEditForm = useForm({
     initialValues: {
@@ -76,7 +78,7 @@ export default function AliasBulkEditModal({ opened, onClose, selectedAliases }:
         }
       }}
       title={LL.UPDATE_MULTIPLE_TITLE()}
-      fullScreen={isExtension}>
+      fullScreen={isFullscreen}>
       <form onSubmit={aliasEditForm.onSubmit((values) => saveSelectedAliases(values))}>
         <Stack gap="xs">
           <Select

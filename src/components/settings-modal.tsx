@@ -23,6 +23,7 @@ import { RESET } from "jotai/utils";
 import { extensionName, extensionVersion, isExtension, isWebApp, popupHeight } from "~const";
 import { loadLocaleAsync } from "~i18n/i18n-util.async";
 import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
+import { useFullscreenModal } from "~utils";
 import { apiTokenAtom, selectedZoneIdAtom, settingsAtom } from "~utils/state";
 import { extensionStoragePersister } from "~utils/storage";
 
@@ -43,6 +44,7 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
   const { LL, locale, setLocale } = useI18nContext();
   const queryClient = useQueryClient();
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const isFullscreen = useFullscreenModal();
 
   const { zones, emailDestinations } = useCloudflare();
 
@@ -225,7 +227,7 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
   ];
 
   return (
-    <Modal opened={opened} onClose={() => onClose()} title="Settings" fullScreen={isExtension}>
+    <Modal opened={opened} onClose={() => onClose()} title="Settings" fullScreen={isFullscreen}>
       <ScrollArea h={popupHeight - 2 * 20 - 28 - 16}>
         <Stack gap="xs" pr={15}>
           {settingsItems.map(
