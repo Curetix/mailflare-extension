@@ -15,7 +15,7 @@ type Props = {
 
 export default function AliasDeleteModal({ opened, onClose, aliasToDelete }: Props) {
   const { LL } = useI18nContext();
-  const { selectedZoneId, emailRules, deleteEmailRule } = useCloudflare();
+  const { selectedZoneId, deleteEmailRule } = useCloudflare();
   const isFullscreen = useFullscreenModal();
 
   async function deleteAlias() {

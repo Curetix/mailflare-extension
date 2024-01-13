@@ -7,6 +7,7 @@ const de = {
   SAVE: "Speichern",
   OPEN: "Öffnen",
   REFRESH: "Aktualisieren",
+  COPY: "Kopieren",
   INFO: "Info",
   SUCCESS: "Erfolg",
   ERROR: "Fehler",

@@ -37,6 +37,10 @@ type RootTranslation = {
    */
   REFRESH: string;
   /**
+   * C​o​p​y
+   */
+  COPY: string;
+  /**
    * I​n​f​o
    */
   INFO: string;
@@ -550,6 +554,10 @@ export type TranslationFunctions = {
    * Refresh
    */
   REFRESH: () => LocalizedString;
+  /**
+   * Copy
+   */
+  COPY: () => LocalizedString;
   /**
    * Info
    */

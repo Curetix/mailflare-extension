@@ -1,5 +1,5 @@
 import type { MantineThemeOverride } from "@mantine/core";
-import type { PropsWithChildren, ReactNode } from "react";
+import type { ReactNode } from "react";
 import type { LocaleDetector } from "typesafe-i18n/detectors";
 
 import { QueryClient } from "@tanstack/react-query";

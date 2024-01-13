@@ -20,7 +20,7 @@ import { showNotification } from "@mantine/notifications";
 import { useAtom } from "jotai";
 import { RESET } from "jotai/utils";
 
-import { extensionName, extensionVersion, isExtension, isWebApp, popupHeight } from "~const";
+import { extensionName, extensionVersion, isWebApp, popupHeight } from "~const";
 import { loadLocaleAsync } from "~i18n/i18n-util.async";
 import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
 import { useFullscreenModal } from "~utils";

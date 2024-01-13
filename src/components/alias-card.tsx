@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 
 import { IconClipboard, IconEdit, IconTrash } from "@tabler/icons-react";
 import { useI18nContext } from "~i18n/i18n-react";
-import { ActionIcon, Box, Button, Card, Checkbox, Flex, Group, Text } from "@mantine/core";
+import { ActionIcon, Box, Card, Checkbox, Flex, Text, Tooltip } from "@mantine/core";
 import { useClipboard } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 
@@ -64,39 +64,45 @@ export default function AliasCard({
 
         {/* ACTION BUTTONS */}
         <Box>
-          <Button.Group>
-            <ActionIcon
-              variant="subtle"
-              size="sm"
-              onClick={() => {
-                clipboard.copy(alias.address);
-                showNotification({
-                  color: "green",
-                  message: LL.COPY_SUCCESS(),
-                  autoClose: 2000,
-                });
-              }}>
-              <IconClipboard size={16} />
-            </ActionIcon>
-            <ActionIcon
-              variant="subtle"
-              size="sm"
-              disabled={selectEnabled}
-              onClick={() => {
-                onEdit();
-              }}>
-              <IconEdit size={16} />
-            </ActionIcon>
-            <ActionIcon
-              variant="subtle"
-              size="sm"
-              disabled={selectEnabled}
-              onClick={() => {
-                onDelete();
-              }}>
-              <IconTrash size={16} />
-            </ActionIcon>
-          </Button.Group>
+          <ActionIcon.Group>
+            <Tooltip label={LL.COPY()}>
+              <ActionIcon
+                variant="subtle"
+                size="sm"
+                onClick={() => {
+                  clipboard.copy(alias.address);
+                  showNotification({
+                    color: "green",
+                    message: LL.COPY_SUCCESS(),
+                    autoClose: 2000,
+                  });
+                }}>
+                <IconClipboard size={16} />
+              </ActionIcon>
+            </Tooltip>
+            <Tooltip label={LL.EDIT()}>
+              <ActionIcon
+                variant="subtle"
+                size="sm"
+                disabled={selectEnabled}
+                onClick={() => {
+                  onEdit();
+                }}>
+                <IconEdit size={16} />
+              </ActionIcon>
+            </Tooltip>
+            <Tooltip label={LL.DELETE()}>
+              <ActionIcon
+                variant="subtle"
+                size="sm"
+                disabled={selectEnabled}
+                onClick={() => {
+                  onDelete();
+                }}>
+                <IconTrash size={16} />
+              </ActionIcon>
+            </Tooltip>
+          </ActionIcon.Group>
           {badge}
         </Box>
       </Flex>

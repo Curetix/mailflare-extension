@@ -18,7 +18,7 @@ type Props = {
 
 export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) {
   const { LL } = useI18nContext();
-  const { selectedZoneId, emailDestinations, emailRules, updateEmailRule } = useCloudflare();
+  const { selectedZoneId, emailDestinations, updateEmailRule } = useCloudflare();
   const isFullscreen = useFullscreenModal();
 
   const aliasEditForm = useForm({

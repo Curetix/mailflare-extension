@@ -7,6 +7,7 @@ const en = {
   SAVE: "Save",
   OPEN: "Open",
   REFRESH: "Refresh",
+  COPY: "Copy",
   INFO: "Info",
   SUCCESS: "Success",
   ERROR: "Error",

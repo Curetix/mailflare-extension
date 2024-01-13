@@ -23,6 +23,7 @@ import {
   Select,
   Stack,
   TextInput,
+  Tooltip,
 } from "@mantine/core";
 import { useListState } from "@mantine/hooks";
 import { useAtom } from "jotai";
@@ -176,88 +177,94 @@ function AliasList(props: FlexProps) {
 
       {/* ACTION BUTTONS */}
       <Button.Group>
-        <Button
-          variant="light"
-          size="compact-md"
-          fullWidth
-          leftSection={
-            aliasSelectEnabled ? <IconPlaylistX size={16} /> : <IconListCheck size={16} />
-          }
-          disabled={
-            !zones.data ||
-            (!aliasSelectEnabled && filteredAliases.length === 0) ||
-            selectedZoneId === null
-          }
-          onClick={() => {
-            selectedAliasesHandlers.setState([]);
-            setAliasSelectEnabled(!aliasSelectEnabled);
-          }}>
-          {aliasSelectEnabled ? LL.STOP_SELECT() : LL.SELECT()}
-        </Button>
+        <Tooltip label={aliasSelectEnabled ? LL.STOP_SELECT() : LL.SELECT()}>
+          <Button
+            variant="light"
+            size="compact-md"
+            fullWidth
+            leftSection={
+              aliasSelectEnabled ? <IconPlaylistX size={16} /> : <IconListCheck size={16} />
+            }
+            disabled={
+              !zones.data ||
+              (!aliasSelectEnabled && filteredAliases.length === 0) ||
+              selectedZoneId === null
+            }
+            onClick={() => {
+              selectedAliasesHandlers.setState([]);
+              setAliasSelectEnabled(!aliasSelectEnabled);
+            }}
+          />
+        </Tooltip>
         {aliasSelectEnabled && (
           <>
-            <Button
-              variant="light"
-              size="compact-md"
-              fullWidth
-              leftSection={<IconEdit size={16} />}
-              disabled={selectedAliases.length === 0}
-              onClick={() => setAliasEditModalOpened(true)}>
-              {LL.EDIT()}
-            </Button>
-            <Button
-              variant="light"
-              color="red"
-              size="compact-md"
-              fullWidth
-              leftSection={<IconTrash size={16} />}
-              disabled={selectedAliases.length === 0}
-              onClick={() => setAliasDeleteModalOpened(true)}>
-              {LL.DELETE()}
-            </Button>
+            <Tooltip label={LL.EDIT()}>
+              <Button
+                variant="light"
+                size="compact-md"
+                fullWidth
+                leftSection={<IconEdit size={16} />}
+                disabled={selectedAliases.length === 0}
+                onClick={() => setAliasEditModalOpened(true)}
+              />
+            </Tooltip>
+            <Tooltip label={LL.DELETE()}>
+              <Button
+                variant="light"
+                color="red"
+                size="compact-md"
+                fullWidth
+                leftSection={<IconTrash size={16} />}
+                disabled={selectedAliases.length === 0}
+                onClick={() => setAliasDeleteModalOpened(true)}
+              />
+            </Tooltip>
           </>
         )}
         {!aliasSelectEnabled && (
           <>
-            <Button
-              variant="light"
-              size="compact-md"
-              fullWidth
-              leftSection={<IconPlaylistAdd size={16} />}
-              disabled={!zones.data || zones.data.length === 0 || selectedZoneId === null}
-              onClick={() => setAliasCreateModalOpened(true)}>
-              {LL.CREATE()}
-            </Button>
-            <Button
-              variant="light"
-              size="compact-md"
-              fullWidth
-              leftSection={searchVisible ? <IconSearchOff size={16} /> : <IconSearch size={16} />}
-              disabled={
-                !zones.data ||
-                !emailRules.data ||
-                emailRules.data.length === 0 ||
-                (!searchVisible && filteredAliases.length === 0) ||
-                selectedZoneId === null
-              }
-              loaderProps={{ size: 16 }}
-              onClick={() => {
-                setSearchVisible(!searchVisible);
-                setAliasSearch("");
-              }}>
-              {searchVisible ? LL.STOP_SEARCH() : LL.SEARCH()}
-            </Button>
-            <Button
-              variant="light"
-              size="compact-md"
-              fullWidth
-              leftSection={<IconRefresh size={16} />}
-              disabled={!zones.data || zones.data.length === 0 || selectedZoneId === null}
-              loading={emailRules.isFetching}
-              loaderProps={{ size: 16 }}
-              onClick={() => emailRules.refetch()}>
-              {LL.REFRESH()}
-            </Button>
+            <Tooltip label={LL.CREATE()}>
+              <Button
+                variant="light"
+                size="compact-md"
+                fullWidth
+                leftSection={<IconPlaylistAdd size={16} />}
+                disabled={!zones.data || zones.data.length === 0 || selectedZoneId === null}
+                onClick={() => setAliasCreateModalOpened(true)}
+              />
+            </Tooltip>
+            <Tooltip label={searchVisible ? LL.STOP_SEARCH() : LL.SEARCH()}>
+              <Button
+                variant="light"
+                size="compact-md"
+                fullWidth
+                leftSection={searchVisible ? <IconSearchOff size={16} /> : <IconSearch size={16} />}
+                disabled={
+                  !zones.data ||
+                  !emailRules.data ||
+                  emailRules.data.length === 0 ||
+                  (!searchVisible && filteredAliases.length === 0) ||
+                  selectedZoneId === null
+                }
+                loaderProps={{ size: 16 }}
+                onClick={() => {
+                  setSearchVisible(!searchVisible);
+                  setAliasSearch("");
+                }}
+              />
+            </Tooltip>
+            <Tooltip label={LL.REFRESH()}>
+              <Button
+                variant="light"
+                size="compact-md"
+                fullWidth
+                leftSection={<IconRefresh size={16} />}
+                disabled={!zones.data || zones.data.length === 0 || selectedZoneId === null}
+                loading={emailRules.isFetching}
+                loaderProps={{ size: 16 }}
+                onClick={() => emailRules.refetch()}
+              />
+            </Tooltip>
           </>
         )}
       </Button.Group>
