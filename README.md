@@ -14,6 +14,8 @@ A web version is available at [mailflare.pages.dev](https://mailflare.pages.dev/
 
 ![Alias List](./assets/screen_aliases.png)
 ![Create Alias](./assets/screen_create_alias.png)
+![Alias Quick-Create Button](./assets/screen_quick_create.gif)
+
 
 ## Features
 
