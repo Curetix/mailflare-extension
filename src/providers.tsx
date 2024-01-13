@@ -1,10 +1,11 @@
 import type { MantineThemeOverride } from "@mantine/core";
 import type { PropsWithChildren, ReactNode } from "react";
+import type { LocaleDetector } from "typesafe-i18n/detectors";
 
 import { QueryClient } from "@tanstack/react-query";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import TypesafeI18n from "~i18n/i18n-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { localStorageDetector } from "typesafe-i18n/detectors";
@@ -22,9 +23,17 @@ export const queryClient = new QueryClient({
   },
 });
 
-const detectedLocale = detectLocale(localStorageDetector);
+type ProvidersProps = {
+  localeDetectors?: LocaleDetector[];
+  children: ReactNode;
+};
 
-export default function Providers({ children }: { children: ReactNode }) {
+export default function Providers({ localeDetectors, children }: ProvidersProps) {
+  const detectors = useMemo(() => [localStorageDetector, ...(localeDetectors || [])], []);
+  const detectedLocale = useMemo(
+    () => detectLocale(localStorageDetector, ...detectors),
+    [detectors],
+  );
   const [localesLoaded, setLocalesLoaded] = useState(false);
   const theme: MantineThemeOverride = {
     primaryColor: "blue",

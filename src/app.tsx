@@ -1,3 +1,5 @@
+import type { LocaleDetector } from "typesafe-i18n/detectors";
+
 import { IconSettings } from "@tabler/icons-react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useState } from "react";
@@ -13,13 +15,17 @@ import { apiTokenAtom, settingsAtom } from "~utils/state";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 
-export default function App() {
+type AppProps = {
+  localeDetectors?: LocaleDetector[];
+};
+
+export default function App({ localeDetectors }: AppProps) {
   const [token] = useAtom(apiTokenAtom);
   const [{ devTools }] = useAtom(settingsAtom);
   const [settingsModalOpened, setSettingsModalOpened] = useState(false);
 
   return (
-    <Providers>
+    <Providers localeDetectors={localeDetectors}>
       {devTools && <ReactQueryDevtools initialIsOpen={false} />}
       <Flex direction="column" h="100%" maw={600} m="auto">
         <SettingsModal opened={settingsModalOpened} onClose={() => setSettingsModalOpened(false)} />

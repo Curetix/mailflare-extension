@@ -1,3 +1,5 @@
+import type { LocaleDetector } from "typesafe-i18n/detectors";
+
 import { useEffect } from "react";
 import { useAtom } from "jotai";
 import browser from "webextension-polyfill";
@@ -5,6 +7,12 @@ import browser from "webextension-polyfill";
 import App from "~app";
 import { popupHeight, popupWidth } from "~const";
 import { hostnameAtom } from "~utils/state";
+
+const detectBrowserLocale: LocaleDetector = () => {
+  return [browser.i18n.getUILanguage()];
+};
+
+const detectors = [detectBrowserLocale];
 
 // noinspection JSUnusedGlobalSymbols
 export default function Popup() {
@@ -21,7 +29,7 @@ export default function Popup() {
 
   return (
     <div style={{ height: popupHeight, width: popupWidth }}>
-      <App />
+      <App localeDetectors={detectors} />
     </div>
   );
 }
