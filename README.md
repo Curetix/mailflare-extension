@@ -7,15 +7,15 @@
 This extension provides an easy way to turn [Cloudflare Email Routing](https://developers.cloudflare.com/email-routing/)
 into your own private email alias service, similar to AnonAddy, SimpleLogin, and others.
 No third-party services or tedious configuration of a self-hosted email server needed.
+A web version is also available at [mailflare.pages.dev](https://mailflare.pages.dev/).
 
-A web version is available at [mailflare.pages.dev](https://mailflare.pages.dev/)
+Built with [React](https://github.com/facebook/react), [Plasmo](https://github.com/PlasmoHQ/plasmo), and [Mantine UI](https://github.com/mantinedev/mantine)
 
 ## Screenshots
 
 ![Alias List](./assets/screen_aliases.png)
 ![Create Alias](./assets/screen_create_alias.png)
 ![Alias Quick-Create Button](./assets/screen_quick_create.gif)
-
 
 ## Features
 
@@ -24,24 +24,29 @@ A web version is available at [mailflare.pages.dev](https://mailflare.pages.dev/
 - Search aliases and their descriptions
 - One-Click alias generation directly inside email input fields
 
-Potential future features:
+## Installation
 
-- Create / delete destination addresses
-- Advanced login options, manually providing account ID and zone IDs to further limit the API token permissions
-- Web version of the extension that can be used on any device, including offline support
-
-# Installation
+### Chrome and other Chromium Browsers
 
 <div>
-  <a
-    href="https://chromewebstore.google.com/detail/mailflare-email-alias-ext/aomfbgcabccoecaoimicmmkjdmdgcfpi"
-  >
+  <a href="https://chromewebstore.google.com/detail/mailflare-email-alias-ext/aomfbgcabccoecaoimicmmkjdmdgcfpi">
     <img
       alt="Chrome Web Store"
       src="assets/chrome_web_store.png"
       height="58"
     />
   </a>
+</div>
+
+Download the extension either directly from the Chrome Web Store, or:
+
+- Download the latest version from the [releases section](https://github.com/Curetix/mailflare-extension/releases/latest)
+- Go to the browsers extension page, usually under [chrome://extensions](edge://extensions/)
+- Drag-and-drop the downloaded file into the list of extensions
+
+### Firefox
+
+<div>
   <a href="https://github.com/Curetix/mailflare-extension/releases/latest">
     <img
       alt="Firefox Add-ons"
@@ -51,20 +56,15 @@ Potential future features:
   </a>
 </div>
 
-- Download the latest version for your browser from the [releases section](https://github.com/Curetix/mailflare-extension/releases/latest)
-- Firefox
-  - When clicking on the file, Firefox will automatically ask if you want to install the extension
-  - Alternatively: right-click on the file, **Save target as**, drag-and-drop the downloaded file into Firefox
-- Chrome and other Chromium browser:
-  - Go to the browsers extension page, usually under [chrome://extensions](edge://extensions/)
-  - Drag-and-drop the downloaded file into the list of extensions
+- Download the latest version from the [releases section](https://github.com/Curetix/mailflare-extension/releases/latest)
+- When clicking on the file, Firefox will automatically ask if you want to install the extension
+- Alternatively: right-click on the file, **Save target as**, drag-and-drop the downloaded file into Firefox
 
-## Project Structure
+### Progressive Web App
 
-- functions/ - Cloudflare pages function for proxying requests to the Cloudflare API for the web version due to CORS
-- src/ - Main React app
-  - src/popup.tsx - Entrypoint for the extension
-  - src/web.ts - Entrypoint for the web app
+The [web version of MailFlare](https://mailflare.pages.dev/) is a PWA and can be "installed" on any device.
+Look for the installation icon displayed in your desktop browsers address bar, or the installation prompt your mobile
+browser automatically shows when visiting the site.
 
 ## Limitations
 
@@ -101,6 +101,13 @@ Your API key is stored locally in your browser and is used to directly communica
 - **Zone | Email Routing Rules | Edit** - Listing, creating, editing and deleting of email rules (aliases)
 - **Zone | Zone | Read** - Listing of all the zones in your Cloudflare account (or the zone you select in the "Zone Resources" section)
 
+## Project Structure
+
+- functions/ - Cloudflare pages function for proxying requests to the Cloudflare API for the web version due to CORS
+- src/ - Main React app
+  - src/popup.tsx - Entrypoint for the extension
+  - src/web.ts - Entrypoint for the web app
+
 ## Build instructions
 
 1. Install Node.js (the automated build workflow uses Node.js v20) and pnpm (with `npm install -g pnpm`)
@@ -121,10 +128,3 @@ Loading the extension (non-signed builds):
   3. Click **Load Temporary Add-On...**
   4. Navigate to the folder of the built extension and select the `manifest.json` file
   5. (This will have to be repeated every time Firefox launches)
-
-## Built with
-
-- [Plasmo](https://github.com/PlasmoHQ/plasmo)
-- [React](https://github.com/facebook/react)
-- [Mantine UI](https://github.com/mantinedev/mantine)
-- [TanStack Query](https://github.com/TanStack/query)
