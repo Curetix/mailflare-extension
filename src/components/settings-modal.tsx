@@ -228,27 +228,25 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
 
   return (
     <Modal opened={opened} onClose={() => onClose()} title="Settings" fullScreen={isFullscreen}>
-      <ScrollArea h={popupHeight - 2 * 20 - 28 - 16}>
-        <Stack gap="xs" pr={15}>
-          {settingsItems.map(
-            (item, index) =>
-              !item.hide && (
-                <Stack gap="xs" key={index}>
-                  <Flex justify="space-between" align="center">
-                    <div>
-                      <Text>{item.title}</Text>
-                      <Text size="xs" c="dimmed">
-                        {item.description}
-                      </Text>
-                    </div>
-                    {item.action}
-                  </Flex>
-                  {index < settingsItems.length - 1 && <Divider />}
-                </Stack>
-              ),
-          )}
-        </Stack>
-      </ScrollArea>
+      <Stack gap="xs" pr={15}>
+        {settingsItems.map(
+          (item, index) =>
+            !item.hide && (
+              <Stack gap="xs" key={index}>
+                <Flex justify="space-between" align="center">
+                  <div>
+                    <Text>{item.title}</Text>
+                    <Text size="xs" c="dimmed">
+                      {item.description}
+                    </Text>
+                  </div>
+                  {item.action}
+                </Flex>
+                {index < settingsItems.length - 1 && <Divider />}
+              </Stack>
+            ),
+        )}
+      </Stack>
     </Modal>
   );
 }
