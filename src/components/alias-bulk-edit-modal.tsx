@@ -26,7 +26,11 @@ export default function AliasBulkEditModal({ opened, onClose, selectedAliases }:
     },
     validate: {
       destination: (value) =>
-        value.trim().length === 0 || !emailDestinations.data?.find((d) => d.email === value),
+        value !== null &&
+        value.trim() !== "" &&
+        !emailDestinations.data?.find((d) => d.email === value)
+          ? LL.INVALID_DESTINATION()
+          : null,
     },
   });
 
@@ -35,7 +39,7 @@ export default function AliasBulkEditModal({ opened, onClose, selectedAliases }:
       selectedAliases.map(async (a) => {
         try {
           a.enabled = values.enabled;
-          if (values.destination !== "") {
+          if (values.destination !== null && values.destination.trim() !== "") {
             a.destination = values.destination;
           }
           await updateEmailRule.mutateAsync({
