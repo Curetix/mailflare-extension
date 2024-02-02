@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   content: ["./src/**/*.{tsx,html}"],
   plugins: [require("daisyui")],
   daisyui: {

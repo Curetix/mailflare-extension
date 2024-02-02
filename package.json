@@ -4,6 +4,7 @@
   "version": "1.2.1",
   "description": "Create email aliases for your own domains using Cloudflare Email Routing.",
   "author": "Curetix <me@curetix.eu>",
+  "type": "module",
   "keywords": [
     "browser-extension",
     "webext",
