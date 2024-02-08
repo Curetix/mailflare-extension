@@ -61,6 +61,15 @@ type RootTranslation = {
    */
   NOT_FOUND: string;
   /**
+   * M​a​i​l​F​l​a​r​e​ ​u​p​d​a​t​e​d
+   */
+  UPDATED_TITLE: string;
+  /**
+   * M​a​i​l​F​l​a​r​e​ ​w​a​s​ ​u​p​d​a​t​e​d​ ​t​o​ ​v​e​r​s​i​o​n​ ​{​n​e​w​V​e​r​s​i​o​n​}​.​ ​V​i​s​i​t​ ​t​h​e​ ​G​i​t​H​u​b​ ​r​e​p​o​s​i​t​o​r​y​ ​(​l​i​n​k​ ​i​n​ ​s​e​t​t​i​n​g​s​)​ ​t​o​ ​f​i​n​d​ ​t​h​e​ ​c​h​a​n​g​e​l​o​g​.
+   * @param {unknown} newVersion
+   */
+  UPDATED_DESCRIPTION: RequiredParams<"newVersion">;
+  /**
    * I​n​s​t​r​u​c​t​i​o​n​s
    */
   INSTRUCTIONS: string;
@@ -578,6 +587,14 @@ export type TranslationFunctions = {
    * Not found
    */
   NOT_FOUND: () => LocalizedString;
+  /**
+   * MailFlare updated
+   */
+  UPDATED_TITLE: () => LocalizedString;
+  /**
+   * MailFlare was updated to version {newVersion}. Visit the GitHub repository (link in settings) to find the changelog.
+   */
+  UPDATED_DESCRIPTION: (arg: { newVersion: unknown }) => LocalizedString;
   /**
    * Instructions
    */

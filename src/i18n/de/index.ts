@@ -13,6 +13,9 @@ const de = {
   ERROR: "Fehler",
   ALIAS: "Alias",
   NOT_FOUND: "Nicht gefunden",
+  UPDATED_TITLE: "MailFlare aktualisiert",
+  UPDATED_DESCRIPTION:
+    "MailFlare wurde auf Version {newVersion} aktualisiert. Besuche das GitHub Repository (Link in den Einstellungen), um die Änderungsliste zu sehen.",
 
   // Login
   INSTRUCTIONS: "Anleitung",

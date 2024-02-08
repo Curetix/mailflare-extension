@@ -9,6 +9,7 @@ export enum StorageKeys {
   ZoneId = "zone-id",
   ApiToken = "api-token",
   QueryCache = "query-cache",
+  Version = "version",
 }
 
 /*

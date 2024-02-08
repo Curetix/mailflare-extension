@@ -15,6 +15,8 @@ import { apiTokenAtom, settingsAtom } from "~utils/state";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 
+import UpdateCheck from "~components/update-check";
+
 type AppProps = {
   localeDetectors?: LocaleDetector[];
 };
@@ -27,6 +29,7 @@ export default function App({ localeDetectors }: AppProps) {
   return (
     <Providers localeDetectors={localeDetectors}>
       {devTools && <ReactQueryDevtools initialIsOpen={false} />}
+      <UpdateCheck />
       <Flex direction="column" h="100%" maw={600} m="auto">
         <SettingsModal opened={settingsModalOpened} onClose={() => setSettingsModalOpened(false)} />
         <Group justify="space-between" px="md" py="sm">
