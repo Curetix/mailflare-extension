@@ -1,0 +1,22 @@
+name: "🐛 Bug Report"
+description: Report a bug you found
+title: "[Bug]: "
+labels: ['bug']
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: What is this bug about?
+      description: Provide a clear description of what the bug/problem is.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: As best as possible, provide steps to reproduce the bug you encountered.
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: Additional info
+      description: Anything else that could be used to narrow down the issue.

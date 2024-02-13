@@ -1,0 +1,22 @@
+name: "🧹 Documentation and Chores"
+description: Suggest improvements to the documentation or other chores
+title: "[Chore]: "
+labels: ['chore']
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: What is this about?
+      description: Provide a clear description of what this is about.
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Solution idea
+      description: Provide a possible solution or approach to implement your idea.
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: Additional info
+      description: Anything else?
