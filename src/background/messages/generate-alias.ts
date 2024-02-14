@@ -1,15 +1,9 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging";
-import type { AliasSettings } from "~utils/state";
 
-import { Storage } from "@plasmohq/storage";
-
-import { CloudflareApiClient } from "~lib/cloudflare/api";
-import { Alias } from "~utils/alias";
-import { StorageKeys } from "~utils/state";
-
-const storage = new Storage({
-  area: "local",
-});
+import { generateAliasInBackground } from "~background";
+import { detectLocale, i18n } from "~i18n/i18n-util";
+import { loadLocale } from "~i18n/i18n-util.sync";
+import { detectBrowserLocale, getCurrentTab, sendTabMessage } from "~utils/background";
 
 type Request = {
   hostname: string;
@@ -21,68 +15,46 @@ type Response = {
   data?: any;
 };
 
+const locale = detectLocale(detectBrowserLocale);
+loadLocale(locale);
+const LL = i18n()[locale];
+
 const handler: PlasmoMessaging.MessageHandler<Request, Response> = async (req, res) => {
-  const apiToken = await storage.get<string>(StorageKeys.ApiToken);
-  const zoneId = await storage.get<string>(StorageKeys.ZoneId);
-  const aliasSettings = await storage.get<AliasSettings>(StorageKeys.AliasSettings);
-
   console.log("Received request for background alias generation:", req.body);
+  const tab = await getCurrentTab();
+  try {
+    const alias = await generateAliasInBackground(req.body!.hostname);
 
-  if (!apiToken) {
+    await sendTabMessage(tab.id, {
+      command: "showAlert",
+      alert: {
+        id: Date.now(),
+        type: "success",
+        message: LL.BG_ALERT_CREATED({ alias: alias.address }),
+        timeout: 5000,
+      },
+    });
+
+    return res.send({
+      success: true,
+      message: LL.BG_ALERT_CREATED({ alias: alias.address }),
+      data: alias.address,
+    });
+  } catch (error: any) {
+    await sendTabMessage(tab.id, {
+      command: "showAlert",
+      alert: {
+        id: Date.now(),
+        type: "error",
+        message: error.message,
+      },
+    });
+
     return res.send({
       success: false,
-      message: "Not logged in",
+      message: error.message,
     });
   }
-  if (!zoneId) {
-    return res.send({
-      success: false,
-      message: "No domain selected",
-    });
-  }
-  if (!aliasSettings?.destination) {
-    return res.send({
-      success: false,
-      message: "No destination selected",
-    });
-  }
-  if (aliasSettings.format === "custom" || aliasSettings.prefixFormat === "custom") {
-    return res.send({
-      success: false,
-      message: "Cannot generate an alias when the (prefix) format is set to Custom",
-    });
-  }
-
-  const apiClient = new CloudflareApiClient(apiToken);
-
-  const zones = await apiClient.getZones();
-  const zone = zones.success ? zones.result.find((z) => z.id === zoneId) : undefined;
-
-  if (!zone) {
-    return res.send({
-      success: false,
-      message: "Domain not found",
-      data: zones,
-    });
-  }
-
-  const alias = Alias.fromOptions(
-    {
-      ...aliasSettings,
-      hostname: req.body!.hostname,
-    },
-    zone.name,
-    aliasSettings.destination,
-    req.body!.hostname,
-  );
-
-  const result = await apiClient.createEmailRule(zoneId, alias.toEmailRule());
-
-  return res.send({
-    success: result.success,
-    message: result.success ? "Alias created" : "Error",
-    data: result.success ? alias.address : result.errors,
-  });
 };
 
 export default handler;

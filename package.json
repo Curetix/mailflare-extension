@@ -89,7 +89,8 @@
   },
   "manifest": {
     "permissions": [
-      "activeTab"
+      "activeTab",
+      "contextMenus"
     ],
     "host_permissions": [
       "*://api.cloudflare.com/*"

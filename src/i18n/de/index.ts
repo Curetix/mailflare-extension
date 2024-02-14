@@ -145,6 +145,18 @@ const de = {
   ENABLED: "Aktiviert",
   UPDATE_MULTIPLE_TITLE: "Aliase bearbeiten",
   KEEP_DESTINATIONS: "Aktuelle Ziel-Adressen beibehalten",
+
+  // BGSW and Content Scripts
+  BG_ERROR_NOT_LOGGED_IN: "Nicht angemeldet",
+  BG_ERROR_NO_DOMAIN: "Keine Domain ausgewählt",
+  BG_ERROR_INVALID_DOMAIN: "Ausgewählte Domain nicht gefunden",
+  BG_ERROR_NO_DESTINATION: "Kein Ziel ausgewählt",
+  BG_ERROR_CUSTOM:
+    "Kann kein Alias generieren, wenn ein benutzerdefiniertes (Prefix) Format festgelegt wurde",
+  BG_ALERT_LOADING: "Alias wird erstellt",
+  BG_ALERT_CREATED: "Alias erstellt: {alias}",
+  CONTEXT_MENU_ENTRY_TEXT: "Neues MailFlare Alias generieren und kopieren",
+  QUICK_CREATE_BUTTON_TOOLTIP_TEXT: "Neues MailFlare Alias generieren",
 } satisfies Translation;
 
 export default de;

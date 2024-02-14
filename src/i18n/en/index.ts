@@ -144,6 +144,17 @@ const en = {
   ENABLED: "Enabled",
   UPDATE_MULTIPLE_TITLE: "Edit aliases",
   KEEP_DESTINATIONS: "Keep original destinations",
+
+  // BGSW and Content Scripts
+  BG_ERROR_NOT_LOGGED_IN: "Not logged in",
+  BG_ERROR_NO_DOMAIN: "No domain selected",
+  BG_ERROR_INVALID_DOMAIN: "Selected domain not found",
+  BG_ERROR_NO_DESTINATION: "No destination selected",
+  BG_ERROR_CUSTOM: "Cannot generate an alias when the (prefix) format is set to Custom",
+  BG_ALERT_LOADING: "Creating new alias",
+  BG_ALERT_CREATED: "Alias created: {alias}",
+  CONTEXT_MENU_ENTRY_TEXT: "Create new MailFlare Alias and copy it",
+  QUICK_CREATE_BUTTON_TOOLTIP_TEXT: "Create a new MailFlare Alias",
 } satisfies BaseTranslation;
 
 export default en;

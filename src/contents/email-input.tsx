@@ -1,5 +1,3 @@
-// noinspection JSXDomNesting
-
 import type { Settings } from "~utils/state";
 import type {
   PlasmoCSConfig,
@@ -9,17 +7,20 @@ import type {
 } from "plasmo";
 
 import { IconMailPlus } from "@tabler/icons-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useClipboard } from "@mantine/hooks";
 import { sendToBackground } from "@plasmohq/messaging";
 import { Storage } from "@plasmohq/storage";
-import cssText from "data-text:./email-input.style.css";
+import cssText from "data-text:./content-scripts.css";
 
+import { detectLocale, i18n } from "~i18n/i18n-util";
+import { loadLocale } from "~i18n/i18n-util.sync";
+import { detectBrowserLocale, setValueForElementByEvent } from "~utils/background";
 import { StorageKeys } from "~utils/state";
 
-const storage = new Storage({
-  area: "local",
-});
+const locale = detectLocale(detectBrowserLocale);
+loadLocale(locale);
+const LL = i18n()[locale];
 
 export const getStyle: PlasmoGetStyle = () => {
   const style = document.createElement("style");
@@ -27,11 +28,16 @@ export const getStyle: PlasmoGetStyle = () => {
   return style;
 };
 
+// noinspection JSUnusedGlobalSymbols
 export const config: PlasmoCSConfig = {
   matches: ["https://*/*"],
 };
 
-// @ts-ignore
+const storage = new Storage({
+  area: "local",
+});
+
+//@ts-expect-error
 export const getOverlayAnchor: PlasmoGetOverlayAnchor = async () => {
   const settings = await storage.get<Settings>(StorageKeys.MailflareSettings);
 
@@ -45,26 +51,13 @@ export const getOverlayAnchor: PlasmoGetOverlayAnchor = async () => {
 // Use this to optimize unmount lookups
 export const getShadowHostId = () => "mailflare-email-input-button";
 
-/**
- * Simulate the entry of a value into an element by using events.
- * Dispatches a keydown, keypress, and keyup event, then fires the `input` and `change` events before removing focus.
- * Modified from: https://github.com/bitwarden/clients/blob/master/apps/browser/src/autofill/content/autofill.js#L1092
- */
-function setValueForElementByEvent(el: HTMLInputElement, valueToSet: string) {
-  el.value = valueToSet;
-  el.dispatchEvent(new KeyboardEvent("keydown"));
-  el.dispatchEvent(new KeyboardEvent("keypress"));
-  el.dispatchEvent(new KeyboardEvent("keyup"));
-  el.dispatchEvent(new Event("input", { bubbles: true, cancelable: true }));
-  el.dispatchEvent(new Event("change", { bubbles: true, cancelable: true }));
-  el.blur();
-  el.value !== valueToSet && (el.value = valueToSet);
-}
-
+// noinspection JSUnusedGlobalSymbols
 export default function Inline(props: PlasmoCSUIProps) {
   const [isLoading, setIsLoading] = useState(false);
   const clipboard = useClipboard();
   const [error, setError] = useState<string>();
+  const [isSuccess, setIsSuccess] = useState(false);
+  const timeout = useRef<ReturnType<typeof setTimeout>>();
 
   if (!props.anchor?.element) return;
 
@@ -72,7 +65,10 @@ export default function Inline(props: PlasmoCSUIProps) {
   const { clientWidth: inputElementWidth, clientHeight: inputElementHeight } = props.anchor.element;
 
   async function generateAlias() {
+    clearTimeout(timeout.current);
     setError(undefined);
+    setIsSuccess(false);
+
     setIsLoading(true);
     const response = await sendToBackground({
       name: "generate-alias",
@@ -81,20 +77,25 @@ export default function Inline(props: PlasmoCSUIProps) {
       },
     });
     setIsLoading(false);
-    console.log("[MailFlare] Response from background worker:", response);
+
+    console.debug("[MailFlare] Response from background worker:", response);
+
     if (response.success) {
       clipboard.copy(response.data);
       const element = props.anchor?.element as HTMLInputElement;
       if (element) {
         setValueForElementByEvent(element, response.data);
       }
+
+      setIsSuccess(true);
+      timeout.current = setTimeout(() => setIsSuccess(false), 5000);
     } else {
       setError(response.message);
     }
   }
 
   return (
-    <html data-theme="light">
+    <div data-theme="mantine">
       <div
         className="dropdown dropdown-end dropdown-hover"
         style={{
@@ -104,7 +105,7 @@ export default function Inline(props: PlasmoCSUIProps) {
         }}>
         <label
           tabIndex={0}
-          className={`btn btn-square btn-sm ${!!error ? "btn-error" : "btn-warning"}`}
+          className={`btn btn-square btn-sm ${isSuccess ? "btn-success" : !!error ? "btn-error" : "btn-primary"}`}
           onClick={() => {
             return generateAlias();
           }}>
@@ -117,9 +118,9 @@ export default function Inline(props: PlasmoCSUIProps) {
         <div
           tabIndex={0}
           className="dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-56">
-          {error ? `Error: ${error}` : "Create a new MailFlare Alias"}
+          {LL.QUICK_CREATE_BUTTON_TOOLTIP_TEXT()}
         </div>
       </div>
-    </html>
+    </div>
   );
 }

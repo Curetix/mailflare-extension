@@ -540,6 +540,43 @@ type RootTranslation = {
    * K​e​e​p​ ​o​r​i​g​i​n​a​l​ ​d​e​s​t​i​n​a​t​i​o​n​s
    */
   KEEP_DESTINATIONS: string;
+  /**
+   * N​o​t​ ​l​o​g​g​e​d​ ​i​n
+   */
+  BG_ERROR_NOT_LOGGED_IN: string;
+  /**
+   * N​o​ ​d​o​m​a​i​n​ ​s​e​l​e​c​t​e​d
+   */
+  BG_ERROR_NO_DOMAIN: string;
+  /**
+   * S​e​l​e​c​t​e​d​ ​d​o​m​a​i​n​ ​n​o​t​ ​f​o​u​n​d
+   */
+  BG_ERROR_INVALID_DOMAIN: string;
+  /**
+   * N​o​ ​d​e​s​t​i​n​a​t​i​o​n​ ​s​e​l​e​c​t​e​d
+   */
+  BG_ERROR_NO_DESTINATION: string;
+  /**
+   * C​a​n​n​o​t​ ​g​e​n​e​r​a​t​e​ ​a​n​ ​a​l​i​a​s​ ​w​h​e​n​ ​t​h​e​ ​(​p​r​e​f​i​x​)​ ​f​o​r​m​a​t​ ​i​s​ ​s​e​t​ ​t​o​ ​C​u​s​t​o​m
+   */
+  BG_ERROR_CUSTOM: string;
+  /**
+   * C​r​e​a​t​i​n​g​ ​n​e​w​ ​a​l​i​a​s
+   */
+  BG_ALERT_LOADING: string;
+  /**
+   * A​l​i​a​s​ ​c​r​e​a​t​e​d​:​ ​{​a​l​i​a​s​}
+   * @param {unknown} alias
+   */
+  BG_ALERT_CREATED: RequiredParams<"alias">;
+  /**
+   * C​r​e​a​t​e​ ​n​e​w​ ​M​a​i​l​F​l​a​r​e​ ​A​l​i​a​s​ ​a​n​d​ ​c​o​p​y​ ​i​t
+   */
+  CONTEXT_MENU_ENTRY_TEXT: string;
+  /**
+   * C​r​e​a​t​e​ ​a​ ​n​e​w​ ​M​a​i​l​F​l​a​r​e​ ​A​l​i​a​s
+   */
+  QUICK_CREATE_BUTTON_TOOLTIP_TEXT: string;
 };
 
 export type TranslationFunctions = {
@@ -1059,6 +1096,42 @@ export type TranslationFunctions = {
    * Keep original destinations
    */
   KEEP_DESTINATIONS: () => LocalizedString;
+  /**
+   * Not logged in
+   */
+  BG_ERROR_NOT_LOGGED_IN: () => LocalizedString;
+  /**
+   * No domain selected
+   */
+  BG_ERROR_NO_DOMAIN: () => LocalizedString;
+  /**
+   * Selected domain not found
+   */
+  BG_ERROR_INVALID_DOMAIN: () => LocalizedString;
+  /**
+   * No destination selected
+   */
+  BG_ERROR_NO_DESTINATION: () => LocalizedString;
+  /**
+   * Cannot generate an alias when the (prefix) format is set to Custom
+   */
+  BG_ERROR_CUSTOM: () => LocalizedString;
+  /**
+   * Creating new alias
+   */
+  BG_ALERT_LOADING: () => LocalizedString;
+  /**
+   * Alias created: {alias}
+   */
+  BG_ALERT_CREATED: (arg: { alias: unknown }) => LocalizedString;
+  /**
+   * Create new MailFlare Alias and copy it
+   */
+  CONTEXT_MENU_ENTRY_TEXT: () => LocalizedString;
+  /**
+   * Create a new MailFlare Alias
+   */
+  QUICK_CREATE_BUTTON_TOOLTIP_TEXT: () => LocalizedString;
 };
 
 export type Formatters = {};

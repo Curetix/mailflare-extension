@@ -1,19 +1,15 @@
-import type { LocaleDetector } from "typesafe-i18n/detectors";
+// noinspection JSUnusedGlobalSymbols
 
 import { useEffect } from "react";
 import { useAtom } from "jotai";
 
 import App from "~app";
 import { popupHeight, popupWidth } from "~const";
+import { detectBrowserLocale } from "~utils/background";
 import { hostnameAtom } from "~utils/state";
-
-const detectBrowserLocale: LocaleDetector = () => {
-  return [chrome.i18n.getUILanguage()];
-};
 
 const detectors = [detectBrowserLocale];
 
-// noinspection JSUnusedGlobalSymbols
 export default function Popup() {
   const [, setHostname] = useAtom(hostnameAtom);
 
