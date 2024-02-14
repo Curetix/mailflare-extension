@@ -103,8 +103,15 @@ Your API key is stored locally in your browser and is used to directly communica
 
 ## Project Structure
 
+- assets/ - Assets for the GitHub repository, e.g. images in the README
 - functions/ - Cloudflare pages function for proxying requests to the Cloudflare API for the web version due to CORS
+- public/ - Public assets for the web version
 - src/ - Main React app
+  - src/background/\* - Background service worker scripts
+  - src/contents/\* - Content scripts
+  - src/i18n/\* - Everything around internalization, using [typesafe-i18n](https://github.com/ivanhofer/typesafe-i18n)
+  - src/lib/cloudflare/\* - Cloudflare API functions
+  - src/utils/\* - Various utility functions and classes
   - src/popup.tsx - Entrypoint for the extension
   - src/web.ts - Entrypoint for the web app
 
