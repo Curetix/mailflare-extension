@@ -76,4 +76,4 @@ jobs:
         with:
           keys: ${{ secrets.SUBMIT_KEYS }}
           chrome-file: ${{ env.ARTIFACT_NAME }}/chrome-mv3-prod.zip
-          firefox-file: ${{ env.ARTIFACT_NAME }}/firefox-mv2-prod.zip
+          firefox-file: ${{ env.ARTIFACT_NAME }}/firefox-mv3-prod.zip
