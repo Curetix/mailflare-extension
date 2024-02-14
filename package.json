@@ -22,14 +22,14 @@
   "scripts": {
     "prepare": "husky install && plasmo build",
     "dev": "plasmo dev --target=chrome-mv3",
-    "dev:firefox": "plasmo dev --target=firefox-mv2",
+    "dev:firefox": "plasmo dev --target=firefox-mv3",
     "dev:web": "run-p dev:vite dev:functions",
     "dev:vite": "vite --port 4000",
     "dev:functions": "wrangler pages dev --port 4001 dist/",
     "build": "tsc && plasmo build --hoist --zip",
     "build:all": "tsc && run-s build:chrome build:firefox",
     "build:chrome": "plasmo build --zip --hoist --target=chrome-mv3",
-    "build:firefox": "plasmo build --zip --hoist --target=firefox-mv2",
+    "build:firefox": "plasmo build --zip --hoist --target=firefox-mv3",
     "build:vite": "tsc && vite build",
     "prettier": "prettier -w *.json postcss.config.js vite.config.ts functions/ src/",
     "typesafe-i18n": "typesafe-i18n"
@@ -94,7 +94,7 @@
       "activeTab"
     ],
     "host_permissions": [
-      "https://api.cloudflare.com/*"
+      "*://api.cloudflare.com/*"
     ],
     "browser_specific_settings": {
       "gecko": {
