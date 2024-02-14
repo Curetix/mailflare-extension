@@ -9,50 +9,50 @@ dependencies:
     specifier: ^11.11.3
     version: 11.11.3(@types/react@18.2.55)(react@18.2.0)
   '@mantine/core':
-    specifier: ^7.5.1
-    version: 7.5.1(@mantine/hooks@7.5.1)(@types/react@18.2.55)(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^7.5.2
+    version: 7.5.2(@mantine/hooks@7.5.2)(@types/react@18.2.55)(react-dom@18.2.0)(react@18.2.0)
   '@mantine/form':
-    specifier: ^7.5.1
-    version: 7.5.1(react@18.2.0)
+    specifier: ^7.5.2
+    version: 7.5.2(react@18.2.0)
   '@mantine/hooks':
-    specifier: ^7.5.1
-    version: 7.5.1(react@18.2.0)
+    specifier: ^7.5.2
+    version: 7.5.2(react@18.2.0)
   '@mantine/notifications':
-    specifier: ^7.5.1
-    version: 7.5.1(@mantine/core@7.5.1)(@mantine/hooks@7.5.1)(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^7.5.2
+    version: 7.5.2(@mantine/core@7.5.2)(@mantine/hooks@7.5.2)(react-dom@18.2.0)(react@18.2.0)
   '@plasmohq/messaging':
     specifier: ^0.6.2
     version: 0.6.2(react@18.2.0)
   '@plasmohq/storage':
-    specifier: ^1.9.2
-    version: 1.9.2(react@18.2.0)
+    specifier: ^1.9.3
+    version: 1.9.3(react@18.2.0)
   '@tabler/icons-react':
     specifier: ^2.47.0
     version: 2.47.0(react@18.2.0)
   '@tanstack/query-core':
-    specifier: ^5.18.1
-    version: 5.18.1
+    specifier: ^5.20.5
+    version: 5.20.5
   '@tanstack/react-query':
-    specifier: ^5.18.1
-    version: 5.18.1(react@18.2.0)
+    specifier: ^5.20.5
+    version: 5.20.5(react@18.2.0)
   '@tanstack/react-query-devtools':
-    specifier: ^5.18.1
-    version: 5.18.1(@tanstack/react-query@5.18.1)(react@18.2.0)
+    specifier: ^5.20.5
+    version: 5.20.5(@tanstack/react-query@5.20.5)(react@18.2.0)
   '@tanstack/react-query-persist-client':
-    specifier: ^5.18.1
-    version: 5.18.1(@tanstack/react-query@5.18.1)(react@18.2.0)
+    specifier: ^5.20.5
+    version: 5.20.5(@tanstack/react-query@5.20.5)(react@18.2.0)
   autoprefixer:
     specifier: ^10.4.17
     version: 10.4.17(postcss@8.4.35)
   daisyui:
-    specifier: ^4.6.2
-    version: 4.6.2(postcss@8.4.35)
+    specifier: ^4.7.2
+    version: 4.7.2(postcss@8.4.35)
   jotai:
     specifier: ^2.6.4
     version: 2.6.4(@types/react@18.2.55)(react@18.2.0)
   jotai-tanstack-query:
     specifier: ^0.8.5
-    version: 0.8.5(@tanstack/query-core@5.18.1)(jotai@2.6.4)(wonka@6.3.4)
+    version: 0.8.5(@tanstack/query-core@5.20.5)(jotai@2.6.4)(wonka@6.3.4)
   plasmo:
     specifier: ^0.84.2
     version: 0.84.2(postcss@8.4.35)(react-dom@18.2.0)(react@18.2.0)
@@ -86,8 +86,8 @@ dependencies:
 
 devDependencies:
   '@cloudflare/workers-types':
-    specifier: ^4.20240129.0
-    version: 4.20240129.0
+    specifier: ^4.20240208.0
+    version: 4.20240208.0
   '@ianvs/prettier-plugin-sort-imports':
     specifier: ^4.1.1
     version: 4.1.1(prettier@3.2.5)
@@ -98,8 +98,8 @@ devDependencies:
     specifier: ^0.0.260
     version: 0.0.260
   '@types/node':
-    specifier: ^20.11.16
-    version: 20.11.16
+    specifier: ^20.11.17
+    version: 20.11.17
   '@types/psl':
     specifier: ^1.1.3
     version: 1.1.3
@@ -111,10 +111,10 @@ devDependencies:
     version: 18.2.19
   '@vitejs/plugin-react-swc':
     specifier: ^3.6.0
-    version: 3.6.0(vite@5.1.0)
+    version: 3.6.0(vite@5.1.2)
   husky:
-    specifier: ^8.0.3
-    version: 8.0.3
+    specifier: ^9.0.11
+    version: 9.0.11
   prettier:
     specifier: ^3.2.5
     version: 3.2.5
@@ -122,17 +122,17 @@ devDependencies:
     specifier: ^5.3.3
     version: 5.3.3
   vite:
-    specifier: ^5.1.0
-    version: 5.1.0(@types/node@20.11.16)
+    specifier: ^5.1.2
+    version: 5.1.2(@types/node@20.11.17)
   vite-plugin-pwa:
-    specifier: ^0.17.5
-    version: 0.17.5(vite@5.1.0)(workbox-build@7.0.0)(workbox-window@7.0.0)
+    specifier: ^0.18.1
+    version: 0.18.1(vite@5.1.2)(workbox-build@7.0.0)(workbox-window@7.0.0)
   vite-tsconfig-paths:
     specifier: ^4.3.1
-    version: 4.3.1(typescript@5.3.3)(vite@5.1.0)
+    version: 4.3.1(typescript@5.3.3)(vite@5.1.2)
   wrangler:
-    specifier: ^3.27.0
-    version: 3.27.0
+    specifier: ^3.28.2
+    version: 3.28.2(@cloudflare/workers-types@4.20240208.0)
 
 packages:
 
@@ -1303,8 +1303,8 @@ packages:
       '@babel/helper-validator-identifier': 7.22.20
       to-fast-properties: 2.0.0
 
-  /@cloudflare/kv-asset-handler@0.2.0:
-    resolution: {integrity: sha512-MVbXLbTcAotOPUj0pAMhVtJ+3/kFkwJqc5qNOleOZTv6QkZZABDMS21dSrSlVswEHwrpWC03e4fWytjqKvuE2A==}
+  /@cloudflare/kv-asset-handler@0.3.1:
+    resolution: {integrity: sha512-lKN2XCfKCmpKb86a1tl4GIwsJYDy9TGuwjhDELLmpKygQhw8X2xR4dusgpC5Tg7q1pB96Eb0rBo81kxSILQMwA==}
     dependencies:
       mime: 3.0.0
     dev: true
@@ -1354,8 +1354,8 @@ packages:
     dev: true
     optional: true
 
-  /@cloudflare/workers-types@4.20240129.0:
-    resolution: {integrity: sha512-VyHbih/bqh/RN2FRxnXznG0bpBIg9RfSP1ldbAVnCXFinjOdv0zm2P/RWqOVN9+FgU5sanRltwwT7jGngxZy8w==}
+  /@cloudflare/workers-types@4.20240208.0:
+    resolution: {integrity: sha512-MVGTTjZpJu4kJONvai5SdJzWIhOJbuweVZ3goI7FNyG+JdoQH41OoB+nMhLsX626vPLZVWGPIWsiSo/WZHzgQw==}
     dev: true
 
   /@cspotcode/source-map-support@0.8.1:
@@ -2322,15 +2322,15 @@ packages:
     dev: false
     optional: true
 
-  /@mantine/core@7.5.1(@mantine/hooks@7.5.1)(@types/react@18.2.55)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-V7apuQuRubqxTRXb1uxOM43K7tkLRzpbb1ONJ/sj8QRp/26bShkdYp7EVuSKyrQ8DQ5EGYyBBGyzBOQARh41gA==}
+  /@mantine/core@7.5.2(@mantine/hooks@7.5.2)(@types/react@18.2.55)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-e58qTiLEp9qLxQ5JZlPNykJWBR+oi0q2J8JPKTjTJD+4UM58uh9oL4wuMEdUyBgiYGvDc/cVYF+rftMpuCt+KQ==}
     peerDependencies:
-      '@mantine/hooks': 7.5.1
+      '@mantine/hooks': 7.5.2
       react: ^18.2.0
       react-dom: ^18.2.0
     dependencies:
       '@floating-ui/react': 0.24.8(react-dom@18.2.0)(react@18.2.0)
-      '@mantine/hooks': 7.5.1(react@18.2.0)
+      '@mantine/hooks': 7.5.2(react@18.2.0)
       clsx: 2.0.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -2342,8 +2342,8 @@ packages:
       - '@types/react'
     dev: false
 
-  /@mantine/form@7.5.1(react@18.2.0):
-    resolution: {integrity: sha512-NPc6sYXZGImFsZvr9Md5DM8C+vpC14rqLcOJlW4DFqze1/MBblVxR+abCNM12r5hrqUxHXEu55yPzxcR9Hoj3Q==}
+  /@mantine/form@7.5.2(react@18.2.0):
+    resolution: {integrity: sha512-Kz4UNLvAvxB1utKflt4gr5Uzt1Dxj17thcnlLzB2JX6unzV3OkvC36b5XoXAtuoFxt/RzEyUrp5M38jZLwCLEA==}
     peerDependencies:
       react: ^18.2.0
     dependencies:
@@ -2352,32 +2352,32 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@mantine/hooks@7.5.1(react@18.2.0):
-    resolution: {integrity: sha512-LfrEOkX8U2KbkYAU5BMA7FPbMva/TSd65c45W35wHSx3iqYMsoPN9+Ll1zc/HT0XNFp73jGet9cU7VREbAl0/A==}
+  /@mantine/hooks@7.5.2(react@18.2.0):
+    resolution: {integrity: sha512-4POujH5Xx84VB/xfM6EttDq725dqqL2DntoeMjHz3Ua94aK5Y0VSc1IwlETxCuF7yNV5/w/Z8kgeVVa5cDgrPg==}
     peerDependencies:
       react: ^18.2.0
     dependencies:
       react: 18.2.0
     dev: false
 
-  /@mantine/notifications@7.5.1(@mantine/core@7.5.1)(@mantine/hooks@7.5.1)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-IQDOAz+U9G6IkYXAXG9qL5EESmnhWV3JBJrxwBOPPdi1e9S/akQlsmABWS/voB9WFnOnbMbrkF067RVBA7W4dg==}
+  /@mantine/notifications@7.5.2(@mantine/core@7.5.2)(@mantine/hooks@7.5.2)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-wGRDeOG2NGng202k/vZPfkRJMHtflvIORYe4cJaQAd9EhP646xr/ji8zzdXeXvUO5PrKlBpu+K+HSF1bQQY4og==}
     peerDependencies:
-      '@mantine/core': 7.5.1
-      '@mantine/hooks': 7.5.1
+      '@mantine/core': 7.5.2
+      '@mantine/hooks': 7.5.2
       react: ^18.2.0
       react-dom: ^18.2.0
     dependencies:
-      '@mantine/core': 7.5.1(@mantine/hooks@7.5.1)(@types/react@18.2.55)(react-dom@18.2.0)(react@18.2.0)
-      '@mantine/hooks': 7.5.1(react@18.2.0)
-      '@mantine/store': 7.5.1(react@18.2.0)
+      '@mantine/core': 7.5.2(@mantine/hooks@7.5.2)(@types/react@18.2.55)(react-dom@18.2.0)(react@18.2.0)
+      '@mantine/hooks': 7.5.2(react@18.2.0)
+      '@mantine/store': 7.5.2(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-transition-group: 4.4.5(react-dom@18.2.0)(react@18.2.0)
     dev: false
 
-  /@mantine/store@7.5.1(react@18.2.0):
-    resolution: {integrity: sha512-sDaPXB3v9JlJghNTnRTFT2hC3HN6pdBcCXj0CqO/QrJgtRA7A3FxW+mnY7YQOaBxHJ1MIRr+zsv0Qy1f/pu1dw==}
+  /@mantine/store@7.5.2(react@18.2.0):
+    resolution: {integrity: sha512-au53HLLH/LfHLOR2Zb00TgG11xAXZNJb4jqsEhAr90axCIw6mlBDIAhbb+Yu6OwDaV7TscE/sonkUstmRjLh/w==}
     peerDependencies:
       react: ^18.2.0
     dependencies:
@@ -3996,8 +3996,8 @@ packages:
       shell-quote: 1.8.1
     dev: true
 
-  /@plasmohq/storage@1.9.2(react@18.2.0):
-    resolution: {integrity: sha512-bifgENv5WSDn+f4/pbKyPiuwOOAKIrQlo0EfXSMvTMsX5pV74S+9mIbDGKSGdCXwK0nlfH0I9xsTAtTYTwxcxg==}
+  /@plasmohq/storage@1.9.3(react@18.2.0):
+    resolution: {integrity: sha512-6fHqDkxX6Mj32+WuyoOzFZ9XOmhf+vfKF6+nxO5POgrYnpIdWuenAtiR5uxmH3nPSDWVgaNvy6DB9MGnw3UrQA==}
     peerDependencies:
       react: ^16.8.6 || ^17 || ^18
     peerDependenciesMeta:
@@ -4589,48 +4589,48 @@ packages:
     resolution: {integrity: sha512-4w5evLh+7FUUiA1GucvGj2ReX2TvOjEr4ejXdwL/bsjoSkof6r1gQmzqI+VHrE2CpJpB3al7bCTulOkFa/RcyA==}
     dev: false
 
-  /@tanstack/query-core@5.18.1:
-    resolution: {integrity: sha512-fYhrG7bHgSNbnkIJF2R4VUXb4lF7EBiQjKkDc5wOlB7usdQOIN4LxxHpDxyE3qjqIst1WBGvDtL48T0sHJGKCw==}
+  /@tanstack/query-core@5.20.5:
+    resolution: {integrity: sha512-T1W28gGgWn0A++tH3lxj3ZuUVZZorsiKcv+R50RwmPYz62YoDEkG4/aXHZELGkRp4DfrW07dyq2K5dvJ4Wl1aA==}
     dev: false
 
-  /@tanstack/query-devtools@5.18.1:
-    resolution: {integrity: sha512-U8bDnDGuwdVMT4ndegPTcjOHOmX/UOjjB7o7UalRIq3DMHLRf8Ufh4+xoAvk3LNK5GBmUBfFSw4osYe5l9n7Lw==}
+  /@tanstack/query-devtools@5.20.2:
+    resolution: {integrity: sha512-BZfSjhk/NGPbqte5E3Vc1Zbj28uWt///4I0DgzAdWrOtMVvdl0WlUXK23K2daLsbcyfoDR4jRI4f2Z5z/mMzuw==}
     dev: false
 
-  /@tanstack/query-persist-client-core@5.18.1:
-    resolution: {integrity: sha512-xGTKSIx0+CgIQzmjlsVPYIvueqdP9qoPlWsEYMDyI9NDTcNooJyWLjSrRoNdZI8NYzq86qCFZg/ace2Ty0GPNQ==}
+  /@tanstack/query-persist-client-core@5.20.5:
+    resolution: {integrity: sha512-wR11+nLFFqmP5Em/vgih/89YABWfO6gzuv1h+934LAnsxNew3Ih4y1j/M7WgammWnpkUJrFy50/5BCAk4bQZIg==}
     dependencies:
-      '@tanstack/query-core': 5.18.1
+      '@tanstack/query-core': 5.20.5
     dev: false
 
-  /@tanstack/react-query-devtools@5.18.1(@tanstack/react-query@5.18.1)(react@18.2.0):
-    resolution: {integrity: sha512-IrzAsodabSkEVBP0DHkuzcmqKFZ0EgG9ocuD/fRIrjYmbqqdHxzNmp2WmAZlkVo7hamA0ZdzvL5sjo1koFzjHA==}
+  /@tanstack/react-query-devtools@5.20.5(@tanstack/react-query@5.20.5)(react@18.2.0):
+    resolution: {integrity: sha512-Wl7IzNuKCb4h41a5iH/YXNwalHItqJPCAr4r8+0iUYOLHNOf3E9P0G4kzZ9sqDoWKxY04qst6Vrij9bwPzLQRQ==}
     peerDependencies:
-      '@tanstack/react-query': ^5.18.1
+      '@tanstack/react-query': ^5.20.5
       react: ^18.0.0
     dependencies:
-      '@tanstack/query-devtools': 5.18.1
-      '@tanstack/react-query': 5.18.1(react@18.2.0)
+      '@tanstack/query-devtools': 5.20.2
+      '@tanstack/react-query': 5.20.5(react@18.2.0)
       react: 18.2.0
     dev: false
 
-  /@tanstack/react-query-persist-client@5.18.1(@tanstack/react-query@5.18.1)(react@18.2.0):
-    resolution: {integrity: sha512-B1T9y48QwdkU8oLnDg/dRngp8bSHFPZUDzdov9OMBTUVhySpuPZJCqSArLVNipU6RSoU8ivTPkxOKvyqzMsmYg==}
+  /@tanstack/react-query-persist-client@5.20.5(@tanstack/react-query@5.20.5)(react@18.2.0):
+    resolution: {integrity: sha512-Djjssuvog6DAq1+iyy9cq+vdqSQBuMKJ1hwf/4SzoeveL69x+BwxY1BY4XZ3v1AERtbH/gYfD9047EYwGkxHww==}
     peerDependencies:
-      '@tanstack/react-query': ^5.18.1
+      '@tanstack/react-query': ^5.20.5
       react: ^18.0.0
     dependencies:
-      '@tanstack/query-persist-client-core': 5.18.1
-      '@tanstack/react-query': 5.18.1(react@18.2.0)
+      '@tanstack/query-persist-client-core': 5.20.5
+      '@tanstack/react-query': 5.20.5(react@18.2.0)
       react: 18.2.0
     dev: false
 
-  /@tanstack/react-query@5.18.1(react@18.2.0):
-    resolution: {integrity: sha512-PdI07BbsahZ+04PxSuDQsQvBWe008eWFk/YYWzt8fvzt2sALUM0TpAJa/DFpqa7+SSo7j1EQR6Jx6znXNHyaXw==}
+  /@tanstack/react-query@5.20.5(react@18.2.0):
+    resolution: {integrity: sha512-6MHwJ8G9cnOC/XKrwt56QMc91vN7hLlAQNUA0ubP7h9Jj3a/CmkUwT6ALdFbnVP+PsYdhW3WONa8WQ4VcTaSLQ==}
     peerDependencies:
       react: ^18.0.0
     dependencies:
-      '@tanstack/query-core': 5.18.1
+      '@tanstack/query-core': 5.20.5
       react: 18.2.0
     dev: false
 
@@ -4678,11 +4678,11 @@ packages:
   /@types/node-forge@1.3.11:
     resolution: {integrity: sha512-FQx220y22OKNTqaByeBGqHWYz4cl94tpcxeFdvBo3wjG6XPBuZ0BNgNZRV5J5TFmmcsJ4IzsLkmGRiQbnYsBEQ==}
     dependencies:
-      '@types/node': 20.11.16
+      '@types/node': 20.11.17
     dev: true
 
-  /@types/node@20.11.16:
-    resolution: {integrity: sha512-gKb0enTmRCzXSSUJDq6/sPcqrfCv2mkkG6Jt/clpn5eiCbKTY+SgZUxo+p8ZKMof5dCp9vHQUAB7wOUTod22wQ==}
+  /@types/node@20.11.17:
+    resolution: {integrity: sha512-QmgQZGWu1Yw9TDyAP9ZzpFJKynYNeOvwMJmaxABfieQoVoiVOS6MN1WSpqpRcbeA5+RW82kraAVxCCJg+780Qw==}
     dependencies:
       undici-types: 5.26.5
     dev: true
@@ -4718,7 +4718,7 @@ packages:
   /@types/resolve@1.17.1:
     resolution: {integrity: sha512-yy7HuzQhj0dhGpD8RLXSZWEkLsV9ibvxvi6EiJ3bkqLAO1RGo0WbkWQiwpRlSFymTJRz0d3k5LM3kkx8ArDbLw==}
     dependencies:
-      '@types/node': 20.11.16
+      '@types/node': 20.11.17
     dev: true
 
   /@types/scheduler@0.16.8:
@@ -4728,13 +4728,13 @@ packages:
     resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
     dev: true
 
-  /@vitejs/plugin-react-swc@3.6.0(vite@5.1.0):
+  /@vitejs/plugin-react-swc@3.6.0(vite@5.1.2):
     resolution: {integrity: sha512-XFRbsGgpGxGzEV5i5+vRiro1bwcIaZDIdBRP16qwm+jP68ue/S8FJTBEgOeojtVDYrbSua3XFp71kC8VJE6v+g==}
     peerDependencies:
       vite: ^4 || ^5
     dependencies:
       '@swc/core': 1.3.107
-      vite: 5.1.0(@types/node@20.11.16)
+      vite: 5.1.2(@types/node@20.11.17)
     transitivePeerDependencies:
       - '@swc/helpers'
     dev: true
@@ -5483,8 +5483,8 @@ packages:
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dev: false
 
-  /daisyui@4.6.2(postcss@8.4.35):
-    resolution: {integrity: sha512-LBIbI76wVVRCQt1Uis2Y2/PRdGfMkNMFsHOjfpav8n7SamwRwPOCiNUClIrnX2jerWW3mLZlzRMCnQfxmGEjow==}
+  /daisyui@4.7.2(postcss@8.4.35):
+    resolution: {integrity: sha512-9UCss12Zmyk/22u+JbkVrHHxOzFOyY17HuqP5LeswI4hclbj6qbjJTovdj2zRy8cCH6/n6Wh0lTLjriGnyGh0g==}
     engines: {node: '>=16.9.0'}
     dependencies:
       css-selector-tokenizer: 0.8.0
@@ -6360,9 +6360,9 @@ packages:
     engines: {node: '>=10.17.0'}
     dev: false
 
-  /husky@8.0.3:
-    resolution: {integrity: sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==}
-    engines: {node: '>=14'}
+  /husky@9.0.11:
+    resolution: {integrity: sha512-AB6lFlbwwyIqMdHYhwPe+kjOC3Oc5P3nThEoW/AaO2BX3vJDjWPFxYLxokUZOo6RNX20He3AaT8sESs9NJcmEw==}
+    engines: {node: '>=18'}
     hasBin: true
     dev: true
 
@@ -6682,7 +6682,7 @@ packages:
     resolution: {integrity: sha512-KWYVV1c4i+jbMpaBC+U++4Va0cp8OisU185o73T1vo99hqi7w8tSJfUXYswwqqrjzwxa6KpRK54WhPvwf5w6PQ==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 20.11.16
+      '@types/node': 20.11.17
       merge-stream: 2.0.0
       supports-color: 7.2.0
     dev: true
@@ -6692,14 +6692,14 @@ packages:
     hasBin: true
     dev: false
 
-  /jotai-tanstack-query@0.8.5(@tanstack/query-core@5.18.1)(jotai@2.6.4)(wonka@6.3.4):
+  /jotai-tanstack-query@0.8.5(@tanstack/query-core@5.20.5)(jotai@2.6.4)(wonka@6.3.4):
     resolution: {integrity: sha512-cFq+1sE7Qkt7Kh9Db2KE8LXdbPiGwCiy8S5YSEnjUDxF59A4XhoXTDJBuPiMIA1dD1/yMsNKr1ADfN5CvscYZw==}
     peerDependencies:
       '@tanstack/query-core': '*'
       jotai: '>=2.0.0'
       wonka: ^6.3.4
     dependencies:
-      '@tanstack/query-core': 5.18.1
+      '@tanstack/query-core': 5.20.5
       jotai: 2.6.4(@types/react@18.2.55)(react@18.2.0)
       wonka: 6.3.4
     dev: false
@@ -7218,8 +7218,8 @@ packages:
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dev: false
 
-  /miniflare@3.20240129.1:
-    resolution: {integrity: sha512-GfqclPxbTnam4S8GKHRkFyr+s+szELK/ORtQ3ZFUiGBO4HNJsaeA6RhBMKBH7iHqn5ng035cyPsLZvH35lwtsA==}
+  /miniflare@3.20240129.2:
+    resolution: {integrity: sha512-BPUg8HsPmWQlRFUeiQk274i8M9L0gOvzbkjryuTvCX+M53EwBpP0gM2wyrRr/HokQoJcxWGh3InBu6L8+0bbPw==}
     engines: {node: '>=16.13'}
     hasBin: true
     dependencies:
@@ -9252,8 +9252,8 @@ packages:
       spdx-expression-parse: 3.0.1
     dev: true
 
-  /vite-plugin-pwa@0.17.5(vite@5.1.0)(workbox-build@7.0.0)(workbox-window@7.0.0):
-    resolution: {integrity: sha512-UxRNPiJBzh4tqU/vc8G2TxmrUTzT6BqvSzhszLk62uKsf+npXdvLxGDz9C675f4BJi6MbD2tPnJhi5txlMzxbQ==}
+  /vite-plugin-pwa@0.18.1(vite@5.1.2)(workbox-build@7.0.0)(workbox-window@7.0.0):
+    resolution: {integrity: sha512-2A3BF52l9F8hCkdPy/VP2C+hA+fmBvzJGynCZc9XS6mHTcMvo9046FKc2NqlnkKwTOGtQEwXLEIduML/+eYtdw==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
       vite: ^3.1.0 || ^4.0.0 || ^5.0.0
@@ -9263,14 +9263,14 @@ packages:
       debug: 4.3.4
       fast-glob: 3.3.2
       pretty-bytes: 6.1.1
-      vite: 5.1.0(@types/node@20.11.16)
+      vite: 5.1.2(@types/node@20.11.17)
       workbox-build: 7.0.0
       workbox-window: 7.0.0
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /vite-tsconfig-paths@4.3.1(typescript@5.3.3)(vite@5.1.0):
+  /vite-tsconfig-paths@4.3.1(typescript@5.3.3)(vite@5.1.2):
     resolution: {integrity: sha512-cfgJwcGOsIxXOLU/nELPny2/LUD/lcf1IbfyeKTv2bsupVbTH/xpFtdQlBmIP1GEK2CjjLxYhFfB+QODFAx5aw==}
     peerDependencies:
       vite: '*'
@@ -9281,14 +9281,14 @@ packages:
       debug: 4.3.4
       globrex: 0.1.2
       tsconfck: 3.0.1(typescript@5.3.3)
-      vite: 5.1.0(@types/node@20.11.16)
+      vite: 5.1.2(@types/node@20.11.17)
     transitivePeerDependencies:
       - supports-color
       - typescript
     dev: true
 
-  /vite@5.1.0(@types/node@20.11.16):
-    resolution: {integrity: sha512-STmSFzhY4ljuhz14bg9LkMTk3d98IO6DIArnTY6MeBwiD1Za2StcQtz7fzOUnRCqrHSD5+OS2reg4HOz1eoLnw==}
+  /vite@5.1.2(@types/node@20.11.17):
+    resolution: {integrity: sha512-uwiFebQbTWRIGbCaTEBVAfKqgqKNKMJ2uPXsXeLIZxM8MVMjoS3j0cG8NrPxdDIadaWnPSjrkLWffLSC+uiP3Q==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -9315,7 +9315,7 @@ packages:
       terser:
         optional: true
     dependencies:
-      '@types/node': 20.11.16
+      '@types/node': 20.11.17
       esbuild: 0.19.12
       postcss: 8.4.35
       rollup: 4.9.6
@@ -9544,18 +9544,24 @@ packages:
       '@cloudflare/workerd-windows-64': 1.20240129.0
     dev: true
 
-  /wrangler@3.27.0:
-    resolution: {integrity: sha512-VV2QXH+4OfNwWRR2cgMw5Xh6WQXec8h1cPjgKMWuUTR1q0Ha8TiEhU1rBOraRYTZbUuM4tqqO4GYeOE0AX7oVQ==}
+  /wrangler@3.28.2(@cloudflare/workers-types@4.20240208.0):
+    resolution: {integrity: sha512-hlD4f2avBZuR1+qo9Um6D1prdWrSRtGTo9h6o/AKce+bHQEJWoJgJKHeLmrpZlLtHg/gGR1Xa1xzrexhuIzeJw==}
     engines: {node: '>=16.17.0'}
     hasBin: true
+    peerDependencies:
+      '@cloudflare/workers-types': ^4.20230914.0
+    peerDependenciesMeta:
+      '@cloudflare/workers-types':
+        optional: true
     dependencies:
-      '@cloudflare/kv-asset-handler': 0.2.0
+      '@cloudflare/kv-asset-handler': 0.3.1
+      '@cloudflare/workers-types': 4.20240208.0
       '@esbuild-plugins/node-globals-polyfill': 0.2.3(esbuild@0.17.19)
       '@esbuild-plugins/node-modules-polyfill': 0.2.2(esbuild@0.17.19)
       blake3-wasm: 2.1.5
       chokidar: 3.5.3
       esbuild: 0.17.19
-      miniflare: 3.20240129.1
+      miniflare: 3.20240129.2
       nanoid: 3.3.7
       path-to-regexp: 6.2.1
       resolve: 1.22.8
