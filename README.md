@@ -15,14 +15,14 @@ Built with [React](https://github.com/facebook/react), [Plasmo](https://github.c
 
 ![Alias List](./assets/screen_aliases.png)
 ![Create Alias](./assets/screen_create_alias.png)
-![Alias Quick-Create Button](./assets/screen_quick_create.gif)
 
 ## Features
 
 - Create / edit / delete aliases, edit / delete aliases in bulk
 - Multiple formats for alias addresses (random characters, random words, custom), optionally prefixed with current website name
 - Search aliases and their descriptions
-- One-Click alias generation directly inside email input fields
+- One-Click alias generation directly inside email input fields ([Demo GIF](./assets/screen_quick_create_button.gif))
+- One-Click alias generation from the context menu ([Demo GIF](./assets/screen_context_menu.gif))
 
 ## Installation
 
