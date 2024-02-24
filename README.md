@@ -59,6 +59,12 @@ Download the extension either directly from the Chrome Web Store, or:
 - Download the latest version from the [releases section](https://github.com/Curetix/mailflare-extension/releases/latest)
 - When clicking on the file, Firefox will automatically ask if you want to install the extension
 - Alternatively: right-click on the file, **Save target as**, drag-and-drop the downloaded file into Firefox
+- After installing, you might have to manually enable required permissions:
+  - Go to the addons page (`about:addons`)
+  - Click on MailFlare
+  - Go to the Permissions tab
+  - Enable at least `Access your data for *://api.cloudflare.com`
+  - If you don't intend to use the Quick-Create button or context menu create button, you can leave `Access your data for all websites` disabled
 
 ### Progressive Web App
 
