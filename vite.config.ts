@@ -9,7 +9,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["favicon.ico", "icons/192.png"],
+      includeAssets: ["favicon.ico", "icon-192.png"],
       manifest: {
         name: "MailFlare - Email Aliases",
         short_name: "MailFlare",
@@ -24,23 +24,13 @@ export default defineConfig({
         theme_color: "#FF922B",
         icons: [
           {
-            src: "icons/128.png",
-            sizes: "128x128",
+            src: "icon-192.png",
+            sizes: "192x192",
             type: "image/png",
           },
           {
-            src: "icons/256.png",
-            sizes: "256x256",
-            type: "image/png",
-          },
-          {
-            src: "icons/512.png",
+            src: "icon-512.png",
             sizes: "512x512",
-            type: "image/png",
-          },
-          {
-            src: "icons/1024.png",
-            sizes: "1024x1024",
             type: "image/png",
           },
         ],
