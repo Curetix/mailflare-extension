@@ -31,8 +31,9 @@
     "build:chrome": "plasmo build --zip --hoist --target=chrome-mv3",
     "build:firefox": "plasmo build --zip --hoist --target=firefox-mv3",
     "build:vite": "tsc && vite build",
-    "prettier": "prettier -w *.json postcss.config.js vite.config.ts functions/ src/",
-    "typesafe-i18n": "typesafe-i18n"
+    "typesafe-i18n": "typesafe-i18n",
+    "lint": "biome lint functions/ src/",
+    "format": "biome format --write functions/ src/"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -63,8 +64,8 @@
     "typesafe-i18n": "^5.26.2"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.5.3",
     "@cloudflare/workers-types": "^4.20240222.0",
-    "@ianvs/prettier-plugin-sort-imports": "^4.1.1",
     "@plasmohq/rps": "^1.8.7",
     "@types/chrome": "^0.0.262",
     "@types/node": "^20.11.25",
@@ -73,7 +74,7 @@
     "@types/react-dom": "^18.2.21",
     "@vitejs/plugin-react-swc": "^3.6.0",
     "husky": "^9.0.11",
-    "prettier": "^3.2.5",
+    "lint-staged": "^15.2.2",
     "typescript": "^5.4.2",
     "vite": "^5.1.5",
     "vite-plugin-pwa": "^0.19.2",
@@ -93,7 +94,8 @@
       "contextMenus"
     ],
     "host_permissions": [
-      "*://api.cloudflare.com/*"
+      "*://api.cloudflare.com/*",
+      "*://localhost/*"
     ],
     "browser_specific_settings": {
       "gecko": {
@@ -102,6 +104,8 @@
     }
   },
   "lint-staged": {
-    "**/*.{js,jsx,ts,tsx,json,css,html,md}": "prettier --write"
+    "**/*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
+      "biome check --apply --no-errors-on-unmatched"
+    ]
   }
 }

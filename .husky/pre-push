@@ -1,1 +1,1 @@
-npm exec tsc
+pnpm exec tsc && pnpm run lint
