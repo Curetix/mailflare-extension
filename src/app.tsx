@@ -1,10 +1,10 @@
 import type { LocaleDetector } from "typesafe-i18n/detectors";
 
+import { ActionIcon, Divider, Flex, Group, Text } from "@mantine/core";
 import { IconSettings } from "@tabler/icons-react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { useState } from "react";
-import { ActionIcon, Divider, Flex, Group, Text } from "@mantine/core";
 import { useAtom } from "jotai";
+import { useState } from "react";
 
 import AliasList from "~components/alias-list";
 import Login from "~components/login";

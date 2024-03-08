@@ -6,8 +6,8 @@ import type {
 } from "~lib/cloudflare/cloudflare.types";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useRef, useState } from "react";
 import { useAtom } from "jotai";
+import { useEffect, useRef, useState } from "react";
 
 import { isWebApp } from "~const";
 import { CloudflareApiClient } from "~lib/cloudflare/api";
@@ -34,15 +34,15 @@ export function useCloudflare() {
   async function verifyToken(token: string, store = true) {
     try {
       const response = await apiClient.current.verifyToken(token);
-      if (response.success) {
-        if (store) {
-          await setApiToken(token);
-        }
-        return { success: true };
-      } else {
+      if (!response.success) {
         console.error(response);
         return { success: false, error: response.errors[0].message };
       }
+
+      if (store) {
+        await setApiToken(token);
+      }
+      return { success: true };
     } catch (error: any) {
       console.error(error);
       return { success: false, error: error.toString() };
@@ -67,6 +67,7 @@ export function useCloudflare() {
     retry: false,
   });
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (zones.data && zones.data.length > 0) {
       if (!accountId) {
@@ -76,7 +77,7 @@ export function useCloudflare() {
         setSelectedZoneId(zones.data[0].id);
       }
     }
-  }, [zones.data]);
+  }, [zones.data, accountId, selectedZoneId]);
 
   const emailDestinations = useQuery({
     queryKey: ["destinations", accountId],
@@ -104,7 +105,8 @@ export function useCloudflare() {
 
   const createEmailRule = useMutation({
     mutationFn: async ({ zoneId, rule }: RuleMutation<Omit<CloudflareEmailRule, "tag">>) => {
-      return handleResponse<CloudflareEmailRule>(apiClient.current.createEmailRule(zoneId!, rule));
+      if (!zoneId) return;
+      return handleResponse<CloudflareEmailRule>(apiClient.current.createEmailRule(zoneId, rule));
     },
     onSuccess: () => {
       return queryClient.invalidateQueries({ queryKey: ["emailRules", selectedZoneId] });
@@ -113,7 +115,8 @@ export function useCloudflare() {
 
   const updateEmailRule = useMutation({
     mutationFn: async ({ zoneId, rule }: RuleMutation<CloudflareEmailRule>) => {
-      return handleResponse<CloudflareEmailRule>(apiClient.current.updateEmailRule(zoneId!, rule));
+      if (!zoneId) return;
+      return handleResponse<CloudflareEmailRule>(apiClient.current.updateEmailRule(zoneId, rule));
     },
     onSuccess: () => {
       return queryClient.invalidateQueries({ queryKey: ["emailRules", selectedZoneId] });
@@ -122,7 +125,8 @@ export function useCloudflare() {
 
   const deleteEmailRule = useMutation({
     mutationFn: async ({ zoneId, rule }: RuleMutation<CloudflareEmailRule>) => {
-      return handleResponse<null>(apiClient.current.deleteEmailRule(zoneId!, rule));
+      if (!zoneId) return;
+      return handleResponse<null>(apiClient.current.deleteEmailRule(zoneId, rule));
     },
     onSuccess: () => {
       return queryClient.invalidateQueries({ queryKey: ["emailRules", selectedZoneId] });

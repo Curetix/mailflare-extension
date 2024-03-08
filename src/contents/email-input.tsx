@@ -1,16 +1,16 @@
-import type { Settings } from "~utils/state";
 import type {
   PlasmoCSConfig,
   PlasmoCSUIProps,
   PlasmoGetOverlayAnchor,
   PlasmoGetStyle,
 } from "plasmo";
+import type { Settings } from "~utils/state";
 
-import { IconMailPlus } from "@tabler/icons-react";
-import { useRef, useState } from "react";
 import { useClipboard } from "@mantine/hooks";
 import { sendToBackground } from "@plasmohq/messaging";
 import { Storage } from "@plasmohq/storage";
+import { IconMailPlus } from "@tabler/icons-react";
+import { useRef, useState } from "react";
 import cssText from "data-text:./content-scripts.css";
 
 import { detectLocale, i18n } from "~i18n/i18n-util";
@@ -104,20 +104,18 @@ export default function Inline(props: PlasmoCSUIProps) {
           left: inputElementWidth - buttonSize - (inputElementHeight - buttonSize) / 2,
         }}>
         <label
-          tabIndex={0}
-          className={`btn btn-square btn-sm ${isSuccess ? "btn-success" : !!error ? "btn-error" : "btn-primary"}`}
-          onClick={() => {
-            return generateAlias();
-          }}>
+          className={`btn btn-square btn-sm ${
+            isSuccess ? "btn-success" : error ? "btn-error" : "btn-primary"
+          }`}
+          onClick={() => generateAlias()}
+          onKeyDown={() => generateAlias()}>
           {isLoading ? (
-            <span className="loading loading-spinner text-white"></span>
+            <span className="loading loading-spinner text-white" />
           ) : (
             <IconMailPlus color="white" />
           )}
         </label>
-        <div
-          tabIndex={0}
-          className="dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-56">
+        <div className="dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-56">
           {LL.QUICK_CREATE_BUTTON_TOOLTIP_TEXT()}
         </div>
       </div>

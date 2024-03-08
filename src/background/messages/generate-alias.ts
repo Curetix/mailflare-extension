@@ -9,10 +9,11 @@ type Request = {
   hostname: string;
 };
 
-type Response = {
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+type Response<T = any> = {
   success: boolean;
   message: string;
-  data?: any;
+  data?: T;
 };
 
 const locale = detectLocale(detectBrowserLocale);
@@ -21,9 +22,12 @@ const LL = i18n()[locale];
 
 const handler: PlasmoMessaging.MessageHandler<Request, Response> = async (req, res) => {
   console.log("Received request for background alias generation:", req.body);
+
+  if (!req.body) return;
+
   const tab = await getCurrentTab();
   try {
-    const alias = await generateAliasInBackground(req.body!.hostname);
+    const alias = await generateAliasInBackground(req.body.hostname);
 
     await sendTabMessage(tab.id, {
       command: "showAlert",

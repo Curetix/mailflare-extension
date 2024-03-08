@@ -1,7 +1,7 @@
 // noinspection JSUnusedGlobalSymbols
 
-import { useEffect } from "react";
 import { useAtom } from "jotai";
+import { useEffect } from "react";
 
 import App from "~app";
 import { popupHeight, popupWidth } from "~const";
@@ -13,9 +13,10 @@ const detectors = [detectBrowserLocale];
 export default function Popup() {
   const [, setHostname] = useAtom(hostnameAtom);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     chrome.tabs.query({ active: true }).then(([tab]) => {
-      if (tab && tab.url) {
+      if (tab?.url) {
         const url = new URL(tab.url);
         setHostname(url.hostname);
       }

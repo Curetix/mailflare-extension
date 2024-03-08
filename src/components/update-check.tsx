@@ -1,6 +1,6 @@
-import { useI18nContext } from "~i18n/i18n-react";
-import { useEffect } from "react";
 import { showNotification } from "@mantine/notifications";
+import { useEffect } from "react";
+import { useI18nContext } from "~i18n/i18n-react";
 
 import { extensionVersion } from "~const";
 import { StorageKeys } from "~utils/state";
@@ -21,7 +21,7 @@ export default function UpdateCheck() {
       }
       return storage.set(StorageKeys.Version, extensionVersion);
     });
-  }, []);
+  }, [LL]);
 
   return <></>;
 }

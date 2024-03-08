@@ -1,8 +1,8 @@
-import { useI18nContext } from "~i18n/i18n-react";
-import { useState } from "react";
 import { Accordion, Anchor, Button, List, PasswordInput, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
+import { useState } from "react";
+import { useI18nContext } from "~i18n/i18n-react";
 
 import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
 
@@ -45,7 +45,7 @@ function Login() {
         />
         <Button
           type="submit"
-          disabled={tokenForm.values.token.trim().length != 40}
+          disabled={tokenForm.values.token.trim().length !== 40}
           loading={isLoading}>
           {LL.SAVE()}
         </Button>

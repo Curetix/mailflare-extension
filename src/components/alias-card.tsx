@@ -1,11 +1,11 @@
-import type { Alias } from "~utils/alias";
 import type { ReactNode } from "react";
+import type { Alias } from "~utils/alias";
 
-import { IconClipboard, IconEdit, IconTrash } from "@tabler/icons-react";
-import { useI18nContext } from "~i18n/i18n-react";
 import { ActionIcon, Box, Card, Checkbox, Flex, Text, Tooltip } from "@mantine/core";
 import { useClipboard } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
+import { IconClipboard, IconEdit, IconTrash } from "@tabler/icons-react";
+import { useI18nContext } from "~i18n/i18n-react";
 
 import { emailRuleNamePrefix } from "~const";
 

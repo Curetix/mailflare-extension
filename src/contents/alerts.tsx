@@ -1,7 +1,7 @@
 // noinspection JSUnusedGlobalSymbols
 
-import type { ContentScriptAlert, TabMessage } from "~utils/background";
 import type { PlasmoCSConfig, PlasmoGetStyle } from "plasmo";
+import type { ContentScriptAlert, TabMessage } from "~utils/background";
 
 import { IconX } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
@@ -22,6 +22,7 @@ export default function Inline() {
 
   const removeAlert = (id: number) => setAlerts((current) => current.filter((a) => a.id !== id));
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     async function onMessageListener(msg: TabMessage) {
       console.log("[MailFlare] Received tab message:", msg);
@@ -57,10 +58,11 @@ export default function Inline() {
           <div
             key={alert.id}
             className={`alert ${alert.type ? (`alert-${alert.type}` as const) : ""}`}>
-            {alert.isLoading && <span className="loading loading-spinner loading-sm"></span>}
+            {alert.isLoading && <span className="loading loading-spinner loading-sm" />}
             <span>{alert.message}</span>
             <div>
               <button
+                type="button"
                 className="btn btn-square btn-sm btn-ghost"
                 onClick={() => removeAlert(alert.id)}>
                 <IconX size={14} />

@@ -11,12 +11,12 @@ export const onRequest: PagesFunction = async (context) => {
       headers: req.headers,
       body: req.body,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error during API proxy request", error);
     return new Response(
       JSON.stringify({
         success: false,
-        message: error.toString(),
+        message: "Internal server error",
       }),
       {
         status: 500,

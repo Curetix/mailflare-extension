@@ -48,5 +48,7 @@ export function setValueForElementByEvent(el: HTMLInputElement, valueToSet: stri
   el.dispatchEvent(new Event("input", { bubbles: true, cancelable: true }));
   el.dispatchEvent(new Event("change", { bubbles: true, cancelable: true }));
   el.blur();
-  el.value !== valueToSet && (el.value = valueToSet);
+  if (el.value !== valueToSet) {
+    el.value = valueToSet;
+  }
 }

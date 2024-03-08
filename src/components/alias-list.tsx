@@ -1,18 +1,6 @@
 import type { FlexProps } from "@mantine/core";
 
 import {
-  IconEdit,
-  IconListCheck,
-  IconPlaylistAdd,
-  IconPlaylistX,
-  IconRefresh,
-  IconSearch,
-  IconSearchOff,
-  IconTrash,
-} from "@tabler/icons-react";
-import { useI18nContext } from "~i18n/i18n-react";
-import { useEffect, useState } from "react";
-import {
   Alert,
   Badge,
   Button,
@@ -26,7 +14,19 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { useListState } from "@mantine/hooks";
+import {
+  IconEdit,
+  IconListCheck,
+  IconPlaylistAdd,
+  IconPlaylistX,
+  IconRefresh,
+  IconSearch,
+  IconSearchOff,
+  IconTrash,
+} from "@tabler/icons-react";
 import { useAtom } from "jotai";
+import { useEffect, useState } from "react";
+import { useI18nContext } from "~i18n/i18n-react";
 
 import AliasBulkDeleteModal from "~components/alias-bulk-delete-modal";
 import AliasBulkEditModal from "~components/alias-bulk-edit-modal";
@@ -107,7 +107,7 @@ function AliasList(props: FlexProps) {
         )
         .sort(sortBy<Alias>("priority", "descending")),
     );
-  }, [emailRules.data, ruleFilter, aliasSearch]);
+  }, [emailRules.isSuccess, emailRules.data, ruleFilter, aliasSearch]);
 
   return (
     <Flex p="md" direction="column" gap="xs" {...props}>
@@ -122,7 +122,7 @@ function AliasList(props: FlexProps) {
           setAliasEditModalOpened(false);
           setAliasToEdit(null);
         }}
-        aliasToEdit={aliasToEdit!}
+        aliasToEdit={aliasToEdit}
       />
 
       <AliasBulkEditModal
@@ -143,7 +143,7 @@ function AliasList(props: FlexProps) {
           setAliasDeleteModalOpened(false);
           setAliasToDelete(null);
         }}
-        aliasToDelete={aliasToDelete!}
+        aliasToDelete={aliasToDelete}
       />
 
       <AliasBulkDeleteModal

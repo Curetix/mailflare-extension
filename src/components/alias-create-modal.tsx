@@ -1,12 +1,12 @@
 import type { CloudflareEmailRule } from "~lib/cloudflare/cloudflare.types";
 
-import { useI18nContext } from "~i18n/i18n-react";
-import { useEffect } from "react";
 import { Button, Modal, NumberInput, Select, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useClipboard } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import { useAtom } from "jotai";
+import { useEffect } from "react";
+import { useI18nContext } from "~i18n/i18n-react";
 
 import { emailRuleNamePrefix } from "~const";
 import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
@@ -84,19 +84,19 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
   function resetForm() {
     aliasCreateForm.reset();
 
-    if (!!aliasSettings) {
+    if (aliasSettings) {
       aliasCreateForm.setValues({
         ...aliasSettings,
       });
     }
 
-    if (!!selectedZoneId) {
+    if (selectedZoneId) {
       aliasCreateForm.setValues({
         zoneId: selectedZoneId,
       });
     }
 
-    if (!!hostname) {
+    if (hostname) {
       aliasCreateForm.setValues({
         description: hostname,
       });
@@ -107,6 +107,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
     }
   }
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     resetForm();
   }, [aliasSettings, selectedZoneId, hostname]);
@@ -176,7 +177,8 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
 
         if (!emailRules.data?.find((r) => r.matchers[0].value === aliasAddress)) {
           break;
-        } else if (attempts === 3) {
+        }
+        if (attempts === 3) {
           showNotification({
             color: "red",
             title: LL.CONFLICT(),
@@ -214,7 +216,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
           setSelectedZoneId(variables.zoneId);
           saveAliasSettings();
           if (copyAlias) {
-            clipboard.copy(data.matchers[0].value);
+            clipboard.copy(data?.matchers[0].value);
           }
           showNotification({
             color: "green",

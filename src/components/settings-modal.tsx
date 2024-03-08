@@ -1,9 +1,6 @@
-import type { Locales } from "~i18n/i18n-types";
 import type { ReactNode } from "react";
+import type { Locales } from "~i18n/i18n-types";
 
-import { IconExternalLink } from "@tabler/icons-react";
-import { useQueryClient } from "@tanstack/react-query";
-import { useI18nContext } from "~i18n/i18n-react";
 import {
   Button,
   Divider,
@@ -17,8 +14,11 @@ import {
   useMantineColorScheme,
 } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
+import { IconExternalLink } from "@tabler/icons-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { RESET } from "jotai/utils";
+import { useI18nContext } from "~i18n/i18n-react";
 
 import { extensionName, extensionVersion, isWebApp, popupHeight } from "~const";
 import { loadLocaleAsync } from "~i18n/i18n-util.async";
@@ -232,7 +232,7 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
         {settingsItems.map(
           (item, index) =>
             !item.hide && (
-              <Stack gap="xs" key={index}>
+              <Stack gap="xs" key={item.title}>
                 <Flex justify="space-between" align="center">
                   <div>
                     <Text>{item.title}</Text>

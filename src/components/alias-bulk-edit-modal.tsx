@@ -1,9 +1,9 @@
 import type { Alias } from "~utils/alias";
 
-import { useI18nContext } from "~i18n/i18n-react";
 import { Button, Modal, Select, Stack, Switch } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
+import { useI18nContext } from "~i18n/i18n-react";
 
 import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
 import { useFullscreenModal } from "~utils";

@@ -1,10 +1,10 @@
 import type { Alias } from "~utils/alias";
 
-import { useI18nContext } from "~i18n/i18n-react";
-import { useEffect } from "react";
 import { Button, Modal, Select, Stack, Switch, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
+import { useEffect } from "react";
+import { useI18nContext } from "~i18n/i18n-react";
 
 import { emailRuleNamePrefix } from "~const";
 import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
@@ -36,18 +36,19 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
     },
   });
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    if (!!aliasToEdit) {
+    if (aliasToEdit && selectedZoneId) {
       aliasEditForm.setValues({
         id: aliasToEdit.tag,
-        zoneId: selectedZoneId!,
+        zoneId: selectedZoneId,
         alias: aliasToEdit.address,
         description: aliasToEdit.name.replace(emailRuleNamePrefix, "").trim(),
         destination: aliasToEdit.destination,
         enabled: aliasToEdit.enabled,
       });
     }
-  }, [aliasToEdit]);
+  }, [aliasToEdit, selectedZoneId]);
 
   async function saveAlias(variables: typeof aliasEditForm.values) {
     if (!aliasToEdit) {

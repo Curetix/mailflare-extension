@@ -1,7 +1,7 @@
-import { useI18nContext } from "~i18n/i18n-react";
-import { useCallback, useEffect, useState } from "react";
 import { Button, Modal, Stack, Text } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
+import { useCallback, useEffect, useState } from "react";
+import { useI18nContext } from "~i18n/i18n-react";
 
 const permissions: chrome.permissions.Permissions = {
   origins: ["*://api.cloudflare.com/*"],
@@ -32,7 +32,7 @@ export default function PermissionsCheck() {
             autoClose: false,
           }),
         ),
-    [],
+    [LL],
   );
 
   return (

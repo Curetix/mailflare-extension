@@ -5,7 +5,7 @@ import { useMediaQuery } from "@mantine/hooks";
  */
 export class FetcherHttpError extends Error {
   info: any;
-  status: number = 200;
+  status = 200;
 }
 
 /**
@@ -35,9 +35,8 @@ export async function fetcher<JSON = any>(
 export function sortBy<T>(key: keyof T, direction: "ascending" | "descending" = "ascending") {
   if (direction === "ascending") {
     return (a: T, b: T) => (a[key] > b[key] ? 1 : b[key] > a[key] ? -1 : 0);
-  } else {
-    return (a: T, b: T) => (a[key] < b[key] ? 1 : b[key] < a[key] ? -1 : 0);
   }
+  return (a: T, b: T) => (a[key] < b[key] ? 1 : b[key] < a[key] ? -1 : 0);
 }
 
 export function randomString(length: number) {

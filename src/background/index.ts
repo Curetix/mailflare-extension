@@ -56,12 +56,12 @@ export async function generateAliasInBackground(hostname: string): Promise<Alias
 
   const result = await apiClient.createEmailRule(zoneId, alias.toEmailRule());
 
-  if (result.success) {
-    console.log("Created new alias in background:", alias.address);
-    return alias;
-  } else {
+  if (!result.success) {
     throw new Error(result.errors[0].message);
   }
+
+  console.log("Created new alias in background:", alias.address);
+  return alias;
 }
 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
@@ -107,7 +107,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   }
 });
 
-chrome.runtime.onInstalled.addListener(function () {
+chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     title: LL.CONTEXT_MENU_ENTRY_TEXT(),
     contexts: ["page", "editable"],
