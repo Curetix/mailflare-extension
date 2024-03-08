@@ -33,8 +33,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Lint
+        run: pnpm exec tsc && pnpm run lint
+
       - name: Build extension
-        run: pnpm build:all
+        run: pnpm run build:all
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
