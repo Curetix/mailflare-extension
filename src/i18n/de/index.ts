@@ -157,6 +157,14 @@ const de = {
   BG_ALERT_CREATED: "Alias erstellt: {alias}",
   CONTEXT_MENU_ENTRY_TEXT: "Neues MailFlare Alias generieren und kopieren",
   QUICK_CREATE_BUTTON_TOOLTIP_TEXT: "Neues MailFlare Alias generieren",
+
+  // Permissions Modal
+  PERMISSION_MISSING_TITLE: "Fehlende Berechtigung",
+  PERMISSION_MISSING_MESSAGE:
+    "Diese Erweiterung benötigt eine Browser-Berechtigung, um auf die Cloudflare API zugreifen zu können. Bitte klicke den Button, um diese Berechtigung anzufordern.",
+  REQUEST_PERMISSION: "Berechtigung anfordern",
+  PERMISSION_REQUEST_ERROR_TITLE: "Berechtigung nicht genehmigt",
+  PERMISSION_REQUEST_ERROR_MESSAGE: "Beim Anfordern der Berechtigung ist ein Fehler aufgetreten.",
 } satisfies Translation;
 
 export default de;

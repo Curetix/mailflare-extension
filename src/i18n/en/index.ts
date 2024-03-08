@@ -155,6 +155,14 @@ const en = {
   BG_ALERT_CREATED: "Alias created: {alias}",
   CONTEXT_MENU_ENTRY_TEXT: "Create new MailFlare Alias and copy it",
   QUICK_CREATE_BUTTON_TOOLTIP_TEXT: "Create a new MailFlare Alias",
+
+  // Permissions Modal
+  PERMISSION_MISSING_TITLE: "Missing Permission",
+  PERMISSION_MISSING_MESSAGE:
+    "This extension requires a browser permission to access the Cloudflare API. Please click the button below to request the permission, otherwise the extension will not work.",
+  REQUEST_PERMISSION: "Request Permission",
+  PERMISSION_REQUEST_ERROR_TITLE: "Permission not granted",
+  PERMISSION_REQUEST_ERROR_MESSAGE: "There was an error during the permission request.",
 } satisfies BaseTranslation;
 
 export default en;

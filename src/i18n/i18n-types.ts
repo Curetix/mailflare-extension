@@ -577,6 +577,26 @@ type RootTranslation = {
    * C​r​e​a​t​e​ ​a​ ​n​e​w​ ​M​a​i​l​F​l​a​r​e​ ​A​l​i​a​s
    */
   QUICK_CREATE_BUTTON_TOOLTIP_TEXT: string;
+  /**
+   * M​i​s​s​i​n​g​ ​P​e​r​m​i​s​s​i​o​n
+   */
+  PERMISSION_MISSING_TITLE: string;
+  /**
+   * T​h​i​s​ ​e​x​t​e​n​s​i​o​n​ ​r​e​q​u​i​r​e​s​ ​a​ ​b​r​o​w​s​e​r​ ​p​e​r​m​i​s​s​i​o​n​ ​t​o​ ​a​c​c​e​s​s​ ​t​h​e​ ​C​l​o​u​d​f​l​a​r​e​ ​A​P​I​.​ ​P​l​e​a​s​e​ ​c​l​i​c​k​ ​t​h​e​ ​b​u​t​t​o​n​ ​b​e​l​o​w​ ​t​o​ ​r​e​q​u​e​s​t​ ​t​h​e​ ​p​e​r​m​i​s​s​i​o​n​,​ ​o​t​h​e​r​w​i​s​e​ ​t​h​e​ ​e​x​t​e​n​s​i​o​n​ ​w​i​l​l​ ​n​o​t​ ​w​o​r​k​.
+   */
+  PERMISSION_MISSING_MESSAGE: string;
+  /**
+   * R​e​q​u​e​s​t​ ​P​e​r​m​i​s​s​i​o​n
+   */
+  REQUEST_PERMISSION: string;
+  /**
+   * P​e​r​m​i​s​s​i​o​n​ ​n​o​t​ ​g​r​a​n​t​e​d
+   */
+  PERMISSION_REQUEST_ERROR_TITLE: string;
+  /**
+   * T​h​e​r​e​ ​w​a​s​ ​a​n​ ​e​r​r​o​r​ ​d​u​r​i​n​g​ ​t​h​e​ ​p​e​r​m​i​s​s​i​o​n​ ​r​e​q​u​e​s​t​.
+   */
+  PERMISSION_REQUEST_ERROR_MESSAGE: string;
 };
 
 export type TranslationFunctions = {
@@ -1132,6 +1152,26 @@ export type TranslationFunctions = {
    * Create a new MailFlare Alias
    */
   QUICK_CREATE_BUTTON_TOOLTIP_TEXT: () => LocalizedString;
+  /**
+   * Missing Permission
+   */
+  PERMISSION_MISSING_TITLE: () => LocalizedString;
+  /**
+   * This extension requires a browser permission to access the Cloudflare API. Please click the button below to request the permission, otherwise the extension will not work.
+   */
+  PERMISSION_MISSING_MESSAGE: () => LocalizedString;
+  /**
+   * Request Permission
+   */
+  REQUEST_PERMISSION: () => LocalizedString;
+  /**
+   * Permission not granted
+   */
+  PERMISSION_REQUEST_ERROR_TITLE: () => LocalizedString;
+  /**
+   * There was an error during the permission request.
+   */
+  PERMISSION_REQUEST_ERROR_MESSAGE: () => LocalizedString;
 };
 
 export type Formatters = {};
