@@ -10,6 +10,8 @@ const container = document.getElementById("app") as HTMLElement;
 const root = createRoot(container);
 root.render(
   <StrictMode>
-    <App localeDetectors={detectors} />
+    <div style={{ height: "100vh", width: "100vw" }}>
+      <App localeDetectors={detectors} />
+    </div>
   </StrictMode>,
 );
