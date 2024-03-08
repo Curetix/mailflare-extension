@@ -94,8 +94,7 @@
       "contextMenus"
     ],
     "host_permissions": [
-      "*://api.cloudflare.com/*",
-      "*://localhost/*"
+      "*://api.cloudflare.com/*"
     ],
     "browser_specific_settings": {
       "gecko": {
