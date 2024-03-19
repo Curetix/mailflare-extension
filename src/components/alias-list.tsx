@@ -7,6 +7,7 @@ import {
   Center,
   Flex,
   Loader,
+  Modal,
   ScrollArea,
   Select,
   Stack,
@@ -28,24 +29,33 @@ import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useI18nContext } from "~i18n/i18n-react";
 
-import AliasBulkDeleteModal from "~components/alias-bulk-delete-modal";
-import AliasBulkEditModal from "~components/alias-bulk-edit-modal";
 import AliasCard from "~components/alias-card";
-import AliasCreateModal from "~components/alias-create-modal";
-import AliasDeleteModal from "~components/alias-delete-modal";
-import AliasEditModal from "~components/alias-edit-modal";
+import { CreateAliasForm } from "~components/forms/create-alias";
+import { DeleteAliasForm } from "~components/forms/delete-alias";
+import { EditAliasForm } from "~components/forms/edit-alias";
 import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
-import { sortBy } from "~utils";
+import { sortBy, useFullscreenModal } from "~utils";
 import { Alias } from "~utils/alias";
 import { aliasSearchAtom, settingsAtom } from "~utils/state";
 
+import { showNotification } from "@mantine/notifications";
 import "~/styles/scroll-area.css";
+import BulkDeleteAliasForm from "./forms/bulk-delete-alias";
+import BulkEditAliasForm from "./forms/bulk-edit-alias";
 
 function AliasList(props: FlexProps) {
   const { LL } = useI18nContext();
 
-  const { selectedZoneId, setSelectedZoneId, zones, emailDestinations, emailRules } =
-    useCloudflare();
+  const {
+    selectedZoneId,
+    setSelectedZoneId,
+    zones,
+    emailDestinations,
+    emailRules,
+    isMutationLoading,
+  } = useCloudflare();
+
+  const isFullscreenModal = useFullscreenModal();
 
   const [{ ruleFilter }] = useAtom(settingsAtom);
   const [aliasSearch, setAliasSearch] = useAtom(aliasSearchAtom);
@@ -111,52 +121,119 @@ function AliasList(props: FlexProps) {
 
   return (
     <Flex p="md" direction="column" gap="xs" {...props}>
-      <AliasCreateModal
+      {/* CREATE ALIAS MODAL */}
+      <Modal
         opened={aliasCreateModalOpened}
-        onClose={() => setAliasCreateModalOpened(false)}
-      />
+        onClose={() => {
+          if (isMutationLoading) {
+            showNotification({
+              color: "red",
+              message: LL.MODAL_CLOSE_BLOCKED(),
+              autoClose: 2000,
+            });
+          } else {
+            setAliasCreateModalOpened(false);
+          }
+        }}
+        title={LL.CREATE_MODAL_TITLE()}
+        fullScreen={isFullscreenModal}>
+        <CreateAliasForm callback={() => setAliasCreateModalOpened(false)} />
+      </Modal>
 
-      <AliasEditModal
+      {/* EDIT ALIAS MODAL */}
+      <Modal
         opened={aliasEditModalOpened && !!aliasToEdit && selectedAliases.length === 0}
         onClose={() => {
-          setAliasEditModalOpened(false);
-          setAliasToEdit(null);
-        }}
-        aliasToEdit={aliasToEdit}
-      />
-
-      <AliasBulkEditModal
-        opened={aliasEditModalOpened && selectedAliases.length > 0}
-        onClose={(clear) => {
-          setAliasEditModalOpened(false);
-          if (clear) {
-            setAliasSelectEnabled(false);
-            selectedAliasesHandlers.setState([]);
+          if (isMutationLoading) {
+            showNotification({
+              color: "red",
+              message: LL.MODAL_CLOSE_BLOCKED(),
+              autoClose: 2000,
+            });
+          } else {
+            setAliasCreateModalOpened(false);
+            setAliasToEdit(null);
           }
         }}
-        selectedAliases={selectedAliases}
-      />
+        // title={LL.EDIT_MODAL_TITLE()}
+        fullScreen={isFullscreenModal}>
+        <EditAliasForm callback={() => setAliasEditModalOpened(false)} aliasToEdit={aliasToEdit} />
+      </Modal>
 
-      <AliasDeleteModal
+      {/* DELETE ALIAS MODAL */}
+      <Modal
         opened={aliasDeleteModalOpened && !!aliasToDelete && selectedAliases.length === 0}
         onClose={() => {
-          setAliasDeleteModalOpened(false);
-          setAliasToDelete(null);
-        }}
-        aliasToDelete={aliasToDelete}
-      />
-
-      <AliasBulkDeleteModal
-        opened={aliasDeleteModalOpened && selectedAliases.length > 0}
-        onClose={(clear) => {
-          setAliasDeleteModalOpened(false);
-          if (clear) {
-            setAliasSelectEnabled(false);
-            selectedAliasesHandlers.setState([]);
+          if (isMutationLoading) {
+            showNotification({
+              color: "red",
+              message: LL.MODAL_CLOSE_BLOCKED(),
+              autoClose: 2000,
+            });
+          } else {
+            setAliasEditModalOpened(false);
+            setAliasToDelete(null);
           }
         }}
-        selectedAliases={selectedAliases}
-      />
+        // title={LL.DELETE_MODAL_TITLE()}
+        fullScreen={isFullscreenModal}>
+        <DeleteAliasForm
+          aliasToDelete={aliasToDelete}
+          callback={() => setAliasDeleteModalOpened(false)}
+        />
+      </Modal>
+
+      {/* BULK EDIT MODAL */}
+      <Modal
+        opened={aliasEditModalOpened && selectedAliases.length > 0}
+        onClose={() => {
+          if (isMutationLoading) {
+            showNotification({
+              color: "red",
+              message: LL.MODAL_CLOSE_BLOCKED(),
+              autoClose: 2000,
+            });
+          } else {
+            setAliasEditModalOpened(false);
+          }
+        }}
+        title={LL.UPDATE_MULTIPLE_TITLE()}
+        fullScreen={isFullscreenModal}>
+        <BulkEditAliasForm
+          selectedAliases={selectedAliases}
+          callback={() => {
+            setAliasEditModalOpened(false);
+            setAliasSelectEnabled(false);
+            selectedAliasesHandlers.setState([]);
+          }}
+        />
+      </Modal>
+
+      {/* BULK DELETE MODAL */}
+      <Modal
+        opened={aliasDeleteModalOpened && selectedAliases.length > 0}
+        onClose={() => {
+          if (isMutationLoading) {
+            showNotification({
+              color: "red",
+              message: LL.MODAL_CLOSE_BLOCKED(),
+              autoClose: 2000,
+            });
+          } else {
+            setAliasDeleteModalOpened(false);
+          }
+        }}
+        title={LL.DELETE_MULTIPLE_TITLE()}
+        fullScreen={isFullscreenModal}>
+        <BulkDeleteAliasForm
+          selectedAliases={selectedAliases}
+          callback={() => {
+            setAliasDeleteModalOpened(false);
+            setAliasSelectEnabled(false);
+            selectedAliasesHandlers.setState([]);
+          }}
+        />
+      </Modal>
 
       {/* DOMAIN SELECTOR */}
       <Select
@@ -182,9 +259,6 @@ function AliasList(props: FlexProps) {
             variant="light"
             size="compact-md"
             fullWidth
-            leftSection={
-              aliasSelectEnabled ? <IconPlaylistX size={16} /> : <IconListCheck size={16} />
-            }
             disabled={
               !zones.data ||
               (!aliasSelectEnabled && filteredAliases.length === 0) ||
@@ -193,8 +267,9 @@ function AliasList(props: FlexProps) {
             onClick={() => {
               selectedAliasesHandlers.setState([]);
               setAliasSelectEnabled(!aliasSelectEnabled);
-            }}
-          />
+            }}>
+            {aliasSelectEnabled ? <IconPlaylistX size={16} /> : <IconListCheck size={16} />}
+          </Button>
         </Tooltip>
         {aliasSelectEnabled && (
           <>
@@ -203,10 +278,10 @@ function AliasList(props: FlexProps) {
                 variant="light"
                 size="compact-md"
                 fullWidth
-                leftSection={<IconEdit size={16} />}
                 disabled={selectedAliases.length === 0}
-                onClick={() => setAliasEditModalOpened(true)}
-              />
+                onClick={() => setAliasEditModalOpened(true)}>
+                <IconEdit size={16} />
+              </Button>
             </Tooltip>
             <Tooltip label={LL.DELETE()}>
               <Button
@@ -214,10 +289,10 @@ function AliasList(props: FlexProps) {
                 color="red"
                 size="compact-md"
                 fullWidth
-                leftSection={<IconTrash size={16} />}
                 disabled={selectedAliases.length === 0}
-                onClick={() => setAliasDeleteModalOpened(true)}
-              />
+                onClick={() => setAliasDeleteModalOpened(true)}>
+                <IconTrash size={16} />
+              </Button>
             </Tooltip>
           </>
         )}
@@ -228,17 +303,16 @@ function AliasList(props: FlexProps) {
                 variant="light"
                 size="compact-md"
                 fullWidth
-                leftSection={<IconPlaylistAdd size={16} />}
                 disabled={!zones.data || zones.data.length === 0 || selectedZoneId === null}
-                onClick={() => setAliasCreateModalOpened(true)}
-              />
+                onClick={() => setAliasCreateModalOpened(true)}>
+                <IconPlaylistAdd size={16} />
+              </Button>
             </Tooltip>
             <Tooltip label={searchVisible ? LL.STOP_SEARCH() : LL.SEARCH()}>
               <Button
                 variant="light"
                 size="compact-md"
                 fullWidth
-                leftSection={searchVisible ? <IconSearchOff size={16} /> : <IconSearch size={16} />}
                 disabled={
                   !zones.data ||
                   !emailRules.data ||
@@ -250,20 +324,21 @@ function AliasList(props: FlexProps) {
                 onClick={() => {
                   setSearchVisible(!searchVisible);
                   setAliasSearch("");
-                }}
-              />
+                }}>
+                {searchVisible ? <IconSearchOff size={16} /> : <IconSearch size={16} />}
+              </Button>
             </Tooltip>
             <Tooltip label={LL.REFRESH()}>
               <Button
                 variant="light"
                 size="compact-md"
                 fullWidth
-                leftSection={<IconRefresh size={16} />}
                 disabled={!zones.data || zones.data.length === 0 || selectedZoneId === null}
                 loading={emailRules.isFetching}
                 loaderProps={{ size: 16 }}
-                onClick={() => emailRules.refetch()}
-              />
+                onClick={() => emailRules.refetch()}>
+                <IconRefresh size={16} />
+              </Button>
             </Tooltip>
           </>
         )}

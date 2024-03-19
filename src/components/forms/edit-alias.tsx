@@ -11,12 +11,11 @@ import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
 import { useFullscreenModal } from "~utils";
 
 type Props = {
-  opened: boolean;
-  onClose: () => void;
+  callback: () => void;
   aliasToEdit: Alias | null;
 };
 
-export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) {
+export function EditAliasForm({ aliasToEdit, callback }: Props) {
   const { LL } = useI18nContext();
   const { selectedZoneId, emailDestinations, updateEmailRule } = useCloudflare();
   const isFullscreen = useFullscreenModal();
@@ -77,7 +76,7 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
             message: LL.UPDATE_SUCCESS(),
             autoClose: 3000,
           });
-          onClose();
+          callback();
         },
         onError: (error) => {
           showNotification({
@@ -92,59 +91,43 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
   }
 
   return (
-    <Modal
-      opened={opened}
-      onClose={() => {
-        if (updateEmailRule.isPending) {
-          showNotification({
-            color: "red",
-            message: LL.MODAL_CLOSE_BLOCKED(),
-            autoClose: 2000,
-          });
-        } else {
-          onClose();
-        }
-      }}
-      title="Edit Alias"
-      fullScreen={isFullscreen}>
-      <form onSubmit={aliasEditForm.onSubmit((values) => saveAlias(values))}>
-        <Stack gap="xs">
-          <TextInput label={LL.ALIAS()} disabled {...aliasEditForm.getInputProps("alias")} />
-          <TextInput
-            label={LL.ALIAS_DESCRIPTION()}
-            placeholder={LL.ALIAS_DESCRIPTION_PLACEHOLDER()}
-            {...aliasEditForm.getInputProps("description")}
-          />
-          <Select
-            label={LL.DESTINATION()}
-            data={
-              emailDestinations.data?.map((z) => ({
-                value: z.email,
-                label: z.email,
-              })) || []
-            }
-            allowDeselect={false}
-            {...aliasEditForm.getInputProps("destination")}
-            error={
-              ((!emailDestinations.data || emailDestinations.isError) &&
-                (emailDestinations.error?.toString() || LL.DESTINATIONS_LOADING_ERROR())) ||
-              (aliasEditForm.values.destination &&
-                !emailDestinations.data?.find((d) => d.email === aliasEditForm.values.destination)
-                  ?.verified &&
-                LL.DESTINATION_NOT_VERIFIED()) ||
-              false
-            }
-          />
+    <form onSubmit={aliasEditForm.onSubmit((values) => saveAlias(values))}>
+      <Stack gap="xs">
+        <TextInput label={LL.ALIAS()} disabled {...aliasEditForm.getInputProps("alias")} />
+        <TextInput
+          label={LL.ALIAS_DESCRIPTION()}
+          placeholder={LL.ALIAS_DESCRIPTION_PLACEHOLDER()}
+          {...aliasEditForm.getInputProps("description")}
+        />
+        <Select
+          label={LL.DESTINATION()}
+          data={
+            emailDestinations.data?.map((z) => ({
+              value: z.email,
+              label: z.email,
+            })) || []
+          }
+          allowDeselect={false}
+          {...aliasEditForm.getInputProps("destination")}
+          error={
+            ((!emailDestinations.data || emailDestinations.isError) &&
+              (emailDestinations.error?.toString() || LL.DESTINATIONS_LOADING_ERROR())) ||
+            (aliasEditForm.values.destination &&
+              !emailDestinations.data?.find((d) => d.email === aliasEditForm.values.destination)
+                ?.verified &&
+              LL.DESTINATION_NOT_VERIFIED()) ||
+            false
+          }
+        />
 
-          <Switch
-            label={LL.ENABLED()}
-            {...aliasEditForm.getInputProps("enabled", { type: "checkbox" })}
-          />
-          <Button type="submit" loading={updateEmailRule.isPending}>
-            {LL.SAVE()}
-          </Button>
-        </Stack>
-      </form>
-    </Modal>
+        <Switch
+          label={LL.ENABLED()}
+          {...aliasEditForm.getInputProps("enabled", { type: "checkbox" })}
+        />
+        <Button type="submit" loading={updateEmailRule.isPending}>
+          {LL.SAVE()}
+        </Button>
+      </Stack>
+    </form>
   );
 }

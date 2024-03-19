@@ -8,12 +8,11 @@ import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
 import { useFullscreenModal } from "~utils";
 
 type Props = {
-  opened: boolean;
-  onClose: () => void;
   aliasToDelete: Alias | null;
+  callback: () => void;
 };
 
-export default function AliasDeleteModal({ opened, onClose, aliasToDelete }: Props) {
+export function DeleteAliasForm({ aliasToDelete, callback }: Props) {
   const { LL } = useI18nContext();
   const { selectedZoneId, deleteEmailRule } = useCloudflare();
   const isFullscreen = useFullscreenModal();
@@ -39,7 +38,7 @@ export default function AliasDeleteModal({ opened, onClose, aliasToDelete }: Pro
             message: LL.DELETE_SUCCESS(),
             autoClose: 3000,
           });
-          onClose();
+          callback();
         },
         onError: (error) => {
           showNotification({
@@ -54,40 +53,24 @@ export default function AliasDeleteModal({ opened, onClose, aliasToDelete }: Pro
   }
 
   return (
-    <Modal
-      opened={opened}
-      onClose={() => {
-        if (deleteEmailRule.isPending) {
-          showNotification({
-            color: "red",
-            message: LL.MODAL_CLOSE_BLOCKED(),
-            autoClose: 2000,
-          });
-        } else {
-          onClose();
-        }
-      }}
-      title={LL.DELETE_TITLE()}
-      fullScreen={isFullscreen}>
-      <Stack gap="xs">
-        <Text>{LL.DELETE_QUESTION_1()}</Text>
-        <Text fw={700} style={{ lineBreak: "anywhere" }}>
-          {aliasToDelete?.address}
-        </Text>
-        <Text>{LL.DELETE_QUESTION_2()}</Text>
-        <Button.Group>
-          <Button fullWidth disabled={deleteEmailRule.isPending} onClick={() => onClose()}>
-            {LL.NO()}
-          </Button>
-          <Button
-            color="red"
-            fullWidth
-            loading={deleteEmailRule.isPending}
-            onClick={() => deleteAlias()}>
-            {LL.YES()}
-          </Button>
-        </Button.Group>
-      </Stack>
-    </Modal>
+    <Stack gap="xs">
+      <Text>{LL.DELETE_QUESTION_1()}</Text>
+      <Text fw={700} style={{ lineBreak: "anywhere" }}>
+        {aliasToDelete?.address}
+      </Text>
+      <Text>{LL.DELETE_QUESTION_2()}</Text>
+      <Button.Group>
+        <Button fullWidth disabled={deleteEmailRule.isPending} onClick={() => callback()}>
+          {LL.NO()}
+        </Button>
+        <Button
+          color="red"
+          fullWidth
+          loading={deleteEmailRule.isPending}
+          onClick={() => deleteAlias()}>
+          {LL.YES()}
+        </Button>
+      </Button.Group>
+    </Stack>
   );
 }

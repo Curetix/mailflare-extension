@@ -38,17 +38,24 @@ settingsAtom.debugLabel = "settingsAtom";
 /*
  * Alias Settings
  */
+const AliasFormats = ["characters", "words", "custom"] as const;
+type AliasFormat = (typeof AliasFormats)[number];
+
+const AliasPrefixFormats = [
+  "none",
+  "domainWithoutExtension",
+  "domainWithExtension",
+  "fullDomain",
+  "custom",
+] as const;
+type AliasPrefixFormat = (typeof AliasPrefixFormats)[number];
+
 type AliasSettings = {
-  format?: "characters" | "words" | "custom";
+  format?: AliasFormat;
   characterCount?: number;
   wordCount?: number;
   separator?: string;
-  prefixFormat?:
-    | "fullDomain"
-    | "domainWithExtension"
-    | "domainWithoutExtension"
-    | "custom"
-    | "none";
+  prefixFormat?: AliasPrefixFormat;
   destination?: string;
 };
 const aliasSettingsAtom = atomWithStorage<AliasSettings>(StorageKeys.AliasSettings, {}, storage);
@@ -75,6 +82,10 @@ aliasSearchAtom.debugLabel = "aliasSearchAtom";
 export {
   type Settings,
   type AliasSettings,
+  type AliasFormat,
+  type AliasPrefixFormat,
+  AliasFormats,
+  AliasPrefixFormats,
   apiTokenAtom,
   settingsAtom,
   aliasSettingsAtom,
