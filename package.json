@@ -37,49 +37,49 @@
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
-    "@mantine/core": "^7.6.1",
-    "@mantine/form": "^7.6.1",
-    "@mantine/hooks": "^7.6.1",
-    "@mantine/notifications": "^7.6.1",
+    "@mantine/core": "^7.7.1",
+    "@mantine/form": "^7.7.1",
+    "@mantine/hooks": "^7.7.1",
+    "@mantine/notifications": "^7.7.1",
     "@plasmohq/messaging": "^0.6.2",
     "@plasmohq/storage": "^1.9.3",
-    "@tabler/icons-react": "^2.47.0",
-    "@tanstack/query-core": "^5.25.0",
-    "@tanstack/react-query": "^5.25.0",
-    "@tanstack/react-query-devtools": "^5.25.0",
-    "@tanstack/react-query-persist-client": "^5.25.0",
-    "autoprefixer": "^10.4.18",
-    "daisyui": "^4.7.2",
-    "jotai": "^2.7.0",
+    "@tabler/icons-react": "^3.1.0",
+    "@tanstack/query-core": "^5.28.9",
+    "@tanstack/react-query": "^5.28.9",
+    "@tanstack/react-query-devtools": "^5.28.10",
+    "@tanstack/react-query-persist-client": "^5.28.9",
+    "autoprefixer": "^10.4.19",
+    "daisyui": "^4.9.0",
+    "jotai": "^2.7.2",
     "jotai-tanstack-query": "^0.8.5",
-    "plasmo": "^0.85.0",
-    "postcss": "^8.4.35",
+    "plasmo": "^0.85.2",
+    "postcss": "^8.4.38",
     "postcss-preset-mantine": "^1.13.0",
     "postcss-simple-vars": "^7.0.1",
     "psl": "^1.9.0",
     "random-words": "^2.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tailwindcss": "^3.4.1",
+    "tailwindcss": "^3.4.3",
     "typesafe-i18n": "^5.26.2"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.5.3",
-    "@cloudflare/workers-types": "^4.20240222.0",
+    "@biomejs/biome": "1.6.3",
+    "@cloudflare/workers-types": "^4.20240320.1",
     "@plasmohq/rps": "^1.8.7",
-    "@types/chrome": "^0.0.262",
-    "@types/node": "^20.11.25",
+    "@types/chrome": "^0.0.263",
+    "@types/node": "^20.11.30",
     "@types/psl": "^1.1.3",
-    "@types/react": "^18.2.64",
-    "@types/react-dom": "^18.2.21",
+    "@types/react": "^18.2.73",
+    "@types/react-dom": "^18.2.23",
     "@vitejs/plugin-react-swc": "^3.6.0",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
-    "typescript": "^5.4.2",
-    "vite": "^5.1.5",
-    "vite-plugin-pwa": "^0.19.2",
-    "vite-tsconfig-paths": "^4.3.1",
-    "wrangler": "^3.32.0"
+    "typescript": "^5.4.3",
+    "vite": "^5.2.7",
+    "vite-plugin-pwa": "^0.19.7",
+    "vite-tsconfig-paths": "^4.3.2",
+    "wrangler": "^3.41.0"
   },
   "pnpm": {
     "peerDependencyRules": {
@@ -89,13 +89,8 @@
     }
   },
   "manifest": {
-    "permissions": [
-      "activeTab",
-      "contextMenus"
-    ],
-    "host_permissions": [
-      "*://api.cloudflare.com/*"
-    ],
+    "permissions": ["activeTab", "contextMenus"],
+    "host_permissions": ["*://api.cloudflare.com/*"],
     "browser_specific_settings": {
       "gecko": {
         "id": "{f0bdc9fa-a062-4424-baee-16530c53aa06}"
