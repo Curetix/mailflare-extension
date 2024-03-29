@@ -412,6 +412,10 @@ type RootTranslation = {
    */
   ALIAS_FORMAT_WORDS: string;
   /**
+   * D​o​m​a​i​n
+   */
+  ALIAS_FORMAT_DOMAIN: string;
+  /**
    * C​u​s​t​o​m
    */
   ALIAS_FORMAT_CUSTOM: string;
@@ -463,6 +467,10 @@ type RootTranslation = {
    * C​u​s​t​o​m​ ​a​l​i​a​s​ ​p​r​e​f​i​x
    */
   PREFIX_CUSTOM_LABEL: string;
+  /**
+   * D​o​m​a​i​n​ ​F​o​r​m​a​t
+   */
+  ALIAS_FORMAT_DOMAIN_TYPE: string;
   /**
    * D​e​s​t​i​n​a​t​i​o​n
    */
@@ -993,6 +1001,10 @@ export type TranslationFunctions = {
    */
   ALIAS_FORMAT_WORDS: () => LocalizedString;
   /**
+   * Domain
+   */
+  ALIAS_FORMAT_DOMAIN: () => LocalizedString;
+  /**
    * Custom
    */
   ALIAS_FORMAT_CUSTOM: () => LocalizedString;
@@ -1044,6 +1056,10 @@ export type TranslationFunctions = {
    * Custom alias prefix
    */
   PREFIX_CUSTOM_LABEL: () => LocalizedString;
+  /**
+   * Domain Format
+   */
+  ALIAS_FORMAT_DOMAIN_TYPE: () => LocalizedString;
   /**
    * Destination
    */

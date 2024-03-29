@@ -161,7 +161,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
     let aliasAddress = "";
     for (let i = 0; i < 3; i++) {
       aliasAddress = `${generateAliasAddress({
-        format: aliasCreateForm.values.format === "words" ? "words" : "characters",
+        format: aliasCreateForm.values.format,
         characterCount: aliasCreateForm.values.characterCount,
         wordCount: aliasCreateForm.values.wordCount,
         separator: aliasCreateForm.values.separator,
@@ -322,6 +322,10 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
                 label: LL.ALIAS_FORMAT_WORDS(),
               },
               {
+                value: "domain",
+                label: LL.ALIAS_FORMAT_DOMAIN(),
+              },
+              {
                 value: "custom",
                 label: LL.ALIAS_FORMAT_CUSTOM(),
               },
@@ -398,6 +402,31 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
             />
           )}
 
+          {aliasCreateForm.values.format === "domain" && (
+            <Select
+              label={LL.ALIAS_FORMAT_DOMAIN_TYPE()}
+              data={[
+                {
+                  value: "domainWithoutExtension",
+                  label: LL.PREFIX_DOMAIN_WITHOUT_EXTENSION(),
+                  disabled: !hostname,
+                },
+                {
+                  value: "domainWithExtension",
+                  label: LL.PREFIX_DOMAIN_WITH_EXTENSION(),
+                  disabled: !hostname,
+                },
+                {
+                  value: "fullDomain",
+                  label: LL.PREFIX_FULL_DOMAIN(),
+                  disabled: !hostname,
+                },
+              ]}
+              allowDeselect={false}
+              {...aliasCreateForm.getInputProps("prefixFormat")}
+            />
+          )}
+
           {(aliasCreateForm.values.format === "characters" ||
             aliasCreateForm.values.format === "words") &&
             aliasCreateForm.values.prefixFormat === "custom" && (
@@ -455,7 +484,11 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
               flex={1}
               type="submit"
               loading={createEmailRule.isPending}
-              disabled={doesAliasPreviewAlreadyExist || !aliasCreateForm.isValid()}>
+              disabled={
+                doesAliasPreviewAlreadyExist ||
+                aliasPreview?.startsWith("@") ||
+                !aliasCreateForm.isValid()
+              }>
               {LL.CREATE()}
             </Button>
           </Flex>

@@ -36,12 +36,18 @@ export function generateAliasAddress({
       prefix = hostname;
     }
   }
-  prefix = prefix.trim() !== "" ? `${prefix}${separator}` : "";
+
+  if (prefix !== "" && format !== "domain") {
+    prefix = `${prefix}${separator}`;
+  }
+
   switch (format) {
     case "characters":
       return `${prefix}${randomString(characterCount)}`.toLowerCase();
     case "words":
       return `${prefix}${randomWords({ exactly: wordCount, join: separator })}`.toLowerCase();
+    case "domain":
+      return prefix.toLowerCase();
     default:
       throw new Error("Invalid alias type.");
   }

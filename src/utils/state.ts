@@ -38,7 +38,7 @@ settingsAtom.debugLabel = "settingsAtom";
 /*
  * Alias Settings
  */
-const AliasFormats = ["characters", "words", "custom"] as const;
+const AliasFormats = ["characters", "words", "domain", "custom"] as const;
 type AliasFormat = (typeof AliasFormats)[number];
 
 const AliasPrefixFormats = [

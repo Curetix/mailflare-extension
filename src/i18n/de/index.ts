@@ -113,6 +113,7 @@ const de = {
   ZONES_LOADING_ERROR: "Fehler beim Laden der Domains",
   ALIAS_FORMAT_CHARS: "Zufällige Zeichen",
   ALIAS_FORMAT_WORDS: "Zufällige Wörter",
+  ALIAS_FORMAT_DOMAIN: "Domain",
   ALIAS_FORMAT_CUSTOM: "Benutzerdefiniert",
   NUMBER_OF_CHARS: "Anzahl an Zeichen",
   NUMBER_OF_WORDS: "Anzahl an Wörtern",
@@ -126,6 +127,7 @@ const de = {
   PREFIX_FULL_DOMAIN: "Volle Domain",
   PREFIX_CUSTOM: "Benutzerdefiniert",
   PREFIX_CUSTOM_LABEL: "Benutzerdefiniertes Präfix",
+  ALIAS_FORMAT_DOMAIN_TYPE: "Domain Format",
   DESTINATION: "Ziel",
   DESTINATIONS_LOADING_ERROR: "Fehler beim Laden der Ziele",
   DESTINATION_NOT_VERIFIED:
