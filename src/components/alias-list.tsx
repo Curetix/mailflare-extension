@@ -26,7 +26,6 @@ import {
 } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
-import { useI18nContext } from "~i18n/i18n-react";
 
 import AliasBulkDeleteModal from "~components/alias-bulk-delete-modal";
 import AliasBulkEditModal from "~components/alias-bulk-edit-modal";
@@ -34,6 +33,7 @@ import AliasCard from "~components/alias-card";
 import AliasCreateModal from "~components/alias-create-modal";
 import AliasDeleteModal from "~components/alias-delete-modal";
 import AliasEditModal from "~components/alias-edit-modal";
+import { useI18nContext } from "~i18n/i18n-react";
 import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
 import { sortBy } from "~utils";
 import { Alias } from "~utils/alias";
@@ -182,9 +182,6 @@ function AliasList(props: FlexProps) {
             variant="light"
             size="compact-md"
             fullWidth
-            leftSection={
-              aliasSelectEnabled ? <IconPlaylistX size={16} /> : <IconListCheck size={16} />
-            }
             disabled={
               !zones.data ||
               (!aliasSelectEnabled && filteredAliases.length === 0) ||
@@ -193,8 +190,9 @@ function AliasList(props: FlexProps) {
             onClick={() => {
               selectedAliasesHandlers.setState([]);
               setAliasSelectEnabled(!aliasSelectEnabled);
-            }}
-          />
+            }}>
+            {aliasSelectEnabled ? <IconPlaylistX size={16} /> : <IconListCheck size={16} />}
+          </Button>
         </Tooltip>
         {aliasSelectEnabled && (
           <>
@@ -203,10 +201,10 @@ function AliasList(props: FlexProps) {
                 variant="light"
                 size="compact-md"
                 fullWidth
-                leftSection={<IconEdit size={16} />}
                 disabled={selectedAliases.length === 0}
-                onClick={() => setAliasEditModalOpened(true)}
-              />
+                onClick={() => setAliasEditModalOpened(true)}>
+                <IconEdit size={16} />
+              </Button>
             </Tooltip>
             <Tooltip label={LL.DELETE()}>
               <Button
@@ -214,10 +212,10 @@ function AliasList(props: FlexProps) {
                 color="red"
                 size="compact-md"
                 fullWidth
-                leftSection={<IconTrash size={16} />}
                 disabled={selectedAliases.length === 0}
-                onClick={() => setAliasDeleteModalOpened(true)}
-              />
+                onClick={() => setAliasDeleteModalOpened(true)}>
+                <IconTrash size={16} />
+              </Button>
             </Tooltip>
           </>
         )}
@@ -228,17 +226,16 @@ function AliasList(props: FlexProps) {
                 variant="light"
                 size="compact-md"
                 fullWidth
-                leftSection={<IconPlaylistAdd size={16} />}
                 disabled={!zones.data || zones.data.length === 0 || selectedZoneId === null}
-                onClick={() => setAliasCreateModalOpened(true)}
-              />
+                onClick={() => setAliasCreateModalOpened(true)}>
+                <IconPlaylistAdd size={16} />
+              </Button>
             </Tooltip>
             <Tooltip label={searchVisible ? LL.STOP_SEARCH() : LL.SEARCH()}>
               <Button
                 variant="light"
                 size="compact-md"
                 fullWidth
-                leftSection={searchVisible ? <IconSearchOff size={16} /> : <IconSearch size={16} />}
                 disabled={
                   !zones.data ||
                   !emailRules.data ||
@@ -250,20 +247,21 @@ function AliasList(props: FlexProps) {
                 onClick={() => {
                   setSearchVisible(!searchVisible);
                   setAliasSearch("");
-                }}
-              />
+                }}>
+                {searchVisible ? <IconSearchOff size={16} /> : <IconSearch size={16} />}
+              </Button>
             </Tooltip>
             <Tooltip label={LL.REFRESH()}>
               <Button
                 variant="light"
                 size="compact-md"
                 fullWidth
-                leftSection={<IconRefresh size={16} />}
                 disabled={!zones.data || zones.data.length === 0 || selectedZoneId === null}
                 loading={emailRules.isFetching}
                 loaderProps={{ size: 16 }}
-                onClick={() => emailRules.refetch()}
-              />
+                onClick={() => emailRules.refetch()}>
+                <IconRefresh size={16} />
+              </Button>
             </Tooltip>
           </>
         )}
