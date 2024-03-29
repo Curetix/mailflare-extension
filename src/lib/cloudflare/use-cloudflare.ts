@@ -7,18 +7,26 @@ import type {
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { isWebApp } from "~const";
 import { CloudflareApiClient } from "~lib/cloudflare/api";
 import { apiTokenAtom, selectedZoneIdAtom } from "~utils/state";
 
-const apiUrl = isWebApp ? (import.meta.env.DEV ? "http://localhost:4001/api" : "/api") : undefined;
-
 type RuleMutation<T> = {
   zoneId: string | null;
   rule: T;
 };
+
+const apiUrl = isWebApp ? (import.meta.env.DEV ? "http://localhost:4001/api" : "/api") : undefined;
+
+export async function handleResponse<T>(fn: Promise<CloudflareBaseResponse<T>>) {
+  const response = await fn;
+  if (!response.success) {
+    throw new Error(response.errors[0].message);
+  }
+  return response.result;
+}
 
 export function useCloudflare() {
   const queryClient = useQueryClient();
@@ -31,31 +39,26 @@ export function useCloudflare() {
     apiClient.current.apiToken = apiToken || "";
   }, [apiToken]);
 
-  async function verifyToken(token: string, store = true) {
-    try {
-      const response = await apiClient.current.verifyToken(token);
-      if (!response.success) {
-        console.error(response);
-        return { success: false, error: response.errors[0].message };
-      }
+  const verifyToken = useCallback(
+    async (token: string, store = true) => {
+      try {
+        const response = await apiClient.current.verifyToken(token);
+        if (!response.success) {
+          console.error(response);
+          return { success: false, error: response.errors[0].message };
+        }
 
-      if (store) {
-        await setApiToken(token);
+        if (store) {
+          await setApiToken(token);
+        }
+        return { success: true };
+      } catch (error: any) {
+        console.error(error);
+        return { success: false, error: error.toString() };
       }
-      return { success: true };
-    } catch (error: any) {
-      console.error(error);
-      return { success: false, error: error.toString() };
-    }
-  }
-
-  async function handleResponse<T>(fn: Promise<CloudflareBaseResponse<T>>) {
-    const response = await fn;
-    if (!response.success) {
-      throw new Error(response.errors[0].message);
-    }
-    return response.result;
-  }
+    },
+    [setApiToken],
+  );
 
   const zones = useQuery({
     queryKey: ["zones"],

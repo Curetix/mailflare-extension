@@ -1,18 +1,36 @@
 import type { CloudflareEmailRule } from "~lib/cloudflare/cloudflare.types";
+import type { AliasFormat, AliasPrefixFormat } from "~utils/state";
 
-import { Button, Modal, NumberInput, Select, Stack, TextInput } from "@mantine/core";
+import {
+  ActionIcon,
+  Button,
+  Flex,
+  Modal,
+  NumberInput,
+  Select,
+  Stack,
+  TextInput,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useClipboard } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
+import { IconRefresh } from "@tabler/icons-react";
+import { useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
-import { useEffect } from "react";
-import { useI18nContext } from "~i18n/i18n-react";
+import { useEffect, useMemo, useState } from "react";
 
 import { emailRuleNamePrefix } from "~const";
-import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
+import { useI18nContext } from "~i18n/i18n-react";
+import { handleResponse, useCloudflare } from "~lib/cloudflare/use-cloudflare";
 import { useFullscreenModal } from "~utils";
 import { generateAliasAddress } from "~utils/alias";
-import { aliasSettingsAtom, hostnameAtom, settingsAtom } from "~utils/state";
+import {
+  AliasFormats,
+  AliasPrefixFormats,
+  aliasSettingsAtom,
+  hostnameAtom,
+  settingsAtom,
+} from "~utils/state";
 
 type Props = {
   opened: boolean;
@@ -25,11 +43,11 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
   const isFullscreen = useFullscreenModal();
 
   const {
+    apiClient,
     selectedZoneId,
     setSelectedZoneId,
     zones,
     emailDestinations,
-    emailRules,
     createEmailRule,
   } = useCloudflare();
 
@@ -37,27 +55,28 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
   const [{ copyAlias }] = useAtom(settingsAtom);
 
   const [hostname] = useAtom(hostnameAtom);
+  const [aliasPreview, setAliasPreview] = useState<string | null>(null);
 
   const aliasCreateForm = useForm({
     initialValues: {
       zoneId: "",
-      format: "characters",
+      format: "characters" as AliasFormat,
       characterCount: 5,
       wordCount: 2,
       separator: "_",
       customAlias: "",
       description: "",
-      prefixFormat: "none",
+      prefixFormat: "none" as AliasPrefixFormat,
       customPrefix: "",
       destination: "",
+      preview: "",
     },
     validate: {
       zoneId: (value) =>
         value.trim() === "" || !zones.data?.find((z) => z.id === selectedZoneId)
           ? LL.INVALID_DOMAIN()
           : null,
-      format: (value) =>
-        !["characters", "words", "custom"].includes(value) ? LL.INVALID_FORMAT() : null,
+      format: (value) => (!AliasFormats.includes(value) ? LL.INVALID_FORMAT() : null),
       characterCount: (value, values) =>
         values.format === "characters" && (value < 3 || value > 25) ? LL.INVALID_LENGTH() : null,
       wordCount: (value, values) =>
@@ -65,11 +84,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
       customAlias: (value, values) =>
         values.format === "custom" && value.trim().length < 3 ? LL.INVALID_CUSTOM_ALIAS() : null,
       prefixFormat: (value) =>
-        !["none", "domainWithoutExtension", "domainWithExtension", "fullDomain", "custom"].includes(
-          value,
-        )
-          ? LL.INVALID_PREFIX_FORMAT()
-          : null,
+        !AliasPrefixFormats.includes(value) ? LL.INVALID_PREFIX_FORMAT() : null,
       customPrefix: (value, values) =>
         values.prefixFormat === "custom" && value.trim().length < 1
           ? LL.INVALID_CUSTOM_PREFIX()
@@ -79,6 +94,17 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
           ? LL.INVALID_DESTINATION()
           : null,
     },
+  });
+
+  const emailRules = useQuery({
+    queryKey: ["emailRules", aliasCreateForm.values.zoneId],
+    queryFn: async ({ queryKey: [, zoneId] }) => {
+      if (!zoneId) throw new Error("No zone identifier provided.");
+      return handleResponse(apiClient.current.getEmailRules(zoneId as string));
+    },
+    enabled: !!selectedZoneId,
+    placeholderData: [],
+    retry: false,
   });
 
   function resetForm() {
@@ -96,7 +122,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
       });
     }
 
-    if (hostname) {
+    if (hostname && hostname !== "newtab") {
       aliasCreateForm.setValues({
         description: hostname,
       });
@@ -115,24 +141,72 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
   function saveAliasSettings() {
     const { values } = aliasCreateForm;
     return setAliasSettings({
-      format: values.format as "characters" | "words" | "custom",
+      format: values.format,
       characterCount: values.characterCount,
       wordCount: values.wordCount,
       separator: values.separator,
-      prefixFormat: values.prefixFormat as
-        | "none"
-        | "custom"
-        | "domainWithoutExtension"
-        | "domainWithExtension"
-        | "fullDomain",
+      prefixFormat: values.prefixFormat,
       destination: values.destination,
     });
   }
 
-  async function createAlias(variables: typeof aliasCreateForm.values) {
+  function createAliasPreview() {
+    const zone = zones.data?.find((z) => z.id === aliasCreateForm.values.zoneId);
+    if (!zone) return null;
+
+    if (aliasCreateForm.values.format === "custom") {
+      return `${aliasCreateForm.values.customAlias}@${zone.name}`;
+    }
+
+    let aliasAddress = "";
+    for (let i = 0; i < 3; i++) {
+      aliasAddress = `${generateAliasAddress({
+        format: aliasCreateForm.values.format === "words" ? "words" : "characters",
+        characterCount: aliasCreateForm.values.characterCount,
+        wordCount: aliasCreateForm.values.wordCount,
+        separator: aliasCreateForm.values.separator,
+        customPrefix: aliasCreateForm.values.customPrefix,
+        prefixFormat: aliasCreateForm.values.prefixFormat as
+          | "fullDomain"
+          | "domainWithExtension"
+          | "domainWithoutExtension"
+          | "custom"
+          | "none",
+        hostname,
+      })}@${zone.name}`;
+
+      if (!emailRules.data?.find((r) => r.matchers[0].value === aliasAddress)) {
+        break;
+      }
+    }
+    return aliasAddress;
+  }
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    setAliasPreview(createAliasPreview());
+  }, [
+    hostname,
+    zones.data,
+    emailRules.data,
+    aliasCreateForm.values.zoneId,
+    aliasCreateForm.values.format,
+    aliasCreateForm.values.customAlias,
+    aliasCreateForm.values.characterCount,
+    aliasCreateForm.values.wordCount,
+    aliasCreateForm.values.separator,
+    aliasCreateForm.values.prefixFormat,
+    aliasCreateForm.values.customPrefix,
+  ]);
+
+  const doesAliasPreviewAlreadyExist = useMemo<boolean>(() => {
+    return emailRules.data?.find((r) => r.matchers[0].value === aliasPreview) !== undefined;
+  }, [aliasPreview, emailRules.data]);
+
+  function createAlias(variables: typeof aliasCreateForm.values) {
     const zone = zones.data?.find((z) => z.id === variables.zoneId);
 
-    if (!zone) {
+    if (!zone || !aliasPreview) {
       showNotification({
         color: "red",
         title: LL.ERROR(),
@@ -142,52 +216,14 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
       return;
     }
 
-    let aliasAddress: string;
-    if (variables.format === "custom") {
-      aliasAddress = `${variables.customAlias}@${zone.name}`;
-
-      if (emailRules.data?.find((r) => r.matchers[0].value === aliasAddress)) {
-        showNotification({
-          color: "red",
-          title: LL.CONFLICT(),
-          message: LL.ALIAS_ALREADY_EXISTS(),
-          autoClose: false,
-        });
-        return;
-      }
-    } else {
-      let attempts = 0;
-      while (true) {
-        attempts += 1;
-
-        aliasAddress = `${generateAliasAddress({
-          format: variables.format === "words" ? "words" : "characters",
-          characterCount: variables.characterCount,
-          wordCount: variables.wordCount,
-          separator: variables.separator,
-          customPrefix: variables.customPrefix,
-          prefixFormat: variables.prefixFormat as
-            | "fullDomain"
-            | "domainWithExtension"
-            | "domainWithoutExtension"
-            | "custom"
-            | "none",
-          hostname,
-        })}@${zone.name}`;
-
-        if (!emailRules.data?.find((r) => r.matchers[0].value === aliasAddress)) {
-          break;
-        }
-        if (attempts === 3) {
-          showNotification({
-            color: "red",
-            title: LL.CONFLICT(),
-            message: LL.ALIAS_GENERATION_ERROR(),
-            autoClose: false,
-          });
-          return;
-        }
-      }
+    if (emailRules.data?.find((r) => r.matchers[0].value === aliasPreview)) {
+      showNotification({
+        color: "red",
+        title: LL.CONFLICT(),
+        message: LL.ALIAS_ALREADY_EXISTS(),
+        autoClose: false,
+      });
+      return;
     }
 
     const rule: Omit<CloudflareEmailRule, "tag"> = {
@@ -201,13 +237,14 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
         {
           field: "to",
           type: "literal",
-          value: aliasAddress,
+          value: aliasPreview,
         },
       ],
       enabled: true,
       name: `${emailRuleNamePrefix}${variables.description}`,
       priority: Math.round(Date.now() / 1000),
     };
+
     return createEmailRule.mutate(
       { zoneId: zone.id, rule },
       {
@@ -255,7 +292,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
       title={LL.CREATE_MODAL_TITLE()}
       fullScreen={isFullscreen}>
       <form onSubmit={aliasCreateForm.onSubmit((values) => createAlias(values))}>
-        <Stack gap="xs">
+        <Stack gap={8}>
           <Select
             label={LL.DOMAIN()}
             data={
@@ -391,19 +428,37 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
             }
           />
 
-          <Button
-            type="submit"
-            loading={createEmailRule.isPending}
-            disabled={!aliasCreateForm.isValid()}>
-            {LL.CREATE()}
-          </Button>
+          <TextInput
+            variant="filled"
+            label="Generated Alias"
+            error={doesAliasPreviewAlreadyExist ? LL.ALIAS_ALREADY_EXISTS() : undefined}
+            value={aliasPreview || "Unavailable"}
+            readOnly
+            rightSection={
+              aliasCreateForm.values.format !== "custom" ? (
+                <ActionIcon variant="light" onClick={() => setAliasPreview(createAliasPreview())}>
+                  <IconRefresh style={{ width: "70%", height: "70%" }} stroke={1.5} />
+                </ActionIcon>
+              ) : undefined
+            }
+          />
 
-          <Button
-            color="gray"
-            disabled={!aliasCreateForm.isValid()}
-            onClick={() => saveAliasSettings()}>
-            {LL.SAVE_SETTINGS()}
-          </Button>
+          <Flex dir="col" gap={8}>
+            <Button
+              color="gray"
+              disabled={!aliasCreateForm.isValid()}
+              onClick={() => saveAliasSettings()}>
+              {LL.SAVE_SETTINGS()}
+            </Button>
+
+            <Button
+              flex={1}
+              type="submit"
+              loading={createEmailRule.isPending}
+              disabled={doesAliasPreviewAlreadyExist || !aliasCreateForm.isValid()}>
+              {LL.CREATE()}
+            </Button>
+          </Flex>
         </Stack>
       </form>
     </Modal>
