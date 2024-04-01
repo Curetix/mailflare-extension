@@ -19,7 +19,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { useEffect, useMemo, useState } from "react";
 
-import { emailRuleNamePrefix } from "~const";
+import type { ComboboxData } from "@mantine/core/lib/components/Combobox/Combobox.types";
+import { emailRuleNamePrefix, isExtension } from "~const";
 import { useI18nContext } from "~i18n/i18n-react";
 import { handleResponse, useCloudflare } from "~lib/cloudflare/use-cloudflare";
 import { useFullscreenModal } from "~utils";
@@ -96,6 +97,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
     },
   });
 
+  // Load email rules for currently selected zone, to check if a generated alias already exists
   const emailRules = useQuery({
     queryKey: ["emailRules", aliasCreateForm.values.zoneId],
     queryFn: async ({ queryKey: [, zoneId] }) => {
@@ -122,7 +124,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
       });
     }
 
-    if (hostname && hostname !== "newtab") {
+    if (hostname) {
       aliasCreateForm.setValues({
         description: hostname,
       });
@@ -275,6 +277,72 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
     );
   }
 
+  const aliasFormatData = useMemo<ComboboxData>(() => {
+    const domainOption = isExtension
+      ? [
+          {
+            value: "domain",
+            label: LL.ALIAS_FORMAT_DOMAIN(),
+            disabled: !hostname,
+          },
+        ]
+      : [];
+
+    return [
+      {
+        value: "characters",
+        label: LL.ALIAS_FORMAT_CHARS(),
+      },
+      {
+        value: "words",
+        label: LL.ALIAS_FORMAT_WORDS(),
+      },
+      ...domainOption,
+      {
+        value: "custom",
+        label: LL.ALIAS_FORMAT_CUSTOM(),
+      },
+    ];
+  }, [LL, hostname]);
+
+  const prefixFormatData = useMemo<ComboboxData>(() => {
+    const domainOptions = isExtension
+      ? [
+          {
+            value: "domainWithoutExtension",
+            label: LL.PREFIX_DOMAIN_WITHOUT_EXTENSION(),
+            disabled: !hostname,
+          },
+          {
+            value: "domainWithExtension",
+            label: LL.PREFIX_DOMAIN_WITH_EXTENSION(),
+            disabled: !hostname,
+          },
+          {
+            value: "fullDomain",
+            label: LL.PREFIX_FULL_DOMAIN(),
+            disabled: !hostname,
+          },
+        ]
+      : [];
+
+    if (isExtension && aliasCreateForm.values.format === "domain") {
+      return domainOptions;
+    }
+
+    return [
+      {
+        value: "none",
+        label: LL.PREFIX_NONE(),
+      },
+      ...domainOptions,
+      {
+        value: "custom",
+        label: LL.PREFIX_CUSTOM(),
+      },
+    ];
+  }, [LL, hostname, aliasCreateForm.values.format]);
+
   return (
     <Modal
       opened={opened}
@@ -312,24 +380,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
           />
           <Select
             label="Format"
-            data={[
-              {
-                value: "characters",
-                label: LL.ALIAS_FORMAT_CHARS(),
-              },
-              {
-                value: "words",
-                label: LL.ALIAS_FORMAT_WORDS(),
-              },
-              {
-                value: "domain",
-                label: LL.ALIAS_FORMAT_DOMAIN(),
-              },
-              {
-                value: "custom",
-                label: LL.ALIAS_FORMAT_CUSTOM(),
-              },
-            ]}
+            data={aliasFormatData}
             allowDeselect={false}
             {...aliasCreateForm.getInputProps("format")}
           />
@@ -368,67 +419,20 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
             {...aliasCreateForm.getInputProps("description")}
           />
 
-          {(aliasCreateForm.values.format === "characters" ||
-            aliasCreateForm.values.format === "words") && (
+          {aliasCreateForm.values.format !== "custom" && (
             <Select
-              label={LL.PREFIX()}
-              data={[
-                {
-                  value: "none",
-                  label: LL.PREFIX_NONE(),
-                },
-                {
-                  value: "domainWithoutExtension",
-                  label: LL.PREFIX_DOMAIN_WITHOUT_EXTENSION(),
-                  disabled: !hostname,
-                },
-                {
-                  value: "domainWithExtension",
-                  label: LL.PREFIX_DOMAIN_WITH_EXTENSION(),
-                  disabled: !hostname,
-                },
-                {
-                  value: "fullDomain",
-                  label: LL.PREFIX_FULL_DOMAIN(),
-                  disabled: !hostname,
-                },
-                {
-                  value: "custom",
-                  label: LL.PREFIX_CUSTOM(),
-                },
-              ]}
+              label={
+                aliasCreateForm.values.format === "domain"
+                  ? LL.ALIAS_FORMAT_DOMAIN_TYPE()
+                  : LL.PREFIX()
+              }
+              data={prefixFormatData}
               allowDeselect={false}
               {...aliasCreateForm.getInputProps("prefixFormat")}
             />
           )}
 
-          {aliasCreateForm.values.format === "domain" && (
-            <Select
-              label={LL.ALIAS_FORMAT_DOMAIN_TYPE()}
-              data={[
-                {
-                  value: "domainWithoutExtension",
-                  label: LL.PREFIX_DOMAIN_WITHOUT_EXTENSION(),
-                  disabled: !hostname,
-                },
-                {
-                  value: "domainWithExtension",
-                  label: LL.PREFIX_DOMAIN_WITH_EXTENSION(),
-                  disabled: !hostname,
-                },
-                {
-                  value: "fullDomain",
-                  label: LL.PREFIX_FULL_DOMAIN(),
-                  disabled: !hostname,
-                },
-              ]}
-              allowDeselect={false}
-              {...aliasCreateForm.getInputProps("prefixFormat")}
-            />
-          )}
-
-          {(aliasCreateForm.values.format === "characters" ||
-            aliasCreateForm.values.format === "words") &&
+          {aliasCreateForm.values.format !== "custom" &&
             aliasCreateForm.values.prefixFormat === "custom" && (
               <TextInput
                 label={LL.PREFIX_CUSTOM_LABEL()}
@@ -464,7 +468,8 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
             value={aliasPreview || "Unavailable"}
             readOnly
             rightSection={
-              aliasCreateForm.values.format !== "custom" ? (
+              aliasCreateForm.values.format === "characters" ||
+              aliasCreateForm.values.format === "words" ? (
                 <ActionIcon variant="light" onClick={() => setAliasPreview(createAliasPreview())}>
                   <IconRefresh style={{ width: "70%", height: "70%" }} stroke={1.5} />
                 </ActionIcon>

@@ -18,7 +18,9 @@ export default function Popup() {
     chrome.tabs.query({ active: true }).then(([tab]) => {
       if (tab?.url) {
         const url = new URL(tab.url);
-        setHostname(url.hostname);
+        if (url.hostname !== "newtab") {
+          setHostname(url.hostname);
+        }
       }
     });
   }, []);
