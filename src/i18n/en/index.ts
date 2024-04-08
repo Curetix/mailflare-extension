@@ -46,6 +46,7 @@ const en = {
   LANGUAGE_DESC: "Choose a language for the UI",
   LANGUAGE_ENGLISH: "🇬🇧 English",
   LANGUAGE_GERMAN: "🇩🇪 German (Deutsch)",
+  LANGUAGE_DUTCH: "🇳🇱 Dutch (Nederlands)",
   RULE_FILTER: "Rule Filter",
   RULE_FILTER_DESC: "Only show email rules created by this extension",
   COPY_ALIAS: "Copy Alias",

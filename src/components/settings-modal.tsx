@@ -108,6 +108,7 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
           data={[
             { value: "en", label: LL.LANGUAGE_ENGLISH() },
             { value: "de", label: LL.LANGUAGE_GERMAN() },
+            { value: "nl", label: LL.LANGUAGE_DUTCH() },
           ]}
         />
       ),
