@@ -1,6 +1,6 @@
 import type { BaseTranslation } from "../i18n-types";
 
-const en = {
+const nl = {
   // General
   YES: "Ja",
   NO: "Nee",
@@ -45,9 +45,9 @@ const en = {
   THEME_LIGHT: "LICHT",
   LANGUAGE: "Taal",
   LANGUAGE_DESC: "kies een taal voor de extensie",
-  LANGUAGE_ENGLISH: "🇬🇧 English",
+  LANGUAGE_ENGLISH: "🇬🇧 Engels (English)",
   LANGUAGE_GERMAN: "🇩🇪 German (Deutsch)",
-  LANGUAGE_DUTCH: "🇳🇱 Dutch (Nederlands)",
+  LANGUAGE_DUTCH: "🇳🇱 Nederlands",
   RULE_FILTER: "Regel Filter",
   RULE_FILTER_DESC: "Toon alleen email regels die door deze extensie zijn gemaakt",
   COPY_ALIAS: "Kopieer Alias",
@@ -170,4 +170,4 @@ const en = {
     "Er is een fout opgetreden bij het aanvragen van toestemming: {error}",
 } satisfies BaseTranslation;
 
-export default en;
+export default nl;

@@ -46,6 +46,7 @@ const de = {
   LANGUAGE_DESC: "Wähle eine Sprache für das UI",
   LANGUAGE_ENGLISH: "🇬🇧 Englisch (English)",
   LANGUAGE_GERMAN: "🇩🇪 Deutsch",
+  LANGUAGE_DUTCH: "🇳🇱 Niederländisch (Nederlands)",
   RULE_FILTER: "Regel Filter",
   RULE_FILTER_DESC: "Zeige nur Email Regeln, die von dieser Erweiterung erstellt wurden",
   COPY_ALIAS: "Kopiere Alias",
