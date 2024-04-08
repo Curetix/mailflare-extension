@@ -2,6 +2,7 @@ name: "Build Extension"
 
 on:
   push:
+  pull_request:
   workflow_dispatch:
     inputs:
       publish:
