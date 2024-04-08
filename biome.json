@@ -11,12 +11,13 @@
         "noExplicitAny": "warn"
       }
     },
-    "ignore": ["src/i18n/*.ts"]
+    "ignore": ["src/i18n/*"]
   },
   "formatter": {
     "indentStyle": "space",
     "indentWidth": 2,
-    "lineWidth": 100
+    "lineWidth": 100,
+    "ignore": ["src/i18n/*"]
   },
   "javascript": {
     "formatter": {
