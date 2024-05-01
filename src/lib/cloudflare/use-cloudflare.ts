@@ -20,6 +20,32 @@ type RuleMutation<T> = {
 
 const apiUrl = isWebApp ? (import.meta.env.DEV ? "http://localhost:4001/api" : "/api") : undefined;
 
+async function getAllPages<T>(fn: (page: number) => Promise<CloudflareBaseResponse<Array<T>>>) {
+  const items: Array<T> = [];
+  let page = 1;
+
+  while (true) {
+    const response = await fn(page);
+
+    if (!response.success) {
+      throw new Error(response.errors[0].message);
+    }
+
+    items.push(...response.result);
+
+    if (
+      Math.ceil(response.result_info.total_count / response.result_info.per_page) >
+      response.result_info.page
+    ) {
+      page += 1;
+    } else {
+      break;
+    }
+  }
+
+  return items;
+}
+
 export async function handleResponse<T>(fn: Promise<CloudflareBaseResponse<T>>) {
   const response = await fn;
   if (!response.success) {
@@ -63,7 +89,7 @@ export function useCloudflare() {
   const zones = useQuery({
     queryKey: ["zones"],
     queryFn: async () => {
-      return handleResponse<CloudflareZone[]>(apiClient.current.getZones());
+      return getAllPages((page: number) => apiClient.current.getZones(page));
     },
     enabled: !!apiToken,
     placeholderData: [],
@@ -86,9 +112,7 @@ export function useCloudflare() {
     queryKey: ["destinations", accountId],
     queryFn: async ({ queryKey: [, accountId] }) => {
       if (!accountId) throw new Error("No account identifier provided.");
-      return handleResponse<CloudflareEmailDestination[]>(
-        apiClient.current.getDestinations(accountId),
-      );
+      return getAllPages((page: number) => apiClient.current.getDestinations(accountId, page));
     },
     enabled: !!accountId,
     placeholderData: [],
@@ -99,7 +123,7 @@ export function useCloudflare() {
     queryKey: ["emailRules", selectedZoneId],
     queryFn: async ({ queryKey: [, zoneId] }) => {
       if (!zoneId) throw new Error("No zone identifier provided.");
-      return handleResponse(apiClient.current.getEmailRules(zoneId as string));
+      return getAllPages((page: number) => apiClient.current.getEmailRules(zoneId, page));
     },
     enabled: !!selectedZoneId,
     placeholderData: [],
@@ -109,7 +133,7 @@ export function useCloudflare() {
   const createEmailRule = useMutation({
     mutationFn: async ({ zoneId, rule }: RuleMutation<Omit<CloudflareEmailRule, "tag">>) => {
       if (!zoneId) return;
-      return handleResponse<CloudflareEmailRule>(apiClient.current.createEmailRule(zoneId, rule));
+      return handleResponse(apiClient.current.createEmailRule(zoneId, rule));
     },
     onSuccess: () => {
       return queryClient.invalidateQueries({ queryKey: ["emailRules", selectedZoneId] });
@@ -119,7 +143,7 @@ export function useCloudflare() {
   const updateEmailRule = useMutation({
     mutationFn: async ({ zoneId, rule }: RuleMutation<CloudflareEmailRule>) => {
       if (!zoneId) return;
-      return handleResponse<CloudflareEmailRule>(apiClient.current.updateEmailRule(zoneId, rule));
+      return handleResponse(apiClient.current.updateEmailRule(zoneId, rule));
     },
     onSuccess: () => {
       return queryClient.invalidateQueries({ queryKey: ["emailRules", selectedZoneId] });
@@ -129,7 +153,7 @@ export function useCloudflare() {
   const deleteEmailRule = useMutation({
     mutationFn: async ({ zoneId, rule }: RuleMutation<CloudflareEmailRule>) => {
       if (!zoneId) return;
-      return handleResponse<null>(apiClient.current.deleteEmailRule(zoneId, rule));
+      return handleResponse(apiClient.current.deleteEmailRule(zoneId, rule));
     },
     onSuccess: () => {
       return queryClient.invalidateQueries({ queryKey: ["emailRules", selectedZoneId] });

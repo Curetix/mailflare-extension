@@ -43,6 +43,8 @@ type CloudflareResponseResultInfo = {
   count: number;
   page: number;
   per_page: number;
+  // total_pages is only on some endpoints, so we shouldn't rely on it
+  // total_pages: number;
   total_count: number;
 };
 

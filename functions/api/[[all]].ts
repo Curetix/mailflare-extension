@@ -4,9 +4,9 @@ export const onRequest: PagesFunction = async (context) => {
   try {
     const req = context.request;
     const url = new URL(req.url);
-    const path = url.pathname.replace("/api/", "");
+    const pathname = url.pathname.replace("/api/", "");
 
-    return await fetch(`${CloudflareApiBaseUrl}/${path}`, {
+    return await fetch(`${CloudflareApiBaseUrl}/${pathname}${url.search}`, {
       method: req.method,
       headers: req.headers,
       body: req.body,
