@@ -15,14 +15,13 @@ import { useForm } from "@mantine/form";
 import { useClipboard } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import { IconRefresh } from "@tabler/icons-react";
-import { useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { useEffect, useMemo, useState } from "react";
 
 import type { ComboboxData } from "@mantine/core/lib/components/Combobox/Combobox.types";
 import { emailRuleNamePrefix, isExtension } from "~const";
 import { useI18nContext } from "~i18n/i18n-react";
-import { handleResponse, useCloudflare } from "~lib/cloudflare/use-cloudflare";
+import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
 import { useFullscreenModal } from "~utils";
 import { generateAliasAddress } from "~utils/alias";
 import {
@@ -44,11 +43,11 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
   const isFullscreen = useFullscreenModal();
 
   const {
-    apiClient,
     selectedZoneId,
     setSelectedZoneId,
     zones,
     emailDestinations,
+    emailRules,
     createEmailRule,
   } = useCloudflare();
 
@@ -97,18 +96,6 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
     },
   });
 
-  // Load email rules for currently selected zone, to check if a generated alias already exists
-  const emailRules = useQuery({
-    queryKey: ["emailRules", aliasCreateForm.values.zoneId],
-    queryFn: async ({ queryKey: [, zoneId] }) => {
-      if (!zoneId) throw new Error("No zone identifier provided.");
-      return handleResponse(apiClient.current.getEmailRules(zoneId as string));
-    },
-    enabled: !!selectedZoneId,
-    placeholderData: [],
-    retry: false,
-  });
-
   function resetForm() {
     aliasCreateForm.reset();
 
@@ -138,7 +125,12 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     resetForm();
-  }, [aliasSettings, selectedZoneId, hostname]);
+  }, [aliasSettings, hostname]);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    setSelectedZoneId(aliasCreateForm.values.zoneId);
+  }, [aliasCreateForm.values.zoneId]);
 
   function saveAliasSettings() {
     const { values } = aliasCreateForm;

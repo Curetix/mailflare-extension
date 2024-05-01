@@ -1,9 +1,4 @@
-import type {
-  CloudflareBaseResponse,
-  CloudflareEmailDestination,
-  CloudflareEmailRule,
-  CloudflareZone,
-} from "~lib/cloudflare/cloudflare.types";
+import type { CloudflareBaseResponse, CloudflareEmailRule } from "~lib/cloudflare/cloudflare.types";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
@@ -20,6 +15,11 @@ type RuleMutation<T> = {
 
 const apiUrl = isWebApp ? (import.meta.env.DEV ? "http://localhost:4001/api" : "/api") : undefined;
 
+/**
+ * Helper function to handle Cloudflare API requests and paginate through all available pages.
+ * Throws an error if one of the requests is not successful, otherwise returns only the relevant result data.
+ * @param fn API function to execute
+ */
 async function getAllPages<T>(fn: (page: number) => Promise<CloudflareBaseResponse<Array<T>>>) {
   const items: Array<T> = [];
   let page = 1;
@@ -46,7 +46,12 @@ async function getAllPages<T>(fn: (page: number) => Promise<CloudflareBaseRespon
   return items;
 }
 
-export async function handleResponse<T>(fn: Promise<CloudflareBaseResponse<T>>) {
+/**
+ * Helper function to handle Cloudflare API requests. It executes the request,
+ * if it is not successful throws an error, otherwise returns the result.
+ * @param fn API function to execute
+ */
+async function handleResponse<T>(fn: Promise<CloudflareBaseResponse<T>>) {
   const response = await fn;
   if (!response.success) {
     throw new Error(response.errors[0].message);
