@@ -13,9 +13,8 @@ const nl = {
   ERROR: "Fout",
   ALIAS: "Alias",
   NOT_FOUND: "Niet gevonden",
-  UPDATED_TITLE: "MailFlare geüpdatet",
-  UPDATED_DESCRIPTION:
-    "MailFlare is geüpdatet naar versie {newVersion}. Bezoek het GitHub repository (link in de instellingen) om de changelog te bekijken.",
+  UPDATED_TITLE: "Geüpdatet",
+  UPDATED_DESCRIPTION: "MailFlare is geüpdatet naar versie {newVersion}",
 
   // Login
   INSTRUCTIONS: "Instructies",
@@ -45,9 +44,9 @@ const nl = {
   THEME_LIGHT: "LICHT",
   LANGUAGE: "Taal",
   LANGUAGE_DESC: "kies een taal voor de extensie",
-  LANGUAGE_ENGLISH: "🇬🇧 Engels (English)",
-  LANGUAGE_GERMAN: "🇩🇪 German (Deutsch)",
-  LANGUAGE_DUTCH: "🇳🇱 Nederlands",
+  LANGUAGE_ENGLISH: "🇬 Engels (English)",
+  LANGUAGE_GERMAN: "🇩 German (Deutsch)",
+  LANGUAGE_DUTCH: "🇳 Nederlands",
   RULE_FILTER: "Regel Filter",
   RULE_FILTER_DESC: "Toon alleen email regels die door deze extensie zijn gemaakt",
   COPY_ALIAS: "Kopieer Alias",

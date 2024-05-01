@@ -13,9 +13,8 @@ const de = {
   ERROR: "Fehler",
   ALIAS: "Alias",
   NOT_FOUND: "Nicht gefunden",
-  UPDATED_TITLE: "MailFlare aktualisiert",
-  UPDATED_DESCRIPTION:
-    "MailFlare wurde auf Version {newVersion} aktualisiert. Besuche das GitHub Repository (Link in den Einstellungen), um die Änderungsliste zu sehen.",
+  UPDATED_TITLE: "Aktualisiert",
+  UPDATED_DESCRIPTION: "MailFlare wurde auf Version {newVersion} aktualisiert.",
 
   // Login
   INSTRUCTIONS: "Anleitung",
@@ -44,9 +43,9 @@ const de = {
   THEME_LIGHT: "HELL",
   LANGUAGE: "Sprache",
   LANGUAGE_DESC: "Wähle eine Sprache für das UI",
-  LANGUAGE_ENGLISH: "🇬🇧 Englisch (English)",
-  LANGUAGE_GERMAN: "🇩🇪 Deutsch",
-  LANGUAGE_DUTCH: "🇳🇱 Niederländisch (Nederlands)",
+  LANGUAGE_ENGLISH: "🇬 Englisch (English)",
+  LANGUAGE_GERMAN: "🇩 Deutsch",
+  LANGUAGE_DUTCH: "🇳 Niederländisch (Nederlands)",
   RULE_FILTER: "Regel Filter",
   RULE_FILTER_DESC: "Zeige nur Email Regeln, die von dieser Erweiterung erstellt wurden",
   COPY_ALIAS: "Kopiere Alias",

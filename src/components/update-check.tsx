@@ -16,7 +16,7 @@ export default function UpdateCheck() {
           color: "green",
           title: LL.UPDATED_TITLE(),
           message: LL.UPDATED_DESCRIPTION({ newVersion: extensionVersion }),
-          autoClose: false,
+          autoClose: 5000,
         });
       }
       return storage.set(StorageKeys.Version, extensionVersion);

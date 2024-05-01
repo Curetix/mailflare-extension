@@ -13,9 +13,8 @@ const en = {
   ERROR: "Error",
   ALIAS: "Alias",
   NOT_FOUND: "Not found",
-  UPDATED_TITLE: "MailFlare updated",
-  UPDATED_DESCRIPTION:
-    "MailFlare was updated to version {newVersion}. Visit the GitHub repository (link in settings) to find the changelog.",
+  UPDATED_TITLE: "Updated",
+  UPDATED_DESCRIPTION: "MailFlare was updated to version {newVersion}",
 
   // Login
   INSTRUCTIONS: "Instructions",
@@ -44,9 +43,9 @@ const en = {
   THEME_LIGHT: "LIGHT",
   LANGUAGE: "Language",
   LANGUAGE_DESC: "Choose a language for the UI",
-  LANGUAGE_ENGLISH: "🇬🇧 English",
-  LANGUAGE_GERMAN: "🇩🇪 German (Deutsch)",
-  LANGUAGE_DUTCH: "🇳🇱 Dutch (Nederlands)",
+  LANGUAGE_ENGLISH: "🇬 English",
+  LANGUAGE_GERMAN: "🇩 German (Deutsch)",
+  LANGUAGE_DUTCH: "🇳 Dutch (Nederlands)",
   RULE_FILTER: "Rule Filter",
   RULE_FILTER_DESC: "Only show email rules created by this extension",
   COPY_ALIAS: "Copy Alias",
