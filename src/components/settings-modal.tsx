@@ -6,7 +6,6 @@ import {
   Divider,
   Flex,
   Modal,
-  ScrollArea,
   Select,
   Stack,
   Switch,
@@ -18,9 +17,9 @@ import { IconExternalLink } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { RESET } from "jotai/utils";
-import { useI18nContext } from "~i18n/i18n-react";
 
-import { extensionName, extensionVersion, isWebApp, popupHeight } from "~const";
+import { extensionName, extensionVersion, isWebApp } from "~const";
+import { useI18nContext } from "~i18n/i18n-react";
 import { loadLocaleAsync } from "~i18n/i18n-util.async";
 import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
 import { useFullscreenModal } from "~utils";
@@ -230,23 +229,20 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
   return (
     <Modal opened={opened} onClose={() => onClose()} title="Settings" fullScreen={isFullscreen}>
       <Stack gap="xs" pr={15}>
-        {settingsItems.map(
-          (item, index) =>
-            !item.hide && (
-              <Stack gap="xs" key={item.title}>
-                <Flex justify="space-between" align="center">
-                  <div>
-                    <Text>{item.title}</Text>
-                    <Text size="xs" c="dimmed">
-                      {item.description}
-                    </Text>
-                  </div>
-                  {item.action}
-                </Flex>
-                {index < settingsItems.length - 1 && <Divider />}
-              </Stack>
-            ),
-        )}
+        {settingsItems.map((item, index) => (
+          <Stack gap="xs" key={item.title} display={item.hide ? "none" : undefined}>
+            <Flex justify="space-between" align="center">
+              <div>
+                <Text>{item.title}</Text>
+                <Text size="xs" c="dimmed">
+                  {item.description}
+                </Text>
+              </div>
+              {item.action}
+            </Flex>
+            {index < settingsItems.length - 1 && <Divider />}
+          </Stack>
+        ))}
       </Stack>
     </Modal>
   );
