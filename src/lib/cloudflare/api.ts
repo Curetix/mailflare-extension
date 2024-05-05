@@ -20,7 +20,7 @@ export class CloudflareApiClient {
   constructor(apiToken: string, baseUrl?: string, itemsPerPage?: number) {
     this.apiToken = apiToken;
     this.baseUrl = baseUrl || CloudflareApiBaseUrl;
-    if (itemsPerPage !== undefined && itemsPerPage < 0 && itemsPerPage >= 50) {
+    if (itemsPerPage !== undefined && itemsPerPage > 0 && itemsPerPage <= 50) {
       this.itemsPerPage = itemsPerPage;
     }
   }
