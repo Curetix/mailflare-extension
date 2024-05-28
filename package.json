@@ -1,7 +1,7 @@
 {
   "name": "mailflare-extension",
   "displayName": "MailFlare - Email Alias Extension",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "Create email aliases for your own domains using Cloudflare Email Routing.",
   "author": "Curetix <me@curetix.eu>",
   "type": "module",
