@@ -1,4 +1,4 @@
-import type { BaseTranslation } from "../i18n-types";
+import type { Translation } from "../i18n-types";
 
 const nl = {
   // General
@@ -40,14 +40,15 @@ const nl = {
   OFF: "UIT",
   THEME: "Thema",
   THEME_DESC: "kies een thema voor de UI",
-  THEME_DARK: "DONKER",
-  THEME_LIGHT: "LICHT",
+  THEME_DARK: "Donker",
+  THEME_LIGHT: "Licht",
+  THEME_AUTO: "Auto",
   LANGUAGE: "Taal",
   LANGUAGE_DESC: "kies een taal voor de extensie",
   LANGUAGE_ENGLISH: "🇬🇧 Engels (English)",
   LANGUAGE_GERMAN: "🇩🇪 German (Deutsch)",
   LANGUAGE_DUTCH: "🇳🇱 Nederlands",
-  LANGUAGE_CHINESE: "🇨🇳 Chinese (中文)",
+  LANGUAGE_CHINESE: "🇨🇳 Chinees (中文)",
   RULE_FILTER: "Regel Filter",
   RULE_FILTER_DESC: "Toon alleen email regels die door deze extensie zijn gemaakt",
   COPY_ALIAS: "Kopieer Alias",
@@ -170,6 +171,6 @@ const nl = {
   PERMISSION_REQUEST_ERROR_TITLE: "Toestemming aanvraag mislukt",
   PERMISSION_REQUEST_ERROR_MESSAGE:
     "Er is een fout opgetreden bij het aanvragen van toestemming: {error}",
-} satisfies BaseTranslation;
+} satisfies Translation;
 
 export default nl;
