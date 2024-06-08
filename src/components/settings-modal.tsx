@@ -12,6 +12,7 @@ import {
   Stack,
   Switch,
   Text,
+  VisuallyHidden,
   rem,
   useMantineColorScheme,
 } from "@mantine/core";
@@ -89,6 +90,10 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
     setLocale(locale);
   };
 
+  const themeIconProps = {
+    style: { width: rem(16), height: rem(16), display: "block" },
+  };
+
   const settingsItems: SettingsItem[] = [
     {
       title: LL.THEME(),
@@ -99,25 +104,28 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
             {
               value: "light",
               label: (
-                <Center>
-                  <IconBrightnessUp style={{ width: rem(16), height: rem(16) }} />
-                </Center>
+                <>
+                  <IconBrightnessUp {...themeIconProps} />
+                  <VisuallyHidden>{LL.THEME_LIGHT()}</VisuallyHidden>
+                </>
               ),
             },
             {
               value: "dark",
               label: (
-                <Center>
-                  <IconMoonStars style={{ width: rem(16), height: rem(16) }} />
-                </Center>
+                <>
+                  <IconMoonStars {...themeIconProps} />
+                  <VisuallyHidden>{LL.THEME_DARK()}</VisuallyHidden>
+                </>
               ),
             },
             {
               value: "auto",
               label: (
-                <Center>
-                  <IconBrightness style={{ width: rem(16), height: rem(16) }} />
-                </Center>
+                <>
+                  <IconBrightness {...themeIconProps} />
+                  <VisuallyHidden>{LL.THEME_AUTO()}</VisuallyHidden>
+                </>
               ),
             },
           ]}
