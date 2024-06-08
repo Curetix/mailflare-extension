@@ -3,17 +3,25 @@ import type { Locales } from "~i18n/i18n-types";
 
 import {
   Button,
+  Center,
   Divider,
   Flex,
   Modal,
+  SegmentedControl,
   Select,
   Stack,
   Switch,
   Text,
+  rem,
   useMantineColorScheme,
 } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
-import { IconExternalLink } from "@tabler/icons-react";
+import {
+  IconBrightness,
+  IconBrightnessUp,
+  IconExternalLink,
+  IconMoonStars,
+} from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { RESET } from "jotai/utils";
@@ -42,7 +50,7 @@ type SettingsItem = {
 function SettingsModal({ opened, onClose }: SettingsModalProps) {
   const { LL, locale, setLocale } = useI18nContext();
   const queryClient = useQueryClient();
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const { colorScheme, setColorScheme } = useMantineColorScheme();
   const isFullscreen = useFullscreenModal();
 
   const { zones, emailDestinations } = useCloudflare();
@@ -86,13 +94,35 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
       title: LL.THEME(),
       description: LL.THEME_DESC(),
       action: (
-        <Switch
-          onLabel={LL.THEME_DARK()}
-          offLabel={LL.THEME_LIGHT()}
-          size="lg"
-          color="green"
-          checked={colorScheme === "dark"}
-          onChange={() => toggleColorScheme()}
+        <SegmentedControl
+          data={[
+            {
+              value: "light",
+              label: (
+                <Center>
+                  <IconBrightnessUp style={{ width: rem(16), height: rem(16) }} />
+                </Center>
+              ),
+            },
+            {
+              value: "dark",
+              label: (
+                <Center>
+                  <IconMoonStars style={{ width: rem(16), height: rem(16) }} />
+                </Center>
+              ),
+            },
+            {
+              value: "auto",
+              label: (
+                <Center>
+                  <IconBrightness style={{ width: rem(16), height: rem(16) }} />
+                </Center>
+              ),
+            },
+          ]}
+          value={colorScheme}
+          onChange={(value) => setColorScheme(value as any)}
         />
       ),
     },
