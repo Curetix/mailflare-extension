@@ -371,7 +371,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
             {...aliasCreateForm.getInputProps("zoneId")}
           />
           <Select
-            label="Format"
+            label={LL.ALIAS_FORMAT()}
             data={aliasFormatData}
             allowDeselect={false}
             {...aliasCreateForm.getInputProps("format")}
@@ -455,7 +455,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
 
           <TextInput
             variant="filled"
-            label="Generated Alias"
+            label={LL.GENERATED_ALIAS()}
             error={doesAliasPreviewAlreadyExist ? LL.ALIAS_ALREADY_EXISTS() : undefined}
             value={aliasPreview || "Unavailable"}
             readOnly

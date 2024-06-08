@@ -9,7 +9,7 @@ import type {
 export type BaseTranslation = BaseTranslationType;
 export type BaseLocale = "en";
 
-export type Locales = "de" | "en" | "nl";
+export type Locales = "de" | "en" | "nl" | "zh";
 
 export type Translation = RootTranslation;
 
@@ -408,6 +408,10 @@ type RootTranslation = {
    */
   ZONES_LOADING_ERROR: string;
   /**
+   * Format
+   */
+  ALIAS_FORMAT: string;
+  /**
    * R​a​n​d​o​m​ ​c​h​a​r​a​c​t​e​r​s
    */
   ALIAS_FORMAT_CHARS: string;
@@ -475,6 +479,10 @@ type RootTranslation = {
    * D​o​m​a​i​n​ ​F​o​r​m​a​t
    */
   ALIAS_FORMAT_DOMAIN_TYPE: string;
+  /**
+   * Generated Alias
+   */
+  GENERATED_ALIAS: string;
   /**
    * D​e​s​t​i​n​a​t​i​o​n
    */
@@ -773,6 +781,10 @@ export type TranslationFunctions = {
    */
   LANGUAGE_DUTCH: () => LocalizedString;
   /**
+   * 🇨🇳 Chinese (Simplified)
+   */
+  LANGUAGE_CHINESE: () => LocalizedString;
+  /**
    * Rule Filter
    */
   RULE_FILTER: () => LocalizedString;
@@ -1001,6 +1013,10 @@ export type TranslationFunctions = {
    */
   ZONES_LOADING_ERROR: () => LocalizedString;
   /**
+   * Format
+   */
+  ALIAS_FORMAT: () => LocalizedString;
+  /**
    * Random characters
    */
   ALIAS_FORMAT_CHARS: () => LocalizedString;
@@ -1072,6 +1088,10 @@ export type TranslationFunctions = {
    * Destination
    */
   DESTINATION: () => LocalizedString;
+  /**
+   * Generated Alias
+   */
+  GENERATED_ALIAS: () => LocalizedString;
   /**
    * Error loading destinations
    */
