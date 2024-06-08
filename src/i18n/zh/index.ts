@@ -1,4 +1,4 @@
-import type { BaseTranslation } from "../i18n-types";
+import type { Translation } from "../i18n-types";
 
 const zh = {
   // General
@@ -44,10 +44,10 @@ const zh = {
   THEME_AUTO: "自动",
   LANGUAGE: "语言",
   LANGUAGE_DESC: "为界面选择语言",
-  LANGUAGE_ENGLISH: "🇬🇧 English",
-  LANGUAGE_GERMAN: "🇩🇪 German (Deutsch)",
-  LANGUAGE_DUTCH: "🇳🇱 Dutch (Nederlands)",
-  LANGUAGE_CHINESE: "🇨🇳 Chinese (中文)",
+  LANGUAGE_ENGLISH: "🇬🇧 英文 (English)",
+  LANGUAGE_GERMAN: "🇩🇪 德语 (Deutsch)",
+  LANGUAGE_DUTCH: "🇳🇱 荷兰语 (Nederlands)",
+  LANGUAGE_CHINESE: "🇨🇳 中文",
   RULE_FILTER: "规则过滤器",
   RULE_FILTER_DESC: "只显示此扩展创建的电子邮件规则",
   COPY_ALIAS: "复制别名",
@@ -169,6 +169,6 @@ const zh = {
   REQUEST_PERMISSION: "请求权限",
   PERMISSION_REQUEST_ERROR_TITLE: "未授予权限",
   PERMISSION_REQUEST_ERROR_MESSAGE: "请求权限时出现错误。",
-} satisfies BaseTranslation;
+} satisfies Translation;
 
 export default zh;
