@@ -44,7 +44,7 @@ const zh = {
   THEME_AUTO: "自动",
   LANGUAGE: "语言",
   LANGUAGE_DESC: "为界面选择语言",
-  LANGUAGE_ENGLISH: "🇬🇧 英文 (English)",
+  LANGUAGE_ENGLISH: "🇬🇧 英语 (English)",
   LANGUAGE_GERMAN: "🇩🇪 德语 (Deutsch)",
   LANGUAGE_DUTCH: "🇳🇱 荷兰语 (Nederlands)",
   LANGUAGE_CHINESE: "🇨🇳 中文",
