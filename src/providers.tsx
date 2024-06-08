@@ -28,6 +28,12 @@ type ProvidersProps = {
   children: ReactNode;
 };
 
+const theme: MantineThemeOverride = {
+  primaryColor: "orange",
+  autoContrast: true,
+  luminanceThreshold: 0.4,
+};
+
 export default function Providers({ localeDetectors, children }: ProvidersProps) {
   const detectors = useMemo(
     () => [localStorageDetector, ...(localeDetectors || [])],
@@ -38,11 +44,6 @@ export default function Providers({ localeDetectors, children }: ProvidersProps)
     [detectors],
   );
   const [localesLoaded, setLocalesLoaded] = useState(false);
-  const theme: MantineThemeOverride = {
-    primaryColor: "orange",
-    autoContrast: true,
-    luminanceThreshold: 0.4,
-  };
 
   useEffect(() => {
     loadLocaleAsync(detectedLocale).then(() => setLocalesLoaded(true));
@@ -53,7 +54,7 @@ export default function Providers({ localeDetectors, children }: ProvidersProps)
   }
 
   return (
-    <MantineProvider theme={theme}>
+    <MantineProvider theme={theme} defaultColorScheme="auto">
       <Notifications />
       <TypesafeI18n locale={detectedLocale}>
         <PersistQueryClientProvider
