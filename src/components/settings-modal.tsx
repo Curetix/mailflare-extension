@@ -138,6 +138,7 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
             { value: "en", label: LL.LANGUAGE_ENGLISH() },
             { value: "de", label: LL.LANGUAGE_GERMAN() },
             { value: "nl", label: LL.LANGUAGE_DUTCH() },
+            { value: "zh", label: LL.LANGUAGE_CHINESE() },
           ]}
         />
       ),

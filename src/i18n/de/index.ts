@@ -111,6 +111,7 @@ const de = {
   ALIAS_CREATION_ERROR: "Alias konnte nicht erstellt werden",
   MODAL_CLOSE_BLOCKED: "Kann im Moment nicht geschlossen werden",
   ZONES_LOADING_ERROR: "Fehler beim Laden der Domains",
+  ALIAS_FORMAT: "Format",
   ALIAS_FORMAT_CHARS: "Zufällige Zeichen",
   ALIAS_FORMAT_WORDS: "Zufällige Wörter",
   ALIAS_FORMAT_DOMAIN: "Domain",
@@ -128,6 +129,7 @@ const de = {
   PREFIX_CUSTOM: "Benutzerdefiniert",
   PREFIX_CUSTOM_LABEL: "Benutzerdefiniertes Präfix",
   ALIAS_FORMAT_DOMAIN_TYPE: "Domain Format",
+  GENERATED_ALIAS: "Generiertes Alias",
   DESTINATION: "Ziel",
   DESTINATIONS_LOADING_ERROR: "Fehler beim Laden der Ziele",
   DESTINATION_NOT_VERIFIED:
