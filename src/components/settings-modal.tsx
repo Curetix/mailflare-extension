@@ -3,7 +3,6 @@ import type { Locales } from "~i18n/i18n-types";
 
 import {
   Button,
-  Center,
   Divider,
   Flex,
   Modal,
@@ -17,12 +16,7 @@ import {
   useMantineColorScheme,
 } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
-import {
-  IconBrightness,
-  IconBrightnessUp,
-  IconExternalLink,
-  IconMoonStars,
-} from "@tabler/icons-react";
+import { IconDeviceDesktop, IconExternalLink, IconMoonStars, IconSun } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { RESET } from "jotai/utils";
@@ -105,7 +99,7 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
               value: "light",
               label: (
                 <>
-                  <IconBrightnessUp {...themeIconProps} />
+                  <IconSun {...themeIconProps} />
                   <VisuallyHidden>{LL.THEME_LIGHT()}</VisuallyHidden>
                 </>
               ),
@@ -123,7 +117,7 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
               value: "auto",
               label: (
                 <>
-                  <IconBrightness {...themeIconProps} />
+                  <IconDeviceDesktop {...themeIconProps} />
                   <VisuallyHidden>{LL.THEME_AUTO()}</VisuallyHidden>
                 </>
               ),
