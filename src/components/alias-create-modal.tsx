@@ -129,7 +129,10 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    setSelectedZoneId(aliasCreateForm.values.zoneId);
+    const value = aliasCreateForm.values.zoneId;
+    if (value && value !== selectedZoneId) {
+      setSelectedZoneId(aliasCreateForm.values.zoneId);
+    }
   }, [aliasCreateForm.values.zoneId]);
 
   function saveAliasSettings() {

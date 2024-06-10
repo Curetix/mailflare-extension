@@ -107,7 +107,7 @@ export function useCloudflare() {
       if (!accountId) {
         setAccountId(zones.data[0].account.id);
       }
-      if (!selectedZoneId) {
+      if (selectedZoneId === null) {
         setSelectedZoneId(zones.data[0].id);
       }
     }
