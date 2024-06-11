@@ -256,7 +256,11 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
   const visibleItems = settingsItems.filter((item) => !item.hide);
 
   return (
-    <Modal opened={opened} onClose={() => onClose()} title="Settings" fullScreen={isFullscreen}>
+    <Modal
+      opened={opened}
+      onClose={() => onClose()}
+      title={LL.SETTINGS()}
+      fullScreen={isFullscreen}>
       <Stack gap="xs" pr={15}>
         {visibleItems.map((item, index) => (
           <Fragment key={item.title}>

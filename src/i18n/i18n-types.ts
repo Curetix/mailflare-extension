@@ -134,6 +134,10 @@ type RootTranslation = {
 	 */
 	CLOUDFLARE_TOKEN_STEP_9: string
 	/**
+	 * S​e​t​t​i​n​g​s
+	 */
+	SETTINGS: string
+	/**
 	 * O​N
 	 */
 	ON: string
@@ -569,6 +573,10 @@ type RootTranslation = {
 	 */
 	ENABLED: string
 	/**
+	 * E​d​i​t​ ​a​l​i​a​s
+	 */
+	UPDATE_TITLE: string
+	/**
 	 * E​d​i​t​ ​a​l​i​a​s​e​s
 	 */
 	UPDATE_MULTIPLE_TITLE: string
@@ -752,6 +760,10 @@ export type TranslationFunctions = {
 	 * Paste the generated token above
 	 */
 	CLOUDFLARE_TOKEN_STEP_9: () => LocalizedString
+	/**
+	 * Settings
+	 */
+	SETTINGS: () => LocalizedString
 	/**
 	 * ON
 	 */
@@ -1180,6 +1192,10 @@ export type TranslationFunctions = {
 	 * Enabled
 	 */
 	ENABLED: () => LocalizedString
+	/**
+	 * Edit alias
+	 */
+	UPDATE_TITLE: () => LocalizedString
 	/**
 	 * Edit aliases
 	 */

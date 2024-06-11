@@ -105,7 +105,7 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
           onClose();
         }
       }}
-      title="Edit Alias"
+      title={LL.UPDATE_TITLE()}
       fullScreen={isFullscreen}>
       <form onSubmit={aliasEditForm.onSubmit((values) => saveAlias(values))}>
         <Stack gap="xs">
