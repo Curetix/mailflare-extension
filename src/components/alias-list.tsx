@@ -17,8 +17,8 @@ import { useListState } from "@mantine/hooks";
 import {
   IconEdit,
   IconListCheck,
-  IconPlaylistAdd,
   IconPlaylistX,
+  IconPlus,
   IconRefresh,
   IconSearch,
   IconSearchOff,
@@ -228,7 +228,7 @@ function AliasList(props: FlexProps) {
                 fullWidth
                 disabled={!zones.data || zones.data.length === 0 || selectedZoneId === null}
                 onClick={() => setAliasCreateModalOpened(true)}>
-                <IconPlaylistAdd size={16} />
+                <IconPlus size={16} />
               </Button>
             </Tooltip>
             <Tooltip label={searchVisible ? LL.STOP_SEARCH() : LL.SEARCH()}>
