@@ -259,11 +259,13 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
     },
   ];
 
+  const visibleItems = settingsItems.filter((item) => !item.hide);
+
   return (
     <Modal opened={opened} onClose={() => onClose()} title="Settings" fullScreen={isFullscreen}>
       <Stack gap="xs" pr={15}>
-        {settingsItems.map((item, index) => (
-          <Stack gap="xs" key={item.title} display={item.hide ? "none" : undefined}>
+        {visibleItems.map((item, index) => (
+          <Stack gap="xs" key={item.title}>
             <Flex justify="space-between" align="center">
               <div>
                 <Text>{item.title}</Text>
@@ -273,7 +275,7 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
               </div>
               {item.action}
             </Flex>
-            {index < settingsItems.length - 1 && <Divider />}
+            {index < visibleItems.length - 1 && <Divider />}
           </Stack>
         ))}
       </Stack>
