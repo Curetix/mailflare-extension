@@ -1,4 +1,71 @@
-## Translations
+# Contributing to MailFlare
+
+## Local Development
+
+To develop this extension locally with features like Auto Refresh and Hot Module Reload, follow these steps:
+
+- Install Node.js (the automated build workflow uses Node.js v20) and pnpm (with `npm install -g pnpm`)
+- Clone the repository: `git clone https://github.com/curetix/mailflare-extension`
+- Install the dependencies: `pnpm install`
+
+Web:
+
+- Run `pnpm dev:web` (Cloudflare Wrangler might prompt you to authenticated, you should be fine skipping that)
+- Open MailFlare in the browser of your choice at `http://localhost:4000`
+
+Chrome Extension:
+
+- Run `pnpm dev`, this will create a dev version of the extension in the `build/chrome-mv3-dev` folder
+- In Chrome, go to **Settings**, then **Extensions** (or open `chrome://extensions` directly)
+- Enable the **Developer mode** toggle (top right)
+- Click **Load unpacked** and select `build/chrome-mv3-dev` inside the MailFlare project folder
+
+Firefox Extension:
+
+- Run `pnpm dev:firefox`, this will create a dev version of the extension in the `build/firefox-mv3-dev` folder
+- In Firefox, enter `about:debugging` into the address bar
+- Click **This Firefox**
+- Click **Load Temporary Add-On...**
+- Select `build/firefox-mv3-dev/manifest.json` inside the MailFlare project folder
+  (this setting is temporary and will be reset when Firefox is closed)
+
+## Building
+
+1. Install Node.js (the automated build workflow uses Node.js v20) and pnpm (with `npm install -g pnpm`)
+2. Clone the repository: `git clone https://github.com/curetix/mailflare-extension`
+3. Install the dependencies: `pnpm install`
+4. Run the build command: `pnpm build` (for Chromium), `pnpm build:firefox` (for Firefox), or `pnpm build:all` for all
+   targets
+5. The output will be in the folder `build/chrome-mv3-prod` or `build/firefox-mv3-prod`
+
+Loading the extension (non-signed builds):
+
+- Chrome
+    1. Go to Settings -> Extensions
+    2. Enable the **Developer mode** toggle (top right)
+    3. Click **Load unpacked** and select the folder of the built extension
+- Firefox
+    1. Enter `about:debugging` into the address bar
+    2. Click **This Firefox**
+    3. Click **Load Temporary Add-On...**
+    4. Navigate to the folder of the built extension and select the `manifest.json` file
+    5. (This will have to be repeated every time Firefox launches)
+
+## Project Structure
+
+- assets/ - Assets for the GitHub repository, e.g. images in the README
+- functions/ - Cloudflare pages function for proxying requests to the Cloudflare API for the web version due to CORS
+- public/ - Public assets for the web version
+- src/ - Main React app
+    - src/background/\* - Background service worker scripts
+    - src/contents/\* - Content scripts
+    - src/i18n/\* - Everything around internalization, using [typesafe-i18n](https://github.com/ivanhofer/typesafe-i18n)
+    - src/lib/cloudflare/\* - Cloudflare API functions
+    - src/utils/\* - Various utility functions and classes
+    - src/popup.tsx - Entrypoint for the extension
+    - src/web.ts - Entrypoint for the web app
+
+## Adding Translations
 
 You are welcome to help translate MailFlare to other languages.
 We use [typesafe-i18n](https://github.com/ivanhofer/typesafe-i18n) to handle translations.
