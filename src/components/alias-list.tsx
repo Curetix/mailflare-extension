@@ -270,6 +270,7 @@ function AliasList(props: FlexProps) {
       {/* Search field */}
       {searchVisible && (
         <TextInput
+          autoFocus
           placeholder={LL.SEARCH_PLACEHOLDER()}
           value={aliasSearch}
           onChange={(event) => setAliasSearch(event.currentTarget.value)}
