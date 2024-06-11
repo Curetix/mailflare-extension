@@ -504,6 +504,10 @@ type RootTranslation = {
 	 */
 	GENERATED_ALIAS: string
 	/**
+	 * U​n​a​v​a​i​l​a​b​l​e
+	 */
+	GENERATED_ALIAS_UNAVAILABLE: string
+	/**
 	 * D​e​s​t​i​n​a​t​i​o​n
 	 */
 	DESTINATION: string
@@ -1128,6 +1132,10 @@ export type TranslationFunctions = {
 	 * Generated alias
 	 */
 	GENERATED_ALIAS: () => LocalizedString
+	/**
+	 * Unavailable
+	 */
+	GENERATED_ALIAS_UNAVAILABLE: () => LocalizedString
 	/**
 	 * Destination
 	 */

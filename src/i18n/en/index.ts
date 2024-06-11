@@ -135,6 +135,7 @@ const en = {
   PREFIX_CUSTOM_LABEL: "Custom alias prefix",
   ALIAS_FORMAT_DOMAIN_TYPE: "Domain Format",
   GENERATED_ALIAS: "Generated alias",
+  GENERATED_ALIAS_UNAVAILABLE: "Unavailable",
   DESTINATION: "Destination",
   DESTINATIONS_LOADING_ERROR: "Error loading destinations",
   DESTINATION_NOT_VERIFIED: "This address is not verified, ou will not receive emails.",

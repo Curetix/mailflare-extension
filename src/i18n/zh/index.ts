@@ -135,6 +135,7 @@ const zh = {
   PREFIX_CUSTOM_LABEL: "自定义别名前缀",
   ALIAS_FORMAT_DOMAIN_TYPE: "域名格式",
   GENERATED_ALIAS: "生成的别名",
+  GENERATED_ALIAS_UNAVAILABLE: "不可用",
   DESTINATION: "目标地址",
   DESTINATIONS_LOADING_ERROR: "加载目标地址出错",
   DESTINATION_NOT_VERIFIED: "此地址未经验证，您将无法收到电子邮件。",

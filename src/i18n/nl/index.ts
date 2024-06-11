@@ -136,6 +136,7 @@ const nl = {
   PREFIX_CUSTOM_LABEL: "Aangepast voorvoegsel",
   ALIAS_FORMAT_DOMAIN_TYPE: "Domein formaat",
   GENERATED_ALIAS: "Gegenereerde alias",
+  GENERATED_ALIAS_UNAVAILABLE: "Niet beschikbaar",
   DESTINATION: "Bestemming",
   DESTINATIONS_LOADING_ERROR: "Fout bij het laden van de bestemmingen",
   DESTINATION_NOT_VERIFIED: "Bestemming niet geverifieerd",

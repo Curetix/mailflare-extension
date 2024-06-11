@@ -152,6 +152,10 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
     if (!zone) return null;
 
     if (aliasCreateForm.values.format === "custom") {
+      if (aliasCreateForm.values.customAlias.trim() === "") {
+        return null;
+      }
+
       return `${aliasCreateForm.values.customAlias}@${zone.name}`;
     }
 
@@ -176,6 +180,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
         break;
       }
     }
+
     return aliasAddress;
   }
 
@@ -461,7 +466,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
             variant="filled"
             label={LL.GENERATED_ALIAS()}
             error={doesAliasPreviewAlreadyExist ? LL.ALIAS_ALREADY_EXISTS() : undefined}
-            value={aliasPreview || "Unavailable"}
+            value={aliasPreview || LL.GENERATED_ALIAS_UNAVAILABLE()}
             readOnly
             rightSection={
               aliasCreateForm.values.format === "characters" ||

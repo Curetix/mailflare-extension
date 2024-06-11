@@ -135,6 +135,7 @@ const de = {
   PREFIX_CUSTOM_LABEL: "Benutzerdefiniertes Präfix",
   ALIAS_FORMAT_DOMAIN_TYPE: "Domain Format",
   GENERATED_ALIAS: "Generiertes Alias",
+  GENERATED_ALIAS_UNAVAILABLE: "Nicht verfügbar",
   DESTINATION: "Ziel",
   DESTINATIONS_LOADING_ERROR: "Fehler beim Laden der Ziele",
   DESTINATION_NOT_VERIFIED:
