@@ -20,7 +20,7 @@
     "url": "https://github.com/curetix/mailflare-extension.git"
   },
   "scripts": {
-    "prepare": "husky && plasmo build",
+    "prepare": "husky install && plasmo build",
     "dev": "plasmo dev --target=chrome-mv3",
     "dev:firefox": "plasmo dev --target=firefox-mv3",
     "dev:web": "run-p dev:vite dev:functions",
@@ -73,7 +73,7 @@
     "@types/react": "18.3.3",
     "@types/react-dom": "18.3.0",
     "@vitejs/plugin-react-swc": "3.7.0",
-    "husky": "9.0.11",
+    "husky": "8.0.3",
     "lint-staged": "15.2.5",
     "typescript": "5.4.5",
     "vite": "5.2.13",
