@@ -62,6 +62,8 @@ const nl = {
   LOGOUT: "Uitloggen",
   LOGOUT_DESC: "Wis alle data en instellingen",
   LOGOUT_SUCCESS: "Uitgelogd",
+  LOGOUT_TITLE: "Uitschrijving bevestigen",
+  LOGOUT_CONFIRM: "Wilt u uitloggen? Alle lokale gegevens worden verwijderd, maar je aliassen blijven werken.",
   DOCS: "Documentatie",
   DOCS_DESC: "Bekijk de documentatie voor hulp en informatie",
   GITHUB: "GitHub",

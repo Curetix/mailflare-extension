@@ -61,6 +61,8 @@ const de = {
   LOGOUT: "Abmelden",
   LOGOUT_DESC: "Lösche alle Daten und Einstellungen",
   LOGOUT_SUCCESS: "Tschüss",
+  LOGOUT_TITLE: "Abmeldung bestätigen",
+  LOGOUT_CONFIRM: "Möchtest du dich wirklich abmelden? Alle lokalen Daten werden gelöscht, aber deine erstellen Aliase bleiben natürlich bestehen.",
   DOCS: "Cloudflare Dokumentation",
   DOCS_DESC: "Für mehr Informationen über Email Routing",
   GITHUB: "GitHub",

@@ -234,6 +234,14 @@ type RootTranslation = {
 	 */
 	LOGOUT_SUCCESS: string
 	/**
+	 * C​o​n​f​i​r​m​ ​L​o​g​o​u​t
+	 */
+	LOGOUT_TITLE: string
+	/**
+	 * D​o​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​l​o​g​ ​o​u​t​?​ ​A​l​l​ ​l​o​c​a​l​ ​d​a​t​a​ ​w​i​l​l​ ​b​e​ ​d​e​l​e​t​e​d​,​ ​b​u​t​ ​y​o​u​r​ ​a​l​i​a​s​e​s​ ​w​i​l​l​ ​o​f​ ​c​o​u​r​s​e​ ​k​e​e​p​ ​w​o​r​k​i​n​g​.
+	 */
+	LOGOUT_CONFIRM: string
+	/**
 	 * C​l​o​u​d​f​l​a​r​e​ ​D​o​c​s
 	 */
 	DOCS: string
@@ -844,6 +852,14 @@ export type TranslationFunctions = {
 	 * Goodbye
 	 */
 	LOGOUT_SUCCESS: () => LocalizedString
+	/**
+	 * Confirm Logout
+	 */
+	LOGOUT_TITLE: () => LocalizedString
+	/**
+	 * Do you want to log out? All local data will be deleted, but your aliases will of course keep working.
+	 */
+	LOGOUT_CONFIRM: () => LocalizedString
 	/**
 	 * Cloudflare Docs
 	 */

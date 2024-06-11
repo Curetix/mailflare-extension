@@ -61,6 +61,8 @@ const zh = {
   LOGOUT: "登出",
   LOGOUT_DESC: "清除所有数据和设置",
   LOGOUT_SUCCESS: "再见~",
+  LOGOUT_TITLE: "Confirm Logout",
+  LOGOUT_CONFIRM: "Do you want to log out? All local data will be deleted, but your aliases will of course keep working.",
   DOCS: "Cloudflare 文档",
   DOCS_DESC: "有关 Email Routing (电子邮件路由) 的更多信息",
   GITHUB: "GitHub",

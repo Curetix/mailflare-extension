@@ -1,4 +1,4 @@
-import { Fragment, type ReactNode } from "react";
+import { Fragment, type ReactNode, useState } from "react";
 import type { Locales } from "~i18n/i18n-types";
 
 import {
@@ -19,15 +19,14 @@ import { showNotification } from "@mantine/notifications";
 import { IconDeviceDesktop, IconExternalLink, IconMoonStars, IconSun } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
-import { RESET } from "jotai/utils";
 
+import LogoutModal from "~components/logout-modal";
 import { extensionName, extensionVersion, isWebApp } from "~const";
 import { useI18nContext } from "~i18n/i18n-react";
 import { loadLocaleAsync } from "~i18n/i18n-util.async";
 import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
 import { useFullscreenModal } from "~utils";
-import { apiTokenAtom, selectedZoneIdAtom, settingsAtom } from "~utils/state";
-import { extensionStoragePersister } from "~utils/storage";
+import { apiTokenAtom, settingsAtom } from "~utils/state";
 
 type SettingsModalProps = {
   opened: boolean;
@@ -53,7 +52,7 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
   const [apiToken, setToken] = useAtom(apiTokenAtom);
   const [settings, setSettings] = useAtom(settingsAtom);
 
-  const [, setSelectedZoneId] = useAtom(selectedZoneIdAtom);
+  const [logoutModalOpen, setLogoutModalOpen] = useState(false);
 
   const clearCache = async () => {
     await queryClient.invalidateQueries();
@@ -62,19 +61,6 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
       message: LL.REFRESH_DATA_SUCCESS(),
       autoClose: 3000,
     });
-  };
-
-  const logout = async () => {
-    await setToken(RESET);
-    await setSelectedZoneId(RESET);
-    await queryClient.invalidateQueries();
-    await extensionStoragePersister.removeClient();
-    showNotification({
-      color: "green",
-      message: LL.LOGOUT_SUCCESS(),
-      autoClose: 3000,
-    });
-    onClose();
   };
 
   const onLocaleSelected = async (value: string | null) => {
@@ -212,9 +198,16 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
       description: LL.LOGOUT_DESC(),
       hide: !apiToken,
       action: (
-        <Button color="red" onClick={() => logout()}>
-          {LL.LOGOUT()}
-        </Button>
+        <>
+          <LogoutModal
+            opened={logoutModalOpen}
+            onClose={() => setLogoutModalOpen(false)}
+            onLogout={onClose}
+          />
+          <Button color="red" onClick={() => setLogoutModalOpen(true)}>
+            {LL.LOGOUT()}
+          </Button>
+        </>
       ),
     },
     {

@@ -61,6 +61,8 @@ const en = {
   LOGOUT: "Logout",
   LOGOUT_DESC: "Clear all data and settings",
   LOGOUT_SUCCESS: "Goodbye",
+  LOGOUT_TITLE: "Confirm Logout",
+  LOGOUT_CONFIRM: "Do you want to log out? All local data will be deleted, but your aliases will of course keep working.",
   DOCS: "Cloudflare Docs",
   DOCS_DESC: "For more information about Email Routing",
   GITHUB: "GitHub",
