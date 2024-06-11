@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import type { Locales } from "~i18n/i18n-types";
 
 import {
@@ -225,7 +225,7 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
           component="a"
           href="https://developers.cloudflare.com/email-routing/"
           target="_blank"
-          rightSection={<IconExternalLink />}>
+          rightSection={<IconExternalLink size={16} />}>
           {LL.OPEN()}
         </Button>
       ),
@@ -239,7 +239,7 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
           href="https://github.com/curetix/mailflare-extension"
           target="_blank"
           color="gray"
-          rightSection={<IconExternalLink />}>
+          rightSection={<IconExternalLink size={16} />}>
           {LL.GITHUB()}
         </Button>
       ),
@@ -266,18 +266,18 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
     <Modal opened={opened} onClose={() => onClose()} title="Settings" fullScreen={isFullscreen}>
       <Stack gap="xs" pr={15}>
         {visibleItems.map((item, index) => (
-          <Stack gap="xs" key={item.title}>
-            <Flex justify="space-between" align="center">
-              <div>
+          <Fragment key={item.title}>
+            <Flex justify="space-between" align="center" gap="xs">
+              <Stack gap={0} flex={1}>
                 <Text>{item.title}</Text>
                 <Text size="xs" c="dimmed">
                   {item.description}
                 </Text>
-              </div>
+              </Stack>
               {item.action}
             </Flex>
             {index < visibleItems.length - 1 && <Divider />}
-          </Stack>
+          </Fragment>
         ))}
       </Stack>
     </Modal>
