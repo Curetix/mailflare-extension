@@ -93,6 +93,8 @@ export default function AliasBulkEditModal({ opened, onClose, selectedAliases }:
                 label: z.email,
               })) || []
             }
+            searchable
+            allowDeselect={false}
             {...aliasEditForm.getInputProps("destination")}
             error={
               ((!emailDestinations.data || emailDestinations.isError) &&

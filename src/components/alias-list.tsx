@@ -171,7 +171,7 @@ function AliasList(props: FlexProps) {
             label: z.name,
           })) || []
         }
-        searchable={zones.isSuccess && zones.data.length > 5}
+        searchable
         allowDeselect={false}
       />
 

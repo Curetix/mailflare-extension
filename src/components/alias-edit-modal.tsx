@@ -123,6 +123,7 @@ export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) 
                 label: z.email,
               })) || []
             }
+            searchable
             allowDeselect={false}
             {...aliasEditForm.getInputProps("destination")}
             error={

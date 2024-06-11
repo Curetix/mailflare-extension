@@ -364,12 +364,12 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
                 label: z.name,
               })) || []
             }
-            searchable={zones.isSuccess && zones.data.length > 5}
             error={
               !zones.data || zones.isError
                 ? zones.error?.toString() || LL.ZONES_LOADING_ERROR()
                 : undefined
             }
+            searchable
             allowDeselect={false}
             {...aliasCreateForm.getInputProps("zoneId")}
           />
@@ -443,6 +443,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
                 label: z.email,
               })) || []
             }
+            searchable
             allowDeselect={false}
             {...aliasCreateForm.getInputProps("destination")}
             error={

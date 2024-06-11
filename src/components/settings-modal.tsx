@@ -136,6 +136,7 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
           value={locale}
           onChange={onLocaleSelected}
           allowDeselect={false}
+          searchable
           data={[
             { value: "en", label: LL.LANGUAGE_ENGLISH() },
             { value: "de", label: LL.LANGUAGE_GERMAN() },
