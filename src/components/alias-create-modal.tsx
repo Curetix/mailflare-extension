@@ -127,6 +127,22 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
     resetForm();
   }, [aliasSettings, hostname]);
 
+  useEffect(() => {
+    if (aliasCreateForm.values.zoneId === "" && selectedZoneId !== null) {
+      aliasCreateForm.setFieldValue("zoneId", selectedZoneId);
+    }
+  }, [selectedZoneId, aliasCreateForm.values.zoneId]);
+
+  useEffect(() => {
+    if (
+      aliasCreateForm.values.destination === "" &&
+      emailDestinations.data &&
+      emailDestinations.data.length > 0
+    ) {
+      aliasCreateForm.setFieldValue("destination", emailDestinations.data[0].email);
+    }
+  }, [emailDestinations, aliasCreateForm.values.destination, aliasSettings.destination]);
+
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const value = aliasCreateForm.values.zoneId;
