@@ -102,18 +102,6 @@ type RootTranslation = {
 	 */
 	CLOUDFLARE_TOKEN_STEP_4: string
 	/**
-	 * A​c​c​o​u​n​t​ ​|​ ​E​m​a​i​l​ ​R​o​u​t​i​n​g​ ​A​d​d​r​e​s​s​e​s​ ​|​ ​R​e​a​d
-	 */
-	CLOUDFLARE_TOKEN_STEP_4_1: string
-	/**
-	 * Z​o​n​e​ ​|​ ​E​m​a​i​l​ ​R​o​u​t​i​n​g​ ​R​u​l​e​s​ ​|​ ​E​d​i​t
-	 */
-	CLOUDFLARE_TOKEN_STEP_4_2: string
-	/**
-	 * Z​o​n​e​ ​|​ ​Z​o​n​e​ ​|​ ​R​e​a​d
-	 */
-	CLOUDFLARE_TOKEN_STEP_4_3: string
-	/**
 	 * S​e​t​ ​"​A​c​c​o​u​n​t​ ​R​e​s​o​u​r​c​e​s​"​ ​t​o​ ​y​o​u​r​ ​a​c​c​o​u​n​t
 	 */
 	CLOUDFLARE_TOKEN_STEP_5: string
@@ -335,7 +323,7 @@ type RootTranslation = {
 	 */
 	EMAIL_ROUTING_NOT_ENABLED_TITLE: string
 	/**
-	 * E​m​a​i​l​ ​R​o​u​t​i​n​g​ ​i​s​ ​e​i​t​h​e​r​ ​d​i​s​a​b​l​e​d​ ​o​r​ ​n​o​t​ ​c​o​n​f​i​g​u​r​e​d​ ​p​r​o​p​e​r​l​y​ ​f​o​r​ ​t​h​i​s​ ​d​o​m​a​i​n​.​ ​C​h​e​c​k​ ​t​h​e​ ​c​o​n​f​i​g​u​r​a​t​i​o​n​ ​i​n​ ​t​h​e​ ​h​e​r​e​:
+	 * E​m​a​i​l​ ​R​o​u​t​i​n​g​ ​i​s​ ​e​i​t​h​e​r​ ​d​i​s​a​b​l​e​d​ ​o​r​ ​n​o​t​ ​c​o​n​f​i​g​u​r​e​d​ ​p​r​o​p​e​r​l​y​ ​f​o​r​ ​t​h​i​s​ ​d​o​m​a​i​n​.​ ​P​l​e​a​s​e​ ​c​h​e​c​k​ ​t​h​e​ ​c​o​n​f​i​g​u​r​a​t​i​o​n​ ​h​e​r​e​:​ 
 	 */
 	EMAIL_ROUTING_NOT_ENABLED: string
 	/**
@@ -745,18 +733,6 @@ export type TranslationFunctions = {
 	 */
 	CLOUDFLARE_TOKEN_STEP_4: () => LocalizedString
 	/**
-	 * Account | Email Routing Addresses | Read
-	 */
-	CLOUDFLARE_TOKEN_STEP_4_1: () => LocalizedString
-	/**
-	 * Zone | Email Routing Rules | Edit
-	 */
-	CLOUDFLARE_TOKEN_STEP_4_2: () => LocalizedString
-	/**
-	 * Zone | Zone | Read
-	 */
-	CLOUDFLARE_TOKEN_STEP_4_3: () => LocalizedString
-	/**
 	 * Set "Account Resources" to your account
 	 */
 	CLOUDFLARE_TOKEN_STEP_5: () => LocalizedString
@@ -977,7 +953,7 @@ export type TranslationFunctions = {
 	 */
 	EMAIL_ROUTING_NOT_ENABLED_TITLE: () => LocalizedString
 	/**
-	 * Email Routing is either disabled or not configured properly for this domain. Check the configuration in the here:
+	 * Email Routing is either disabled or not configured properly for this domain. Please check the configuration here: 
 	 */
 	EMAIL_ROUTING_NOT_ENABLED: () => LocalizedString
 	/**

@@ -9,7 +9,8 @@ into your own private email alias service, similar to AnonAddy, SimpleLogin, and
 No third-party services or tedious configuration of a self-hosted email server needed.
 A web version is also available at [mailflare.pages.dev](https://mailflare.pages.dev/).
 
-Built with [React](https://github.com/facebook/react), [Plasmo](https://github.com/PlasmoHQ/plasmo), and [Mantine UI](https://github.com/mantinedev/mantine)
+Built with [React](https://github.com/facebook/react), [Plasmo](https://github.com/PlasmoHQ/plasmo),
+and [Mantine UI](https://github.com/mantinedev/mantine)
 
 ## Screenshots
 
@@ -19,7 +20,8 @@ Built with [React](https://github.com/facebook/react), [Plasmo](https://github.c
 ## Features
 
 - Create / edit / delete aliases, edit / delete aliases in bulk
-- Multiple formats for alias addresses (random characters, random words, custom), optionally prefixed with current website name
+- Multiple formats for alias addresses (random characters, random words, custom), optionally prefixed with current
+  website name
 - Search aliases and their descriptions
 - One-Click alias generation directly inside email input fields ([Demo GIF](./assets/screen_quick_create_button.gif))
 - One-Click alias generation from the context menu ([Demo GIF](./assets/screen_context_menu.gif))
@@ -40,7 +42,8 @@ Built with [React](https://github.com/facebook/react), [Plasmo](https://github.c
 
 Download the extension either directly from the Chrome Web Store, or:
 
-- Download the latest version from the [releases section](https://github.com/Curetix/mailflare-extension/releases/latest)
+- Download the latest version from
+  the [releases section](https://github.com/Curetix/mailflare-extension/releases/latest)
 - Go to the browsers extension page, usually under [chrome://extensions](edge://extensions/)
 - Drag-and-drop the downloaded file into the list of extensions
 
@@ -56,15 +59,17 @@ Download the extension either directly from the Chrome Web Store, or:
   </a>
 </div>
 
-- Download the latest version from the [releases section](https://github.com/Curetix/mailflare-extension/releases/latest)
+- Download the latest version from
+  the [releases section](https://github.com/Curetix/mailflare-extension/releases/latest)
 - When clicking on the file, Firefox will automatically ask if you want to install the extension
 - Alternatively: right-click on the file, **Save target as**, drag-and-drop the downloaded file into Firefox
 - After installing, you might have to manually enable required permissions:
-  - Go to the addons page (`about:addons`)
-  - Click on MailFlare
-  - Go to the Permissions tab
-  - Enable at least `Access your data for *://api.cloudflare.com`
-  - If you don't intend to use the Quick-Create button or context menu create button, you can leave `Access your data for all websites` disabled
+    - Go to the addons page (`about:addons`)
+    - Click on MailFlare
+    - Go to the Permissions tab
+    - Enable at least `Access your data for *://api.cloudflare.com`
+    - If you don't intend to use the Quick-Create button or context menu create button, you can
+      leave `Access your data for all websites` disabled
 
 ### Progressive Web App
 
@@ -76,11 +81,14 @@ browser automatically shows when visiting the site.
 
 See [this page](https://developers.cloudflare.com/email-routing/postmaster/#known-limitations):
 
-- "Email Routing does not forward non-delivery reports to the original sender. This means the sender will not receive a notification indicating that the email did not reach the intended destination."
+- "Email Routing does not forward non-delivery reports to the original sender. This means the sender will not receive a
+  notification indicating that the email did not reach the intended destination."
 - "Email Routing does not support sending or replying from your Cloudflare domain."
 - "Subdomains cannot use Email Routing to forward emails, unless they are part of an Enterprise account."
 
-Additionally, there is a [limit of 200 email rules (aliases) and 200 destination addresses](https://developers.cloudflare.com/email-routing/limits/#rules-and-addresses) per domain.
+Additionally, there is
+a [limit of 200 email rules (aliases) and 200 destination addresses](https://developers.cloudflare.com/email-routing/limits/#rules-and-addresses)
+per domain.
 
 ## Create a Cloudflare API token
 
@@ -90,9 +98,10 @@ Additionally, there is a [limit of 200 email rules (aliases) and 200 destination
 4. Select "Create Custom Token"
 5. Choose a name, like "Email Extension"
 6. Configure the following permissions (explained in the next section):
-   - Account | Email Routing Addresses | Read
-   - Zone | Email Routing Rules | Edit
-   - Zone | Zone | Read
+    - `Account | Email Routing Addresses | Read`
+    - `Zone | Email Routing Rules | Edit`
+    - `Zone | Zone | Read`
+    - Optional: `Zone | Zone Settings | Read`
 7. Set "Account Resources" to your account
 8. Set "Zone Resources" to "All zones" or select the zone you want to use
 9. Configure "Client IP Address Filtering" and "TTL" if you want to
@@ -103,27 +112,30 @@ Your API key is stored locally in your browser and is used to directly communica
 
 ### Permissions explained
 
-- **Account | Email Routing Addresses | Read** - Listing of destination email addresses
-- **Zone | Email Routing Rules | Edit** - Listing, creating, editing and deleting of email rules (aliases)
-- **Zone | Zone | Read** - Listing of all the zones in your Cloudflare account (or the zone you select in the "Zone Resources" section)
+- `Account | Email Routing Addresses | Read` - Listing of destination email addresses
+- `Zone | Email Routing Rules | Edit` - Listing, creating, editing and deleting of email rules (aliases)
+- `Zone | Zone | Read` - Listing of all the zones in your Cloudflare account (or the zone you select in the "Zone
+  Resources" section)
+- Optional: `Zone | Zone Settings | Read` - Checking if Email Routing is enabled and configured ("ready") for the domain
 
 ## Build instructions
 
 1. Install Node.js (the automated build workflow uses Node.js v20) and pnpm (with `npm install -g pnpm`)
 2. Clone the repository: `git clone https://github.com/curetix/mailflare-extension`
 3. Install the dependencies: `pnpm install`
-4. Run the build command: `pnpm build` (for Chromium), `pnpm build:firefox` (for Firefox), or `pnpm build:all` for all targets
+4. Run the build command: `pnpm build` (for Chromium), `pnpm build:firefox` (for Firefox), or `pnpm build:all` for all
+   targets
 5. The output will be in the folder `build/chrome-mv3-prod` or `build/firefox-mv3-prod`
 
 Loading the extension (non-signed builds):
 
 - Chrome
-  1. Go to Settings -> Extensions
-  2. Enable the **Developer mode** toggle (top right)
-  3. Click **Load unpacked** and select the folder of the built extension
+    1. Go to Settings -> Extensions
+    2. Enable the **Developer mode** toggle (top right)
+    3. Click **Load unpacked** and select the folder of the built extension
 - Firefox
-  1. Enter `about:debugging` into the address bar
-  2. Click **This Firefox**
-  3. Click **Load Temporary Add-On...**
-  4. Navigate to the folder of the built extension and select the `manifest.json` file
-  5. (This will have to be repeated every time Firefox launches)
+    1. Enter `about:debugging` into the address bar
+    2. Click **This Firefox**
+    3. Click **Load Temporary Add-On...**
+    4. Navigate to the folder of the built extension and select the `manifest.json` file
+    5. (This will have to be repeated every time Firefox launches)

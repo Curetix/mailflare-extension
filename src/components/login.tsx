@@ -67,9 +67,10 @@ function Login() {
                 <List.Item>
                   {LL.CLOUDFLARE_TOKEN_STEP_4()}
                   <List withPadding listStyleType="disc" size="sm">
-                    <List.Item>{LL.CLOUDFLARE_TOKEN_STEP_4_1()}</List.Item>
-                    <List.Item>{LL.CLOUDFLARE_TOKEN_STEP_4_2()}</List.Item>
-                    <List.Item>{LL.CLOUDFLARE_TOKEN_STEP_4_3()}</List.Item>
+                    <List.Item>Account | Email Routing Addresses | Read</List.Item>
+                    <List.Item>Zone | Email Routing Rules | Edit</List.Item>
+                    <List.Item>Zone | Zone | Read</List.Item>
+                    <List.Item>Zone | Zone Settings | Read</List.Item>
                   </List>
                 </List.Item>
                 <List.Item>{LL.CLOUDFLARE_TOKEN_STEP_5()}</List.Item>

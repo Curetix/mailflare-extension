@@ -25,9 +25,6 @@ const nl = {
   CLOUDFLARE_TOKEN_STEP_2: "Klik \"Create Token\", en selecteer \"Create Custom Token\"",
   CLOUDFLARE_TOKEN_STEP_3: "Kies een naam, bijvoorbeeld \"Email Extensie\"",
   CLOUDFLARE_TOKEN_STEP_4: "Wijzig de volgende permissies:",
-  CLOUDFLARE_TOKEN_STEP_4_1: "Account | Email Routing Addresses | Read",
-  CLOUDFLARE_TOKEN_STEP_4_2: "Zone | Email Routing Rules | Edit",
-  CLOUDFLARE_TOKEN_STEP_4_3: "Zone | Zone | Read",
   CLOUDFLARE_TOKEN_STEP_5: "Zet \"Account Resources\" naar jouw account",
   CLOUDFLARE_TOKEN_STEP_6:
     "Zet \"Zone Resources\" naar \"All zones\" of selecteer de zone die je wilt gebruiken",
