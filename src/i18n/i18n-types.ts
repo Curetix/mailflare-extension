@@ -331,6 +331,18 @@ type RootTranslation = {
 	 */
 	ZONES_ERROR: RequiredParams<'error'>
 	/**
+	 * O​h​ ​n​o​!
+	 */
+	EMAIL_ROUTING_NOT_ENABLED_TITLE: string
+	/**
+	 * E​m​a​i​l​ ​R​o​u​t​i​n​g​ ​i​s​ ​e​i​t​h​e​r​ ​d​i​s​a​b​l​e​d​ ​o​r​ ​n​o​t​ ​c​o​n​f​i​g​u​r​e​d​ ​p​r​o​p​e​r​l​y​ ​f​o​r​ ​t​h​i​s​ ​d​o​m​a​i​n​.​ ​C​h​e​c​k​ ​t​h​e​ ​c​o​n​f​i​g​u​r​a​t​i​o​n​ ​i​n​ ​t​h​e​ ​h​e​r​e​:
+	 */
+	EMAIL_ROUTING_NOT_ENABLED: string
+	/**
+	 * C​l​o​u​d​f​l​a​r​e​ ​D​a​s​h​b​o​a​r​d
+	 */
+	EMAIL_ROUTING_DASHBOARD: string
+	/**
 	 * B​u​m​m​e​r​!
 	 */
 	NO_RULES_TITLE: string
@@ -960,6 +972,18 @@ export type TranslationFunctions = {
 	 * Something went wrong while loading your domains: {error}
 	 */
 	ZONES_ERROR: (arg: { error: unknown }) => LocalizedString
+	/**
+	 * Oh no!
+	 */
+	EMAIL_ROUTING_NOT_ENABLED_TITLE: () => LocalizedString
+	/**
+	 * Email Routing is either disabled or not configured properly for this domain. Check the configuration in the here:
+	 */
+	EMAIL_ROUTING_NOT_ENABLED: () => LocalizedString
+	/**
+	 * Cloudflare Dashboard
+	 */
+	EMAIL_ROUTING_DASHBOARD: () => LocalizedString
 	/**
 	 * Bummer!
 	 */

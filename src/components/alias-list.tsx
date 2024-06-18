@@ -2,6 +2,7 @@ import type { FlexProps } from "@mantine/core";
 
 import {
   Alert,
+  Anchor,
   Badge,
   Button,
   Center,
@@ -44,8 +45,15 @@ import "~/styles/scroll-area.css";
 function AliasList(props: FlexProps) {
   const { LL } = useI18nContext();
 
-  const { selectedZoneId, setSelectedZoneId, zones, emailDestinations, emailRules } =
-    useCloudflare();
+  const {
+    accountId,
+    selectedZoneId,
+    setSelectedZoneId,
+    zones,
+    emailDestinations,
+    emailRoutingStatus,
+    emailRules,
+  } = useCloudflare();
 
   const [{ ruleFilter }] = useAtom(settingsAtom);
   const [aliasSearch, setAliasSearch] = useAtom(aliasSearchAtom);
@@ -276,6 +284,20 @@ function AliasList(props: FlexProps) {
           onChange={(event) => setAliasSearch(event.currentTarget.value)}
         />
       )}
+
+      {selectedZoneId &&
+        (emailRoutingStatus?.data?.result?.enabled === false ||
+          emailRoutingStatus?.data?.result?.status !== "ready") && (
+          <Alert title={LL.EMAIL_ROUTING_NOT_ENABLED_TITLE()} color="red">
+            {LL.EMAIL_ROUTING_NOT_ENABLED()}
+            <Anchor
+              href={`https://dash.cloudflare.com/${accountId}/${zones.data?.find((z) => z.id === selectedZoneId)?.name || "whoops"}/email/routing/overview`}
+              target="_blank"
+              size="sm">
+              {LL.EMAIL_ROUTING_DASHBOARD()}
+            </Anchor>
+          </Alert>
+        )}
 
       {!!selectedZoneId && filteredAliases.length === 0 && emailRules.isFetching && (
         <Center flex={1}>

@@ -6,6 +6,7 @@ import type {
   CloudflareListEmailRulesResponse,
   CloudflareListZonesResponse,
   CloudflareVerifyTokenResponse,
+  CloudflareEmailRoutingStatusResponse,
 } from "./cloudflare.types";
 
 import { fetcher } from "~utils";
@@ -44,7 +45,7 @@ export class CloudflareApiClient {
    * @param token
    */
   async verifyToken(token?: string) {
-    return await fetcher<CloudflareVerifyTokenResponse>(`${this.baseUrl}/user/tokens/verify`, {
+    return fetcher<CloudflareVerifyTokenResponse>(`${this.baseUrl}/user/tokens/verify`, {
       headers: {
         Authorization: `Bearer ${token || this.apiToken}`,
       },
@@ -57,7 +58,7 @@ export class CloudflareApiClient {
    * @param page pagination page
    */
   async getZones(page = 1) {
-    return await fetcher<CloudflareListZonesResponse>(
+    return fetcher<CloudflareListZonesResponse>(
       `${this.baseUrl}/zones?${this.getPaginationParams(page)}`,
       {
         headers: this.getHeaders(),
@@ -72,7 +73,7 @@ export class CloudflareApiClient {
    * @param page pagination page
    */
   async getDestinations(accountId: string, page = 1) {
-    return await fetcher<CloudflareListEmailDestinationsResponse>(
+    return fetcher<CloudflareListEmailDestinationsResponse>(
       `${this.baseUrl}/accounts/${accountId}/email/routing/addresses?${this.getPaginationParams(
         page,
       )}`,
@@ -83,13 +84,25 @@ export class CloudflareApiClient {
   }
 
   /**
+   * Get the Email Routing configuration for the given zone
+   * Requires the permission: Zone | Zone Settings | Read
+   * @param zoneId
+   */
+  async getEmailRoutingStatus(zoneId: string) {
+    return fetcher<CloudflareEmailRoutingStatusResponse>(
+      `${this.baseUrl}/zones/${zoneId}/email/routing`,
+      { headers: this.getHeaders() },
+    );
+  }
+
+  /**
    * Get Cloudflare Email Routing rules
    * Reference: https://developers.cloudflare.com/api/operations/email-routing-routing-rules-list-routing-rules
    * @param zoneId ID of the Cloudflare ZOne
    * @param page pagination page
    */
   async getEmailRules(zoneId: string, page = 1) {
-    return await fetcher<CloudflareListEmailRulesResponse>(
+    return fetcher<CloudflareListEmailRulesResponse>(
       `${this.baseUrl}/zones/${zoneId}/email/routing/rules?${this.getPaginationParams(page)}`,
       {
         headers: this.getHeaders(),
@@ -104,7 +117,7 @@ export class CloudflareApiClient {
    * @param rule rule to be created
    */
   async createEmailRule(zoneId: string, rule: Omit<CloudflareEmailRule, "tag">) {
-    return await fetcher<CloudflareCreateEmailRuleResponse>(
+    return fetcher<CloudflareCreateEmailRuleResponse>(
       `${this.baseUrl}/zones/${zoneId}/email/routing/rules`,
       {
         method: "POST",
@@ -121,7 +134,7 @@ export class CloudflareApiClient {
    * @param rule rule to be updated
    */
   async updateEmailRule(zoneId: string, rule: CloudflareEmailRule) {
-    return await fetcher<CloudflareCreateEmailRuleResponse>(
+    return fetcher<CloudflareCreateEmailRuleResponse>(
       `${this.baseUrl}/zones/${zoneId}/email/routing/rules/${rule.tag}`,
       {
         method: "PUT",
@@ -138,7 +151,7 @@ export class CloudflareApiClient {
    * @param rule rule to be deleted
    */
   async deleteEmailRule(zoneId: string, rule: CloudflareEmailRule) {
-    return await fetcher<CloudflareBaseResponse<null>>(
+    return fetcher<CloudflareBaseResponse<null>>(
       `${this.baseUrl}/zones/${zoneId}/email/routing/rules/${rule.tag}`,
       {
         method: "DELETE",

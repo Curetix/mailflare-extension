@@ -124,6 +124,14 @@ export function useCloudflare() {
     retry: false,
   });
 
+  const emailRoutingStatus = useQuery({
+    queryKey: ["emailRoutingStatus", selectedZoneId],
+    queryFn: async ({ queryKey: [, selectedZoneId] }) => {
+      if (!selectedZoneId) return null;
+      return apiClient.current.getEmailRoutingStatus(selectedZoneId).catch(() => null);
+    },
+  });
+
   const emailRules = useQuery({
     queryKey: ["emailRules", selectedZoneId],
     queryFn: async ({ queryKey: [, zoneId] }) => {
@@ -173,6 +181,7 @@ export function useCloudflare() {
     selectedZoneId,
     setSelectedZoneId,
     emailDestinations,
+    emailRoutingStatus,
     emailRules,
     createEmailRule,
     updateEmailRule,

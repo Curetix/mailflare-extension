@@ -15,6 +15,18 @@ type CloudflareZone = {
   };
 };
 
+type CloudflareEmailRoutingStatus = {
+  id: string;
+  tag: string;
+  name: string;
+  enabled: boolean;
+  created: string;
+  modified: string;
+  skip_wizard: boolean;
+  synced: boolean;
+  status: "ready" | "misconfigured";
+};
+
 type CloudflareEmailDestination = {
   created: string;
   email: string;
@@ -82,6 +94,8 @@ type CloudflareListEmailRulesResponse = CloudflareBaseResponse<CloudflareEmailRu
 
 type CloudflareCreateEmailRuleResponse = CloudflareBaseResponse<CloudflareEmailRule>;
 
+type CloudflareEmailRoutingStatusResponse = CloudflareBaseResponse<CloudflareEmailRoutingStatus>;
+
 export type {
   CloudflareBaseResponse,
   CloudflareZone,
@@ -93,4 +107,5 @@ export type {
   CloudflareEmailRule,
   CloudflareListEmailRulesResponse,
   CloudflareCreateEmailRuleResponse,
+  CloudflareEmailRoutingStatusResponse,
 };

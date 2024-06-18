@@ -9,15 +9,22 @@
       "recommended": true,
       "suspicious": {
         "noExplicitAny": "warn"
+      },
+      "correctness": {
+        "useExhaustiveDependencies": "warn"
       }
     },
-    "ignore": ["src/i18n/*"]
+    "ignore": [
+      "src/i18n/*"
+    ]
   },
   "formatter": {
     "indentStyle": "space",
     "indentWidth": 2,
     "lineWidth": 100,
-    "ignore": ["src/i18n/*"]
+    "ignore": [
+      "src/i18n/*"
+    ]
   },
   "javascript": {
     "formatter": {
