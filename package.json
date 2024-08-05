@@ -20,7 +20,7 @@
     "url": "https://github.com/curetix/mailflare-extension.git"
   },
   "scripts": {
-    "prepare": "husky install && plasmo build",
+    "prepare": "husky install",
     "dev": "plasmo dev --target=chrome-mv3",
     "dev:firefox": "plasmo dev --target=firefox-mv3",
     "dev:web": "run-p dev:vite dev:functions",
@@ -99,7 +99,7 @@
   },
   "lint-staged": {
     "**/*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
-      "biome check --apply --no-errors-on-unmatched"
+      "biome lint --write --no-errors-on-unmatched"
     ]
   }
 }
