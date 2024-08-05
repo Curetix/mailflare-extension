@@ -1,7 +1,7 @@
 {
   "name": "mailflare-extension",
   "displayName": "MailFlare - Email Alias Extension",
-  "version": "1.4.7",
+  "version": "2.0.0-dev",
   "description": "Create email aliases for your own domains using Cloudflare Email Routing.",
   "author": "Curetix <me@curetix.eu>",
   "type": "module",
@@ -89,13 +89,8 @@
     }
   },
   "manifest": {
-    "permissions": [
-      "activeTab",
-      "contextMenus"
-    ],
-    "host_permissions": [
-      "*://api.cloudflare.com/*"
-    ],
+    "permissions": ["activeTab", "contextMenus"],
+    "host_permissions": ["*://api.cloudflare.com/*"],
     "browser_specific_settings": {
       "gecko": {
         "id": "{f0bdc9fa-a062-4424-baee-16530c53aa06}"
