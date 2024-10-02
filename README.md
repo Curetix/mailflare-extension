@@ -84,7 +84,6 @@ See [this page](https://developers.cloudflare.com/email-routing/postmaster/#know
 - "Email Routing does not forward non-delivery reports to the original sender. This means the sender will not receive a
   notification indicating that the email did not reach the intended destination."
 - "Email Routing does not support sending or replying from your Cloudflare domain."
-- "Subdomains cannot use Email Routing to forward emails, unless they are part of an Enterprise account."
 
 Additionally, there is
 a [limit of 200 email rules (aliases) and 200 destination addresses](https://developers.cloudflare.com/email-routing/limits/#rules-and-addresses)
