@@ -8,11 +8,11 @@ import { QueryClient } from "@tanstack/react-query";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { useEffect, useMemo, useState } from "react";
 import { localStorageDetector } from "typesafe-i18n/detectors";
-import TypesafeI18n from "~i18n/i18n-react";
+import TypesafeI18n from "~/i18n/i18n-react";
 
-import { detectLocale } from "~i18n/i18n-util";
-import { loadLocaleAsync } from "~i18n/i18n-util.async";
-import { extensionStoragePersister } from "~utils/storage";
+import { detectLocale } from "~/i18n/i18n-util";
+import { loadLocaleAsync } from "~/i18n/i18n-util.async";
+import { extensionStoragePersister } from "~/utils/storage";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,7 +34,7 @@ const theme: MantineThemeOverride = {
   luminanceThreshold: 0.4,
 };
 
-export default function Providers({ localeDetectors, children }: ProvidersProps) {
+export function Providers({ localeDetectors, children }: ProvidersProps) {
   const detectors = useMemo(
     () => [localStorageDetector, ...(localeDetectors || [])],
     [localeDetectors],

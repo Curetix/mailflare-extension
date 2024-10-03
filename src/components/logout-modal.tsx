@@ -1,13 +1,13 @@
 import { Button, Modal, Stack, Text } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
-import { useI18nContext } from "~i18n/i18n-react";
+import { useI18nContext } from "~/i18n/i18n-react";
 
 import { useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai/index";
 import { RESET } from "jotai/utils";
-import { useFullscreenModal } from "~utils";
-import { apiTokenAtom, selectedZoneIdAtom } from "~utils/state";
-import { extensionStoragePersister } from "~utils/storage";
+import { useFullscreenModal } from "~/utils";
+import { apiTokenAtom, selectedZoneIdAtom } from "~/utils/state";
+import { extensionStoragePersister } from "~/utils/storage";
 
 type Props = {
   opened: boolean;
@@ -15,7 +15,7 @@ type Props = {
   onLogout?: () => void;
 };
 
-export default function LogoutModal({ opened, onClose, onLogout }: Props) {
+export function LogoutModal({ opened, onClose, onLogout }: Props) {
   const { LL } = useI18nContext();
   const queryClient = useQueryClient();
   const isFullscreen = useFullscreenModal();

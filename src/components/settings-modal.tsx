@@ -1,5 +1,5 @@
 import { Fragment, type ReactNode, useState } from "react";
-import type { Locales } from "~i18n/i18n-types";
+import type { Locales } from "~/i18n/i18n-types";
 
 import {
   Button,
@@ -20,13 +20,13 @@ import { IconDeviceDesktop, IconExternalLink, IconMoonStars, IconSun } from "@ta
 import { useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 
-import LogoutModal from "~components/logout-modal";
-import { extensionName, extensionVersion, isWebApp } from "~const";
-import { useI18nContext } from "~i18n/i18n-react";
-import { loadLocaleAsync } from "~i18n/i18n-util.async";
-import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
-import { useFullscreenModal } from "~utils";
-import { apiTokenAtom, settingsAtom } from "~utils/state";
+import { LogoutModal } from "~/components/logout-modal";
+import { extensionName, extensionVersion, isWebApp } from "~/const";
+import { useI18nContext } from "~/i18n/i18n-react";
+import { loadLocaleAsync } from "~/i18n/i18n-util.async";
+import { useCloudflare } from "~/lib/cloudflare/use-cloudflare";
+import { useFullscreenModal } from "~/utils";
+import { apiTokenAtom, settingsAtom } from "~/utils/state";
 
 type SettingsModalProps = {
   opened: boolean;
@@ -41,7 +41,7 @@ type SettingsItem = {
   hide?: boolean;
 };
 
-function SettingsModal({ opened, onClose }: SettingsModalProps) {
+export function SettingsModal({ opened, onClose }: SettingsModalProps) {
   const { LL, locale, setLocale } = useI18nContext();
   const queryClient = useQueryClient();
   const { colorScheme, setColorScheme } = useMantineColorScheme();
@@ -280,5 +280,3 @@ function SettingsModal({ opened, onClose }: SettingsModalProps) {
     </Modal>
   );
 }
-
-export default SettingsModal;

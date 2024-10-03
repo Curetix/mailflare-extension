@@ -1,13 +1,13 @@
-import type { AliasSettings } from "~utils/state";
+import type { AliasSettings } from "~/utils/state";
 
 import { Storage } from "@plasmohq/storage";
 
-import { detectLocale, i18n } from "~i18n/i18n-util";
-import { loadLocale } from "~i18n/i18n-util.sync";
-import { CloudflareApiClient } from "~lib/cloudflare/api";
-import { Alias } from "~utils/alias";
-import { detectBrowserLocale, sendTabMessage } from "~utils/background";
-import { StorageKeys } from "~utils/state";
+import { detectLocale, i18n } from "~/i18n/i18n-util";
+import { loadLocale } from "~/i18n/i18n-util.sync";
+import { CloudflareApiClient } from "~/lib/cloudflare/api";
+import { Alias } from "~/utils/alias";
+import { detectBrowserLocale, sendTabMessage } from "~/utils/background";
+import { StorageKeys } from "~/utils/state";
 
 const storage = new Storage({
   area: "local",

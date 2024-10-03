@@ -1,7 +1,7 @@
 // noinspection JSUnusedGlobalSymbols
 
 import type { PlasmoCSConfig, PlasmoGetStyle } from "plasmo";
-import type { ContentScriptAlert, TabMessage } from "~utils/background";
+import type { ContentScriptAlert, TabMessage } from "~/utils/background";
 
 import { IconX } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
@@ -17,7 +17,7 @@ export const config: PlasmoCSConfig = {
   matches: ["https://*/*"],
 };
 
-export default function Inline() {
+export function Inline() {
   const [alerts, setAlerts] = useState<ContentScriptAlert[]>([]);
 
   const removeAlert = (id: number) => setAlerts((current) => current.filter((a) => a.id !== id));

@@ -2,11 +2,11 @@ import { Accordion, Anchor, Button, List, PasswordInput, Stack } from "@mantine/
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import { useState } from "react";
-import { useI18nContext } from "~i18n/i18n-react";
+import { useI18nContext } from "~/i18n/i18n-react";
 
-import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
+import { useCloudflare } from "~/lib/cloudflare/use-cloudflare";
 
-function Login() {
+export function Login() {
   const { LL } = useI18nContext();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const cloudflare = useCloudflare();
@@ -86,5 +86,3 @@ function Login() {
     </form>
   );
 }
-
-export default Login;

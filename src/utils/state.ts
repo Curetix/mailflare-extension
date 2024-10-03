@@ -1,7 +1,7 @@
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 
-import { extensionLocalStorageInterface as storage } from "~utils/storage";
+import { extensionLocalStorageInterface as storage } from "~/utils/storage";
 
 enum StorageKeys {
   MailflareSettings = "mailflare-settings",

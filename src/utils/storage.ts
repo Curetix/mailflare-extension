@@ -3,8 +3,8 @@ import type { AsyncStorage } from "jotai/vanilla/utils/atomWithStorage";
 
 import { Storage } from "@plasmohq/storage";
 
-import { isWebApp } from "~const";
-import { StorageKeys } from "~utils/state";
+import { isWebApp } from "~/const";
+import { StorageKeys } from "~/utils/state";
 
 export const extensionLocalStorage = new Storage({
   area: "local",

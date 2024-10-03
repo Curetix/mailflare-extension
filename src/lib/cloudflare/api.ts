@@ -9,7 +9,7 @@ import type {
   CloudflareEmailRoutingStatusResponse,
 } from "./cloudflare.types";
 
-import { fetcher } from "~utils";
+import { fetcher } from "~/utils";
 
 export const CloudflareApiBaseUrl = "https://api.cloudflare.com/client/v4";
 

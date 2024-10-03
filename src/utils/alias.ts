@@ -1,11 +1,11 @@
-import type { CloudflareEmailRule } from "~lib/cloudflare/cloudflare.types";
-import type { AliasSettings } from "~utils/state";
+import type { CloudflareEmailRule } from "~/lib/cloudflare/cloudflare.types";
+import type { AliasSettings } from "~/utils/state";
 
 import psl from "psl";
 import { generate as randomWords } from "random-words";
 
-import { emailRuleNamePrefix } from "~const";
-import { randomString } from "~utils";
+import { emailRuleNamePrefix } from "~/const";
+import { randomString } from "~/utils";
 
 type GenerateAliasOptions = Omit<AliasSettings, "destination"> & {
   customPrefix?: string;

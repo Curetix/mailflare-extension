@@ -1,12 +1,15 @@
-import type { CloudflareBaseResponse, CloudflareEmailRule } from "~lib/cloudflare/cloudflare.types";
+import type {
+  CloudflareBaseResponse,
+  CloudflareEmailRule,
+} from "~/lib/cloudflare/cloudflare.types";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { isWebApp } from "~const";
-import { CloudflareApiClient } from "~lib/cloudflare/api";
-import { apiTokenAtom, selectedZoneIdAtom } from "~utils/state";
+import { isWebApp } from "~/const";
+import { CloudflareApiClient } from "~/lib/cloudflare/api";
+import { apiTokenAtom, selectedZoneIdAtom } from "~/utils/state";
 
 type RuleMutation<T> = {
   zoneId: string | null;

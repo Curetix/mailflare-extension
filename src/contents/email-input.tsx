@@ -4,7 +4,7 @@ import type {
   PlasmoGetOverlayAnchor,
   PlasmoGetStyle,
 } from "plasmo";
-import type { Settings } from "~utils/state";
+import type { Settings } from "~/utils/state";
 
 import { useClipboard } from "@mantine/hooks";
 import { sendToBackground } from "@plasmohq/messaging";
@@ -13,10 +13,10 @@ import { IconMailPlus } from "@tabler/icons-react";
 import { useRef, useState } from "react";
 import cssText from "data-text:./content-scripts.css";
 
-import { detectLocale, i18n } from "~i18n/i18n-util";
-import { loadLocale } from "~i18n/i18n-util.sync";
-import { detectBrowserLocale, setValueForElementByEvent } from "~utils/background";
-import { StorageKeys } from "~utils/state";
+import { detectLocale, i18n } from "~/i18n/i18n-util";
+import { loadLocale } from "~/i18n/i18n-util.sync";
+import { detectBrowserLocale, setValueForElementByEvent } from "~/utils/background";
+import { StorageKeys } from "~/utils/state";
 
 const locale = detectLocale(detectBrowserLocale);
 loadLocale(locale);
@@ -52,7 +52,7 @@ export const getOverlayAnchor: PlasmoGetOverlayAnchor = async () => {
 export const getShadowHostId = () => "mailflare-email-input-button";
 
 // noinspection JSUnusedGlobalSymbols
-export default function Inline(props: PlasmoCSUIProps) {
+export function Inline(props: PlasmoCSUIProps) {
   const [isLoading, setIsLoading] = useState(false);
   const clipboard = useClipboard();
   const [error, setError] = useState<string>();

@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { navigatorDetector } from "typesafe-i18n/detectors";
 
-import App from "./app";
+import { App } from "~/app";
 
 const detectors = [navigatorDetector];
 

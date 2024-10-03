@@ -1,9 +1,9 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging";
 
-import { generateAliasInBackground } from "~background";
-import { detectLocale, i18n } from "~i18n/i18n-util";
-import { loadLocale } from "~i18n/i18n-util.sync";
-import { detectBrowserLocale, getCurrentTab, sendTabMessage } from "~utils/background";
+import { generateAliasInBackground } from "~/background";
+import { detectLocale, i18n } from "~/i18n/i18n-util";
+import { loadLocale } from "~/i18n/i18n-util.sync";
+import { detectBrowserLocale, getCurrentTab, sendTabMessage } from "~/utils/background";
 
 type Request = {
   hostname: string;

@@ -28,21 +28,21 @@ import {
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 
-import AliasBulkDeleteModal from "~components/alias-bulk-delete-modal";
-import AliasBulkEditModal from "~components/alias-bulk-edit-modal";
-import AliasCard from "~components/alias-card";
-import AliasCreateModal from "~components/alias-create-modal";
-import AliasDeleteModal from "~components/alias-delete-modal";
-import AliasEditModal from "~components/alias-edit-modal";
-import { useI18nContext } from "~i18n/i18n-react";
-import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
-import { sortBy } from "~utils";
-import { Alias } from "~utils/alias";
-import { aliasSearchAtom, settingsAtom } from "~utils/state";
+import { AliasBulkDeleteModal } from "~/components/alias-bulk-delete-modal";
+import { AliasBulkEditModal } from "~/components/alias-bulk-edit-modal";
+import { AliasCard } from "~/components/alias-card";
+import { AliasCreateModal } from "~/components/alias-create-modal";
+import { AliasDeleteModal } from "~/components/alias-delete-modal";
+import { AliasEditModal } from "~/components/alias-edit-modal";
+import { useI18nContext } from "~/i18n/i18n-react";
+import { useCloudflare } from "~/lib/cloudflare/use-cloudflare";
+import { sortBy } from "~/utils";
+import { Alias } from "~/utils/alias";
+import { aliasSearchAtom, settingsAtom } from "~/utils/state";
 
-import "~/styles/scroll-area.css";
+import "~//styles/scroll-area.css";
 
-function AliasList(props: FlexProps) {
+export function AliasList(props: FlexProps) {
   const { LL } = useI18nContext();
 
   const {
@@ -366,5 +366,3 @@ function AliasList(props: FlexProps) {
     </Flex>
   );
 }
-
-export default AliasList;

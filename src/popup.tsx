@@ -3,10 +3,10 @@
 import { useAtom } from "jotai";
 import { useEffect } from "react";
 
-import App from "~app";
-import { popupHeight, popupWidth } from "~const";
-import { detectBrowserLocale } from "~utils/background";
-import { hostnameAtom } from "~utils/state";
+import { App } from "~/app";
+import { popupHeight, popupWidth } from "~/const";
+import { detectBrowserLocale } from "~/utils/background";
+import { hostnameAtom } from "~/utils/state";
 
 const detectors = [detectBrowserLocale];
 

@@ -1,14 +1,14 @@
-import type { Alias } from "~utils/alias";
+import type { Alias } from "~/utils/alias";
 
 import { Button, Modal, Select, Stack, Switch, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import { useEffect } from "react";
-import { useI18nContext } from "~i18n/i18n-react";
+import { useI18nContext } from "~/i18n/i18n-react";
 
-import { emailRuleNamePrefix } from "~const";
-import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
-import { useFullscreenModal } from "~utils";
+import { emailRuleNamePrefix } from "~/const";
+import { useCloudflare } from "~/lib/cloudflare/use-cloudflare";
+import { useFullscreenModal } from "~/utils";
 
 type Props = {
   opened: boolean;
@@ -16,7 +16,7 @@ type Props = {
   aliasToEdit: Alias | null;
 };
 
-export default function AliasEditModal({ opened, onClose, aliasToEdit }: Props) {
+export function AliasEditModal({ opened, onClose, aliasToEdit }: Props) {
   const { LL } = useI18nContext();
   const { selectedZoneId, emailDestinations, updateEmailRule } = useCloudflare();
   const isFullscreen = useFullscreenModal();

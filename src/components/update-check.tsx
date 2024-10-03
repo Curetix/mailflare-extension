@@ -1,12 +1,12 @@
 import { showNotification } from "@mantine/notifications";
 import { useEffect } from "react";
-import { useI18nContext } from "~i18n/i18n-react";
+import { useI18nContext } from "~/i18n/i18n-react";
 
-import { extensionVersion } from "~const";
-import { StorageKeys } from "~utils/state";
-import { extensionLocalStorage as storage } from "~utils/storage";
+import { extensionVersion } from "~/const";
+import { StorageKeys } from "~/utils/state";
+import { extensionLocalStorage as storage } from "~/utils/storage";
 
-export default function UpdateCheck() {
+export function UpdateCheck() {
   const { LL } = useI18nContext();
 
   useEffect(() => {

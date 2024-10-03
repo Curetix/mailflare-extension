@@ -1,12 +1,12 @@
-import type { Alias } from "~utils/alias";
+import type { Alias } from "~/utils/alias";
 
 import { Button, Modal, Select, Stack, Switch } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
-import { useI18nContext } from "~i18n/i18n-react";
+import { useI18nContext } from "~/i18n/i18n-react";
 
-import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
-import { useFullscreenModal } from "~utils";
+import { useCloudflare } from "~/lib/cloudflare/use-cloudflare";
+import { useFullscreenModal } from "~/utils";
 
 type Props = {
   opened: boolean;
@@ -14,7 +14,7 @@ type Props = {
   selectedAliases: Alias[];
 };
 
-export default function AliasBulkEditModal({ opened, onClose, selectedAliases }: Props) {
+export function AliasBulkEditModal({ opened, onClose, selectedAliases }: Props) {
   const { LL } = useI18nContext();
   const { selectedZoneId, emailDestinations, updateEmailRule } = useCloudflare();
   const isFullscreen = useFullscreenModal();

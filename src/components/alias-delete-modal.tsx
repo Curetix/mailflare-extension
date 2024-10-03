@@ -1,11 +1,11 @@
-import type { Alias } from "~utils/alias";
+import type { Alias } from "~/utils/alias";
 
 import { Button, Modal, Stack, Text } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
-import { useI18nContext } from "~i18n/i18n-react";
+import { useI18nContext } from "~/i18n/i18n-react";
 
-import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
-import { useFullscreenModal } from "~utils";
+import { useCloudflare } from "~/lib/cloudflare/use-cloudflare";
+import { useFullscreenModal } from "~/utils";
 
 type Props = {
   opened: boolean;
@@ -13,7 +13,7 @@ type Props = {
   aliasToDelete: Alias | null;
 };
 
-export default function AliasDeleteModal({ opened, onClose, aliasToDelete }: Props) {
+export function AliasDeleteModal({ opened, onClose, aliasToDelete }: Props) {
   const { LL } = useI18nContext();
   const { selectedZoneId, deleteEmailRule } = useCloudflare();
   const isFullscreen = useFullscreenModal();

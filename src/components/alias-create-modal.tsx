@@ -1,5 +1,5 @@
-import type { CloudflareEmailRule } from "~lib/cloudflare/cloudflare.types";
-import type { AliasFormat, AliasPrefixFormat } from "~utils/state";
+import type { CloudflareEmailRule } from "~/lib/cloudflare/cloudflare.types";
+import type { AliasFormat, AliasPrefixFormat } from "~/utils/state";
 
 import {
   ActionIcon,
@@ -19,25 +19,25 @@ import { useAtom } from "jotai";
 import { useEffect, useMemo, useState } from "react";
 
 import type { ComboboxData } from "@mantine/core/lib/components/Combobox/Combobox.types";
-import { emailRuleNamePrefix, isExtension } from "~const";
-import { useI18nContext } from "~i18n/i18n-react";
-import { useCloudflare } from "~lib/cloudflare/use-cloudflare";
-import { useFullscreenModal } from "~utils";
-import { generateAliasAddress } from "~utils/alias";
+import { emailRuleNamePrefix, isExtension } from "~/const";
+import { useI18nContext } from "~/i18n/i18n-react";
+import { useCloudflare } from "~/lib/cloudflare/use-cloudflare";
+import { useFullscreenModal } from "~/utils";
+import { generateAliasAddress } from "~/utils/alias";
 import {
   AliasFormats,
   AliasPrefixFormats,
   aliasSettingsAtom,
   hostnameAtom,
   settingsAtom,
-} from "~utils/state";
+} from "~/utils/state";
 
 type Props = {
   opened: boolean;
   onClose: () => void;
 };
 
-export default function AliasCreateModal({ opened, onClose }: Props) {
+export function AliasCreateModal({ opened, onClose }: Props) {
   const { LL } = useI18nContext();
   const clipboard = useClipboard();
   const isFullscreen = useFullscreenModal();
