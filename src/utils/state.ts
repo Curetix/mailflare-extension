@@ -1,16 +1,8 @@
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
+import { CloudflareApiClient } from "~/lib/cloudflare/api";
 
-import { extensionLocalStorageInterface as storage } from "~/utils/storage";
-
-enum StorageKeys {
-  MailflareSettings = "mailflare-settings",
-  AliasSettings = "alias-settings",
-  ZoneId = "zone-id",
-  ApiToken = "api-token",
-  QueryCache = "query-cache",
-  Version = "version",
-}
+import { StorageKeys, extensionLocalStorageInterface as storage } from "~/utils/storage";
 
 /*
  * General Settings

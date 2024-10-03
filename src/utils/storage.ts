@@ -4,7 +4,15 @@ import type { AsyncStorage } from "jotai/vanilla/utils/atomWithStorage";
 import { Storage } from "@plasmohq/storage";
 
 import { isWebApp } from "~/const";
-import { StorageKeys } from "~/utils/state";
+
+export enum StorageKeys {
+  MailflareSettings = "mailflare-settings",
+  AliasSettings = "alias-settings",
+  ZoneId = "zone-id",
+  ApiToken = "api-token",
+  QueryCache = "query-cache",
+  Version = "version",
+}
 
 export const extensionLocalStorage = new Storage({
   area: "local",

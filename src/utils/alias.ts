@@ -1,13 +1,27 @@
 import type { CloudflareEmailRule } from "~/lib/cloudflare/cloudflare.types";
-import type { AliasSettings } from "~/utils/state";
-
 import psl from "psl";
 import { generate as randomWords } from "random-words";
-
 import { emailRuleNamePrefix } from "~/const";
 import { randomString } from "~/utils";
 
-type GenerateAliasOptions = Omit<AliasSettings, "destination"> & {
+export const AliasFormats = ["characters", "words", "domain", "custom"] as const;
+export type AliasFormat = (typeof AliasFormats)[number];
+
+export const AliasPrefixFormats = [
+  "none",
+  "domainWithoutExtension",
+  "domainWithExtension",
+  "fullDomain",
+  "custom",
+] as const;
+export type AliasPrefixFormat = (typeof AliasPrefixFormats)[number];
+
+type GenerateAliasOptions = {
+  format: AliasFormat;
+  characterCount: number;
+  wordCount: number;
+  separator: string;
+  prefixFormat: AliasPrefixFormat;
   customPrefix?: string;
   hostname?: string;
 };

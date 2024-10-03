@@ -1,33 +1,3 @@
-import { useMediaQuery } from "@mantine/hooks";
-
-/**
- * Error class for failed fetch requests.
- */
-export class FetcherHttpError extends Error {
-  info: any;
-  status = 200;
-}
-
-/**
- * Use native fetch and return the typed JSON response.
- */
-export async function fetcher<JSON = any>(
-  input: RequestInfo,
-  init?: RequestInit,
-  throwHttp = true,
-): Promise<JSON> {
-  const res = await fetch(input, init);
-
-  if (!res.ok && throwHttp) {
-    const error = new FetcherHttpError(`An HTTP error ${res.status} occurred.`);
-    error.info = await res.json().catch(() => res.body);
-    error.status = res.status;
-    throw error;
-  }
-
-  return res.json();
-}
-
 /**
  * Sort an array of objects of type T by the provided key and direction.
  * https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_sortby-and-_orderby
@@ -49,8 +19,4 @@ export function randomString(length: number) {
     counter += 1;
   }
   return result;
-}
-
-export function useFullscreenModal() {
-  return useMediaQuery("(max-width: 600px)");
 }

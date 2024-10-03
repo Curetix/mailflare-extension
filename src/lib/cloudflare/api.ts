@@ -1,3 +1,4 @@
+import ky from "ky";
 import type {
   CloudflareBaseResponse,
   CloudflareCreateEmailRuleResponse,
@@ -8,8 +9,6 @@ import type {
   CloudflareVerifyTokenResponse,
   CloudflareEmailRoutingStatusResponse,
 } from "./cloudflare.types";
-
-import { fetcher } from "~/utils";
 
 export const CloudflareApiBaseUrl = "https://api.cloudflare.com/client/v4";
 
@@ -45,11 +44,13 @@ export class CloudflareApiClient {
    * @param token
    */
   async verifyToken(token?: string) {
-    return fetcher<CloudflareVerifyTokenResponse>(`${this.baseUrl}/user/tokens/verify`, {
-      headers: {
-        Authorization: `Bearer ${token || this.apiToken}`,
-      },
-    });
+    return ky
+      .get(`${this.baseUrl}/user/tokens/verify`, {
+        headers: {
+          Authorization: `Bearer ${token || this.apiToken}`,
+        },
+      })
+      .json<CloudflareVerifyTokenResponse>();
   }
 
   /**
@@ -58,12 +59,11 @@ export class CloudflareApiClient {
    * @param page pagination page
    */
   async getZones(page = 1) {
-    return fetcher<CloudflareListZonesResponse>(
-      `${this.baseUrl}/zones?${this.getPaginationParams(page)}`,
-      {
+    return ky
+      .get(`${this.baseUrl}/zones?${this.getPaginationParams(page)}`, {
         headers: this.getHeaders(),
-      },
-    );
+      })
+      .json<CloudflareListZonesResponse>();
   }
 
   /**
@@ -73,14 +73,16 @@ export class CloudflareApiClient {
    * @param page pagination page
    */
   async getDestinations(accountId: string, page = 1) {
-    return fetcher<CloudflareListEmailDestinationsResponse>(
-      `${this.baseUrl}/accounts/${accountId}/email/routing/addresses?${this.getPaginationParams(
-        page,
-      )}`,
-      {
-        headers: this.getHeaders(),
-      },
-    );
+    return ky
+      .get(
+        `${this.baseUrl}/accounts/${accountId}/email/routing/addresses?${this.getPaginationParams(
+          page,
+        )}`,
+        {
+          headers: this.getHeaders(),
+        },
+      )
+      .json<CloudflareListEmailDestinationsResponse>();
   }
 
   /**
@@ -89,10 +91,9 @@ export class CloudflareApiClient {
    * @param zoneId
    */
   async getEmailRoutingStatus(zoneId: string) {
-    return fetcher<CloudflareEmailRoutingStatusResponse>(
-      `${this.baseUrl}/zones/${zoneId}/email/routing`,
-      { headers: this.getHeaders() },
-    );
+    return ky
+      .get(`${this.baseUrl}/zones/${zoneId}/email/routing`, { headers: this.getHeaders() })
+      .json<CloudflareEmailRoutingStatusResponse>();
   }
 
   /**
@@ -102,12 +103,14 @@ export class CloudflareApiClient {
    * @param page pagination page
    */
   async getEmailRules(zoneId: string, page = 1) {
-    return fetcher<CloudflareListEmailRulesResponse>(
-      `${this.baseUrl}/zones/${zoneId}/email/routing/rules?${this.getPaginationParams(page)}`,
-      {
-        headers: this.getHeaders(),
-      },
-    );
+    return ky
+      .get(
+        `${this.baseUrl}/zones/${zoneId}/email/routing/rules?${this.getPaginationParams(page)}`,
+        {
+          headers: this.getHeaders(),
+        },
+      )
+      .json<CloudflareListEmailRulesResponse>();
   }
 
   /**
@@ -117,14 +120,13 @@ export class CloudflareApiClient {
    * @param rule rule to be created
    */
   async createEmailRule(zoneId: string, rule: Omit<CloudflareEmailRule, "tag">) {
-    return fetcher<CloudflareCreateEmailRuleResponse>(
-      `${this.baseUrl}/zones/${zoneId}/email/routing/rules`,
-      {
+    return ky
+      .get(`${this.baseUrl}/zones/${zoneId}/email/routing/rules`, {
         method: "POST",
         headers: this.getHeaders(),
         body: JSON.stringify(rule),
-      },
-    );
+      })
+      .json<CloudflareCreateEmailRuleResponse>();
   }
 
   /**
@@ -134,14 +136,13 @@ export class CloudflareApiClient {
    * @param rule rule to be updated
    */
   async updateEmailRule(zoneId: string, rule: CloudflareEmailRule) {
-    return fetcher<CloudflareCreateEmailRuleResponse>(
-      `${this.baseUrl}/zones/${zoneId}/email/routing/rules/${rule.tag}`,
-      {
+    return ky
+      .get(`${this.baseUrl}/zones/${zoneId}/email/routing/rules/${rule.tag}`, {
         method: "PUT",
         headers: this.getHeaders(),
         body: JSON.stringify(rule),
-      },
-    );
+      })
+      .json<CloudflareCreateEmailRuleResponse>();
   }
 
   /**
@@ -151,12 +152,11 @@ export class CloudflareApiClient {
    * @param rule rule to be deleted
    */
   async deleteEmailRule(zoneId: string, rule: CloudflareEmailRule) {
-    return fetcher<CloudflareBaseResponse<null>>(
-      `${this.baseUrl}/zones/${zoneId}/email/routing/rules/${rule.tag}`,
-      {
+    return ky
+      .get(`${this.baseUrl}/zones/${zoneId}/email/routing/rules/${rule.tag}`, {
         method: "DELETE",
         headers: this.getHeaders(),
-      },
-    );
+      })
+      .json<CloudflareBaseResponse<null>>();
   }
 }
