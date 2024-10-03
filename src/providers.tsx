@@ -1,18 +1,16 @@
-import type { MantineThemeOverride } from "@mantine/core";
 import type { ReactNode } from "react";
 import type { LocaleDetector } from "typesafe-i18n/detectors";
-
-import { MantineProvider } from "@mantine/core";
-import { Notifications } from "@mantine/notifications";
 import { QueryClient } from "@tanstack/react-query";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { useEffect, useMemo, useState } from "react";
 import { localStorageDetector } from "typesafe-i18n/detectors";
 import TypesafeI18n from "~/i18n/i18n-react";
-
 import { detectLocale } from "~/i18n/i18n-util";
 import { loadLocaleAsync } from "~/i18n/i18n-util.async";
 import { extensionStoragePersister } from "~/utils/storage";
+import { ChakraProvider } from "@chakra-ui/react";
+import { system } from "~/utils/theme";
+import { ThemeProvider } from "next-themes";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,12 +24,6 @@ export const queryClient = new QueryClient({
 type ProvidersProps = {
   localeDetectors?: LocaleDetector[];
   children: ReactNode;
-};
-
-const theme: MantineThemeOverride = {
-  primaryColor: "orange",
-  autoContrast: true,
-  luminanceThreshold: 0.4,
 };
 
 export function Providers({ localeDetectors, children }: ProvidersProps) {
@@ -54,15 +46,16 @@ export function Providers({ localeDetectors, children }: ProvidersProps) {
   }
 
   return (
-    <MantineProvider theme={theme} defaultColorScheme="auto">
-      <Notifications />
-      <TypesafeI18n locale={detectedLocale}>
-        <PersistQueryClientProvider
-          client={queryClient}
-          persistOptions={{ persister: extensionStoragePersister }}>
-          {children}
-        </PersistQueryClientProvider>
-      </TypesafeI18n>
-    </MantineProvider>
+    <ThemeProvider attribute="class">
+      <ChakraProvider value={system}>
+        <TypesafeI18n locale={detectedLocale}>
+          <PersistQueryClientProvider
+            client={queryClient}
+            persistOptions={{ persister: extensionStoragePersister }}>
+            {children}
+          </PersistQueryClientProvider>
+        </TypesafeI18n>
+      </ChakraProvider>
+    </ThemeProvider>
   );
 }
