@@ -24,68 +24,71 @@
     "dev": "plasmo dev --target=chrome-mv3",
     "dev:firefox": "plasmo dev --target=firefox-mv3",
     "dev:web": "run-p dev:vite dev:functions",
-    "dev:vite": "vite --port 4000",
+    "dev:vite": "vite --port 4000 --mode web",
     "dev:functions": "wrangler pages dev --port 4001 dist/",
     "build": "tsc && plasmo build --hoist --zip",
     "build:all": "tsc && run-s build:chrome build:firefox",
     "build:chrome": "plasmo build --zip --hoist --target=chrome-mv3",
     "build:firefox": "plasmo build --zip --hoist --target=firefox-mv3",
-    "build:vite": "tsc && vite build",
+    "build:vite": "tsc && vite build --mode web",
     "typesafe-i18n": "typesafe-i18n",
     "lint": "biome lint functions/ src/",
     "format": "biome format --write functions/ src/"
   },
   "dependencies": {
-    "@chakra-ui/react": "3.0.0-next.27",
-    "@emotion/react": "11.11.4",
-    "@plasmohq/messaging": "0.6.2",
-    "@plasmohq/storage": "1.10.0",
-    "@tanstack/query-core": "5.40.0",
-    "@tanstack/react-query": "5.40.1",
-    "@tanstack/react-query-persist-client": "5.40.1",
-    "jotai": "2.8.3",
+    "@chakra-ui/react": "^3.0.0-next.28",
+    "@emotion/react": "^11.13.3",
+    "@plasmohq/messaging": "^0.6.2",
+    "@plasmohq/storage": "^1.12.0",
+    "@tanstack/react-form": "^0.33.0",
+    "@tanstack/react-query": "^5.59.0",
+    "@tanstack/react-query-persist-client": "^5.59.0",
+    "@tanstack/react-router": "^1.59.0",
+    "jotai": "^2.10.0",
     "ky": "^1.7.2",
     "next-themes": "^0.3.0",
-    "plasmo": "0.87.1",
-    "psl": "1.9.0",
-    "random-words": "2.0.1",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "typesafe-i18n": "5.26.2"
+    "plasmo": "0.89.2",
+    "psl": "^1.9.0",
+    "random-words": "^2.0.1",
+    "react": "19.0.0-rc-1460d67c-20241003",
+    "react-dom": "19.0.0-rc-1460d67c-20241003",
+    "react-icons": "^5.3.0",
+    "typesafe-i18n": "^5.26.2"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.8.1",
-    "@cloudflare/workers-types": "4.20240605.0",
-    "@plasmohq/rps": "1.8.7",
-    "@types/chrome": "0.0.268",
-    "@types/node": "20.14.2",
-    "@types/psl": "1.1.3",
-    "@types/react": "18.3.3",
-    "@types/react-dom": "18.3.0",
-    "@vitejs/plugin-react-swc": "3.7.0",
-    "husky": "8.0.3",
-    "lint-staged": "15.2.5",
-    "typescript": "5.4.5",
-    "vite": "5.2.13",
-    "vite-plugin-pwa": "0.20.0",
-    "vite-tsconfig-paths": "4.3.2",
-    "wrangler": "3.60.1"
+    "@biomejs/biome": "^1.9.3",
+    "@cloudflare/workers-types": "^4.20240925.0",
+    "@plasmohq/rps": "^1.8.7",
+    "@types/chrome": "^0.0.277",
+    "@types/node": "^22.7.4",
+    "@types/psl": "^1.1.3",
+    "@types/react": "npm:types-react@rc",
+    "@types/react-dom": "npm:types-react-dom@rc",
+    "@vitejs/plugin-react-swc": "^3.7.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.10",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.8",
+    "vite-plugin-pwa": "^0.20.5",
+    "vite-tsconfig-paths": "^5.0.1",
+    "wrangler": "^3.80.0"
+  },
+  "overrides": {
+    "@types/react": "npm:types-react@rc",
+    "@types/react-dom": "npm:types-react-dom@rc"
   },
   "pnpm": {
     "peerDependencyRules": {
       "allowedVersions": {
+        "react": "19.0.0-rc-1460d67c-20241003",
+        "react-dom": "19.0.0-rc-1460d67c-20241003",
         "svgo": "2.8.0"
       }
     }
   },
   "manifest": {
-    "permissions": [
-      "activeTab",
-      "contextMenus"
-    ],
-    "host_permissions": [
-      "*://api.cloudflare.com/*"
-    ],
+    "permissions": ["activeTab", "contextMenus"],
+    "host_permissions": ["https://api.cloudflare.com/*"],
     "browser_specific_settings": {
       "gecko": {
         "id": "{f0bdc9fa-a062-4424-baee-16530c53aa06}"
