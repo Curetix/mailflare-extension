@@ -15,7 +15,7 @@ export const createAliasRoute = createRoute({
     const authenticated = await isAuthenticated();
     if (!authenticated) {
       throw redirect({
-        to: "/login",
+        to: "/app/login",
       });
     }
   },

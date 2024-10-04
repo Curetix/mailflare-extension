@@ -1,36 +1,44 @@
 import { createRoute, redirect, Link as RouterLink } from "@tanstack/react-router";
 import { rootRoute } from "./_root";
-import { Box, Container, Flex, Grid, HStack, Stack, styled } from "styled-system/jsx";
-import { IconButton } from "~/components/ui/icon-button";
-import { SiGithub } from "react-icons/si";
-import { Heading } from "~/components/ui/heading";
-import { Text } from "~/components/ui/text";
-import { Button } from "~/components/ui/button";
 import { useEffect, useState } from "react";
 import { extensionLocalStorageInterface as storage, StorageKeys } from "~/utils/storage";
-import { Link } from "~/components/ui/link";
 import { isWebApp } from "~/const";
-import {
-  TbClipboardCopy,
-  TbDeviceDesktop,
-  TbEdit,
-  TbPackageImport,
-  TbPencil,
-  TbPlus,
-  TbSearch,
-  TbTrash,
-} from "react-icons/tb";
-import { SimpleSelect } from "~/components/select";
-import { useI18nContext } from "~/i18n/i18n-react";
-import { Card } from "~/components/ui/card";
-import { SimpleTooltip } from "~/components/simple-tooltip";
-import { Badge } from "~/components/ui/badge";
-import { Tabs } from "~/components/ui/tabs";
-import braveLogo from "~/assets/brave_logo.svg";
 import firefoxLogo from "~/assets/firefox_logo.svg";
 import googleChromeLogo from "~/assets/google_chrome_logo.svg";
 import msEdgeLogo from "~/assets/microsoft_edge_logo.svg";
 import { hasSeenLandingPage, isAuthenticated } from "./_auth";
+import {
+  Stack,
+  Button,
+  HStack,
+  Flex,
+  Card,
+  IconButton,
+  Tabs,
+  Container,
+  Heading,
+  Grid,
+  Box,
+  Badge,
+  Span,
+  Text,
+  SimpleGrid,
+  Link,
+} from "@chakra-ui/react";
+import { useI18nContext } from "~/i18n/i18n-react";
+import {
+  TbDeviceDesktop,
+  TbSearch,
+  TbPlus,
+  TbPencil,
+  TbPackageImport,
+  TbClipboardCopy,
+  TbEdit,
+  TbTrash,
+} from "react-icons/tb";
+import { SiGithub } from "react-icons/si";
+import { Select } from "~/components/ui/select";
+import { Tooltip } from "~/components/ui/tooltip";
 
 function Hero() {
   return (
@@ -39,21 +47,21 @@ function Hero() {
         <Stack gap={{ base: "4", md: "6" }}>
           <Stack gap="4">
             <Heading fontWeight="bold" textStyle={{ base: "4xl", md: "6xl" }}>
-              Create Email <styled.span color="accent.default">Aliases</styled.span> with{" "}
-              <styled.span color="accent.default">Cloudflare </styled.span> Email Routing
+              Create Email <Span color="orange.fg">Aliases</Span> with{" "}
+              <Span color="orange.fg">Cloudflare </Span> Email Routing
             </Heading>
           </Stack>
-          <Text textStyle={{ base: "lg", md: "xl" }} color="fg.muted">
+          <Text textStyle={{ base: "lg", md: "xl" }} color="fg.subtle">
             MailFlare is a browser extension and web app to turn Cloudflare Email Routing into your
             own private email alias service, similar to AnonAddy, SimpleLogin, and others. No
             third-party services or tedious configuration of a self-hosted email server needed.
           </Text>
         </Stack>
         <Stack direction={{ base: "column", sm: "row" }} gap="3" justifyContent="center">
-          <Button asChild size={{ base: "xl", md: "2xl" }}>
+          <Button asChild size="lg">
             <a href="#downloads">Download</a>
           </Button>
-          <Button asChild size={{ base: "xl", md: "2xl" }} variant="outline">
+          <Button asChild size="lg" variant="surface">
             {import.meta.env.DEV ? (
               <RouterLink to="/app">Open Web App</RouterLink>
             ) : (
@@ -62,7 +70,7 @@ function Hero() {
               </a>
             )}
           </Button>
-          <Button asChild size={{ base: "xl", md: "2xl" }} variant="outline">
+          <Button asChild size="lg" variant="surface" colorPalette="gray">
             <a
               href="https://github.com/Curetix/mailflare-extension"
               target="_blank"
@@ -75,15 +83,15 @@ function Hero() {
         <HStack gap="10" justifyContent="center">
           <HStack>
             <img src={googleChromeLogo} width={24} alt="Google Chrome logo" />
-            <Text color="fg.muted">Chrome</Text>
+            <Text color="fg.subtle">Chrome</Text>
           </HStack>
           <HStack>
             <img src={msEdgeLogo} width={24} alt="Microsoft Edge logo" />
-            <Text color="fg.muted">Edge</Text>
+            <Text color="fg.subtle">Edge</Text>
           </HStack>
           <HStack>
             <img src={firefoxLogo} width={24} alt="Firefox logo" />
-            <Text color="fg.muted">Firefox</Text>
+            <Text color="fg.subtle">Firefox</Text>
           </HStack>
         </HStack>
       </Stack>
@@ -116,16 +124,16 @@ const features = [
   },
   {
     icon: TbPackageImport,
-    title: "Import (Coming soon)",
+    title: "Import & Export (Coming soon)",
     description:
-      "Coming from another email alias service using your own domain(s)? MailFlare provides an easy way to import your existing addresses.",
+      "Coming from another email alias service using your own domain(s)? MailFlare provides an easy way to import your existing addresses. If you want to migrate the other way, from MailFlare to another service, we support that too.",
   },
 ];
 
 export const Highlights = () => {
   return (
     <Container py={{ base: "16", md: "24" }}>
-      <Grid columns={{ base: 1, md: 2 }} gap={{ base: "16", lg: "24" }}>
+      <SimpleGrid columns={{ base: 1, md: 2 }} gap={{ base: "16", lg: "24" }}>
         <Stack width="full" gap={10}>
           <Heading textStyle={{ base: "3xl", md: "4xl" }} fontWeight="semibold">
             Features
@@ -139,7 +147,7 @@ export const Highlights = () => {
                   background="bg.default"
                   borderRadius="l2"
                   borderWidth="1px"
-                  color="accent.default"
+                  color="orange.fg"
                   flexShrink={0}
                   height={{ base: "10", md: "12" }}
                   width={{ base: "10", md: "12" }}>
@@ -149,7 +157,7 @@ export const Highlights = () => {
                   <Heading textStyle="lg" fontWeight="semibold">
                     {feature.title}
                   </Heading>
-                  <Text color="fg.muted">{feature.description}</Text>
+                  <Text color="fg.subtle">{feature.description}</Text>
                 </Stack>
               </Stack>
             ))}
@@ -161,7 +169,7 @@ export const Highlights = () => {
           </Heading>
           <Demos />
         </Stack>
-      </Grid>
+      </SimpleGrid>
     </Container>
   );
 };
@@ -191,7 +199,7 @@ function AliasListDemo() {
 
   return (
     <Stack gap={2}>
-      <SimpleSelect
+      <Select
         placeholder={LL.DOMAIN()}
         value={selectedZoneId}
         onValueChange={setSelectedZoneId}
@@ -208,7 +216,7 @@ function AliasListDemo() {
               {/* ADDRESS AND DESCRIPTION */}
               <Box flex={1} minWidth={0}>
                 <Text truncate>{a.address}</Text>
-                <Text size="sm" color="fg.subtle" truncate>
+                <Text fontSize="sm" color="fg.subtle" truncate>
                   {a.name || LL.NO_ALIAS_DESCRIPTION()}
                 </Text>
               </Box>
@@ -216,21 +224,21 @@ function AliasListDemo() {
               {/* ACTION BUTTONS */}
               <Flex flexDirection="column" alignItems="flex-end" gap={1}>
                 <Flex gap={1}>
-                  <SimpleTooltip label={LL.COPY()}>
+                  <Tooltip content={LL.COPY()}>
                     <IconButton variant="ghost" size="xs" disabled>
                       <TbClipboardCopy />
                     </IconButton>
-                  </SimpleTooltip>
-                  <SimpleTooltip label={LL.EDIT()}>
+                  </Tooltip>
+                  <Tooltip content={LL.EDIT()}>
                     <IconButton variant="ghost" size="xs" disabled>
                       <TbEdit />
                     </IconButton>
-                  </SimpleTooltip>
-                  <SimpleTooltip label={LL.DELETE()}>
+                  </Tooltip>
+                  <Tooltip content={LL.DELETE()}>
                     <IconButton variant="ghost" size="xs" disabled>
                       <TbTrash />
                     </IconButton>
-                  </SimpleTooltip>
+                  </Tooltip>
                 </Flex>
                 {a.disabled && (
                   <Badge colorPalette="red" variant="solid" size="sm">
@@ -270,14 +278,8 @@ function Demos() {
       borderWidth="1px"
       borderRadius="lg"
       overflow="hidden"
-      bg="gray.dark.2">
-      <Tabs.List
-        bg="gray.dark.a2"
-        boxShadow="none"
-        borderBottomWidth="1px"
-        borderBottomColor="gray.dark.5"
-        pt="2"
-        px="4">
+      fitted>
+      <Tabs.List pt="2" px="4">
         {items.map(({ label, value, disabled }) => (
           <Tabs.Trigger
             key={value}
@@ -306,7 +308,7 @@ function Demos() {
 
 function Downloads() {
   return (
-    <Box id="downloads" bg="gray.2" borderYWidth="1px">
+    <Box id="downloads" bg="bg.emphasized" borderYWidth="1px">
       <Container py={{ base: "16", md: "24" }}>
         <Stack
           direction={{ base: "column", lg: "row" }}
@@ -317,7 +319,7 @@ function Downloads() {
               <Heading textStyle={{ base: "2xl", md: "3xl" }} fontWeight="semibold">
                 Extension Downloads
               </Heading>
-              <Text color="fg.muted" textStyle={{ base: "lg", md: "xl" }}>
+              <Text color="fg.subtle" textStyle={{ base: "lg", md: "xl" }}>
                 For any Chromium-based Browser (Google Chrome, Brave, Microsoft Edge, Opera),
                 install the extension through the Google Chrome Webstore. For Firefox, download the
                 extension through our GitHub Releases page.
@@ -325,7 +327,7 @@ function Downloads() {
             </Stack>
           </Stack>
           <Stack gap={4} justifyContent="center">
-            <Button size={{ base: "lg", lg: "xl" }} variant="subtle" colorPalette="blue" asChild>
+            <Button size="lg" variant="subtle" colorPalette="blue" asChild>
               <a
                 href="https://chromewebstore.google.com/detail/mailflare-email-alias-ext/aomfbgcabccoecaoimicmmkjdmdgcfpi"
                 target="_blank"
@@ -335,7 +337,7 @@ function Downloads() {
               </a>
             </Button>
 
-            <Button size={{ base: "lg", lg: "xl" }} variant="subtle" colorPalette="orange" asChild>
+            <Button size="lg" variant="subtle" colorPalette="orange" asChild>
               <a
                 href="https://github.com/Curetix/mailflare-extension/releases/latest"
                 target="_blank"
@@ -360,7 +362,8 @@ function Footer() {
           <Link
             href="https://github.com/Curetix/mailflare-extension"
             target="_blank"
-            rel="noreferrer">
+            rel="noreferrer"
+            colorPalette="gray">
             <SiGithub />
             GitHub
           </Link>

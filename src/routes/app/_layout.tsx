@@ -1,11 +1,8 @@
 import { createRoute, Link, Outlet } from "@tanstack/react-router";
 import { Suspense } from "react";
 import { TbSettings } from "react-icons/tb";
-import { Flex, HStack, Box } from "styled-system/jsx";
-import { IconButton } from "~/components/ui/icon-button";
-import { Spinner } from "~/components/ui/spinner";
 import { rootRoute } from "../_root";
-import { Text } from "~/components/ui/text";
+import { AbsoluteCenter, Box, Flex, HStack, IconButton, Spinner, Text } from "@chakra-ui/react";
 
 export const appLayoutRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -21,7 +18,7 @@ export const appLayoutRoute = createRoute({
         borderTopWidth={0}
         borderBottomRadius="md"
         shadow="sm">
-        <Text fontWeight="bold" size="md">
+        <Text fontWeight="bold" fontSize="md">
           <Link to="/app">MailFlare</Link>
         </Text>
         <IconButton size="sm" variant="ghost" asChild>
@@ -31,7 +28,12 @@ export const appLayoutRoute = createRoute({
         </IconButton>
       </HStack>
       <Box p={2}>
-        <Suspense fallback={<Spinner />}>
+        <Suspense
+          fallback={
+            <AbsoluteCenter>
+              <Spinner />
+            </AbsoluteCenter>
+          }>
           <Outlet />
         </Suspense>
       </Box>

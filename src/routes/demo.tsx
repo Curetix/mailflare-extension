@@ -1,24 +1,22 @@
-import { Field } from "@ark-ui/react";
 import { createRoute } from "@tanstack/react-router";
-import { TbMail, TbX } from "react-icons/tb";
-import { Box, HStack, Stack } from "styled-system/jsx";
-import { Button } from "~/components/ui/button";
-import { Heading } from "~/components/ui/heading";
-import { IconButton } from "~/components/ui/icon-button";
-import { Input } from "~/components/ui/input";
-import { Menu } from "~/components/ui/menu";
-import { Toast } from "~/components/ui/toast";
 import { rootRoute } from "./_root";
 import { useState } from "react";
-import { Spinner } from "~/components/ui/spinner";
 import { useI18nContext } from "~/i18n/i18n-react";
 import { generateAliasAddress } from "~/utils/alias";
-
-const toaster = Toast.createToaster({
-  placement: "bottom",
-  overlap: true,
-  gap: 16,
-});
+import {
+  Button,
+  Field,
+  HStack,
+  IconButton,
+  Input,
+  Spinner,
+  Stack,
+  Box,
+  Heading,
+  Menu,
+} from "@chakra-ui/react";
+import { MailIcon } from "lucide-react";
+import { Toaster, toaster } from "~/components/ui/toaster";
 
 const generateAliasOptions = {
   format: "characters",
@@ -40,7 +38,7 @@ export function DemoRoute() {
         description: LL.BG_ALERT_CREATED({
           alias: `${generateAliasAddress(generateAliasOptions)}@mailflare.cc`,
         }),
-        type: "info",
+        type: "success",
         duration: 10000,
       });
       setIsLoading(false);
@@ -70,22 +68,7 @@ export function DemoRoute() {
 
   return (
     <Box h="full">
-      <Toast.Toaster toaster={toaster}>
-        {(toast) => (
-          <Toast.Root key={toast.id}>
-            <Toast.Title>{toast.title}</Toast.Title>
-            <Toast.Description alignContent="center">
-              {isLoading && <Spinner size="sm" mr={3} />}
-              {toast.description}
-            </Toast.Description>
-            <Toast.CloseTrigger asChild>
-              <IconButton size="sm" variant="link">
-                <TbX />
-              </IconButton>
-            </Toast.CloseTrigger>
-          </Toast.Root>
-        )}
-      </Toast.Toaster>
+      <Toaster />
       <Menu.Root onSelect={({ value }) => value === "mailflare" && generateContext()}>
         <Menu.ContextTrigger asChild>
           <Box position="relative" bg="black" h="full" p={5}>
@@ -96,10 +79,8 @@ export function DemoRoute() {
               <Heading alignSelf="center">Create Account</Heading>
               <Field.Root>
                 <Field.Label>Email</Field.Label>
-                <HStack position="relative">
-                  <Field.Input asChild>
-                    <Input type="email" placeholder="Email" pe={5} autoComplete="off" />
-                  </Field.Input>
+                <HStack position="relative" width="full">
+                  <Input type="email" placeholder="Email" pe={5} autoComplete="off" />
                   <Box
                     display="flex"
                     alignItems="center"
@@ -109,23 +90,19 @@ export function DemoRoute() {
                     zIndex={2}
                     p={1}
                     insetInlineEnd={0}>
-                    <IconButton size="xs" disabled={isLoading} onClick={() => generateButton()}>
-                      {isLoading ? <Spinner /> : <TbMail />}
+                    <IconButton size="sm" disabled={isLoading} onClick={() => generateButton()}>
+                      {isLoading ? <Spinner color="white" /> : <MailIcon color="white" />}
                     </IconButton>
                   </Box>
                 </HStack>
               </Field.Root>
               <Field.Root>
                 <Field.Label>Password</Field.Label>
-                <Field.Input asChild disabled>
-                  <Input type="password" placeholder="Password" />
-                </Field.Input>
+                <Input type="password" placeholder="Password" disabled />
               </Field.Root>
               <Field.Root>
                 <Field.Label>Confirm Password</Field.Label>
-                <Field.Input asChild disabled>
-                  <Input type="password" placeholder="Confirm Password" />
-                </Field.Input>
+                <Input type="password" placeholder="Confirm Password" disabled />
               </Field.Root>
               <Button disabled>Signup</Button>
             </Stack>
