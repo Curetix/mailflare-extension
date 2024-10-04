@@ -1,19 +1,18 @@
 import type { ReactNode } from "react";
 import type { Alias } from "~/utils/alias";
-
-import { ActionIcon, Box, Card, Checkbox, Flex, Text, Tooltip } from "@mantine/core";
-import { useClipboard } from "@mantine/hooks";
-import { showNotification } from "@mantine/notifications";
-import { IconClipboard, IconEdit, IconTrash } from "@tabler/icons-react";
 import { useI18nContext } from "~/i18n/i18n-react";
-
 import { emailRuleNamePrefix } from "~/const";
+import { TbCheck, TbClipboardCopy, TbEdit, TbTrash } from "react-icons/tb";
+import { Box, Card, Clipboard, Flex, IconButton, Text } from "@chakra-ui/react";
+import { Tooltip } from "~/components/ui/tooltip";
+import { Checkbox } from "~/components/ui/checkbox";
+import { toaster } from "~/components/ui/toaster";
 
 type AliasCardProps = {
   alias: Alias;
   badge: ReactNode;
-  selectEnabled: boolean;
-  isSelected: boolean;
+  selectEnabled?: boolean;
+  isSelected?: boolean;
   onSelect: (value: boolean) => void;
   onEdit: () => void;
   onDelete: () => void;
@@ -29,83 +28,89 @@ export function AliasCard({
   onDelete,
 }: AliasCardProps) {
   const { LL } = useI18nContext();
-  const clipboard = useClipboard();
 
   return (
-    <Card
-      p="xs"
-      radius="sm"
-      withBorder
-      key={alias.tag}
+    <Card.Root
       onClick={() => {
         if (selectEnabled) {
           onSelect(!isSelected);
         }
-      }}>
-      <Flex gap="xs" align="center">
+      }}
+      shadow="none"
+      borderWidth={1}
+      data-checked={isSelected ? "" : undefined}
+      transition="colors"
+      _checked={{ borderColor: "accent.emphasized" }}>
+      <Flex px={4} py={2} gap={2} align="center">
         {/* SELECT CHECKBOX */}
         {selectEnabled && (
           <Checkbox
-            size="xs"
+            size="sm"
             checked={isSelected}
-            onChange={(event) => {
-              onSelect(event.currentTarget.checked);
+            onCheckedChange={({ checked }) => {
+              onSelect(checked === "indeterminate" ? true : checked);
             }}
           />
         )}
 
         {/* ADDRESS AND DESCRIPTION */}
-        <Box flex={1} miw={0}>
+        <Box flex={1} minWidth={0}>
           <Text truncate>{alias.address}</Text>
-          <Text size="sm" c="dimmed" truncate>
+          <Text fontSize="sm" color="fg.subtle" truncate>
             {alias.name.replace(emailRuleNamePrefix, "").trim() || LL.NO_ALIAS_DESCRIPTION()}
           </Text>
         </Box>
 
         {/* ACTION BUTTONS */}
-        <Box>
-          <ActionIcon.Group>
-            <Tooltip label={LL.COPY()}>
-              <ActionIcon
-                variant="subtle"
-                size="sm"
-                onClick={() => {
-                  clipboard.copy(alias.address);
-                  showNotification({
-                    color: "green",
-                    message: LL.COPY_SUCCESS(),
-                    autoClose: 2000,
-                  });
-                }}>
-                <IconClipboard size={16} />
-              </ActionIcon>
+        <Flex flexDirection="column" alignItems="flex-end" gap={1}>
+          <Flex gap={1}>
+            <Tooltip content={LL.COPY()}>
+              <Clipboard.Root value={alias.address}>
+                <Clipboard.Control>
+                  <Clipboard.Trigger>
+                    <IconButton
+                      variant="ghost"
+                      size="xs"
+                      onClick={() =>
+                        toaster.create({
+                          description: LL.COPY_SUCCESS(),
+                          type: "success",
+                        })
+                      }>
+                      <Clipboard.Indicator copied={<TbCheck />}>
+                        <TbClipboardCopy />
+                      </Clipboard.Indicator>
+                    </IconButton>
+                  </Clipboard.Trigger>
+                </Clipboard.Control>
+              </Clipboard.Root>
             </Tooltip>
-            <Tooltip label={LL.EDIT()}>
-              <ActionIcon
-                variant="subtle"
-                size="sm"
+            <Tooltip content={LL.EDIT()}>
+              <IconButton
+                variant="ghost"
+                size="xs"
                 disabled={selectEnabled}
                 onClick={() => {
                   onEdit();
                 }}>
-                <IconEdit size={16} />
-              </ActionIcon>
+                <TbEdit />
+              </IconButton>
             </Tooltip>
-            <Tooltip label={LL.DELETE()}>
-              <ActionIcon
-                variant="subtle"
-                size="sm"
+            <Tooltip content={LL.DELETE()}>
+              <IconButton
+                variant="ghost"
+                size="xs"
                 disabled={selectEnabled}
                 onClick={() => {
                   onDelete();
                 }}>
-                <IconTrash size={16} />
-              </ActionIcon>
+                <TbTrash />
+              </IconButton>
             </Tooltip>
-          </ActionIcon.Group>
+          </Flex>
           {badge}
-        </Box>
+        </Flex>
       </Flex>
-    </Card>
+    </Card.Root>
   );
 }

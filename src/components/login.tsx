@@ -1,87 +1,97 @@
-import { Accordion, Anchor, Button, List, PasswordInput, Stack } from "@mantine/core";
-import { useForm } from "@mantine/form";
-import { showNotification } from "@mantine/notifications";
-import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
 import { useI18nContext } from "~/i18n/i18n-react";
-
 import { useCloudflare } from "~/lib/cloudflare/use-cloudflare";
+import { Link, useRouter } from "@tanstack/react-router";
+import { Stack, Field, Accordion, List, Input } from "@chakra-ui/react";
+import { ChevronDownIcon } from "lucide-react";
+import { Button } from "~/components/ui/button";
+import { toaster } from "~/components/ui/toaster";
 
 export function Login() {
   const { LL } = useI18nContext();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const cloudflare = useCloudflare();
+  const router = useRouter();
 
-  async function verifyToken(token: string) {
-    setIsLoading(true);
-    const response = await cloudflare.verifyToken(token);
-    setIsLoading(false);
-    if (!response.success) {
-      showNotification({
-        title: LL.ERROR(),
-        message: LL.CLOUDFLARE_LOGIN_ERROR(),
-        color: "red",
-      });
-    }
-  }
-
-  const tokenForm = useForm({
-    initialValues: {
-      token: "",
+  const { isPending, mutate } = useMutation({
+    mutationKey: ["verifyToken"],
+    mutationFn: async (token: string) => {
+      const result = await cloudflare.verifyToken(token);
+      if (!result.success) throw result.error;
     },
-    validate: {
-      token: (value) => value.trim().length !== 40,
+    onSuccess: () => {
+      router.navigate({ to: "/app" });
+    },
+    onError: () => {
+      toaster.create({
+        title: LL.ERROR(),
+        description: LL.CLOUDFLARE_LOGIN_ERROR(),
+        type: "error",
+      });
+    },
+  });
+
+  const form = useForm({
+    values: {
+      token: "",
     },
   });
 
   return (
-    <form onSubmit={tokenForm.onSubmit((values) => verifyToken(values.token))}>
-      <Stack p="md" gap="xs">
-        <PasswordInput
-          label={LL.CLOUDFlARE_TOKEN_LABEL()}
-          placeholder={LL.CLOUDFLARE_TOKEN_PLACEHOLDER()}
-          disabled={isLoading}
-          autoComplete="off"
-          {...tokenForm.getInputProps("token")}
-        />
-        <Button
-          type="submit"
-          disabled={tokenForm.values.token.trim().length !== 40}
-          loading={isLoading}>
+    <form onSubmit={form.handleSubmit((values) => mutate(values.token))}>
+      <Stack gap={2}>
+        <Field.Root invalid={!!form.formState.errors.token}>
+          <Field.Label>{LL.CLOUDFlARE_TOKEN_LABEL()}</Field.Label>
+          <Input
+            type="password"
+            placeholder={LL.CLOUDFLARE_TOKEN_PLACEHOLDER()}
+            disabled={isPending}
+            autoComplete="off"
+            // TODO: translate this
+            {...form.register("token", { required: "Required" })}
+          />
+          <Field.ErrorText>{form.formState.errors.token?.message}</Field.ErrorText>
+        </Field.Root>
+
+        <Button type="submit" loading={isPending}>
           {LL.SAVE()}
         </Button>
-        <Accordion variant="filled" defaultValue="instructions">
+
+        <Accordion.Root multiple defaultValue={["instructions"]}>
           <Accordion.Item value="instructions">
-            <Accordion.Control>{LL.INSTRUCTIONS()}</Accordion.Control>
-            <Accordion.Panel>
-              <List size="sm" type="ordered">
+            <Accordion.ItemTrigger>
+              {LL.INSTRUCTIONS()}
+              <Accordion.ItemIndicator>
+                <ChevronDownIcon />
+              </Accordion.ItemIndicator>
+            </Accordion.ItemTrigger>
+            <Accordion.ItemContent>
+              <List.Root listStyle="numeral inside">
                 <List.Item>
-                  <Anchor
-                    href="https://dash.cloudflare.com/profile/api-tokens/"
-                    target="_blank"
-                    size="sm">
+                  <Link href="https://dash.cloudflare.com/profile/api-tokens/" target="_blank">
                     {LL.CLOUDFLARE_TOKEN_STEP_1()}
-                  </Anchor>
+                  </Link>
                 </List.Item>
                 <List.Item>{LL.CLOUDFLARE_TOKEN_STEP_2()}</List.Item>
                 <List.Item>{LL.CLOUDFLARE_TOKEN_STEP_3()}</List.Item>
                 <List.Item>
                   {LL.CLOUDFLARE_TOKEN_STEP_4()}
-                  <List withPadding listStyleType="disc" size="sm">
+                  <List.Root listStyle="square inside" ps={6}>
                     <List.Item>Account | Email Routing Addresses | Read</List.Item>
                     <List.Item>Zone | Email Routing Rules | Edit</List.Item>
                     <List.Item>Zone | Zone | Read</List.Item>
                     <List.Item>Zone | Zone Settings | Read</List.Item>
-                  </List>
+                  </List.Root>
                 </List.Item>
                 <List.Item>{LL.CLOUDFLARE_TOKEN_STEP_5()}</List.Item>
                 <List.Item>{LL.CLOUDFLARE_TOKEN_STEP_6()}</List.Item>
                 <List.Item>{LL.CLOUDFLARE_TOKEN_STEP_7()}</List.Item>
                 <List.Item>{LL.CLOUDFLARE_TOKEN_STEP_8()}</List.Item>
                 <List.Item>{LL.CLOUDFLARE_TOKEN_STEP_9()}</List.Item>
-              </List>
-            </Accordion.Panel>
+              </List.Root>
+            </Accordion.ItemContent>
           </Accordion.Item>
-        </Accordion>
+        </Accordion.Root>
       </Stack>
     </form>
   );
