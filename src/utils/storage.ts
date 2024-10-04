@@ -12,6 +12,7 @@ export enum StorageKeys {
   ApiToken = "api-token",
   QueryCache = "query-cache",
   Version = "version",
+  SeenLandingPage = "seen-landing",
 }
 
 export const extensionLocalStorage = new Storage({

@@ -8,12 +8,18 @@ const config = defineConfig({
   globalCss: {
     body: {
       // Sets the color palette for every component
-      colorPalette: "accent",
+      colorPalette: "orange",
     },
   },
   // Custom theme for your app
   // https://next.chakra-ui.com/docs/theming/overview
-  theme: {},
+  theme: {
+    //   semanticTokens: {
+    //     colors: {
+    //       accent: { value: "{colors.orange}" },
+    //     },
+    //   },
+  },
 });
 
 export const system = createSystem(defaultConfig, config);

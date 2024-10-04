@@ -18,10 +18,10 @@ export type AliasPrefixFormat = (typeof AliasPrefixFormats)[number];
 
 type GenerateAliasOptions = {
   format: AliasFormat;
-  characterCount: number;
-  wordCount: number;
-  separator: string;
-  prefixFormat: AliasPrefixFormat;
+  characterCount?: number;
+  wordCount?: number;
+  separator?: string;
+  prefixFormat?: AliasPrefixFormat;
   customPrefix?: string;
   hostname?: string;
 };
