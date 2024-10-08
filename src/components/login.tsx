@@ -1,12 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
 import { useI18nContext } from "~/i18n/i18n-react";
 import { useCloudflare } from "~/lib/cloudflare/use-cloudflare";
 import { Link, useRouter } from "@tanstack/react-router";
 import { Stack, Field, Accordion, List, Input } from "@chakra-ui/react";
-import { ChevronDownIcon } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { toaster } from "~/components/ui/toaster";
+import { useForm } from "@tanstack/react-form";
+import { LuChevronDown } from "react-icons/lu";
 
 export function Login() {
   const { LL } = useI18nContext();
@@ -31,27 +31,43 @@ export function Login() {
     },
   });
 
-  const form = useForm({
-    values: {
+  const {
+    Field: FormField,
+    handleSubmit,
+    ...form
+  } = useForm({
+    defaultValues: {
       token: "",
     },
+    onSubmit: async ({ value }) => mutate(value.token),
   });
 
   return (
-    <form onSubmit={form.handleSubmit((values) => mutate(values.token))}>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        handleSubmit();
+      }}>
       <Stack gap={2}>
-        <Field.Root invalid={!!form.formState.errors.token}>
-          <Field.Label>{LL.CLOUDFlARE_TOKEN_LABEL()}</Field.Label>
-          <Input
-            type="password"
-            placeholder={LL.CLOUDFLARE_TOKEN_PLACEHOLDER()}
-            disabled={isPending}
-            autoComplete="off"
-            // TODO: translate this
-            {...form.register("token", { required: "Required" })}
-          />
-          <Field.ErrorText>{form.formState.errors.token?.message}</Field.ErrorText>
-        </Field.Root>
+        <FormField name="token">
+          {({ state, handleChange, handleBlur }) => (
+            <Field.Root invalid={state.meta.errors.length > 0}>
+              <Field.Label>{LL.CLOUDFlARE_TOKEN_LABEL()}</Field.Label>
+              <Input
+                type="password"
+                minLength={1}
+                placeholder={LL.CLOUDFLARE_TOKEN_PLACEHOLDER()}
+                disabled={isPending}
+                autoComplete="off"
+                value={state.value}
+                onChange={(event) => handleChange(event.currentTarget.value)}
+                onBlur={handleBlur}
+              />
+              <Field.ErrorText>{state.meta.errors.toString()}</Field.ErrorText>
+            </Field.Root>
+          )}
+        </FormField>
 
         <Button type="submit" loading={isPending}>
           {LL.SAVE()}
@@ -62,7 +78,7 @@ export function Login() {
             <Accordion.ItemTrigger>
               {LL.INSTRUCTIONS()}
               <Accordion.ItemIndicator>
-                <ChevronDownIcon />
+                <LuChevronDown />
               </Accordion.ItemIndicator>
             </Accordion.ItemTrigger>
             <Accordion.ItemContent>

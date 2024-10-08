@@ -15,8 +15,8 @@ import {
   Heading,
   Menu,
 } from "@chakra-ui/react";
-import { MailIcon } from "lucide-react";
 import { Toaster, toaster } from "~/components/ui/toaster";
+import { LuMail } from "react-icons/lu";
 
 const generateAliasOptions = {
   format: "characters",
@@ -91,7 +91,7 @@ export function DemoRoute() {
                     p={1}
                     insetInlineEnd={0}>
                     <IconButton size="sm" disabled={isLoading} onClick={() => generateButton()}>
-                      {isLoading ? <Spinner color="white" /> : <MailIcon color="white" />}
+                      {isLoading ? <Spinner color="white" /> : <LuMail color="white" />}
                     </IconButton>
                   </Box>
                 </HStack>

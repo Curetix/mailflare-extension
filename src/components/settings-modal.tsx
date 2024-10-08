@@ -1,27 +1,20 @@
-import { Fragment, type ReactNode } from "react";
-import type { Locales } from "~/i18n/i18n-types";
+import { Flex, Separator, Stack, Text } from "@chakra-ui/react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useI18nContext } from "~/i18n/i18n-react";
-import { loadLocaleAsync } from "~/i18n/i18n-util.async";
-import {
-  TbDeviceDesktop,
-  TbExternalLink,
-  TbMoon,
-  TbMoonFilled,
-  TbSun,
-  TbSunFilled,
-} from "react-icons/tb";
-import { useTheme } from "next-themes";
 import { useAtom } from "jotai";
-import { apiTokenAtom, settingsAtom } from "~/utils/state";
-import { extensionName, extensionVersion, isWebApp } from "~/const";
+import { useTheme } from "next-themes";
+import { Fragment, type ReactNode } from "react";
+import { LuExternalLink } from "react-icons/lu";
 import { LogoutDialog } from "~/components/dialogs/logout";
-import { useCloudflare } from "~/lib/cloudflare/use-cloudflare";
-import { Button, Stack, Flex, Separator, Text } from "@chakra-ui/react";
-import { Icon } from "lucide-react";
+import { Button } from "~/components/ui/button";
 import { Select } from "~/components/ui/select";
 import { Switch } from "~/components/ui/switch";
 import { toaster } from "~/components/ui/toaster";
+import { extensionName, extensionVersion, isWebApp } from "~/const";
+import { useI18nContext } from "~/i18n/i18n-react";
+import type { Locales } from "~/i18n/i18n-types";
+import { loadLocaleAsync } from "~/i18n/i18n-util.async";
+import { useCloudflare } from "~/lib/cloudflare/use-cloudflare";
+import { apiTokenAtom, settingsAtom } from "~/utils/state";
 
 type SettingsItem = {
   key: string;
@@ -55,24 +48,16 @@ export function SettingsList() {
       title: LL.THEME(),
       description: LL.THEME_DESC(),
       action: (
-        <div />
-        // <ToggleGroup.Root
-        //   value={[theme ?? "light"]}
-        //   onValueChange={({ value }) => setTheme(value[0])}>
-        //   <ToggleGroup.Item value="light" aria-label={LL.THEME_LIGHT()}>
-        //     <Icon asChild>{theme === "light" ? <TbSunFilled /> : <TbSun />}</Icon>
-        //   </ToggleGroup.Item>
-
-        //   <ToggleGroup.Item value="dark" aria-label={LL.THEME_DARK()}>
-        //     <Icon asChild>{theme === "dark" ? <TbMoonFilled /> : <TbMoon />}</Icon>
-        //   </ToggleGroup.Item>
-
-        //   <ToggleGroup.Item value="system" aria-label={LL.THEME_AUTO()}>
-        //     <Icon asChild>
-        //       <TbDeviceDesktop />
-        //     </Icon>
-        //   </ToggleGroup.Item>
-        // </ToggleGroup.Root>
+        <Select
+          value={theme ?? "light"}
+          onValueChange={(value) => setTheme(value)}
+          maxWidth="200px"
+          items={[
+            { value: "light", label: LL.THEME_LIGHT() },
+            { value: "dark", label: LL.THEME_DARK() },
+            { value: "system", label: LL.THEME_AUTO() },
+          ]}
+        />
       ),
     },
     {
@@ -141,7 +126,7 @@ export function SettingsList() {
       hide: !apiToken,
       action: (
         <Button
-          // loading={zones.isFetching || emailDestinations.isFetching}
+          loading={zones.isFetching || emailDestinations.isFetching}
           onClick={async () => {
             await queryClient.invalidateQueries();
             toaster.create({
@@ -176,7 +161,7 @@ export function SettingsList() {
             target="_blank"
             rel="noreferrer">
             {LL.OPEN()}
-            <TbExternalLink size={16} />
+            <LuExternalLink size={16} />
           </a>
         </Button>
       ),
@@ -189,7 +174,7 @@ export function SettingsList() {
         <Button variant="ghost" asChild>
           <a href="https://github.com/curetix/mailflare-extension" target="_blank" rel="noreferrer">
             {LL.GITHUB()}
-            <TbExternalLink size={16} />
+            <LuExternalLink size={16} />
           </a>
         </Button>
       ),
