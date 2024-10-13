@@ -6,12 +6,12 @@ import type {
 } from "plasmo";
 import type { Settings } from "~utils/state";
 
+import cssText from "data-text:./content-scripts.css";
 import { useClipboard } from "@mantine/hooks";
 import { sendToBackground } from "@plasmohq/messaging";
 import { Storage } from "@plasmohq/storage";
 import { IconMailPlus } from "@tabler/icons-react";
 import { useRef, useState } from "react";
-import cssText from "data-text:./content-scripts.css";
 
 import { detectLocale, i18n } from "~i18n/i18n-util";
 import { loadLocale } from "~i18n/i18n-util.sync";
@@ -103,6 +103,7 @@ export default function Inline(props: PlasmoCSUIProps) {
           top: (inputElementHeight - buttonSize) / 2,
           left: inputElementWidth - buttonSize - (inputElementHeight - buttonSize) / 2,
         }}>
+        {/* biome-ignore lint/a11y/noLabelWithoutControl: <explanation> */}
         <label
           className={`btn btn-square btn-sm ${
             isSuccess ? "btn-success" : error ? "btn-error" : "btn-primary"
