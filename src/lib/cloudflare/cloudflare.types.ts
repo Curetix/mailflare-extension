@@ -15,16 +15,22 @@ type CloudflareZone = {
   };
 };
 
-type CloudflareEmailRoutingStatus = {
+type CloudflareEmailRoutingStatus =
+  | "ready"
+  | "unconfigured"
+  | "misconfigured"
+  | "misconfigured/locked"
+  | "unlocked";
+
+type CloudflareEmailRoutingSettings = {
   id: string;
   tag: string;
   name: string;
   enabled: boolean;
   created: string;
   modified: string;
-  skip_wizard: boolean;
-  synced: boolean;
-  status: "ready" | "misconfigured";
+  status: CloudflareEmailRoutingStatus;
+  subdomains?: Array<Omit<CloudflareEmailRoutingSettings, "subdomains">>;
 };
 
 type CloudflareEmailDestination = {
@@ -94,7 +100,8 @@ type CloudflareListEmailRulesResponse = CloudflareBaseResponse<CloudflareEmailRu
 
 type CloudflareCreateEmailRuleResponse = CloudflareBaseResponse<CloudflareEmailRule>;
 
-type CloudflareEmailRoutingStatusResponse = CloudflareBaseResponse<CloudflareEmailRoutingStatus>;
+type CloudflareEmailRoutingSettingsResponse =
+  CloudflareBaseResponse<CloudflareEmailRoutingSettings>;
 
 export type {
   CloudflareBaseResponse,
@@ -107,5 +114,5 @@ export type {
   CloudflareEmailRule,
   CloudflareListEmailRulesResponse,
   CloudflareCreateEmailRuleResponse,
-  CloudflareEmailRoutingStatusResponse,
+  CloudflareEmailRoutingSettingsResponse,
 };

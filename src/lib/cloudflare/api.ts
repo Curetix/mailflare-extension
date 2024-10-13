@@ -1,12 +1,12 @@
 import type {
   CloudflareBaseResponse,
   CloudflareCreateEmailRuleResponse,
+  CloudflareEmailRoutingSettingsResponse,
   CloudflareEmailRule,
   CloudflareListEmailDestinationsResponse,
   CloudflareListEmailRulesResponse,
   CloudflareListZonesResponse,
   CloudflareVerifyTokenResponse,
-  CloudflareEmailRoutingStatusResponse,
 } from "./cloudflare.types";
 
 import { fetcher } from "~utils";
@@ -88,8 +88,8 @@ export class CloudflareApiClient {
    * Requires the permission: Zone | Zone Settings | Read
    * @param zoneId
    */
-  async getEmailRoutingStatus(zoneId: string) {
-    return fetcher<CloudflareEmailRoutingStatusResponse>(
+  async getEmailRoutingSettings(zoneId: string) {
+    return fetcher<CloudflareEmailRoutingSettingsResponse>(
       `${this.baseUrl}/zones/${zoneId}/email/routing`,
       { headers: this.getHeaders() },
     );

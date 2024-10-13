@@ -1,8 +1,8 @@
 import type { CloudflareBaseResponse, CloudflareEmailRule } from "~lib/cloudflare/cloudflare.types";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { isWebApp } from "~const";
 import { CloudflareApiClient } from "~lib/cloudflare/api";
@@ -59,6 +59,11 @@ async function handleResponse<T>(fn: Promise<CloudflareBaseResponse<T>>) {
   return response.result;
 }
 
+// const apiClientAtom = atom(async (get) => {
+//   const token = await get(apiTokenAtom);
+//   return new CloudflareApiClient(token ?? "", apiUrl);
+// });
+
 export function useCloudflare() {
   const queryClient = useQueryClient();
   const apiClient = useRef(new CloudflareApiClient("", apiUrl));
@@ -83,12 +88,12 @@ export function useCloudflare() {
           await setApiToken(token);
         }
         return { success: true };
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error(error);
-        return { success: false, error: error.toString() };
+        return { success: false, error };
       }
     },
-    [setApiToken],
+    [apiClient, setApiToken],
   );
 
   const zones = useQuery({
@@ -100,6 +105,58 @@ export function useCloudflare() {
     placeholderData: [],
     retry: false,
   });
+
+  const allEmailRoutingSettings = useQueries({
+    queries: (zones.data ?? []).map((zone) => ({
+      queryKey: ["emailRoutingSettings", zone.id],
+      queryFn: async () => apiClient.current.getEmailRoutingSettings(zone.id),
+      staleTime: 5 * 60 * 1000,
+      gcTime: Number.POSITIVE_INFINITY,
+    })),
+  });
+
+  const emailRoutingSettings = useQuery({
+    queryKey: ["emailRoutingSettings", selectedZoneId],
+    queryFn: async ({ queryKey: [, selectedZoneId] }) => {
+      if (!selectedZoneId) return null;
+      return apiClient.current.getEmailRoutingSettings(selectedZoneId);
+    },
+  });
+
+  const domains = useMemo(
+    () =>
+      allEmailRoutingSettings.flatMap(({ data }) => {
+        const domains: {
+          zoneId: string;
+          zoneDomain: string;
+          domain: string;
+          isSubDomain: boolean;
+        }[] = [];
+
+        if (data?.result) {
+          domains.push({
+            zoneId: data.result.id,
+            zoneDomain: data.result.name,
+            isSubDomain: false,
+            domain: data.result.name,
+          });
+        }
+
+        if (data?.result?.subdomains) {
+          domains.push(
+            ...data.result.subdomains.flatMap((subDomain) => ({
+              zoneId: data.result.id,
+              zoneDomain: data.result.name,
+              isSubDomain: true,
+              domain: subDomain.name,
+            })),
+          );
+        }
+
+        return domains;
+      }),
+    [allEmailRoutingSettings],
+  );
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
@@ -122,14 +179,6 @@ export function useCloudflare() {
     enabled: !!accountId,
     placeholderData: [],
     retry: false,
-  });
-
-  const emailRoutingStatus = useQuery({
-    queryKey: ["emailRoutingStatus", selectedZoneId],
-    queryFn: async ({ queryKey: [, selectedZoneId] }) => {
-      if (!selectedZoneId) return null;
-      return apiClient.current.getEmailRoutingStatus(selectedZoneId).catch(() => null);
-    },
   });
 
   const emailRules = useQuery({
@@ -178,10 +227,11 @@ export function useCloudflare() {
     verifyToken,
     accountId,
     zones,
+    domains,
     selectedZoneId,
     setSelectedZoneId,
     emailDestinations,
-    emailRoutingStatus,
+    emailRoutingSettings,
     emailRules,
     createEmailRule,
     updateEmailRule,

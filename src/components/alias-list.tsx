@@ -40,7 +40,7 @@ import { sortBy } from "~utils";
 import { Alias } from "~utils/alias";
 import { aliasSearchAtom, settingsAtom } from "~utils/state";
 
-import "~/styles/scroll-area.css";
+import "../styles/scroll-area.css";
 
 function AliasList(props: FlexProps) {
   const { LL } = useI18nContext();
@@ -51,7 +51,7 @@ function AliasList(props: FlexProps) {
     setSelectedZoneId,
     zones,
     emailDestinations,
-    emailRoutingStatus,
+    emailRoutingSettings,
     emailRules,
   } = useCloudflare();
 
@@ -286,9 +286,9 @@ function AliasList(props: FlexProps) {
       )}
 
       {selectedZoneId &&
-        (emailRoutingStatus?.data?.result?.enabled === false ||
-          emailRoutingStatus?.data?.result?.status !== "ready") && (
-          <Alert title={LL.EMAIL_ROUTING_NOT_ENABLED_TITLE()} color="red">
+        (emailRoutingSettings?.data?.result?.enabled === false ||
+          emailRoutingSettings?.data?.result?.status !== "ready") && (
+          <Alert color="red">
             {LL.EMAIL_ROUTING_NOT_ENABLED()}
             <Anchor
               href={`https://dash.cloudflare.com/${accountId}/${zones.data?.find((z) => z.id === selectedZoneId)?.name || "whoops"}/email/routing/overview`}
@@ -306,30 +306,18 @@ function AliasList(props: FlexProps) {
       )}
 
       {!zones.isFetching && zones.isSuccess && zones.data.length === 0 && (
-        <Alert title={LL.NO_ZONES_TITLE()} color="yellow">
-          {LL.NO_ZONES()}
-        </Alert>
+        <Alert color="yellow">{LL.NO_ZONES()}</Alert>
       )}
 
-      {zones.isError && (
-        <Alert title={LL.ZONES_ERROR_TITLE()} color="red">
-          {LL.ZONES_ERROR({ error: zones.error })}
-        </Alert>
-      )}
+      {zones.isError && <Alert color="red">{LL.ZONES_ERROR({ error: zones.error })}</Alert>}
 
       {!!selectedZoneId &&
         emailRules.isSuccess &&
         !emailRules.isFetching &&
-        filteredAliases.length === 0 && (
-          <Alert title={LL.NO_RULES_TITLE()} color="yellow">
-            {LL.NO_RULES()}
-          </Alert>
-        )}
+        filteredAliases.length === 0 && <Alert color="yellow">{LL.NO_RULES()}</Alert>}
 
       {emailRules.isError && !zones.isError && (
-        <Alert title={LL.RULES_ERROR_TITLE()} color="red">
-          {LL.RULES_ERROR({ error: emailRules.error })}
-        </Alert>
+        <Alert color="red">{LL.RULES_ERROR({ error: emailRules.error })}</Alert>
       )}
 
       {/* ALIAS LIST */}

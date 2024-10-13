@@ -51,6 +51,7 @@ const AliasPrefixFormats = [
 type AliasPrefixFormat = (typeof AliasPrefixFormats)[number];
 
 type AliasSettings = {
+  domain?: string;
   format?: AliasFormat;
   characterCount?: number;
   wordCount?: number;

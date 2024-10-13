@@ -46,6 +46,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
     selectedZoneId,
     setSelectedZoneId,
     zones,
+    domains,
     emailDestinations,
     emailRules,
     createEmailRule,
@@ -59,7 +60,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
 
   const aliasCreateForm = useForm({
     initialValues: {
-      zoneId: "",
+      domain: "",
       format: "characters" as AliasFormat,
       characterCount: 5,
       wordCount: 2,
@@ -72,8 +73,8 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
       preview: "",
     },
     validate: {
-      zoneId: (value) =>
-        value.trim() === "" || !zones.data?.find((z) => z.id === selectedZoneId)
+      domain: (value) =>
+        value.trim() === "" || !domains?.find((d) => d.domain === value)
           ? LL.INVALID_DOMAIN()
           : null,
       format: (value) => (!AliasFormats.includes(value) ? LL.INVALID_FORMAT() : null),
@@ -100,38 +101,26 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
     aliasCreateForm.reset();
 
     if (aliasSettings) {
-      aliasCreateForm.setValues({
-        ...aliasSettings,
-      });
+      aliasCreateForm.setValues(aliasSettings);
     }
 
-    if (selectedZoneId) {
-      aliasCreateForm.setValues({
-        zoneId: selectedZoneId,
-      });
+    if (selectedZoneId && !aliasSettings.domain) {
+      aliasCreateForm.setFieldValue(
+        "domain",
+        zones.data?.find((z) => z.id === selectedZoneId)?.name ?? "",
+      );
     }
 
     if (hostname) {
-      aliasCreateForm.setValues({
-        description: hostname,
-      });
+      aliasCreateForm.setFieldValue("description", hostname);
     } else {
-      aliasCreateForm.setValues({
-        prefixFormat: "none",
-      });
+      aliasCreateForm.setFieldValue("prefixFormat", "none");
     }
   }
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     resetForm();
   }, [aliasSettings, hostname]);
-
-  useEffect(() => {
-    if (aliasCreateForm.values.zoneId === "" && selectedZoneId !== null) {
-      aliasCreateForm.setFieldValue("zoneId", selectedZoneId);
-    }
-  }, [selectedZoneId, aliasCreateForm.values.zoneId]);
 
   useEffect(() => {
     if (
@@ -143,17 +132,18 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
     }
   }, [emailDestinations, aliasCreateForm.values.destination, aliasSettings.destination]);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    const value = aliasCreateForm.values.zoneId;
-    if (value && value !== selectedZoneId) {
-      setSelectedZoneId(aliasCreateForm.values.zoneId);
+    const value = aliasCreateForm.values.domain;
+    const zoneId = domains.find((d) => d.domain === value)?.zoneId;
+    if (zoneId && zoneId !== selectedZoneId) {
+      setSelectedZoneId(zoneId);
     }
-  }, [aliasCreateForm.values.zoneId]);
+  }, [aliasCreateForm.values.domain]);
 
   function saveAliasSettings() {
     const { values } = aliasCreateForm;
     return setAliasSettings({
+      domain: values.domain,
       format: values.format,
       characterCount: values.characterCount,
       wordCount: values.wordCount,
@@ -164,15 +154,16 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
   }
 
   function createAliasPreview() {
-    const zone = zones.data?.find((z) => z.id === aliasCreateForm.values.zoneId);
-    if (!zone) return null;
+    if (aliasCreateForm.values.domain === "") {
+      return null;
+    }
 
     if (aliasCreateForm.values.format === "custom") {
       if (aliasCreateForm.values.customAlias.trim() === "") {
         return null;
       }
 
-      return `${aliasCreateForm.values.customAlias}@${zone.name}`;
+      return `${aliasCreateForm.values.customAlias}@${aliasCreateForm.values.domain}`;
     }
 
     let aliasAddress = "";
@@ -190,7 +181,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
           | "custom"
           | "none",
         hostname,
-      })}@${zone.name}`;
+      })}@${aliasCreateForm.values.domain}`;
 
       if (!emailRules.data?.find((r) => r.matchers[0].value === aliasAddress)) {
         break;
@@ -207,7 +198,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
     hostname,
     zones.data,
     emailRules.data,
-    aliasCreateForm.values.zoneId,
+    aliasCreateForm.values.domain,
     aliasCreateForm.values.format,
     aliasCreateForm.values.customAlias,
     aliasCreateForm.values.characterCount,
@@ -222,9 +213,10 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
   }, [aliasPreview, emailRules.data]);
 
   function createAlias(variables: typeof aliasCreateForm.values) {
-    const zone = zones.data?.find((z) => z.id === variables.zoneId);
+    const zoneId = domains.find((d) => d.domain === variables.domain)?.zoneId;
+    const zone = zones.data?.find((z) => z.id === zoneId);
 
-    if (!zone || !aliasPreview) {
+    if (!zoneId || !zone || !aliasPreview) {
       showNotification({
         color: "red",
         title: LL.ERROR(),
@@ -268,7 +260,7 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
       {
         onSuccess: (data) => {
           resetForm();
-          setSelectedZoneId(variables.zoneId);
+          setSelectedZoneId(domains.find((d) => d.domain === variables.domain)?.zoneId ?? null);
           saveAliasSettings();
           if (copyAlias) {
             clipboard.copy(data?.matchers[0].value);
@@ -380,19 +372,15 @@ export default function AliasCreateModal({ opened, onClose }: Props) {
           <Select
             label={LL.DOMAIN()}
             data={
-              zones.data?.map((z) => ({
-                value: z.id,
-                label: z.name,
-              })) || []
+              domains?.map((z) => ({
+                value: z.domain,
+                label: z.domain,
+              })) ?? []
             }
-            error={
-              !zones.data || zones.isError
-                ? zones.error?.toString() || LL.ZONES_LOADING_ERROR()
-                : undefined
-            }
+            error={!domains ? LL.ZONES_LOADING_ERROR() : undefined}
             searchable
             allowDeselect={false}
-            {...aliasCreateForm.getInputProps("zoneId")}
+            {...aliasCreateForm.getInputProps("domain")}
           />
           <Select
             label={LL.ALIAS_FORMAT()}
