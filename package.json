@@ -76,7 +76,7 @@
     "husky": "8.0.3",
     "lint-staged": "15.2.5",
     "typescript": "5.4.5",
-    "vite": "5.2.13",
+    "vite": "5.2.14",
     "vite-plugin-pwa": "0.20.0",
     "vite-tsconfig-paths": "4.3.2",
     "wrangler": "3.60.1"

@@ -113,7 +113,7 @@ importers:
         version: 18.3.0
       '@vitejs/plugin-react-swc':
         specifier: 3.7.0
-        version: 3.7.0(@swc/helpers@0.5.11)(vite@5.2.13(@types/node@20.14.2)(less@4.2.0)(lightningcss@1.25.1)(sass@1.77.4)(sugarss@4.0.1(postcss@8.4.38))(terser@5.31.1))
+        version: 3.7.0(@swc/helpers@0.5.11)(vite@5.2.14(@types/node@20.14.2)(less@4.2.0)(lightningcss@1.25.1)(sass@1.77.4)(sugarss@4.0.1(postcss@8.4.38))(terser@5.31.1))
       husky:
         specifier: 8.0.3
         version: 8.0.3
@@ -124,14 +124,14 @@ importers:
         specifier: 5.4.5
         version: 5.4.5
       vite:
-        specifier: 5.2.13
-        version: 5.2.13(@types/node@20.14.2)(less@4.2.0)(lightningcss@1.25.1)(sass@1.77.4)(sugarss@4.0.1(postcss@8.4.38))(terser@5.31.1)
+        specifier: 5.2.14
+        version: 5.2.14(@types/node@20.14.2)(less@4.2.0)(lightningcss@1.25.1)(sass@1.77.4)(sugarss@4.0.1(postcss@8.4.38))(terser@5.31.1)
       vite-plugin-pwa:
         specifier: 0.20.0
-        version: 0.20.0(vite@5.2.13(@types/node@20.14.2)(less@4.2.0)(lightningcss@1.25.1)(sass@1.77.4)(sugarss@4.0.1(postcss@8.4.38))(terser@5.31.1))(workbox-build@7.1.1)(workbox-window@7.1.0)
+        version: 0.20.0(vite@5.2.14(@types/node@20.14.2)(less@4.2.0)(lightningcss@1.25.1)(sass@1.77.4)(sugarss@4.0.1(postcss@8.4.38))(terser@5.31.1))(workbox-build@7.1.1)(workbox-window@7.1.0)
       vite-tsconfig-paths:
         specifier: 4.3.2
-        version: 4.3.2(typescript@5.4.5)(vite@5.2.13(@types/node@20.14.2)(less@4.2.0)(lightningcss@1.25.1)(sass@1.77.4)(sugarss@4.0.1(postcss@8.4.38))(terser@5.31.1))
+        version: 4.3.2(typescript@5.4.5)(vite@5.2.14(@types/node@20.14.2)(less@4.2.0)(lightningcss@1.25.1)(sass@1.77.4)(sugarss@4.0.1(postcss@8.4.38))(terser@5.31.1))
       wrangler:
         specifier: 3.60.1
         version: 3.60.1(@cloudflare/workers-types@4.20240605.0)
@@ -5284,8 +5284,8 @@ packages:
       vite:
         optional: true
 
-  vite@5.2.13:
-    resolution: {integrity: sha512-SSq1noJfY9pR3I1TUENL3rQYDQCFqgD+lM6fTRAM8Nv6Lsg5hDLaXkjETVeBt+7vZBCMoibD+6IWnT2mJ+Zb/A==}
+  vite@5.2.14:
+    resolution: {integrity: sha512-TFQLuwWLPms+NBNlh0D9LZQ+HXW471COABxw/9TEUBrjuHMo9BrYBPrN/SYAwIuVL+rLerycxiLT41t4f5MZpA==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -8197,10 +8197,10 @@ snapshots:
 
   '@types/trusted-types@2.0.7': {}
 
-  '@vitejs/plugin-react-swc@3.7.0(@swc/helpers@0.5.11)(vite@5.2.13(@types/node@20.14.2)(less@4.2.0)(lightningcss@1.25.1)(sass@1.77.4)(sugarss@4.0.1(postcss@8.4.38))(terser@5.31.1))':
+  '@vitejs/plugin-react-swc@3.7.0(@swc/helpers@0.5.11)(vite@5.2.14(@types/node@20.14.2)(less@4.2.0)(lightningcss@1.25.1)(sass@1.77.4)(sugarss@4.0.1(postcss@8.4.38))(terser@5.31.1))':
     dependencies:
       '@swc/core': 1.5.28(@swc/helpers@0.5.11)
-      vite: 5.2.13(@types/node@20.14.2)(less@4.2.0)(lightningcss@1.25.1)(sass@1.77.4)(sugarss@4.0.1(postcss@8.4.38))(terser@5.31.1)
+      vite: 5.2.14(@types/node@20.14.2)(less@4.2.0)(lightningcss@1.25.1)(sass@1.77.4)(sugarss@4.0.1(postcss@8.4.38))(terser@5.31.1)
     transitivePeerDependencies:
       - '@swc/helpers'
 
@@ -11135,29 +11135,29 @@ snapshots:
       spdx-correct: 3.2.0
       spdx-expression-parse: 3.0.1
 
-  vite-plugin-pwa@0.20.0(vite@5.2.13(@types/node@20.14.2)(less@4.2.0)(lightningcss@1.25.1)(sass@1.77.4)(sugarss@4.0.1(postcss@8.4.38))(terser@5.31.1))(workbox-build@7.1.1)(workbox-window@7.1.0):
+  vite-plugin-pwa@0.20.0(vite@5.2.14(@types/node@20.14.2)(less@4.2.0)(lightningcss@1.25.1)(sass@1.77.4)(sugarss@4.0.1(postcss@8.4.38))(terser@5.31.1))(workbox-build@7.1.1)(workbox-window@7.1.0):
     dependencies:
       debug: 4.3.5
       fast-glob: 3.3.2
       pretty-bytes: 6.1.1
-      vite: 5.2.13(@types/node@20.14.2)(less@4.2.0)(lightningcss@1.25.1)(sass@1.77.4)(sugarss@4.0.1(postcss@8.4.38))(terser@5.31.1)
+      vite: 5.2.14(@types/node@20.14.2)(less@4.2.0)(lightningcss@1.25.1)(sass@1.77.4)(sugarss@4.0.1(postcss@8.4.38))(terser@5.31.1)
       workbox-build: 7.1.1
       workbox-window: 7.1.0
     transitivePeerDependencies:
       - supports-color
 
-  vite-tsconfig-paths@4.3.2(typescript@5.4.5)(vite@5.2.13(@types/node@20.14.2)(less@4.2.0)(lightningcss@1.25.1)(sass@1.77.4)(sugarss@4.0.1(postcss@8.4.38))(terser@5.31.1)):
+  vite-tsconfig-paths@4.3.2(typescript@5.4.5)(vite@5.2.14(@types/node@20.14.2)(less@4.2.0)(lightningcss@1.25.1)(sass@1.77.4)(sugarss@4.0.1(postcss@8.4.38))(terser@5.31.1)):
     dependencies:
       debug: 4.3.5
       globrex: 0.1.2
       tsconfck: 3.1.0(typescript@5.4.5)
     optionalDependencies:
-      vite: 5.2.13(@types/node@20.14.2)(less@4.2.0)(lightningcss@1.25.1)(sass@1.77.4)(sugarss@4.0.1(postcss@8.4.38))(terser@5.31.1)
+      vite: 5.2.14(@types/node@20.14.2)(less@4.2.0)(lightningcss@1.25.1)(sass@1.77.4)(sugarss@4.0.1(postcss@8.4.38))(terser@5.31.1)
     transitivePeerDependencies:
       - supports-color
       - typescript
 
-  vite@5.2.13(@types/node@20.14.2)(less@4.2.0)(lightningcss@1.25.1)(sass@1.77.4)(sugarss@4.0.1(postcss@8.4.38))(terser@5.31.1):
+  vite@5.2.14(@types/node@20.14.2)(less@4.2.0)(lightningcss@1.25.1)(sass@1.77.4)(sugarss@4.0.1(postcss@8.4.38))(terser@5.31.1):
     dependencies:
       esbuild: 0.20.2
       postcss: 8.4.38
