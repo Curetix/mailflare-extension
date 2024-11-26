@@ -1,7 +1,7 @@
 import type { CloudflareEmailRule } from "~lib/cloudflare/cloudflare.types";
 import type { AliasSettings } from "~utils/state";
 
-import psl from "psl";
+import * as psl from "psl";
 import { generate as randomWords } from "random-words";
 
 import { emailRuleNamePrefix } from "~const";
