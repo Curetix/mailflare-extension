@@ -37,60 +37,58 @@
     "format": "biome format --write functions/ src/"
   },
   "dependencies": {
-    "@emotion/react": "11.13.5",
-    "@mantine/core": "7.14.2",
-    "@mantine/form": "7.14.2",
-    "@mantine/hooks": "7.14.2",
-    "@mantine/notifications": "7.14.2",
-    "@plasmohq/messaging": "0.6.2",
-    "@plasmohq/storage": "1.13.0",
-    "@tabler/icons-react": "3.22.0",
-    "@tanstack/query-core": "5.60.6",
-    "@tanstack/react-query": "5.61.3",
-    "@tanstack/react-query-devtools": "5.61.3",
-    "@tanstack/react-query-persist-client": "5.61.3",
-    "autoprefixer": "10.4.20",
-    "daisyui": "4.12.14",
-    "jotai": "2.10.3",
+    "@emotion/react": "11.14.0",
+    "@mantine/core": "7.17.2",
+    "@mantine/form": "7.17.2",
+    "@mantine/hooks": "7.17.2",
+    "@mantine/notifications": "7.17.2",
+    "@plasmohq/messaging": "0.7.1",
+    "@plasmohq/storage": "1.15.0",
+    "@tabler/icons-react": "3.33.0",
+    "@tanstack/query-core": "5.76.0",
+    "@tanstack/react-query": "5.76.1",
+    "@tanstack/react-query-devtools": "5.76.1",
+    "@tanstack/react-query-persist-client": "5.76.1",
+    "autoprefixer": "10.4.21",
+    "daisyui": "5.0.35",
+    "jotai": "2.12.4",
     "jotai-tanstack-query": "0.9.0",
-    "plasmo": "0.89.4",
-    "postcss": "8.4.49",
+    "plasmo": "0.90.5",
+    "postcss": "8.5.3",
     "postcss-preset-mantine": "1.17.0",
     "postcss-simple-vars": "7.0.1",
-    "psl": "1.13.0",
+    "psl": "1.15.0",
     "random-words": "2.0.1",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "tailwindcss": "3.4.15",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "tailwindcss": "3.4.17",
     "typesafe-i18n": "5.26.2"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
-    "@cloudflare/workers-types": "4.20241112.0",
+    "@cloudflare/workers-types": "4.20250520.0",
     "@plasmohq/rps": "1.8.7",
-    "@types/chrome": "0.0.287",
-    "@types/node": "22.10.0",
-    "@types/react": "18.3.12",
-    "@types/react-dom": "18.3.1",
-    "@vitejs/plugin-react-swc": "3.7.2",
-    "husky": "8.0.3",
-    "lint-staged": "15.2.10",
-    "typescript": "5.7.2",
-    "vite": "6.0.0",
-    "vite-plugin-pwa": "0.21.0",
-    "vite-tsconfig-paths": "5.1.3",
-    "wrangler": "3.90.0"
-  },
-  "pnpm": {
-    "peerDependencyRules": {
-      "allowedVersions": {
-        "svgo": "2.8.0"
-      }
-    }
+    "@types/chrome": "0.0.323",
+    "@types/node": "22.15.19",
+    "@types/react": "19.1.4",
+    "@types/react-dom": "19.1.5",
+    "@vitejs/plugin-react-swc": "3.9.0",
+    "husky": "9.1.7",
+    "lint-staged": "16.0.0",
+    "typescript": "5.8.3",
+    "vite": "6.3.5",
+    "vite-plugin-pwa": "1.0.0",
+    "vite-tsconfig-paths": "5.1.4",
+    "wrangler": "4.16.0"
   },
   "manifest": {
-    "permissions": ["activeTab", "contextMenus"],
-    "host_permissions": ["*://api.cloudflare.com/*"],
+    "permissions": [
+      "activeTab",
+      "contextMenus"
+    ],
+    "host_permissions": [
+      "*://api.cloudflare.com/*"
+    ],
     "browser_specific_settings": {
       "gecko": {
         "id": "{f0bdc9fa-a062-4424-baee-16530c53aa06}"
