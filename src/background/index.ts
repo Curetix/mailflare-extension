@@ -67,7 +67,7 @@ export async function generateAliasInBackground(hostname: string): Promise<Alias
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   console.debug("Context menu click:", info, tab);
 
-  if (info.menuItemId !== "mailflare-generate") return;
+  if (info.menuItemId !== "mailflare-generate" || !info.pageUrl) return;
 
   const loadingAlertId = Date.now();
   await sendTabMessage(tab?.id, {
@@ -80,7 +80,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   });
 
   try {
-    const alias = await generateAliasInBackground(new URL(info.pageUrl!).hostname);
+    const alias = await generateAliasInBackground(new URL(info.pageUrl).hostname);
     await sendTabMessage(tab?.id, {
       command: "showAlert",
       alert: {
