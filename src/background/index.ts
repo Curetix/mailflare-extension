@@ -51,7 +51,7 @@ export async function generateAliasInBackground(hostname: string): Promise<Alias
     },
     zone.name,
     aliasSettings.destination,
-    hostname,
+    hostname
   );
 
   const result = await apiClient.createEmailRule(zoneId, alias.toEmailRule());
@@ -80,7 +80,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   });
 
   try {
-    const alias = await generateAliasInBackground(new URL(info.pageUrl).hostname);
+    const alias = await generateAliasInBackground(new URL(info.pageUrl!).hostname);
     await sendTabMessage(tab?.id, {
       command: "showAlert",
       alert: {

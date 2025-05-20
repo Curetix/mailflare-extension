@@ -57,7 +57,7 @@ export default function Inline(props: PlasmoCSUIProps) {
   const clipboard = useClipboard();
   const [error, setError] = useState<string>();
   const [isSuccess, setIsSuccess] = useState(false);
-  const timeout = useRef<ReturnType<typeof setTimeout>>();
+  const timeout = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   if (!props.anchor?.element) return;
 
@@ -102,14 +102,16 @@ export default function Inline(props: PlasmoCSUIProps) {
           position: "absolute",
           top: (inputElementHeight - buttonSize) / 2,
           left: inputElementWidth - buttonSize - (inputElementHeight - buttonSize) / 2,
-        }}>
+        }}
+      >
         {/* biome-ignore lint/a11y/noLabelWithoutControl: <explanation> */}
         <label
           className={`btn btn-square btn-sm ${
             isSuccess ? "btn-success" : error ? "btn-error" : "btn-primary"
           }`}
           onClick={() => generateAlias()}
-          onKeyDown={() => generateAlias()}>
+          onKeyDown={() => generateAlias()}
+        >
           {isLoading ? (
             <span className="loading loading-spinner text-white" />
           ) : (
