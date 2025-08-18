@@ -22,7 +22,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup NodeJS
         uses: actions/setup-node@v4
@@ -77,7 +77,7 @@ jobs:
     if: ${{ inputs.publish == true || github.ref_type == 'tag' && startsWith(github.ref_name, 'v') }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Download built extensions
         uses: actions/download-artifact@v5
