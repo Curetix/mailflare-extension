@@ -1,18 +1,20 @@
 import type { MantineThemeOverride } from "@mantine/core";
-import type { ReactNode } from "react";
-import type { LocaleDetector } from "typesafe-i18n/detectors";
-
-import { MantineProvider } from "@mantine/core";
+import { MantineProvider, RemoveScroll } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { QueryClient } from "@tanstack/react-query";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
+import type { ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
+import type { LocaleDetector } from "typesafe-i18n/detectors";
 import { localStorageDetector } from "typesafe-i18n/detectors";
 import TypesafeI18n from "~i18n/i18n-react";
 
 import { detectLocale } from "~i18n/i18n-util";
 import { loadLocaleAsync } from "~i18n/i18n-util.async";
 import { extensionStoragePersister } from "~utils/storage";
+
+// If we do not import and reference RemoveScroll, the Notifications component will throw an error
+RemoveScroll;
 
 export const queryClient = new QueryClient({
   defaultOptions: {
