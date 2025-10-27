@@ -59,7 +59,7 @@ jobs:
       contents: write
     steps:
       - name: Download built extensions
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -80,7 +80,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Download built extensions
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
 
       - name: Publish to store
         uses: PlasmoHQ/bpp@v3
