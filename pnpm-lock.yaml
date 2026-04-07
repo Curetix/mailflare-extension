@@ -62,6 +62,9 @@ importers:
       autoprefixer:
         specifier: 10.4.27
         version: 10.4.27(postcss@8.5.6)
+      better-psl:
+        specifier: ^1.1.0
+        version: 1.1.0
       daisyui:
         specifier: 5.5.19
         version: 5.5.19
@@ -83,9 +86,6 @@ importers:
       postcss-simple-vars:
         specifier: 7.0.1
         version: 7.0.1(postcss@8.5.6)
-      psl:
-        specifier: 1.15.0
-        version: 1.15.0
       random-words:
         specifier: 2.0.1
         version: 2.0.1
@@ -2854,6 +2854,10 @@ packages:
     engines: {node: '>=6.0.0'}
     hasBin: true
 
+  better-psl@1.1.0:
+    resolution: {integrity: sha512-Yf4wfHKxufjNa92owDnAbzLXdkvSdzYdA5Dgm/KySAQ4rLhbrMussQBXQCTCr2PeW/ZM9H90kzyGNaiZP6QLlw==}
+    engines: {node: '>=20'}
+
   binary-extensions@2.3.0:
     resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==}
     engines: {node: '>=8'}
@@ -4482,9 +4486,6 @@ packages:
 
   prr@1.0.1:
     resolution: {integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==}
-
-  psl@1.15.0:
-    resolution: {integrity: sha512-JZd3gMVBAVQkSs6HdNZo9Sdo0LNcQeMNP3CozBJb3JYC/QUYZTnKxP+f8oWRX4rHP5EurWxqAHTSwUCjlNKa1w==}
 
   punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
@@ -8465,6 +8466,10 @@ snapshots:
 
   baseline-browser-mapping@2.10.16: {}
 
+  better-psl@1.1.0:
+    dependencies:
+      punycode: 2.3.1
+
   binary-extensions@2.3.0: {}
 
   blake3-wasm@2.1.5: {}
@@ -10133,10 +10138,6 @@ snapshots:
 
   prr@1.0.1:
     optional: true
-
-  psl@1.15.0:
-    dependencies:
-      punycode: 2.3.1
 
   punycode@2.3.1: {}
 
