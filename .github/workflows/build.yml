@@ -59,13 +59,14 @@ jobs:
       contents: write
     steps:
       - name: Download built extensions
+        id: download
         uses: actions/download-artifact@v8
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            ${{ env.ARTIFACT_NAME }}/*-prod.zip
+            ${{ steps.download.outputs.download-path }}/*-prod.zip
 
   publish:
     name: Publish to stores
@@ -80,11 +81,12 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Download built extensions
+        id: download
         uses: actions/download-artifact@v8
 
       - name: Publish to store
         uses: PlasmoHQ/bpp@v3
         with:
           keys: ${{ secrets.SUBMIT_KEYS }}
-          chrome-file: ${{ env.ARTIFACT_NAME }}/chrome-mv3-prod.zip
-          firefox-file: ${{ env.ARTIFACT_NAME }}/firefox-mv3-prod.zip
+          chrome-file: ${{ steps.download.outputs.download-path }}/chrome-mv3-prod.zip
+          firefox-file: ${{ steps.download.outputs.download-path }}/firefox-mv3-prod.zip
