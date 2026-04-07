@@ -10,6 +10,7 @@ import {
   Select,
   Stack,
   TextInput,
+  type ComboboxData,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useClipboard } from "@mantine/hooks";
@@ -18,7 +19,6 @@ import { IconRefresh } from "@tabler/icons-react";
 import { useAtom } from "jotai";
 import { useEffect, useMemo, useState } from "react";
 
-import type { ComboboxData } from "@mantine/core/lib/components/Combobox/Combobox.types";
 import { emailRuleNamePrefix, isExtension } from "~const";
 import { useI18nContext } from "~i18n/i18n-react";
 import { useCloudflare } from "~lib/cloudflare/use-cloudflare";

@@ -1,11 +1,9 @@
-import type { CloudflareEmailRule } from "~lib/cloudflare/cloudflare.types";
-import type { AliasSettings } from "~utils/state";
-
-import * as psl from "psl";
+import psl from "better-psl";
 import { generate as randomWords } from "random-words";
-
 import { emailRuleNamePrefix } from "~const";
+import type { CloudflareEmailRule } from "~lib/cloudflare/cloudflare.types";
 import { randomString } from "~utils";
+import type { AliasSettings } from "~utils/state";
 
 type GenerateAliasOptions = Omit<AliasSettings, "destination"> & {
   customPrefix?: string;
@@ -25,8 +23,8 @@ export function generateAliasAddress({
   if (prefixFormat === "custom" && customPrefix) {
     prefix = customPrefix.trim();
   } else if (hostname && psl.isValid(hostname)) {
-    // Cast type to ParsedDomain since we just checked if it's valid, this should never be an issue
-    const parsedHostname = psl.parse(hostname) as psl.ParsedDomain;
+    // Cast type since we just checked if it's valid, this should never be an issue
+    const parsedHostname = psl.parse(hostname).parsed!;
 
     if (prefixFormat === "domainWithoutExtension" && parsedHostname.sld) {
       prefix = parsedHostname.sld;
