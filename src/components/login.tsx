@@ -29,7 +29,7 @@ function Login() {
       token: "",
     },
     validate: {
-      token: (value) => value.trim().length !== 40,
+      token: (value) => value.trim().length === 0,
     },
   });
 
@@ -45,7 +45,7 @@ function Login() {
         />
         <Button
           type="submit"
-          disabled={tokenForm.values.token.trim().length !== 40}
+          disabled={tokenForm.values.token.trim().length === 0}
           loading={isLoading}>
           {LL.SAVE()}
         </Button>
